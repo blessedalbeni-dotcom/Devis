@@ -1,0 +1,523 @@
+index.html
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BTPDevis Pro</title>
+    <style>
+        :root {
+            --bg-dark: #121214;
+            --card-bg: #1e1e24;
+            --primary: #e65100;
+            --text-main: #ffffff;
+            --text-muted: #aaaaaa;
+            --border-color: #33333b;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-main);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 15px;
+            padding-bottom: 80px;
+        }
+
+        .header-app {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 5px;
+            border-bottom: 1px solid var(--border-color);
+            margin-bottom: 20px;
+        }
+
+        .logo-title {
+            font-size: 20px;
+            font-weight: bold;
+        }
+
+        .logo-title span {
+            color: var(--primary);
+        }
+
+        .location-badge {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .panel {
+            background: var(--card-bg);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .panel-title {
+            color: var(--primary);
+            margin-top: 0;
+            margin-bottom: 15px;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        label {
+            display: block;
+            font-size: 13px;
+            color: var(--text-muted);
+            margin-bottom: 5px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            background: #2a2a32;
+            color: white;
+            border: 1px solid #444;
+            border-radius: 5px;
+            box-sizing: border-box;
+            margin-bottom: 12px;
+            font-size: 14px;
+        }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        button {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            width: 100%;
+            font-size: 14px;
+        }
+
+        button:hover {
+            background: #bf4300;
+        }
+
+        .devis-view {
+            background: white;
+            color: #333;
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: 25px;
+        }
+
+        .devis-header {
+            display: flex;
+            justify-content: space-between;
+            border-bottom: 2px solid var(--primary);
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        .company-name {
+            color: var(--primary);
+            font-size: 18px;
+            font-weight: bold;
+        }
+
+        .devis-title {
+            text-align: right;
+        }
+
+        .devis-title h1 {
+            margin: 0;
+            color: var(--primary);
+            font-size: 22px;
+        }
+
+        .devis-meta {
+            font-size: 12px;
+            color: #666;
+        }
+
+        .cards-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .info-card {
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .info-card-title {
+            font-weight: bold;
+            color: #555;
+            margin-bottom: 5px;
+            text-transform: uppercase;
+            font-size: 11px;
+        }
+
+        .tag-travaux {
+            background: var(--primary);
+            color: white;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            display: inline-block;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            margin-bottom: 20px;
+        }
+
+        th {
+            background: #121214;
+            color: white;
+            padding: 8px;
+            text-align: left;
+        }
+
+        td {
+            padding: 10px 8px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .text-center {
+            text-align: center;
+        }
+
+        .total-highlight {
+            color: var(--primary);
+            font-weight: bold;
+        }
+
+        .totals-table {
+            width: 40%;
+            margin-left: auto;
+            background: #f8f9fa;
+        }
+
+        .totals-table td {
+            padding: 6px 8px;
+        }
+
+        .bg-orange-total {
+            background: var(--primary);
+            color: white;
+            font-weight: bold;
+        }
+
+        .conditions-bloc {
+            margin-top: 20px;
+            border-left: 3px solid var(--primary);
+            padding-left: 10px;
+            font-size: 11px;
+            color: #666;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SÉCURITÉ ANTI-PIRATAGE ET COMPTE GITHUB -->
+    <script>
+        (function() {
+            // ⚠️ REMPLACE CE TEXTE PAR TON NOM D'UTILISATEUR GITHUB EXACT
+            const domaineAutorise = " blessedalbeni-dotcom.github.io"; 
+
+            if (window.location.hostname !== domaineAutorise && window.location.hostname !== "localhost" && window.location.hostname !== "127.0.0.1") {
+                document.documentElement.innerHTML = `
+                    <div style="background:#121214; color:white; font-family:Arial; text-align:center; padding:50px 20px; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center;">
+                        <h2 style="color:#d9534f; margin-bottom:10px;">⚠️ Licence Non Validée</h2>
+                        <p style="color:#aaa; max-width:400px; margin-bottom:20px;">Cette copie de l'application BTP Devis Pro n'est pas authentique ou a été partagée de manière illégale.</p>
+                        <a href="https://${domaineAutorise}" style="background:#e65100; color:white; padding:12px 24px; text-decoration:none; border-radius:5px; font-weight:bold;">Accéder à la version officielle</a>
+                    </div>
+                `;
+                throw new Error("Sécurité : Application bloquée.");
+            }
+        })();
+    </script>
+
+    <div class="header-app">
+        <div class="logo-title">BTP<span>Devis</span> Pro</div>
+        <div class="location-badge">Lomé · FCFA · IA</div>
+    </div>
+
+    <!-- SECTION 1 : GESTION DES CLIENTS (BASE DE DONNÉES) -->
+    <div class="panel">
+        <div class="panel-title">👥 Gestion de la Base Clients</div>
+        
+        <label for="select-client">Choisir un client enregistré :</label>
+        <select id="select-client" onchange="chargerClientSelectionne()">
+            <option value="">-- Sélectionner un client --</option>
+        </select>
+
+        <div style="border-top: 1px solid #333; margin: 15px 0;"></div>
+
+        <div class="grid-2">
+            <div>
+                <label>Nom / Entreprise :</label>
+                <input type="text" id="client-nom" placeholder="Ex: Jean KOFFI">
+            </div>
+            <div>
+                <label>Téléphone :</label>
+                <input type="text" id="client-telephone" placeholder="Ex: 90 12 34 56">
+            </div>
+        </div>
+        <label>Ville / Quartier :</label>
+        <input type="text" id="client-ville" placeholder="Ex: Agoè, Lomé">
+
+        <button onclick="enregistrerNouveauClient()">➕ Enregistrer le client dans la base</button>
+    </div>
+
+    <!-- SECTION 2 : SELECTION DU LOT & AJOUT DES LIGNES -->
+    <div class="panel">
+        <div class="panel-title">🛠️ Configuration des Travaux du Devis</div>
+        <div class="grid-2">
+            <div>
+                <label>Type de travaux :</label>
+                <select id="devis-corps-etat" onchange="mettreAJourCorpsEtat()">
+                    <option value="Maçonnerie">Maçonnerie</option>
+                    <option value="Plomberie">Plomberie</option>
+                    <option value="Peinture">Peinture</option>
+                    <option value="Électricité">Électricité</option>
+                    <option value="Étanchéité">Étanchéité</option>
+                </select>
+            </div>
+            <div>
+                <label>Validité du devis :</label>
+                <select id="devis-validite">
+                    <option value="30 jours">30 jours</option>
+                    <option value="60 jours">60 jours</option>
+                </select>
+            </div>
+        </div>
+
+        <div style="border-top: 1px solid #333; margin: 15px 0;"></div>
+        
+        <label>Description de l'élément / Matériau :</label>
+        <input type="text" id="item-desc" placeholder="Ex: Tuyau PVC Ø100 évacuation">
+
+        <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px;">
+            <div>
+                <label>Qté :</label>
+                <input type="number" id="item-qte" value="1" min="1">
+            </div>
+            <div>
+                <label>Unité :</label>
+                <input type="text" id="item-unite" value="u" placeholder="u, m2, ml...">
+            </div>
+            <div>
+                <label>P.U (FCFA) :</label>
+                <input type="number" id="item-pu" placeholder="Ex: 3500">
+            </div>
+        </div>
+
+        <button onclick="ajouterLigneDevis()" style="background: #2e7d32;">⚡ Ajouter cette ligne au devis</button>
+    </div>
+
+    <!-- PREVIEW DU DEVIS (VISUEL BLANC INTERACTIF) -->
+    <div class="devis-view" id="devis-facture-zone">
+        <div class="devis-header">
+            <div class="company-name">Mon Entreprise</div>
+            <div class="devis-title">
+                <h1>DEVIS</h1>
+                <div class="devis-meta" id="devis-numero-date">DEV-57625 | 2026-06-17</div>
+            </div>
+        </div>
+
+        <div class="cards-container">
+            <div class="info-card">
+                <div class="info-card-title">Client</div>
+                <div id="view-client-nom" style="font-weight: bold;">Client</div>
+                <div id="view-client-details" style="color: #666; margin-top: 3px;">Coordonnées non définies</div>
+            </div>
+            <div class="info-card">
+                <div class="info-card-title">Travaux</div>
+                <div id="view-badge-travaux" class="tag-travaux">Maçonnerie</div>
+                <div id="view-validite" style="color: #666; margin-top: 5px; font-size: 12px;">Validité: 30 jours</div>
+            </div>
+        </div>
+
+        <!-- TABLEAU DES MATÉRIAUX -->
+        <table>
+            <thead>
+                <tr>
+                    <th style="width: 5%;" class="text-center">#</th>
+                    <th style="width: 50%;">Description</th>
+                    <th style="width: 8%;" class="text-center">Qte</th>
+                    <th style="width: 10%;" class="text-center">Unite</th>
+                    <th style="width: 12%;" class="text-right">P.U</th>
+                    <th style="width: 15%;" class="text-right">Total</th>
+                </tr>
+            </thead>
+            <tbody id="devis-table-body">
+                <!-- Les lignes ajoutées apparaîtront ici -->
+            </tbody>
+        </table>
+
+        <!-- BLOC TOTAL -->
+        <table class="totals-table">
+            <tr>
+                <td>Sous-total HT</td>
+                <td id="total-ht-cell" class="text-right" style="font-weight: bold;">0 FCFA</td>
+            </tr>
+            <tr>
+                <td>TVA 0%</td>
+                <td class="text-right">0 FCFA</td>
+            </tr>
+            <tr class="bg-orange-total">
+                <td>TOTAL TTC</td>
+                <td id="total-ttc-cell" class="text-right">0 FCFA</td>
+            </tr>
+        </table>
+
+        <div class="conditions-bloc">
+            Paiement : 50% à la commande, 50% à la livraison.<br>
+            Délai d'exécution : à préciser après validation.<br>
+            Devis valable 30 jours à compter de la date d'émission.
+        </div>
+    </div>
+
+    <script>
+        // --- BASE DE DONNÉES CLIENTS ---
+        let baseClients = JSON.parse(localStorage.getItem('btp_clients')) || [];
+        let lignesDevis = [];
+
+        document.addEventListener("DOMContentLoaded", function() {
+            actualiserListeDeroulante();
+            genererNumeroDateDevis();
+        });
+
+        function genererNumeroDateDevis() {
+            const num = Math.floor(10000 + Math.random() * 90000);
+            const aujourdhui = new Date();
+            const dateStr = aujourdhui.toISOString().split('T')[0];
+            document.getElementById('devis-numero-date').innerText = `DEV-${num} | ${dateStr}`;
+        }
+
+        function registrarNouveauClient() {} // Alias sécurité
+        function enregistrerNouveauClient() {
+            const nom = document.getElementById('client-nom').value.trim();
+            const tel = document.getElementById('client-telephone').value.trim();
+            const ville = document.getElementById('client-ville').value.trim();
+
+            if (nom === "") {
+                alert("Le nom du client est obligatoire !");
+                return;
+            }
+
+            const nouveauClient = { id: Date.now(), nom: nom, telephone: tel, ville: ville };
+            baseClients.push(nouveauClient);
+            localStorage.setItem('btp_clients', JSON.stringify(baseClients));
+
+            document.getElementById('client-nom').value = "";
+            document.getElementById('client-telephone').value = "";
+            document.getElementById('client-ville').value = "";
+
+            actualiserListeDeroulante();
+            alert("✅ Client enregistré avec succès dans la base !");
+        }
+
+        function actualiserListeDeroulante() {
+            const select = document.getElementById('select-client');
+            select.innerHTML = '<option value="">-- Sélectionner un client --</option>';
+            baseClients.forEach(client => {
+                const option = document.createElement('option');
+                option.value = client.id;
+                option.innerText = `${client.nom} (${client.ville})`;
+                select.appendChild(option);
+            });
+        }
+
+        function chargerClientSelectionne() {
+            const idSelectionne = document.getElementById('select-client').value;
+            if (idSelectionne === "") {
+                document.getElementById('view-client-nom').innerText = "Client";
+                document.getElementById('view-client-details').innerText = "Coordonnées non définies";
+                return;
+            }
+            const client = baseClients.find(c => c.id == idSelectionne);
+            if (client) {
+                document.getElementById('view-client-nom').innerText = client.nom;
+                document.getElementById('view-client-details').innerHTML = `Tél: ${client.telephone}<br>Ville: ${client.ville}`;
+            }
+        }
+
+        // --- CONTRÔLE ET LOGIQUE DU DEVIS ---
+        function mettreAJourCorpsEtat() {
+            const corps = document.getElementById('devis-corps-etat').value;
+            document.getElementById('view-badge-travaux').innerText = corps;
+        }
+
+        function formaterNombre(num) {
+            return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
+
+        function ajouterLigneDevis() {
+            const desc = document.getElementById('item-desc').value.trim();
+            const qte = parseFloat(document.getElementById('item-qte').value);
+            const unite = document.getElementById('item-unite').value.trim();
+            const pu = parseFloat(document.getElementById('item-pu').value);
+
+            if (desc === "" || isNaN(qte) || isNaN(pu)) {
+                alert("Veuillez remplir correctement la description, la quantité et le prix unitaire !");
+                return;
+            }
+
+            const totalLigne = qte * pu;
+            const nouvelleLigne = { desc, qte, unite, pu, totalLigne };
+            lignesDevis.push(nouvelleLigne);
+
+            // Reset inputs
+            document.getElementById('item-desc').value = "";
+            document.getElementById('item-qte').value = "1";
+            document.getElementById('item-pu').value = "";
+
+            redessinerTableauDevis();
+        }
+
+        function redessinerTableauDevis() {
+            const tbody = document.getElementById('devis-table-body');
+            tbody.innerHTML = "";
+            let sousTotalGeneral = 0;
+
+            lignesDevis.forEach((ligne, index) => {
+                sousTotalGeneral += ligne.totalLigne;
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td class="text-center" style="color:#888;">${index + 1}</td>
+                    <td style="font-weight: 500;">${ligne.desc}</td>
+                    <td class="text-center">${ligne.qte}</td>
+                    <td class="text-center" style="color:#666;">${ligne.unite}</td>
+                    <td class="text-right">${formaterNombre(ligne.pu)} FCFA</td>
+                    <td class="text-right total-highlight">${formaterNombre(ligne.totalLigne)} FCFA</td>
+                `;
+                tbody.appendChild(tr);
+            });
+
+            // Mise à jour des totaux de l'application
+            document.getElementById('total-ht-cell').innerText = `${formaterNombre(sousTotalGeneral)} FCFA`;
+            document.getElementById('total-ttc-cell').innerText = `${formaterNombre(sousTotalGeneral)} FCFA`;
+            
+            // Mise à jour de la validité
+            document.getElementById('view-validite').innerText = `Validite: ${document.getElementById('devis-validite').value}`;
+        }
+    </script>
+</body>
+</html>
