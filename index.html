@@ -14,6 +14,7 @@
             --text-main: #ffffff;
             --text-muted: #aaaaaa;
             --border-color: #333333;
+            --whatsapp-color: #25D366;
         }
 
         body {
@@ -145,6 +146,52 @@
             cursor: pointer;
             font-weight: bold;
             padding: 0 5px;
+        }
+
+        /* STYLES POUR LES CARTES D'ARCHIVES */
+        .archive-card {
+            background: #25252d;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+            margin-bottom: 10px;
+        }
+
+        .archive-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 8px;
+            border-bottom: 1px dashed #3a3a45;
+            padding-bottom: 5px;
+        }
+
+        .archive-actions {
+            display: flex;
+            gap: 8px;
+            margin-top: 10px;
+        }
+
+        .btn-action {
+            flex: 1;
+            padding: 8px;
+            border-radius: 4px;
+            border: none;
+            font-size: 12px;
+            font-weight: bold;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 5px;
+            color: white;
+        }
+
+        .btn-view {
+            background: #3a3a45;
+        }
+
+        .btn-whatsapp {
+            background: var(--whatsapp-color);
         }
 
         .totals-box {
@@ -306,7 +353,6 @@
         <div class="location-badge" id="app-location-badge">Lomé · FCFA</div>
     </div>
 
-    <!-- CONFIGURATION SELECTION DU PAYS ET LOGO -->
     <div class="panel" style="background: #19191e; border: 1px dashed var(--primary);">
         <div class="grid-2">
             <div>
@@ -327,14 +373,12 @@
         </div>
     </div>
 
-    <!-- NAVIGATION TABS -->
     <div style="display: flex; background: #1e1e24; padding: 5px; border-radius: 5px; margin-bottom: 20px; gap: 5px;">
         <button id="tab-btn-creer" style="flex:1; background:var(--primary); color:white; border:none; padding:8px; border-radius:4px; font-size:12px; font-weight:bold;" onclick="changerOnglet('creer')">📝 Créer Devis</button>
         <button id="tab-btn-ia" style="flex:1; background:#2a2a32; color:white; border:none; padding:8px; border-radius:4px; font-size:12px;" onclick="changerOnglet('ia')">🤖 Générateur IA</button>
         <button id="tab-btn-archives" style="flex:1; background:#2a2a32; color:white; border:none; padding:8px; border-radius:4px; font-size:12px;" onclick="changerOnglet('historique')">🗂️ Archives</button>
     </div>
 
-    <!-- GENERATEUR IA -->
     <div id="page-generator-ai" class="panel panel-ai hidden">
         <h3 class="panel-title panel-title-ai">🤖 GENERATEUR DE DEVIS IA MULTI-PAYS</h3>
         <label>Collez votre texte brut ici (l'IA s'occupe du client et du tableau) :</label>
@@ -342,7 +386,6 @@
         <button class="btn btn-ai-gen" onclick="analyserEtGenererDevisIA()">🤖 Analyser & Générer automatiquement</button>
     </div>
 
-    <!-- CLIENTS -->
     <div id="section-clients" class="panel">
         <h3 class="panel-title">👥 Informations Client</h3>
         <div class="grid-2">
@@ -359,7 +402,6 @@
         <input type="text" id="client-adresse" placeholder="En attente...">
     </div>
 
-    <!-- ARTICLES & TABLEAU -->
     <div id="section-devis" class="panel">
         <h3 class="panel-title">📝 Contenu du Devis</h3>
         
@@ -406,19 +448,16 @@
         </div>
     </div>
 
-    <!-- EXPORT -->
     <div id="section-export" class="panel">
         <h3 class="panel-title">📄 Validation & Export PDF</h3>
         <button class="btn" style="background: #2e7d32;" onclick="genererPDF()">🚀 Télécharger le Devis Officiel (PDF)</button>
     </div>
 
-    <!-- ARCHIVES -->
     <div id="page-historique" class="panel hidden">
         <h3 class="panel-title">🗂️ Devis Archivés</h3>
         <div id="liste-archives"></div>
     </div>
 
-    <!-- ZONE D'IMPRESSION BLANCHE INTERNATIONALE (PDF) -->
     <div id="zone-print">
         <div class="pdf-header">
             <div id="pdf-logo-container"></div>
@@ -503,7 +542,6 @@
             const pays = select.value;
             const capitale = select.options[select.selectedIndex].getAttribute('data-capitale');
             
-            // Mettre à jour le badge sur l'application mobile
             document.getElementById('app-location-badge').innerText = `${capitale} · FCFA`;
             localStorage.setItem('btp_pays_choisi', pays);
         }
@@ -532,6 +570,7 @@
             } else if(onglet === 'historique') {
                 document.getElementById('tab-btn-archives').style.background = 'var(--primary)';
                 document.getElementById('page-historique').classList.remove('hidden');
+                afficherArchives();
             }
         }
 
@@ -625,6 +664,8 @@
             const telClient = document.getElementById('client-tel').value.trim();
             const adresseClient = document.getElementById('client-adresse').value.trim();
             const urlLogo = document.getElementById('logo-url').value.trim();
+            const remisePourcent = parseFloat(document.getElementById('remise-pourcent').value) || 0;
+            const acompte = parseFloat(document.getElementById('acompte-valeur').value) || 0;
 
             const select = document.getElementById('select-pays');
             const pays = select.value;
@@ -635,7 +676,7 @@
             const numDevis = "DEV-" + Math.floor(100000 + Math.random() * 900000);
             const dateJour = new Date().toLocaleDateString('fr-FR');
 
-            // GESTION DU LOGO ET DU PAYS SUR LE PDF
+            // Préparer la zone d'impression
             const conteneurLogo = document.getElementById('pdf-logo-container');
             if(urlLogo) {
                 conteneurLogo.innerHTML = `<img src="${urlLogo}" class="pdf-logo" alt="Logo">`;
@@ -647,7 +688,6 @@
             document.getElementById('pdf-num-date').innerText = `${numDevis} | Date : ${dateJour}`;
             document.getElementById('pdf-client-infos').innerHTML = `${nomClient}<br>Tél: ${telClient}<br>${adresseClient}`;
 
-            // FOOTER CONFORME POUR LA RÉGION CHOISIE
             document.getElementById('pdf-footer-text').innerHTML = `
                 Paiement : 50% à la commande, 50% à la livraison.<br>
                 Devis soumis aux réglementations en vigueur à ${capitale} (${pays}).<br>
@@ -669,8 +709,6 @@
             });
 
             let totalBrut = articlesDevis.reduce((sum, art) => sum + art.total, 0);
-            const remisePourcent = parseFloat(document.getElementById('remise-pourcent').value) || 0;
-            const acompte = parseFloat(document.getElementById('acompte-valeur').value) || 0;
             let montantRemise = totalBrut * (remisePourcent / 100);
             let totalNet = totalBrut - montantRemise;
 
@@ -679,16 +717,103 @@
             document.getElementById('pdf-total-acompte').innerText = acompte.toLocaleString('fr-FR') + " FCFA";
             document.getElementById('pdf-total-net').innerText = totalNet.toLocaleString('fr-FR') + " FCFA";
 
+            // SAUVEGARDE AUTOMATIQUE DANS LES ARCHIVES
+            const nouveauDevisArchive = {
+                numDevis: numDevis,
+                date: dateJour,
+                client: nomClient,
+                telephone: telClient,
+                adresse: adresseClient,
+                items: [...articlesDevis],
+                remise: remisePourcent,
+                acompte: acompte,
+                totalTtc: totalNet.toLocaleString('fr-FR') + " FCFA",
+                pays: pays
+            };
+            
+            // Éviter les doublons lors de la ré-impression
+            if(!archivesDevis.some(d => d.numDevis === numDevis)) {
+                archivesDevis.unshift(nouveauDevisArchive);
+                localStorage.setItem('btp_archives', JSON.stringify(archivesDevis));
+            }
+
             setTimeout(() => { window.print(); }, 500);
         }
 
         function afficherArchives() {
             const conteneur = document.getElementById('liste-archives');
-            if(archivesDevis.length === 0) return;
             conteneur.innerHTML = '';
-            archivesDevis.forEach(arc => {
-                conteneur.innerHTML += `<div class="item-added" style="background: #25252d;"><div><strong style="color:var(--primary);">${arc.numDevis}</strong><br>${arc.client}</div><div><strong>${arc.total}</strong> F</div></div>`;
+            
+            if(archivesDevis.length === 0) {
+                conteneur.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:20px;">Aucun devis archivé pour le moment.</div>';
+                return;
+            }
+
+            archivesDevis.forEach((arc, id) => {
+                const div = document.createElement('div');
+                div.className = 'archive-card';
+                div.innerHTML = `
+                    <div class="archive-header">
+                        <span style="color:var(--primary); font-weight:bold;">${arc.numDevis}</span>
+                        <span style="color:var(--text-muted); font-size:12px;">📅 ${arc.date}</span>
+                    </div>
+                    <div style="font-size:14px; font-weight:bold; margin-bottom:5px;">👤 ${arc.client}</div>
+                    <div style="font-size:13px; color:var(--text-muted);">🌍 Pays: ${arc.pays} | 💰 Total: <span style="color:var(--primary); font-weight:bold;">${arc.totalTtc}</span></div>
+                    
+                    <div class="archive-actions">
+                        <button class="btn-action btn-view" onclick="rechargerEtVoirDevis(${id})">👁️ Voir complet</button>
+                        <button class="btn-action btn-whatsapp" onclick="envoyerMessageWhatsApp(${id})">💬 Envoyer WhatsApp</button>
+                    </div>
+                `;
+                conteneur.appendChild(div);
             });
+        }
+
+        function rechargerEtVoirDevis(index) {
+            const devis = archivesDevis[index];
+            
+            // Remplir à nouveau les champs formulaires
+            document.getElementById('client-nom').value = devis.client;
+            document.getElementById('client-tel').value = devis.telephone || '';
+            document.getElementById('client-adresse').value = devis.adresse || '';
+            document.getElementById('remise-pourcent').value = devis.remise || 0;
+            document.getElementById('acompte-valeur').value = devis.acompte || 0;
+            
+            // Remplir les articles
+            articlesDevis = [...devis.items];
+            
+            // Forcer la synchronisation du pays si besoin
+            document.getElementById('select-pays').value = devis.pays;
+            changerPaysApp();
+            
+            // Rafraîchir l'interface et renvoyer vers l'onglet principal
+            actualiserListeArticles();
+            calculerTotauxFinaux();
+            changerOnglet('creer');
+            
+            // Déclencher directement la mise en page d'impression
+            setTimeout(() => { genererPDF(); }, 300);
+        }
+
+        function envoyerMessageWhatsApp(index) {
+            const devis = archivesDevis[index];
+            
+            if(!devis.telephone) {
+                alert("Ce client n'a pas de numéro de téléphone enregistré.");
+                return;
+            }
+
+            // Rédaction automatique du texte professionnel
+            const texteMessage = `Bonjour ${devis.client},\n\nJ'espère que vous allez bien. Suite à notre échange, vous trouverez ci-joint les détails de votre proposition tarifaire officielle.\n\n📄 *Référence :* ${devis.numDevis}\n💰 *Montant Total TTC :* ${devis.totalTtc}\n\nRestant à votre entière disposition pour le démarrage de vos travaux.\n\nCordialement,\n*Mon Entreprise BTP*`;
+            
+            // Nettoyage et formatage du numéro pour l'URL internationale WhatsApp
+            let numPropre = devis.telephone.replace(/[\s\+\-]/g, '');
+            
+            // Encoder le texte pour le rendre compatible avec un lien web
+            const urlWhatsApp = `https://api.whatsapp.com/send?phone=${numPropre}&text=${encodeURIComponent(texteMessage)}`;
+            
+            // Ouvrir instantanément WhatsApp
+            window.open(urlWhatsApp, '_blank');
         }
     </script>
 </body>
