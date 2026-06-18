@@ -217,11 +217,26 @@
             display: none !important;
         }
 
-        /* CONTENEUR CACHÉ POUR LA GÉNÉRATION DU PDF PROPRE */
+        /* RENDU PDF WEB INTERACTIF VISIBLE OU POUR IMPRESSION */
         #pdf-wrapper {
             position: absolute;
             left: -9999px;
             top: -9999px;
+        }
+
+        .pdf-mode-actif #interface-complete {
+            display: none !important;
+        }
+
+        .pdf-mode-actif #pdf-wrapper {
+            position: relative !important;
+            left: 0 !important;
+            top: 0 !important;
+            display: flex !important;
+            justify-content: center !important;
+            background: #525659;
+            min-height: 100vh;
+            padding: 20px 0;
         }
 
         .pdf-container {
@@ -231,6 +246,7 @@
             font-family: Arial, sans-serif;
             padding: 30px;
             box-sizing: border-box;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
         }
 
         .pdf-header {
@@ -329,6 +345,24 @@
             color: #6c757d;
             line-height: 1.6;
         }
+
+        #btn-retour-app {
+            display: none;
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: #212529;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 4px;
+            font-weight: bold;
+            cursor: pointer;
+            z-index: 9999;
+        }
+        .pdf-mode-actif #btn-retour-app {
+            display: block !important;
+        }
     </style>
 </head>
 <body>
@@ -348,132 +382,131 @@
 })();
 </script>
 
-    <div class="header-app">
-        <div class="logo-title">BTP<span>Devis</span> Pro</div>
-        <div class="location-badge" id="app-location-badge">Lomé · FCFA</div>
-    </div>
+    <button id="btn-retour-app" onclick="quitterModeVision_PDF()">⬅️ Retour à l'Application</button>
 
-    <!-- SELECTION PAYS ET DEVISE : TOUTE L'AFRIQUE FRANCOPHONE INCLUSE -->
-    <div class="panel" style="background: #19191e; border: 1px dashed var(--primary);">
-        <div class="grid-2">
-            <div>
-                <label style="color: var(--primary); font-weight: bold;">🌍 Zone / Pays d'Afrique :</label>
-                <select id="select-pays" onchange="changerPaysApp()">
-                    <option value="Togo" data-capitale="Lomé" data-devise="FCFA">🇹🇬 Togo (Lomé)</option>
-                    <option value="Bénin" data-capitale="Cotonou" data-devise="FCFA">🇧🇯 Bénin (Cotonou)</option>
-                    <option value="Côte d'Ivoire" data-capitale="Abidjan" data-devise="FCFA">🇨🇮 Côte d'Ivoire (Abidjan)</option>
-                    <option value="Sénégal" data-capitale="Dakar" data-devise="FCFA">🇸🇳 Sénégal (Dakar)</option>
-                    <option value="Gabon" data-capitale="Libreville" data-devise="FCFA">🇬🇦 Gabon (Libreville)</option>
-                    <option value="Congo-Brazzaville" data-capitale="Brazzaville" data-devise="FCFA">🇨🇬 Congo-Brazzaville</option>
-                    <option value="RDC" data-capitale="Kinshasa" data-devise="CDF">🇨🇩 RDC (Kinshasa)</option>
-                    <option value="Cameroun" data-capitale="Yaoundé" data-devise="FCFA">🇨🇲 Cameroun (Yaoundé)</option>
-                    <option value="Burkina Faso" data-capitale="Ouagadougou" data-devise="FCFA">🇧🇫 Burkina Faso</option>
-                    <option value="Mali" data-capitale="Bamako" data-devise="FCFA">🇲🇱 Mali (Bamako)</option>
-                    <option value="Niger" data-capitale="Niamey" data-devise="FCFA">🇳🇪 Niger (Niamey)</option>
-                    <option value="Guinée" data-capitale="Conakry" data-devise="GNF">🇬🇳 Guinée (Conakry)</option>
-                    <option value="Tchad" data-capitale="N'Djaména" data-devise="FCFA">🇹🇩 Tchad (N'Djaména)</option>
-                </select>
-            </div>
-            <div>
-                <label style="color: var(--primary); font-weight: bold;">🖼️ URL du Logo :</label>
-                <input type="text" id="logo-url" placeholder="Lien HTTP de votre logo" oninput="sauvegarderParametres()">
-            </div>
+    <div id="interface-complete">
+        <div class="header-app">
+            <div class="logo-title">BTP<span>Devis</span> Pro</div>
+            <div class="location-badge" id="app-location-badge">Lomé · FCFA</div>
         </div>
-    </div>
 
-    <!-- ONGLETS -->
-    <div style="display: flex; background: #1e1e24; padding: 5px; border-radius: 5px; margin-bottom: 20px; gap: 5px;">
-        <button id="tab-btn-creer" style="flex:1; background:var(--primary); color:white; border:none; padding:10px; border-radius:4px; font-weight:bold; font-size:13px;" onclick="changerOnglet('creer')">📝 Créer Devis</button>
-        <button id="tab-btn-ia" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px; border-radius:4px; font-size:13px;" onclick="changerOnglet('ia')">🤖 Assistant IA</button>
-        <button id="tab-btn-archives" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px; border-radius:4px; font-size:13px;" onclick="changerOnglet('historique')">🗂️ Archives</button>
-    </div>
-
-    <!-- ASSISTANT IA -->
-    <div id="page-generator-ai" class="panel panel-ai hidden">
-        <h3 class="panel-title panel-title-ai">🤖 GENERATEUR DE DEVIS IA</h3>
-        <label>Collez votre texte brut ici :</label>
-        <textarea id="ai-raw-text" rows="8" placeholder="Nom: M. Diallo..."></textarea>
-        <button class="btn btn-ai-gen" onclick="analyserEtGenererDevisIA()">🤖 Analyser & Générer</button>
-    </div>
-
-    <!-- CLIENT -->
-    <div id="section-clients" class="panel">
-        <h3 class="panel-title">👥 Informations Client</h3>
-        <div class="grid-2">
-            <div>
-                <label>Nom du Client :</label>
-                <input type="text" id="client-nom" placeholder="Ex: M. Amégnran">
-            </div>
-            <div>
-                <label>Téléphone :</label>
-                <input type="text" id="client-tel" placeholder="Ex: +228 90 22 33 44">
-            </div>
-        </div>
-        <label>Adresse :</label>
-        <input type="text" id="client-adresse" placeholder="Ex: Lomé, Agoè">
-    </div>
-
-    <!-- ARTICLES -->
-    <div id="section-devis" class="panel">
-        <h3 class="panel-title">📝 Contenu du Devis</h3>
-        
-        <div id="form-manuel-ajout">
-            <label>Ajouter un élément :</label>
-            <input type="text" id="item-nom" placeholder="Désignation des travaux">
+        <!-- SELECTION PAYS -->
+        <div class="panel" style="background: #19191e; border: 1px dashed var(--primary);">
             <div class="grid-2">
                 <div>
-                    <label>Quantité :</label>
-                    <input type="number" id="item-qte" value="1" min="1">
+                    <label style="color: var(--primary); font-weight: bold;">🌍 Zone / Pays d'Afrique :</label>
+                    <select id="select-pays" onchange="changerPaysApp()">
+                        <option value="Togo" data-capitale="Lomé" data-devise="FCFA">🇹🇬 Togo (Lomé)</option>
+                        <option value="Bénin" data-capitale="Cotonou" data-devise="FCFA">🇧🇯 Bénin (Cotonou)</option>
+                        <option value="Côte d'Ivoire" data-capitale="Abidjan" data-devise="FCFA">🇨🇮 Côte d'Ivoire (Abidjan)</option>
+                        <option value="Sénégal" data-capitale="Dakar" data-devise="FCFA">🇸🇳 Sénégal (Dakar)</option>
+                        <option value="Gabon" data-capitale="Libreville" data-devise="FCFA">🇬🇦 Gabon (Libreville)</option>
+                        <option value="Congo-Brazzaville" data-capitale="Brazzaville" data-devise="FCFA">🇨🇬 Congo-Brazzaville</option>
+                        <option value="RDC" data-capitale="Kinshasa" data-devise="CDF">🇨🇩 RDC (Kinshasa)</option>
+                        <option value="Cameroun" data-capitale="Yaoundé" data-devise="FCFA">🇨🇲 Cameroun (Yaoundé)</option>
+                        <option value="Burkina Faso" data-capitale="Ouagadougou" data-devise="FCFA">🇧🇫 Burkina Faso</option>
+                        <option value="Mali" data-capitale="Bamako" data-devise="FCFA">🇲🇱 Mali (Bamako)</option>
+                        <option value="Niger" data-capitale="Niamey" data-devise="FCFA">🇳🇪 Niger (Niamey)</option>
+                        <option value="Guinée" data-capitale="Conakry" data-devise="GNF">🇬🇳 Guinée (Conakry)</option>
+                        <option value="Tchad" data-capitale="N'Djaména" data-devise="FCFA">🇹🇩 Tchad (N'Djaména)</option>
+                    </select>
                 </div>
                 <div>
-                    <label>Prix Unitaire :</label>
-                    <input type="number" id="item-pu" placeholder="Prix">
+                    <label style="color: var(--primary); font-weight: bold;">🖼️ URL du Logo :</label>
+                    <input type="text" id="logo-url" placeholder="Lien HTTP de votre logo" oninput="sauvegarderParametres()">
                 </div>
-            </div>
-            <button class="btn" onclick="ajouterArticle()">➕ Ajouter à la liste</button>
-        </div>
-        
-        <div class="item-list" id="liste-articles" style="margin-top: 15px;"></div>
-        
-        <div class="totals-box">
-            <div class="total-row">
-                <span>Sous-Total :</span>
-                <span><span id="total-brut">0</span> <span class="devise-txt">FCFA</span></span>
-            </div>
-            <div class="grid-2" style="margin-top: 10px;">
-                <div>
-                    <label>Remise (%) :</label>
-                    <input type="number" id="remise-pourcent" value="0" min="0" max="100" oninput="calculerTotauxFinaux()">
-                </div>
-                <div>
-                    <label>Acompte :</label>
-                    <input type="number" id="acompte-valeur" value="0" min="0" oninput="calculerTotauxFinaux()">
-                </div>
-            </div>
-            <div class="total-row total-final">
-                <span>TOTAL TTC :</span>
-                <span><span id="total-net">0</span> <span class="devise-txt">FCFA</span></span>
-            </div>
-            <div class="total-row" style="color: #4caf50; font-size: 14px; font-weight: bold; margin-top: 5px;">
-                <span>Reste à payer :</span>
-                <span><span id="total-reste">0</span> <span class="devise-txt">FCFA</span></span>
             </div>
         </div>
+
+        <!-- ONGLETS -->
+        <div style="display: flex; background: #1e1e24; padding: 5px; border-radius: 5px; margin-bottom: 20px; gap: 5px;">
+            <button id="tab-btn-creer" style="flex:1; background:var(--primary); color:white; border:none; padding:10px; border-radius:4px; font-weight:bold; font-size:13px;" onclick="changerOnglet('creer')">📝 Créer Devis</button>
+            <button id="tab-btn-ia" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px; border-radius:4px; font-size:13px;" onclick="changerOnglet('ia')">🤖 Assistant IA</button>
+            <button id="tab-btn-archives" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px; border-radius:4px; font-size:13px;" onclick="changerOnglet('historique')">🗂️ Archives</button>
+        </div>
+
+        <!-- ASSISTANT IA -->
+        <div id="page-generator-ai" class="panel panel-ai hidden">
+            <h3 class="panel-title panel-title-ai">🤖 GENERATEUR DE DEVIS IA</h3>
+            <label>Collez votre texte brut ici :</label>
+            <textarea id="ai-raw-text" rows="8" placeholder="Nom: M. Diallo..."></textarea>
+            <button class="btn btn-ai-gen" onclick="analyserEtGenererDevisIA()">🤖 Analyser & Générer</button>
+        </div>
+
+        <!-- CLIENT -->
+        <div id="section-clients" class="panel">
+            <h3 class="panel-title">👥 Informations Client</h3>
+            <div class="grid-2">
+                <div>
+                    <label>Nom du Client :</label>
+                    <input type="text" id="client-nom" placeholder="Ex: M. Amégnran">
+                </div>
+                <div>
+                    <label>Téléphone :</label>
+                    <input type="text" id="client-tel" placeholder="Ex: +228 90 22 33 44">
+                </div>
+            </div>
+            <label>Adresse :</label>
+            <input type="text" id="client-adresse" placeholder="Ex: Lomé, Agoè">
+        </div>
+
+        <!-- ARTICLES -->
+        <div id="section-devis" class="panel">
+            <h3 class="panel-title">📝 Contenu du Devis</h3>
+            <div id="form-manuel-ajout">
+                <label>Ajouter un élément :</label>
+                <input type="text" id="item-nom" placeholder="Désignation des travaux">
+                <div class="grid-2">
+                    <div>
+                        <label>Quantité :</label>
+                        <input type="number" id="item-qte" value="1" min="1">
+                    </div>
+                    <div>
+                        <label>Prix Unitaire :</label>
+                        <input type="number" id="item-pu" placeholder="Prix">
+                    </div>
+                </div>
+                <button class="btn" onclick="ajouterArticle()">➕ Ajouter à la liste</button>
+            </div>
+            
+            <div class="item-list" id="liste-articles" style="margin-top: 15px;"></div>
+            
+            <div class="totals-box">
+                <div class="total-row">
+                    <span>Sous-Total :</span>
+                    <span><span id="total-brut">0</span> <span class="devise-txt">FCFA</span></span>
+                </div>
+                <div class="grid-2" style="margin-top: 10px;">
+                    <div>
+                        <label>Remise (%) :</label>
+                        <input type="number" id="remise-pourcent" value="0" min="0" max="100" oninput="calculerTotauxFinaux()">
+                    </div>
+                    <div>
+                        <label>Acompte :</label>
+                        <input type="number" id="acompte-valeur" value="0" min="0" oninput="calculerTotauxFinaux()">
+                    </div>
+                </div>
+                <div class="total-row total-final">
+                    <span>TOTAL TTC :</span>
+                    <span><span id="total-net">0</span> <span class="devise-txt">FCFA</span></span>
+                </div>
+            </div>
+        </div>
+
+        <!-- VALIDATION -->
+        <div id="section-export" class="panel">
+            <h3 class="panel-title">📄 Validation & Téléchargement</h3>
+            <button class="btn" style="background: #2e7d32; font-size: 15px; padding: 14px;" onclick="genererEtTelechargerPDF()">💾 Télécharger le PDF & Archiver</button>
+        </div>
+
+        <!-- ARCHIVES -->
+        <div id="page-historique" class="panel hidden">
+            <h3 class="panel-title">🗂️ Archives des Devis</h3>
+            <div id="liste-archives"></div>
+        </div>
     </div>
 
-    <!-- BOUTON ENREGISTRER DIRECT -->
-    <div id="section-export" class="panel">
-        <h3 class="panel-title">📄 Validation & Téléchargement</h3>
-        <button class="btn" style="background: #2e7d32; font-size: 15px; padding: 14px;" onclick="genererEtTelechargerPDF()">💾 Télécharger le PDF & Archiver</button>
-    </div>
-
-    <!-- ARCHIVES -->
-    <div id="page-historique" class="panel hidden">
-        <h3 class="panel-title">🗂️ Archives des Devis</h3>
-        <div id="liste-archives"></div>
-    </div>
-
-    <!-- CACHE : BLOC GÉOMÉTRIQUE STRICT POUR GÉNERER LE PDF PROPRE VIA HTML2PDF -->
+    <!-- ZONE STRICTE POUR RENDU PDF UNIQUE -->
     <div id="pdf-wrapper">
         <div id="zone-pdf-strict" class="pdf-container">
             <div class="pdf-header">
@@ -541,6 +574,20 @@
         let archivesDevis = JSON.parse(localStorage.getItem('btp_archives_v3')) || [];
 
         window.onload = function() {
+            // VERIFICATION SI LE LIEN CONTIENT UN DEVIS POUR LE CLIENT
+            const urlParams = new URLSearchParams(window.location.search);
+            const devisIdAouvrir = urlParams.get('ouvrir');
+            
+            if(devisIdAouvrir) {
+                // Mode Consultation Client Externe unique
+                let devisTrouve = archivesDevis.find(d => d.numDevis === devisIdAouvrir);
+                if(devisTrouve) {
+                    chargerRenduVisuelStrictePDF(devisTrouve);
+                    document.body.classList.add('pdf-mode-actif');
+                    return; 
+                }
+            }
+
             if(localStorage.getItem('btp_logo_url')) {
                 document.getElementById('logo-url').value = localStorage.getItem('btp_logo_url');
             }
@@ -550,6 +597,10 @@
             changerPaysApp();
             afficherArchives();
         };
+
+        function quitterModeVision_PDF() {
+            window.location.href = window.location.pathname; // Recharge proprement sans arguments URL
+        }
 
         function sauvegarderParametres() {
             localStorage.setItem('btp_logo_url', document.getElementById('logo-url').value.trim());
@@ -562,7 +613,6 @@
             const devise = select.options[select.selectedIndex].getAttribute('data-devise');
             
             document.getElementById('app-location-badge').innerText = `${capitale} · ${devise}`;
-            
             document.querySelectorAll('.devise-txt').forEach(el => { el.innerText = devise; });
             localStorage.setItem('btp_pays_choisi', pays);
             calculerTotauxFinaux();
@@ -677,73 +727,73 @@
 
             let montantRemise = totalBrut * (remisePourcent / 100);
             let totalNet = totalBrut - montantRemise;
-            let resteAPayer = totalNet - acompte;
 
             document.getElementById('total-brut').innerText = totalBrut.toLocaleString('fr-FR');
             document.getElementById('total-net').innerText = totalNet.toLocaleString('fr-FR');
-            document.getElementById('total-reste').innerText = (resteAPayer < 0 ? 0 : resteAPayer).toLocaleString('fr-FR');
         }
 
-        // VERITABLE TÉLÉCHARGEMENT COMPATIBLE MOBILE SANS BOUTON SYSTEME
+        function chargerRenduVisuelStrictePDF(devis) {
+            const urlLogo = localStorage.getItem('btp_logo_url') || '';
+            const conteneurLogo = document.getElementById('pdf-logo-container');
+            
+            if(urlLogo) {
+                conteneurLogo.innerHTML = `<img src="${urlLogo}" class="pdf-logo" alt="Logo">`;
+            } else {
+                conteneurLogo.innerHTML = `<div style="font-size: 20px; font-weight: bold; color: #222; text-transform: uppercase;">Mon Entreprise BTP</div>`;
+            }
+
+            document.getElementById('pdf-emmeteur-pays').innerText = `${devis.pays || 'Afrique'} · Validité : 30 jours`;
+            document.getElementById('pdf-num-date').innerText = `${devis.numDevis} | Date : ${devis.date}`;
+            document.getElementById('pdf-client-infos').innerHTML = `${devis.client}<br>Tél: ${devis.telephone || '-'}<br>${devis.adresse || '-'}`;
+
+            const tbody = document.getElementById('pdf-table-body');
+            tbody.innerHTML = '';
+            
+            let totalBrutCalcul = 0;
+            devis.items.forEach((art, idx) => {
+                totalBrutCalcul += art.total;
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${idx + 1}</td>
+                        <td>${art.nom}</td>
+                        <td style="text-align:center;">${art.qte}</td>
+                        <td style="text-align:right;">${art.pu.toLocaleString('fr-FR')}</td>
+                        <td style="text-align:right; font-weight:bold;">${art.total.toLocaleString('fr-FR')}</td>
+                    </tr>
+                `;
+            });
+
+            let remiseVal = devis.remise || 0;
+            let acompteVal = devis.acompte || 0;
+            let montRemise = totalBrutCalcul * (remiseVal / 100);
+            let netTtc = totalBrutCalcul - montRemise;
+
+            document.getElementById('pdf-total-brut').innerText = totalBrutCalcul.toLocaleString('fr-FR');
+            document.getElementById('pdf-total-remise').innerText = montRemise.toLocaleString('fr-FR') + ` (${remiseVal}%)`;
+            document.getElementById('pdf-total-acompte').innerText = acompteVal.toLocaleString('fr-FR');
+            document.getElementById('pdf-total-net').innerText = devis.totalTtc;
+        }
+
         function genererEtTelechargerPDF() {
             const nomClient = document.getElementById('client-nom').value.trim();
             const telClient = document.getElementById('client-tel').value.trim();
             const adresseClient = document.getElementById('client-adresse').value.trim();
-            const urlLogo = document.getElementById('logo-url').value.trim();
             const remisePourcent = parseFloat(document.getElementById('remise-pourcent').value) || 0;
             const acompte = parseFloat(document.getElementById('acompte-valeur').value) || 0;
 
             const select = document.getElementById('select-pays');
             const pays = select.value;
-            const capitale = select.options[select.selectedIndex].getAttribute('data-capitale');
-            const devise = select.options[select.selectedIndex].getAttribute('data-devise');
+            const devisValeur = select.options[select.selectedIndex].getAttribute('data-devise');
 
             if(!nomClient || articlesDevis.length === 0) return alert("Veuillez indiquer un client et ajouter des travaux.");
 
             const numDevis = "DEV-" + Math.floor(100000 + Math.random() * 900000);
             const dateJour = new Date().toLocaleDateString('fr-FR');
 
-            // 1. Préparation visuelle stricte
-            const conteneurLogo = document.getElementById('pdf-logo-container');
-            if(urlLogo) {
-                conteneurLogo.innerHTML = `<img src="${urlLogo}" class="pdf-logo" alt="Logo">`;
-            } else {
-                conteneurLogo.innerHTML = `<div style="font-size: 20px; font-weight: bold; color: #222; text-transform: uppercase;">Mon Entreprise BTP</div><div style="font-size: 11px; color: #666;">${capitale}, ${pays}</div>`;
-            }
-
-            document.getElementById('pdf-emmeteur-pays').innerText = `${capitale}, ${pays} · Validité : 30 jours`;
-            document.getElementById('pdf-num-date').innerText = `${numDevis} | Date : ${dateJour}`;
-            document.getElementById('pdf-client-infos').innerHTML = `${nomClient}<br>Tél: ${telClient}<br>${adresseClient}`;
-
-            document.getElementById('pdf-footer-text').innerHTML = `
-                Paiement : 50% à la commande, 50% à la livraison.<br>
-                Devis soumis aux réglementations en vigueur à ${capitale} (${pays}).
-            `;
-
-            const tbody = document.getElementById('pdf-table-body');
-            tbody.innerHTML = '';
-            articlesDevis.forEach((art, idx) => {
-                tbody.innerHTML += `
-                    <tr>
-                        <td>${idx + 1}</td>
-                        <td>${art.nom}</td>
-                        <td style="text-align:center;">${art.qte}</td>
-                        <td style="text-align:right;">${art.pu.toLocaleString('fr-FR')} ${devise}</td>
-                        <td style="text-align:right; font-weight:bold;">${art.total.toLocaleString('fr-FR')} ${devise}</td>
-                    </tr>
-                `;
-            });
-
             let totalBrut = articlesDevis.reduce((sum, art) => sum + art.total, 0);
             let montantRemise = totalBrut * (remisePourcent / 100);
             let totalNet = totalBrut - montantRemise;
 
-            document.getElementById('pdf-total-brut').innerText = totalBrut.toLocaleString('fr-FR') + " " + devise;
-            document.getElementById('pdf-total-remise').innerText = montantRemise.toLocaleString('fr-FR') + " " + devise + " (" + remisePourcent + "%)";
-            document.getElementById('pdf-total-acompte').innerText = acompte.toLocaleString('fr-FR') + " " + devise;
-            document.getElementById('pdf-total-net').innerText = totalNet.toLocaleString('fr-FR') + " " + devise;
-
-            // 2. Enregistrement solide en mémoire locale pour l'archive
             const nouveauDevisArchive = {
                 numDevis: numDevis,
                 date: dateJour,
@@ -753,15 +803,19 @@
                 items: [...articlesDevis],
                 remise: remisePourcent,
                 acompte: acompte,
-                totalTtc: totalNet.toLocaleString('fr-FR') + " " + devise,
+                totalTtc: totalNet.toLocaleString('fr-FR') + " " + devisValeur,
                 pays: pays
             };
             
+            // SAUVEGARDE EN MEMOIRE LOCAL
             archivesDevis.unshift(nouveauDevisArchive);
             localStorage.setItem('btp_archives_v3', JSON.stringify(archivesDevis));
             afficherArchives();
 
-            // 3. FORCE LE TÉLÉCHARGEMENT DU FICHIER SUR MOBILE VIA HTML2PDF
+            // GENERATION DU RENDU VISUEL SUR LA PAGE CACHÉE
+            chargerRenduVisuelStrictePDF(nouveauDevisArchive);
+
+            // TELECHARGEMENT TECHNIQUE DU FICHIER DIRECT
             const element = document.getElementById('zone-pdf-strict');
             const optionsConfiguration = {
                 margin:       10,
@@ -797,7 +851,7 @@
                     <div style="font-size:13px; color:var(--text-muted); margin-bottom:10px;">🌍 Pays : ${arc.pays} | Montant : <span style="color:var(--primary); font-weight:bold;">${arc.totalTtc}</span></div>
                     
                     <div class="archive-actions">
-                        <button class="btn-action btn-view" onclick="rechargerEtTelechargerDepuisArchive(${id})">👁️ Télécharger à nouveau</button>
+                        <button class="btn-action btn-view" onclick="visualiserPdfInteractifDirect(${id})">👁️ Voir le PDF</button>
                         <button class="btn-action btn-whatsapp" onclick="envoyerMessageWhatsAppElite(${id})">💬 Envoyer WhatsApp</button>
                     </div>
                 `;
@@ -805,34 +859,24 @@
             });
         }
 
-        function rechargerEtTelechargerDepuisArchive(index) {
+        function visualiserPdfInteractifDirect(index) {
             const devis = archivesDevis[index];
-            document.getElementById('client-nom').value = devis.client;
-            document.getElementById('client-tel').value = devis.telephone || '';
-            document.getElementById('client-adresse').value = devis.adresse || '';
-            document.getElementById('remise-pourcent').value = devis.remise || 0;
-            document.getElementById('acompte-valeur').value = devis.acompte || 0;
-            
-            articlesDevis = [...devis.items];
-            document.getElementById('select-pays').value = devis.pays;
-            
-            changerPaysApp();
-            actualiserListeArticles();
-            calculerTotauxFinaux();
-            changerOnglet('creer');
-
-            setTimeout(() => { genererEtTelechargerPDF(); }, 300);
+            chargerRenduVisuelStrictePDF(devis);
+            document.body.classList.add('pdf-mode-actif');
         }
 
-        // CORRECTION UNIQUE : MESSAGE ULTRA PROFESSIONNEL DROIT AU BUT
+        // INTEGRAION MAGNIFIQUE : LE LIEN DU DEVIS DIRECTEMENT DANS LE TEXTE WHATSAPP
         function envoyerMessageWhatsAppElite(index) {
             const devis = archivesDevis[index];
             if(!devis.telephone) {
                 return alert("Aucun numéro de téléphone enregistré pour ce client.");
             }
 
-            // CORRECTION STRUCTURANTE : Formule directe et hautement corporative
-            const texteMessage = `Bonjour M. ${devis.client},\n\nVeuillez trouver ci-joint votre proposition tarifaire officielle concernant votre projet.\n\n📄 *Référence :* ${devis.numDevis}\n💰 *Montant Total :* ${devis.totalTtc}\n\nLe document contractuel complet est disponible ci-dessous.\n\nCordialement,\n*Mon Entreprise BTP*`;
+            // Génération de l'URL unique vers ton application GitHub Pages avec l'argument d'ouverture du devis
+            const lienUniqueDevisWeb = `https://blessedalbeni-dotcom.github.io/Devis/?ouvrir=${devis.numDevis}`;
+
+            // Message ultra pro, direct et contenant le lien vers le document interactif
+            const texteMessage = `Bonjour M. ${devis.client},\n\nVeuillez trouver ci-joint votre proposition tarifaire officielle concernant votre projet.\n\n📄 *Référence :* ${devis.numDevis}\n💰 *Montant Total :* ${devis.totalTtc}\n\n🔗 *Consulter le Devis en ligne (PDF) :*\n${lienUniqueDevisWeb}\n\nCordialement,\n*Mon Entreprise BTP*`;
             
             let numPropre = devis.telephone.replace(/[\s\+\-]/g, '');
             const urlWhatsApp = `https://api.whatsapp.com/send?phone=${numPropre}&text=${encodeURIComponent(texteMessage)}`;
