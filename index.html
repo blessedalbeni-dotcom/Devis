@@ -226,6 +226,31 @@
 </head>
 <body>
 
+<div id="lock-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgb(18,18,20); z-index:99999; display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; font-family:sans-serif; padding:20px; box-sizing:border-box;">
+    <h2 style="color:#e65100; margin-bottom:5px; letter-spacing:1px;">LES SEIGNEURS DU BTP</h2>
+    <p style="color:#aaa; text-align:center; font-size:14px; max-width:300px; margin-bottom:30px;">Cette application est protégée. Veuillez activer votre licence pour y accéder.</p>
+    
+    <div style="background:#1e1e24; padding:15px; border-radius:8px; text-align:center; width:100%; max-width:320px; border:1px solid #333;">
+        <span style="font-size:11px; color:#aaa; display:block; margin-bottom:5px;">VOTRE ID APPAREIL :</span>
+        <strong id="display-device-id" style="font-size:22px; color:#fff; letter-spacing:2px;">ANALYSE...</strong>
+    </div>
+
+    <div style="margin-top:25px; width:100%; max-width:320px;">
+        <input type="text" id="license-key-input" placeholder="Entrez votre Clé d'activation" style="width:100%; padding:12px; border-radius:6px; border:1px solid #333; background:#2a2a32; color:white; font-size:16px; text-align:center; box-sizing:border-box; margin-bottom:12px;">
+        <button onclick="checkLicense()" style="width:100%; padding:12px; background:#e65100; color:white; border:none; border-radius:6px; font-weight:bold; font-size:16px; cursor:pointer;">⚡ Activer la Licence</button>
+    </div>
+    
+    <button onclick="toggleAdminPanel()" style="background:none; border:none; color:#333; margin-top:5px; cursor:pointer; font-size:12px;">Espace Administrateur</button>
+    
+    <div id="admin-panel" style="display:none; background:#141419; margin-top:15px; padding:15px; border-radius:8px; border:1px solid #e65100; width:100%; max-width:320px; box-sizing:border-box;">
+        <h4 style="margin:0 0 10px 0; color:#e65100;">Générateur Interne</h4>
+        <input type="password" id="admin-pass" placeholder="Mot de passe Admin" style="width:100%; padding:8px; margin-bottom:8px; background:#2a2a32; color:white; border:1px solid #333; border-radius:4px; box-sizing:border-box;">
+        <input type="text" id="client-id-input" placeholder="Coller l'ID du Client" style="width:100%; padding:8px; margin-bottom:8px; background:#2a2a32; color:white; border:1px solid #333; border-radius:4px; box-sizing:border-box;">
+        <button onclick="generateKeyForClient()" style="width:100%; padding:8px; background:#2e7d32; color:white; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">Calculer la clé</button>
+        <div id="generated-key-result" style="margin-top:10px; font-weight:bold; color:#25D366; text-align:center; font-size:14px; user-select:all;"></div>
+    </div>
+</div>
+
 <script>
 (function() {
     if (window.location.hostname !== "blessedalbeni-dotcom.github.io" || window.location.pathname !== "/Devis/") {
@@ -246,7 +271,6 @@
             <div class="location-badge" id="app-location-badge">Lomé · FCFA</div>
         </div>
 
-        <!-- PARAMÈTRES -->
         <div class="panel" style="background: #19191e; border: 1px dashed var(--primary);">
             <div class="grid-2">
                 <div>
@@ -268,7 +292,6 @@
             </div>
         </div>
 
-        <!-- TABS MIGRÉS VERS 4 OPTIONS -->
         <div style="display: flex; background: #1e1e24; padding: 5px; border-radius: 5px; margin-bottom: 20px; gap: 4px;">
             <button id="tab-btn-creer" style="flex:1; background:var(--primary); color:white; border:none; padding:10px 5px; border-radius:4px; font-weight:bold; font-size:12px;" onclick="changerOnglet('creer')">📝 Créer</button>
             <button id="tab-btn-ia" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px 5px; border-radius:4px; font-size:12px;" onclick="changerOnglet('ia')">🤖 Assistant</button>
@@ -276,7 +299,6 @@
             <button id="tab-btn-stats" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px 5px; border-radius:4px; font-size:12px;" onclick="changerOnglet('stats')">📊 Stats</button>
         </div>
 
-        <!-- TABLEAU DE BORD STATS -->
         <div id="page-statistiques" class="panel hidden">
             <h3 class="panel-title" style="color:var(--whatsapp-color);">📊 TABLEAU DE BORD FINANCIER</h3>
             <div class="grid-3" style="margin-bottom: 15px;">
@@ -295,7 +317,6 @@
             </div>
         </div>
 
-        <!-- ASSISTANT IA -->
         <div id="page-generator-ai" class="panel panel-ai hidden">
             <h3 class="panel-title" style="color:var(--ai-purple);">🤖 ASSISTANT INTEGRATION IA</h3>
             <label>Collez votre texte brut ici :</label>
@@ -303,7 +324,6 @@
             <button class="btn btn-ai-gen" onclick="analyserEtGenererDevisIA()">🤖 Analyser & Remplir</button>
         </div>
 
-        <!-- CLIENT -->
         <div id="section-clients" class="panel">
             <h3 class="panel-title">👥 Informations Client</h3>
             <div class="grid-2">
@@ -320,7 +340,6 @@
             <input type="text" id="client-adresse" placeholder="Ex: Lomé, Agoè">
         </div>
 
-        <!-- ARTICLES -->
         <div id="section-devis" class="panel">
             <h3 class="panel-title">📝 Lignes de Travaux</h3>
             <div id="form-manuel-ajout">
@@ -362,12 +381,10 @@
             </div>
         </div>
 
-        <!-- EXPORTATION PRO -->
         <div id="section-export" class="panel">
             <button class="btn" style="background: #2e7d32; font-size: 15px; padding: 14px;" onclick="ouvrirApercuImprimableElite('DEVIS')">⚡ Générer le PDF & Archiver</button>
         </div>
 
-        <!-- ARCHIVES -->
         <div id="page-historique" class="panel hidden">
             <h3 class="panel-title">🗂️ Archives des Documents</h3>
             <div id="liste-archives"></div>
@@ -375,10 +392,66 @@
     </div>
 
     <script>
+        // CONFIGURATION SÉCURITÉ
+        const ADMIN_PASSWORD = "IBRAHIM2026"; 
+
+        function getDeviceID() {
+            let id = localStorage.getItem('btp_device_id');
+            if (!id) {
+                id = "BTP-" + Math.floor(1000 + Math.random() * 9000);
+                localStorage.setItem('btp_device_id', id);
+            }
+            return id;
+        }
+
+        function calculateKey(deviceId) {
+            if(!deviceId) return "";
+            let num = parseInt(deviceId.replace(/\D/g, '')) || 1000;
+            let secretCalc = (num * 7) + 312;
+            return "PRO-" + secretCalc;
+        }
+
+        function checkLicense() {
+            const userKey = document.getElementById('license-key-input').value.trim().toUpperCase();
+            const currentID = getDeviceID();
+            const correctKey = calculateKey(currentID);
+            
+            if (userKey === correctKey) {
+                localStorage.setItem('btp_app_licensed', 'true');
+                alert('🎉 Application activée avec succès !');
+                document.getElementById('lock-screen').style.display = 'none';
+            } else {
+                alert('❌ Clé d’activation incorrecte.');
+            }
+        }
+
+        function toggleAdminPanel() {
+            const panel = document.getElementById('admin-panel');
+            panel.style.display = (panel.style.display === 'none') ? 'block' : 'none';
+        }
+
+        function generateKeyForClient() {
+            const pass = document.getElementById('admin-pass').value;
+            const clientId = document.getElementById('client-id-input').value.trim().toUpperCase();
+            
+            if (pass !== ADMIN_PASSWORD) { return alert('Mot de passe incorrect !'); }
+            if (!clientId) { return alert('Entrez l\'ID du client.'); }
+            
+            const clientKey = calculateKey(clientId);
+            document.getElementById('generated-key-result').innerHTML = `Clé :<br><span style="font-size:16px; color:white;">${clientKey}</span>`;
+        }
+
+        // LOGIQUE MÉTIER APPLICATION
         let articlesDevis = [];
         let archivesDevis = JSON.parse(localStorage.getItem('btp_archives_v5')) || [];
 
         window.onload = function() {
+            const currentID = getDeviceID();
+            document.getElementById('display-device-id').innerText = currentID;
+            if (localStorage.getItem('btp_app_licensed') === 'true') {
+                document.getElementById('lock-screen').style.display = 'none';
+            }
+
             if(localStorage.getItem('btp_logo_url')) {
                 document.getElementById('logo-url').value = localStorage.getItem('btp_logo_url');
             }
@@ -555,7 +628,6 @@
             document.getElementById('stat-Reste').innerText = totalReste.toLocaleString('fr-FR') + " " + devise;
         }
 
-        // PERMET DE GENERER DU REEL SOIT EN MODE DEVIS SOIT EN MODE FACTURE DIRECTE
         function ouvrirApercuImprimableElite(typeDocument, indexArchive = null) {
             let nomClient, telClient, adresseClient, remisePourcent, acompte, itemsUti = [];
             let numDoc, dateJour;
@@ -618,49 +690,49 @@
                     <style>
                         body { background: #f4f5f7; margin: 0; padding: 20px; font-family: Arial, sans-serif; -webkit-print-color-adjust: exact; }
                         .page-pdf { background: white; max-width: 800px; margin: 0 auto; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); box-sizing: border-box; }
-                        .pdf-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid ${(typeDocument === 'FACTURE') ? 'var(--blue-facture, #0288d1)' : '#e65100'}; padding-bottom: 18px; margin-bottom: 30px; }
+                        .pdf-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid ${(typeDocument === 'FACTURE') ? '#0288d1' : '#e65100'}; padding-bottom: 18px; margin-bottom: 30px; }
                         .pdf-title { font-size: 28px; font-weight: bold; color: ${(typeDocument === 'FACTURE') ? '#0288d1' : '#e65100'}; }
                         .pdf-infos { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px; }
                         .pdf-box { background: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #dee2e6; }
-                        .pdf-box h4 { margin: 0 0 8px 0; color: ${(typeDocument === 'FACTURE') ? '#0288d1' : '#e65100'}; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+                        .pdf-box h4 { margin: 0 0 8px 0; color: ${(typeDocument === 'FACTURE') ? '#0288d1' : '#e65100'}; font-size: 11px; text-transform: uppercase; }
                         .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
-                        .pdf-table th { background: #212529; color: white; padding: 12px; text-align: left; font-size: 13px; }
+                        .pdf-table th { background: #212529; color: white; padding: 12px; font-size: 13px; }
                         .pdf-totals { margin-left: auto; width: 45%; margin-top: 20px; }
-                        .pdf-total-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; color: #333; }
-                        .pdf-total-final { background: ${(typeDocument === 'FACTURE') ? '#0288d1' : '#e65100'}; color: white; font-weight: bold; padding: 12px; border-radius: 5px; font-size: 16px; margin-top: 8px; }
-                        .btn-telechargement-manuel { background: #2e7d32; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 6px; width: 100%; max-width: 800px; display: block; margin: 0 auto 20px auto; cursor: pointer; text-align: center; }
+                        .pdf-total-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; }
+                        .pdf-total-final { background: ${(typeDocument === 'FACTURE') ? '#0288d1' : '#e65100'}; color: white; font-weight: bold; padding: 12px; border-radius: 5px; font-size: 16px; }
+                        .btn-telechargement-manuel { background: #2e7d32; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 6px; width: 100%; max-width: 800px; display: block; margin: 0 auto 20px auto; cursor: pointer; }
                         @media print { .btn-telechargement-manuel { display: none !important; } }
                     </style>
                 </head>
                 <body>
-                    <button class="btn-telechargement-manuel" id="declencheur-pdf">📥 APPUYER ICI POUR ENREGISTRER LE PDF</button>
+                    <button class="btn-telechargement-manuel" id="declencheur-pdf">📥 ENREGISTRER LE PDF</button>
                     <div class="page-pdf" id="noeud-capture">
                         <div class="pdf-header">
                             <div>${baliseLogo}</div>
                             <div style="text-align: right;">
                                 <div class="pdf-title">${typeDocument}</div>
-                                <div style="font-size: 12px; color: #333; font-family: monospace; margin-top: 4px;">Ref : ${numDoc} | Date : ${dateJour}</div>
+                                <div style="font-size: 12px; color: #333; font-family: monospace;">Ref : ${numDoc} | Date : ${dateJour}</div>
                             </div>
                         </div>
                         <div class="pdf-infos">
                             <div class="pdf-box">
                                 <h4>Client</h4>
-                                <div style="font-size: 14px; font-weight: bold; color: #111; line-height: 1.4;">${nomClient}<br><span style="font-weight:normal; color:#444;">Tél: ${telClient || '-'}</span><br><span style="font-weight:normal; color:#444;">${adresseClient || '-'}</span></div>
+                                <div style="font-size: 14px; font-weight: bold;">${nomClient}<br><span style="font-weight:normal;">Tél: ${telClient || '-'}</span><br><span style="font-weight:normal;">${adresseClient || '-'}</span></div>
                             </div>
                             <div class="pdf-box">
                                 <h4>Émetteur</h4>
                                 <div style="font-size: 14px; font-weight: bold; color: #e65100;">Mon Entreprise BTP</div>
-                                <div style="font-size: 12px; color: #555; margin-top: 2px;">${pays}</div>
+                                <div style="font-size: 12px; color: #555;">${pays}</div>
                             </div>
                         </div>
                         <table class="pdf-table">
                             <thead>
                                 <tr>
-                                    <th style="width: 5%;">#</th>
-                                    <th style="width: 55%;">Désignation des Travaux</th>
-                                    <th style="width: 10%; text-align: center;">Qté</th>
-                                    <th style="width: 15%; text-align: right;">P.U</th>
-                                    <th style="width: 15%; text-align: right;">Total</th>
+                                    <th>#</th>
+                                    <th>Désignation</th>
+                                    <th style="text-align:center;">Qté</th>
+                                    <th style="text-align:right;">P.U</th>
+                                    <th style="text-align:right;">Total</th>
                                 </tr>
                             </thead>
                             <tbody>${lignesHtml}</tbody>
@@ -668,7 +740,7 @@
                         <div class="pdf-totals">
                             <div class="pdf-total-row"><span>Sous-total HT</span><span>${totalBrut.toLocaleString('fr-FR')} ${devise}</span></div>
                             <div class="pdf-total-row"><span>Remise (${remisePourcent}%)</span><span>${montantRemise.toLocaleString('fr-FR')} ${devise}</span></div>
-                            <div class="pdf-total-row"><span>Acompte versé</span><span>${acompte.toLocaleString('fr-FR')} ${devise}</span></div>
+                            <div class="pdf-total-row"><span>Acompte</span><span>${acompte.toLocaleString('fr-FR')} ${devise}</span></div>
                             <div class="pdf-total-final">
                                 <div style="display: flex; justify-content: space-between;"><span>${(typeDocument === 'FACTURE') ? 'NET PAYÉ' : 'NET À PAYER'}</span><span>${netApresAcompte.toLocaleString('fr-FR')} ${devise}</span></div>
                             </div>
@@ -720,7 +792,7 @@
             archivesDevis[index].statut = nouveauStatut;
             localStorage.setItem('btp_archives_v5', JSON.stringify(archivesDevis));
             calculerStatistiques();
-            alert("🔹 Statut mis à jour avec succès !");
+            alert("🔹 Statut mis à jour !");
         }
 
         function afficherArchives() {
@@ -736,7 +808,6 @@
                 const div = document.createElement('div');
                 div.className = 'archive-card';
                 
-                // Sélection dynamique du statut
                 let selectStatutHtml = `
                     <select style="margin-bottom:0; margin-top:5px; padding:6px; font-size:12px;" onchange="modifierStatutDocument(${index}, this.value)">
                         <option value="En attente" ${arc.statut === 'En attente' ? 'selected' : ''}>⏳ En attente</option>
@@ -766,15 +837,13 @@
         }
 
         function envoyerMessageWhatsAppElite(client, telephone, numDoc, totalTtc, statut) {
-            if(!telephone || telephone === '-') return alert("Aucun numéro de téléphone disponible.");
-            
+            if(!telephone || telephone === '-') return alert("Aucun numéro disponible.");
             let texteMessage = '';
             if(statut === 'Payé') {
-                texteMessage = `Bonjour M. ${client},\n\nMerci pour votre confiance. Veuillez trouver ci-joint votre *FACTURE ACQUITTEE* acquittée en totalité.\n\n🧾 *Référence :* ${numDoc.replace('DEV-', 'FAC-')}\n💰 *Montant :* ${totalTtc}\n\nDocument transmis ci-dessous. En restant à votre disposition.`;
+                texteMessage = `Bonjour M. ${client},\n\nMerci pour votre confiance. Veuillez trouver ci-joint votre *FACTURE ACQUITTEE*.\n\n🧾 *Référence :* ${numDoc.replace('DEV-', 'FAC-')}\n💰 *Montant :* ${totalTtc}\n\nCordialement.`;
             } else {
-                texteMessage = `Bonjour M. ${client},\n\nVeuillez trouver ci-joint notre document officiel concernant votre chantier.\n\n📄 *Référence :* ${numDoc}\n💰 *Reste à régler :* ${totalTtc}\n\nLe fichier PDF se trouve ci-dessous.\n\nCordialement,\n*Mon Entreprise BTP*`;
+                texteMessage = `Bonjour M. ${client},\n\nVeuillez trouver ci-joint le document officiel.\n\n📄 *Référence :* ${numDoc}\n💰 *Reste à régler :* ${totalTtc}\n\nCordialement.`;
             }
-            
             let numPropre = telephone.replace(/[\s\+\-]/g, '');
             window.open(`https://api.whatsapp.com/send?phone=${numPropre}&text=${encodeURIComponent(texteMessage)}`, '_blank');
         }
