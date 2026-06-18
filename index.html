@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BTPDevis Pro - Afrique</title>
+    <title>BTPDevis Pro - Afrique v2</title>
     <style>
         :root {
             --bg-dark: #121214;
@@ -148,7 +148,6 @@
             padding: 0 5px;
         }
 
-        /* STYLES POUR LES CARTES D'ARCHIVES */
         .archive-card {
             background: #25252d;
             border: 1px solid var(--border-color);
@@ -173,10 +172,10 @@
 
         .btn-action {
             flex: 1;
-            padding: 8px;
+            padding: 10px;
             border-radius: 4px;
             border: none;
-            font-size: 12px;
+            font-size: 13px;
             font-weight: bold;
             cursor: pointer;
             display: flex;
@@ -224,7 +223,6 @@
             display: none;
         }
 
-        /* STYLES POUR LE PDF IMPRIMÉ */
         @media print {
             body * {
                 visibility: hidden;
@@ -298,7 +296,7 @@
             }
             .pdf-totals {
                 float: right;
-                width: 40%;
+                width: 45%;
                 margin-top: 10px;
             }
             .pdf-total-row {
@@ -356,71 +354,71 @@
     <div class="panel" style="background: #19191e; border: 1px dashed var(--primary);">
         <div class="grid-2">
             <div>
-                <label style="color: var(--primary); font-weight: bold;">🌍 Choisir le Pays d'utilisation :</label>
+                <label style="color: var(--primary); font-weight: bold;">🌍 Choisir le Pays :</label>
                 <select id="select-pays" onchange="changerPaysApp()">
                     <option value="Togo" data-capitale="Lomé">🇹🇬 Togo (Lomé)</option>
                     <option value="Bénin" data-capitale="Cotonou">🇧🇯 Bénin (Cotonou)</option>
                     <option value="Côte d'Ivoire" data-capitale="Abidjan">🇨🇮 Côte d'Ivoire (Abidjan)</option>
                     <option value="Mali" data-capitale="Bamako">🇲🇱 Mali (Bamako)</option>
                     <option value="Burkina Faso" data-capitale="Ouagadougou">🇧🇫 Burkina Faso (Ouagadougou)</option>
-                    <option value="Gabon" data-capitale="Libreville">🇬🇦 Gabon (Libreville)</option>
                 </select>
             </div>
             <div>
-                <label style="color: var(--primary); font-weight: bold;">🖼️ URL du Logo (Optionnel) :</label>
-                <input type="text" id="logo-url" placeholder="Lien HTTP de votre image logo" oninput="sauvegarderParametres()">
+                <label style="color: var(--primary); font-weight: bold;">🖼️ URL du Logo :</label>
+                <input type="text" id="logo-url" placeholder="Lien de votre image" oninput="sauvegarderParametres()">
             </div>
         </div>
     </div>
 
     <div style="display: flex; background: #1e1e24; padding: 5px; border-radius: 5px; margin-bottom: 20px; gap: 5px;">
-        <button id="tab-btn-creer" style="flex:1; background:var(--primary); color:white; border:none; padding:8px; border-radius:4px; font-size:12px; font-weight:bold;" onclick="changerOnglet('creer')">📝 Créer Devis</button>
-        <button id="tab-btn-ia" style="flex:1; background:#2a2a32; color:white; border:none; padding:8px; border-radius:4px; font-size:12px;" onclick="changerOnglet('ia')">🤖 Générateur IA</button>
-        <button id="tab-btn-archives" style="flex:1; background:#2a2a32; color:white; border:none; padding:8px; border-radius:4px; font-size:12px;" onclick="changerOnglet('historique')">🗂️ Archives</button>
+        <button id="tab-btn-creer" style="flex:1; background:var(--primary); color:white; border:none; padding:10px; border-radius:4px; font-weight:bold; font-size:13px;" onclick="changerOnglet('creer')">📝 Créer Devis</button>
+        <button id="tab-btn-ia" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px; border-radius:4px; font-size:13px;" onclick="changerOnglet('ia')">🤖 Assistant IA</button>
+        <button id="tab-btn-archives" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px; border-radius:4px; font-size:13px;" onclick="changerOnglet('historique')">🗂️ Archives</button>
     </div>
 
     <div id="page-generator-ai" class="panel panel-ai hidden">
-        <h3 class="panel-title panel-title-ai">🤖 GENERATEUR DE DEVIS IA MULTI-PAYS</h3>
-        <label>Collez votre texte brut ici (l'IA s'occupe du client et du tableau) :</label>
-        <textarea id="ai-raw-text" rows="8" placeholder="Ex: Nom: M. Koffi&#10;Tel: 90 00 00 00&#10;Adresse: Cotonou, Cadjèhoun&#10;1. Ciment | Qté : 5 | Prix : 5000"></textarea>
-        <button class="btn btn-ai-gen" onclick="analyserEtGenererDevisIA()">🤖 Analyser & Générer automatiquement</button>
+        <h3 class="panel-title panel-title-ai">🤖 GENERATEUR DE DEVIS IA</h3>
+        <label>Collez votre texte brut ici :</label>
+        <textarea id="ai-raw-text" rows="8" placeholder="Nom: M. Koffi..."></textarea>
+        <button class="btn btn-ai-gen" onclick="analyserEtGenererDevisIA()">🤖 Analyser & Générer</button>
     </div>
 
     <div id="section-clients" class="panel">
         <h3 class="panel-title">👥 Informations Client</h3>
         <div class="grid-2">
             <div>
-                <label>Nom / Entreprise :</label>
-                <input type="text" id="client-nom" placeholder="En attente...">
+                <label>Nom du Client :</label>
+                <input type="text" id="client-nom" placeholder="Ex: M. Amégnran">
             </div>
             <div>
                 <label>Téléphone :</label>
-                <input type="text" id="client-tel" placeholder="En attente...">
+                <input type="text" id="client-tel" placeholder="Ex: +228 90 22 33 44">
             </div>
         </div>
-        <label>Adresse / Ville (Quartier) :</label>
-        <input type="text" id="client-adresse" placeholder="En attente...">
+        <label>Adresse :</label>
+        <input type="text" id="client-adresse" placeholder="Ex: Lomé, Agoè">
     </div>
 
     <div id="section-devis" class="panel">
         <h3 class="panel-title">📝 Contenu du Devis</h3>
         
-        <label>Ajouter manuellement un élément (optionnel) :</label>
-        <input type="text" id="item-nom" placeholder="Désignation">
-        
-        <div class="grid-2">
-            <div>
-                <label>Quantité :</label>
-                <input type="number" id="item-qte" value="1" min="1">
+        <div id="form-manuel-ajout">
+            <label>Ajouter un élément :</label>
+            <input type="text" id="item-nom" placeholder="Désignation des travaux">
+            <div class="grid-2">
+                <div>
+                    <label>Quantité :</label>
+                    <input type="number" id="item-qte" value="1" min="1">
+                </div>
+                <div>
+                    <label>Prix Unitaire (FCFA) :</label>
+                    <input type="number" id="item-pu" placeholder="Prix">
+                </div>
             </div>
-            <div>
-                <label>Prix Unitaire (FCFA) :</label>
-                <input type="number" id="item-pu" placeholder="Prix">
-            </div>
+            <button class="btn" onclick="ajouterArticle()">➕ Ajouter à la liste</button>
         </div>
-        <button class="btn" onclick="ajouterArticle()">➕ Ajouter l'élément</button>
         
-        <div class="item-list" id="liste-articles"></div>
+        <div class="item-list" id="liste-articles" style="margin-top: 15px;"></div>
         
         <div class="totals-box">
             <div class="total-row">
@@ -441,7 +439,7 @@
                 <span>TOTAL TTC :</span>
                 <span><span id="total-net">0</span> FCFA</span>
             </div>
-            <div class="total-row" style="color: #4caf50; font-size: 13px; margin-top: 5px;">
+            <div class="total-row" style="color: #4caf50; font-size: 14px; font-weight: bold; margin-top: 5px;">
                 <span>Reste à payer :</span>
                 <span><span id="total-reste">0</span> FCFA</span>
             </div>
@@ -449,12 +447,12 @@
     </div>
 
     <div id="section-export" class="panel">
-        <h3 class="panel-title">📄 Validation & Export PDF</h3>
-        <button class="btn" style="background: #2e7d32;" onclick="genererPDF()">🚀 Télécharger le Devis Officiel (PDF)</button>
+        <h3 class="panel-title">📄 Validation & Enregistrement</h3>
+        <button class="btn" style="background: #2e7d32; font-size: 15px; padding: 14px;" onclick="declencherEnregistrementEtPDF()">💾 Télécharger & Archiver le Devis (PDF)</button>
     </div>
 
     <div id="page-historique" class="panel hidden">
-        <h3 class="panel-title">🗂️ Devis Archivés</h3>
+        <h3 class="panel-title">🗂️ Archives des Devis</h3>
         <div id="liste-archives"></div>
     </div>
 
@@ -483,7 +481,7 @@
             <thead>
                 <tr>
                     <th style="width: 5%;">#</th>
-                    <th style="width: 55%;">Description</th>
+                    <th style="width: 55%;">Description des Travaux</th>
                     <th style="width: 10%; text-align: center;">Qté</th>
                     <th style="width: 15%; text-align: right;">P.U</th>
                     <th style="width: 15%; text-align: right;">Total</th>
@@ -498,7 +496,7 @@
                 <span id="pdf-total-brut">0 FCFA</span>
             </div>
             <div class="pdf-total-row">
-                <span>Remise</span>
+                <span>Remise appliquée</span>
                 <span id="pdf-total-remise">0 FCFA</span>
             </div>
             <div class="pdf-total-row">
@@ -507,7 +505,7 @@
             </div>
             <div class="pdf-total-final">
                 <div style="display: flex; justify-content: space-between;">
-                    <span>TOTAL TTC</span>
+                    <span>TOTAL À PAYER TTC</span>
                     <span id="pdf-total-net">0 FCFA</span>
                 </div>
             </div>
@@ -520,7 +518,7 @@
 
     <script>
         let articlesDevis = [];
-        let archivesDevis = JSON.parse(localStorage.getItem('btp_archives')) || [];
+        let archivesDevis = JSON.parse(localStorage.getItem('btp_archives_v2')) || [];
 
         window.onload = function() {
             if(localStorage.getItem('btp_logo_url')) {
@@ -541,7 +539,6 @@
             const select = document.getElementById('select-pays');
             const pays = select.value;
             const capitale = select.options[select.selectedIndex].getAttribute('data-capitale');
-            
             document.getElementById('app-location-badge').innerText = `${capitale} · FCFA`;
             localStorage.setItem('btp_pays_choisi', pays);
         }
@@ -576,7 +573,7 @@
 
         function analyserEtGenererDevisIA() {
             const bruteText = document.getElementById('ai-raw-text').value;
-            if(!bruteText.trim()) return alert("Veuillez coller du texte d'abord.");
+            if(!bruteText.trim()) return alert("Veuillez d'abord coller du texte.");
             
             articlesDevis = [];
             const lignes = bruteText.split('\n');
@@ -611,14 +608,14 @@
 
             actualiserListeArticles();
             calculerTotauxFinaux();
-            alert("📋 Informations clients extraites et synchronisées dans les colonnes !");
+            alert("✨ Données synchronisées avec succès ! Vérifiez les cases du client.");
         }
 
         function ajouterArticle() {
             const nom = document.getElementById('item-nom').value.trim();
             const qte = parseFloat(document.getElementById('item-qte').value) || 0;
             const pu = parseFloat(document.getElementById('item-pu').value) || 0;
-            if(!nom || qte <= 0 || pu <= 0) return alert("Remplissez les champs.");
+            if(!nom || qte <= 0 || pu <= 0) return alert("Veuillez remplir tous les champs.");
             articlesDevis.push({ nom, qte, pu, total: qte * pu });
             document.getElementById('item-nom').value = '';
             actualiserListeArticles();
@@ -659,7 +656,8 @@
             document.getElementById('total-reste').innerText = (resteAPayer < 0 ? 0 : resteAPayer).toLocaleString('fr-FR');
         }
 
-        function genererPDF() {
+        // ARCHIVAGE AUTOMATIQUE GARANTI LORS DU CLIC SUR TÉLÉCHARGER
+        function declencherEnregistrementEtPDF() {
             const nomClient = document.getElementById('client-nom').value.trim();
             const telClient = document.getElementById('client-tel').value.trim();
             const adresseClient = document.getElementById('client-adresse').value.trim();
@@ -671,12 +669,12 @@
             const pays = select.value;
             const capitale = select.options[select.selectedIndex].getAttribute('data-capitale');
 
-            if(!nomClient || articlesDevis.length === 0) return alert("Veuillez remplir le client et les articles.");
+            if(!nomClient || articlesDevis.length === 0) return alert("Veuillez indiquer un client et ajouter des travaux.");
 
             const numDevis = "DEV-" + Math.floor(100000 + Math.random() * 900000);
             const dateJour = new Date().toLocaleDateString('fr-FR');
 
-            // Préparer la zone d'impression
+            // Synchronisation de l'aperçu PDF caché pour l'impression système
             const conteneurLogo = document.getElementById('pdf-logo-container');
             if(urlLogo) {
                 conteneurLogo.innerHTML = `<img src="${urlLogo}" class="pdf-logo" alt="Logo">`;
@@ -687,12 +685,6 @@
             document.getElementById('pdf-emmeteur-pays').innerText = `${capitale}, ${pays} · Validité : 30 jours`;
             document.getElementById('pdf-num-date').innerText = `${numDevis} | Date : ${dateJour}`;
             document.getElementById('pdf-client-infos').innerHTML = `${nomClient}<br>Tél: ${telClient}<br>${adresseClient}`;
-
-            document.getElementById('pdf-footer-text').innerHTML = `
-                Paiement : 50% à la commande, 50% à la livraison.<br>
-                Devis soumis aux réglementations en vigueur à ${capitale} (${pays}).<br>
-                Devis valable 30 jours à compter de la date d'émission.
-            `;
 
             const tbody = document.getElementById('pdf-table-body');
             tbody.innerHTML = '';
@@ -717,7 +709,7 @@
             document.getElementById('pdf-total-acompte').innerText = acompte.toLocaleString('fr-FR') + " FCFA";
             document.getElementById('pdf-total-net').innerText = totalNet.toLocaleString('fr-FR') + " FCFA";
 
-            // SAUVEGARDE AUTOMATIQUE DANS LES ARCHIVES
+            // Enregistrement solide en mémoire locale
             const nouveauDevisArchive = {
                 numDevis: numDevis,
                 date: dateJour,
@@ -731,13 +723,12 @@
                 pays: pays
             };
             
-            // Éviter les doublons lors de la ré-impression
-            if(!archivesDevis.some(d => d.numDevis === numDevis)) {
-                archivesDevis.unshift(nouveauDevisArchive);
-                localStorage.setItem('btp_archives', JSON.stringify(archivesDevis));
-            }
+            archivesDevis.unshift(nouveauDevisArchive);
+            localStorage.setItem('btp_archives_v2', JSON.stringify(archivesDevis));
+            afficherArchives();
 
-            setTimeout(() => { window.print(); }, 500);
+            // Lancement instantané de l'interface d'impression/enregistrement de votre smartphone
+            setTimeout(() => { window.print(); }, 300);
         }
 
         function afficherArchives() {
@@ -745,7 +736,7 @@
             conteneur.innerHTML = '';
             
             if(archivesDevis.length === 0) {
-                conteneur.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:20px;">Aucun devis archivé pour le moment.</div>';
+                conteneur.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:20px;">Aucun devis archivé. Tout s\'enregistrera dès que vous cliquerez sur le bouton Télécharger vert.</div>';
                 return;
             }
 
@@ -757,8 +748,8 @@
                         <span style="color:var(--primary); font-weight:bold;">${arc.numDevis}</span>
                         <span style="color:var(--text-muted); font-size:12px;">📅 ${arc.date}</span>
                     </div>
-                    <div style="font-size:14px; font-weight:bold; margin-bottom:5px;">👤 ${arc.client}</div>
-                    <div style="font-size:13px; color:var(--text-muted);">🌍 Pays: ${arc.pays} | 💰 Total: <span style="color:var(--primary); font-weight:bold;">${arc.totalTtc}</span></div>
+                    <div style="font-size:14px; font-weight:bold; margin-bottom:5px;">👤 Client : ${arc.client}</div>
+                    <div style="font-size:13px; color:var(--text-muted); margin-bottom:10px;">🌍 ${arc.pays} | Total : <span style="color:var(--primary); font-weight:bold;">${arc.totalTtc}</span></div>
                     
                     <div class="archive-actions">
                         <button class="btn-action btn-view" onclick="rechargerEtVoirDevis(${id})">👁️ Voir complet</button>
@@ -771,48 +762,36 @@
 
         function rechargerEtVoirDevis(index) {
             const devis = archivesDevis[index];
-            
-            // Remplir à nouveau les champs formulaires
             document.getElementById('client-nom').value = devis.client;
             document.getElementById('client-tel').value = devis.telephone || '';
             document.getElementById('client-adresse').value = devis.adresse || '';
             document.getElementById('remise-pourcent').value = devis.remise || 0;
             document.getElementById('acompte-valeur').value = devis.acompte || 0;
             
-            // Remplir les articles
             articlesDevis = [...devis.items];
-            
-            // Forcer la synchronisation du pays si besoin
             document.getElementById('select-pays').value = devis.pays;
-            changerPaysApp();
             
-            // Rafraîchir l'interface et renvoyer vers l'onglet principal
+            changerPaysApp();
             actualiserListeArticles();
             calculerTotauxFinaux();
             changerOnglet('creer');
-            
-            // Déclencher directement la mise en page d'impression
-            setTimeout(() => { genererPDF(); }, 300);
+
+            // Ouvre directement le gestionnaire PDF du téléphone avec les données rechargées
+            setTimeout(() => { window.print(); }, 400);
         }
 
         function envoyerMessageWhatsApp(index) {
             const devis = archivesDevis[index];
-            
             if(!devis.telephone) {
-                alert("Ce client n'a pas de numéro de téléphone enregistré.");
-                return;
+                return alert("Aucun numéro de téléphone enregistré pour ce client.");
             }
 
-            // Rédaction automatique du texte professionnel
-            const texteMessage = `Bonjour ${devis.client},\n\nJ'espère que vous allez bien. Suite à notre échange, vous trouverez ci-joint les détails de votre proposition tarifaire officielle.\n\n📄 *Référence :* ${devis.numDevis}\n💰 *Montant Total TTC :* ${devis.totalTtc}\n\nRestant à votre entière disposition pour le démarrage de vos travaux.\n\nCordialement,\n*Mon Entreprise BTP*`;
+            // Rédaction du message personnalisé automatique
+            const texteMessage = `Bonjour ${devis.client},\n\nJ'espère que vous allez bien. Suite à notre discussion, voici les détails concernant votre proposition tarifaire officielle :\n\n📄 *Référence :* ${devis.numDevis}\n💰 *Montant Total TTC :* ${devis.totalTtc}\n\nLe document officiel complet a été généré avec succès. Restant à votre entière disposition pour le démarrage du chantier.\n\nCordialement,\n*Mon Entreprise BTP*`;
             
-            // Nettoyage et formatage du numéro pour l'URL internationale WhatsApp
             let numPropre = devis.telephone.replace(/[\s\+\-]/g, '');
-            
-            // Encoder le texte pour le rendre compatible avec un lien web
             const urlWhatsApp = `https://api.whatsapp.com/send?phone=${numPropre}&text=${encodeURIComponent(texteMessage)}`;
             
-            // Ouvrir instantanément WhatsApp
             window.open(urlWhatsApp, '_blank');
         }
     </script>
