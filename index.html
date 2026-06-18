@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BTPDevis Pro - Afrique Élite</title>
+    <title>BTPDevis & Facture Pro</title>
     <style>
         :root {
             --bg-dark: #121214;
@@ -11,10 +11,12 @@
             --primary: #e65100;
             --ai-purple: #b388ff;
             --ai-btn: #7c4dff;
+            --blue-facture: #0288d1;
             --text-main: #ffffff;
             --text-muted: #aaaaaa;
             --border-color: #333333;
             --whatsapp-color: #25D366;
+            --stat-green: #2e7d32;
         }
 
         body {
@@ -97,6 +99,12 @@
             gap: 10px;
         }
 
+        .grid-3 {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+            gap: 10px;
+        }
+
         .btn {
             background: var(--primary);
             color: white;
@@ -154,12 +162,13 @@
 
         .archive-actions {
             display: flex;
-            gap: 8px;
+            flex-direction: column;
+            gap: 6px;
             margin-top: 10px;
         }
 
         .btn-action {
-            flex: 1;
+            width: 100%;
             padding: 10px;
             border-radius: 4px;
             border: none;
@@ -173,9 +182,8 @@
             color: white;
         }
 
-        .btn-whatsapp {
-            background: var(--whatsapp-color);
-        }
+        .btn-whatsapp { background: var(--whatsapp-color); }
+        .btn-facture-gen { background: var(--blue-facture); }
 
         .totals-box {
             border-top: 2px dashed var(--border-color);
@@ -199,9 +207,21 @@
             padding-top: 10px;
         }
 
-        .hidden {
-            display: none !important;
+        .stat-card {
+            background: #19191e;
+            border: 1px solid var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+            text-align: center;
         }
+
+        .stat-val {
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 5px;
+        }
+
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
@@ -248,11 +268,31 @@
             </div>
         </div>
 
-        <!-- TABS -->
-        <div style="display: flex; background: #1e1e24; padding: 5px; border-radius: 5px; margin-bottom: 20px; gap: 5px;">
-            <button id="tab-btn-creer" style="flex:1; background:var(--primary); color:white; border:none; padding:10px; border-radius:4px; font-weight:bold; font-size:13px;" onclick="changerOnglet('creer')">📝 Créer Devis</button>
-            <button id="tab-btn-ia" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px; border-radius:4px; font-size:13px;" onclick="changerOnglet('ia')">🤖 Assistant IA</button>
-            <button id="tab-btn-archives" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px; border-radius:4px; font-size:13px;" onclick="changerOnglet('historique')">🗂️ Archives</button>
+        <!-- TABS MIGRÉS VERS 4 OPTIONS -->
+        <div style="display: flex; background: #1e1e24; padding: 5px; border-radius: 5px; margin-bottom: 20px; gap: 4px;">
+            <button id="tab-btn-creer" style="flex:1; background:var(--primary); color:white; border:none; padding:10px 5px; border-radius:4px; font-weight:bold; font-size:12px;" onclick="changerOnglet('creer')">📝 Créer</button>
+            <button id="tab-btn-ia" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px 5px; border-radius:4px; font-size:12px;" onclick="changerOnglet('ia')">🤖 Assistant</button>
+            <button id="tab-btn-archives" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px 5px; border-radius:4px; font-size:12px;" onclick="changerOnglet('historique')">🗂️ Archives</button>
+            <button id="tab-btn-stats" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px 5px; border-radius:4px; font-size:12px;" onclick="changerOnglet('stats')">📊 Stats</button>
+        </div>
+
+        <!-- TABLEAU DE BORD STATS -->
+        <div id="page-statistiques" class="panel hidden">
+            <h3 class="panel-title" style="color:var(--whatsapp-color);">📊 TABLEAU DE BORD FINANCIER</h3>
+            <div class="grid-3" style="margin-bottom: 15px;">
+                <div class="stat-card" style="border-top: 3px solid var(--primary);">
+                    <label>Chiffre d'Affaires</label>
+                    <div class="stat-val" id="stat-ca" style="color:var(--primary);">0</div>
+                </div>
+                <div class="stat-card" style="border-top: 3px solid var(--whatsapp-color);">
+                    <label>Encaissé (Acomptes+Payés)</label>
+                    <div class="stat-val" id="stat-encaisse" style="color:var(--whatsapp-color);">0</div>
+                </div>
+                <div class="stat-card" style="border-top: 3px solid #d9534f;">
+                    <label>Reste à Recouvrer</label>
+                    <div class="stat-val" id="stat-Reste" style="color:#d9534f;">0</div>
+                </div>
+            </div>
         </div>
 
         <!-- ASSISTANT IA -->
@@ -324,12 +364,12 @@
 
         <!-- EXPORTATION PRO -->
         <div id="section-export" class="panel">
-            <button class="btn" style="background: #2e7d32; font-size: 15px; padding: 14px;" onclick="ouvrirApercuImprimableElite()">⚡ Générer le PDF & Archiver</button>
+            <button class="btn" style="background: #2e7d32; font-size: 15px; padding: 14px;" onclick="ouvrirApercuImprimableElite('DEVIS')">⚡ Générer le PDF & Archiver</button>
         </div>
 
         <!-- ARCHIVES -->
         <div id="page-historique" class="panel hidden">
-            <h3 class="panel-title">🗂️ Archives des Devis</h3>
+            <h3 class="panel-title">🗂️ Archives des Documents</h3>
             <div id="liste-archives"></div>
         </div>
     </div>
@@ -347,6 +387,7 @@
             }
             changerPaysApp();
             afficherArchives();
+            calculerStatistiques();
         };
 
         function sauvegarderParametres() {
@@ -369,12 +410,14 @@
             document.getElementById('tab-btn-creer').style.background = '#2a2a32';
             document.getElementById('tab-btn-ia').style.background = '#2a2a32';
             document.getElementById('tab-btn-archives').style.background = '#2a2a32';
+            document.getElementById('tab-btn-stats').style.background = '#2a2a32';
             
             document.getElementById('page-generator-ai').classList.add('hidden');
             document.getElementById('section-clients').classList.add('hidden');
             document.getElementById('section-devis').classList.add('hidden');
             document.getElementById('section-export').classList.add('hidden');
             document.getElementById('page-historique').classList.add('hidden');
+            document.getElementById('page-statistiques').classList.add('hidden');
 
             if(onglet === 'creer') {
                 document.getElementById('tab-btn-creer').style.background = 'var(--primary)';
@@ -384,12 +427,17 @@
             } else if(onglet === 'ia') {
                 document.getElementById('tab-btn-ia').style.background = 'var(--ai-btn)';
                 document.getElementById('page-generator-ai').classList.remove('hidden');
+                document.getElementById('section-clients').classList.remove('hidden');
                 document.getElementById('section-devis').classList.remove('hidden');
                 document.getElementById('section-export').classList.remove('hidden');
             } else if(onglet === 'historique') {
                 document.getElementById('tab-btn-archives').style.background = 'var(--primary)';
                 document.getElementById('page-historique').classList.remove('hidden');
                 afficherArchives();
+            } else if(onglet === 'stats') {
+                document.getElementById('tab-btn-stats').style.background = 'var(--whatsapp-color)';
+                document.getElementById('page-statistiques').classList.remove('hidden');
+                calculerStatistiques();
             }
         }
 
@@ -478,24 +526,68 @@
             document.getElementById('total-net').innerText = totalNet.toLocaleString('fr-FR');
         }
 
-        // STRATÉGIE DE L'ONGLET D'IMPRESSION DIRECT : SANS BUG ET ENTIÈREMENT VISIBLE PAR LE SYSTÈME
-        function ouvrirApercuImprimableElite() {
-            const nomClient = document.getElementById('client-nom').value.trim();
-            const telClient = document.getElementById('client-tel').value.trim();
-            const adresseClient = document.getElementById('client-adresse').value.trim();
-            const remisePourcent = parseFloat(document.getElementById('remise-pourcent').value) || 0;
-            const acompte = parseFloat(document.getElementById('acompte-valeur').value) || 0;
+        function calculerStatistiques() {
+            const select = document.getElementById('select-pays');
+            const devise = select.options[select.selectedIndex].getAttribute('data-devise');
+            
+            let totalCA = 0;
+            let totalEncaisser = 0;
+            let totalReste = 0;
+
+            archivesDevis.forEach(doc => {
+                let net = parseFloat(doc.netApresAcompte) || 0;
+                let acpt = parseFloat(doc.acompte) || 0;
+
+                totalCA += (net + acpt);
+
+                if(doc.statut === 'Payé') {
+                    totalEncaisser += (net + acpt);
+                } else if(doc.statut === 'Acompte versé') {
+                    totalEncaisser += acpt;
+                    totalReste += net;
+                } else {
+                    totalReste += net;
+                }
+            });
+
+            document.getElementById('stat-ca').innerText = totalCA.toLocaleString('fr-FR') + " " + devise;
+            document.getElementById('stat-encaisse').innerText = totalEncaisser.toLocaleString('fr-FR') + " " + devise;
+            document.getElementById('stat-Reste').innerText = totalReste.toLocaleString('fr-FR') + " " + devise;
+        }
+
+        // PERMET DE GENERER DU REEL SOIT EN MODE DEVIS SOIT EN MODE FACTURE DIRECTE
+        function ouvrirApercuImprimableElite(typeDocument, indexArchive = null) {
+            let nomClient, telClient, adresseClient, remisePourcent, acompte, itemsUti = [];
+            let numDoc, dateJour;
 
             const select = document.getElementById('select-pays');
             const pays = select.value;
             const devise = select.options[select.selectedIndex].getAttribute('data-devise');
 
-            if(!nomClient || articlesDevis.length === 0) return alert("Veuillez indiquer un client et ajouter des travaux.");
+            if(indexArchive !== null) {
+                const data = archivesDevis[indexArchive];
+                nomClient = data.client;
+                telClient = data.telephone;
+                adresseClient = data.adresse;
+                remisePourcent = data.remisePourcent;
+                acompte = data.acompte;
+                itemsUti = data.articles;
+                dateJour = data.date;
+                numDoc = (typeDocument === 'FACTURE') ? data.numDevis.replace('DEV-', 'FAC-') : data.numDevis;
+            } else {
+                nomClient = document.getElementById('client-nom').value.trim();
+                telClient = document.getElementById('client-tel').value.trim();
+                adresseClient = document.getElementById('client-adresse').value.trim();
+                remisePourcent = parseFloat(document.getElementById('remise-pourcent').value) || 0;
+                acompte = parseFloat(document.getElementById('acompte-valeur').value) || 0;
+                itemsUti = [...articlesDevis];
+                dateJour = new Date().toLocaleDateString('fr-FR');
+                numDoc = "DEV-" + Math.floor(100000 + Math.random() * 900000);
 
-            const numDevis = "DEV-" + Math.floor(100000 + Math.random() * 900000);
-            const dateJour = new Date().toLocaleDateString('fr-FR');
+                if(!nomClient || itemsUti.length === 0) return alert("Veuillez indiquer un client et ajouter des travaux.");
+            }
 
-            let totalBrut = articlesDevis.reduce((sum, art) => sum + art.total, 0);
+            let totalBrut = itemsUti.reduce((sum, art) => sum + art.total, 0);
             let montantRemise = totalBrut * (remisePourcent / 100);
             let totalNet = totalBrut - montantRemise;
             let netApresAcompte = totalNet - acompte;
@@ -504,7 +596,7 @@
             let baliseLogo = urlLogo ? `<img src="${urlLogo}" style="max-height:65px; max-width:220px; object-fit:contain;" alt="Logo">` : `<div style="font-size: 20px; font-weight: bold; color: #111;">MON ENTREPRISE BTP</div>`;
 
             let lignesHtml = '';
-            articlesDevis.forEach((art, idx) => {
+            itemsUti.forEach((art, idx) => {
                 lignesHtml += `
                     <tr>
                         <td style="border-bottom: 1px solid #dee2e6; padding: 10px; font-size: 13px;">${idx + 1}</td>
@@ -516,40 +608,38 @@
                 `;
             });
 
-            // Construction de la page d'impression autonome
             const codePageApercu = `
                 <!DOCTYPE html>
                 <html lang="fr">
                 <head>
                     <meta charset="UTF-8">
-                    <title>${numDevis}_${nomClient.replace(/\s+/g, '_')}</title>
+                    <title>${numDoc}_${nomClient.replace(/\s+/g, '_')}</title>
                     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"><\/script>
                     <style>
                         body { background: #f4f5f7; margin: 0; padding: 20px; font-family: Arial, sans-serif; -webkit-print-color-adjust: exact; }
                         .page-pdf { background: white; max-width: 800px; margin: 0 auto; padding: 40px; border-radius: 8px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); box-sizing: border-box; }
-                        .pdf-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid #e65100; padding-bottom: 18px; margin-bottom: 30px; }
-                        .pdf-title { font-size: 28px; font-weight: bold; color: #e65100; }
+                        .pdf-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 4px solid ${(typeDocument === 'FACTURE') ? 'var(--blue-facture, #0288d1)' : '#e65100'}; padding-bottom: 18px; margin-bottom: 30px; }
+                        .pdf-title { font-size: 28px; font-weight: bold; color: ${(typeDocument === 'FACTURE') ? '#0288d1' : '#e65100'}; }
                         .pdf-infos { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; margin-bottom: 30px; }
                         .pdf-box { background: #f8f9fa; padding: 15px; border-radius: 6px; border: 1px solid #dee2e6; }
-                        .pdf-box h4 { margin: 0 0 8px 0; color: #e65100; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
+                        .pdf-box h4 { margin: 0 0 8px 0; color: ${(typeDocument === 'FACTURE') ? '#0288d1' : '#e65100'}; font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; }
                         .pdf-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
                         .pdf-table th { background: #212529; color: white; padding: 12px; text-align: left; font-size: 13px; }
                         .pdf-totals { margin-left: auto; width: 45%; margin-top: 20px; }
                         .pdf-total-row { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; color: #333; }
-                        .pdf-total-final { background: #e65100; color: white; font-weight: bold; padding: 12px; border-radius: 5px; font-size: 16px; margin-top: 8px; }
-                        .btn-telechargement-manuel { background: #2e7d32; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 6px; width: 100%; max-width: 800px; display: block; margin: 0 auto 20px auto; cursor: pointer; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
-                        @media print { .btn-telechargement-manuel { display: none !important; } body { background: white; padding: 0; } .page-pdf { box-shadow: none; padding: 0; } }
+                        .pdf-total-final { background: ${(typeDocument === 'FACTURE') ? '#0288d1' : '#e65100'}; color: white; font-weight: bold; padding: 12px; border-radius: 5px; font-size: 16px; margin-top: 8px; }
+                        .btn-telechargement-manuel { background: #2e7d32; color: white; border: none; padding: 15px; font-size: 16px; font-weight: bold; border-radius: 6px; width: 100%; max-width: 800px; display: block; margin: 0 auto 20px auto; cursor: pointer; text-align: center; }
+                        @media print { .btn-telechargement-manuel { display: none !important; } }
                     </style>
                 </head>
                 <body>
                     <button class="btn-telechargement-manuel" id="declencheur-pdf">📥 APPUYER ICI POUR ENREGISTRER LE PDF</button>
-                    
                     <div class="page-pdf" id="noeud-capture">
                         <div class="pdf-header">
                             <div>${baliseLogo}</div>
                             <div style="text-align: right;">
-                                <div class="pdf-title">DEVIS</div>
-                                <div style="font-size: 12px; color: #333; font-family: monospace; margin-top: 4px;">Ref : ${numDevis} | Date : ${dateJour}</div>
+                                <div class="pdf-title">${typeDocument}</div>
+                                <div style="font-size: 12px; color: #333; font-family: monospace; margin-top: 4px;">Ref : ${numDoc} | Date : ${dateJour}</div>
                             </div>
                         </div>
                         <div class="pdf-infos">
@@ -580,55 +670,57 @@
                             <div class="pdf-total-row"><span>Remise (${remisePourcent}%)</span><span>${montantRemise.toLocaleString('fr-FR')} ${devise}</span></div>
                             <div class="pdf-total-row"><span>Acompte versé</span><span>${acompte.toLocaleString('fr-FR')} ${devise}</span></div>
                             <div class="pdf-total-final">
-                                <div style="display: flex; justify-content: space-between;"><span>NET À PAYER</span><span>${netApresAcompte.toLocaleString('fr-FR')} ${devise}</span></div>
+                                <div style="display: flex; justify-content: space-between;"><span>${(typeDocument === 'FACTURE') ? 'NET PAYÉ' : 'NET À PAYER'}</span><span>${netApresAcompte.toLocaleString('fr-FR')} ${devise}</span></div>
                             </div>
                         </div>
-                        <div style="margin-top: 50px; border-top: 1px solid #dee2e6; padding-top: 15px; font-size: 11px; color: #6c757d;">Document contractuel officiel. Offre valable pendant 30 jours à compter de la date d'émission.</div>
                     </div>
-
                     <script>
                         function lancerCaptureAutomatique() {
-                            const cible = document.getElementById('noeud-capture');
-                            const configuration = {
-                                margin: 10,
-                                filename: "${numDevis}_${nomClient.replace(/\s+/g, '_')}.pdf",
+                            html2pdf().set({
+                                margin: 10, filename: "${numDoc}_${nomClient.replace(/\s+/g, '_')}.pdf",
                                 image: { type: 'jpeg', quality: 0.98 },
-                                html2canvas: { scale: 2, useCORS: true, logging: false },
+                                html2canvas: { scale: 2, useCORS: true },
                                 jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-                            };
-                            html2pdf().set(configuration).from(cible).save();
+                            }).from(document.getElementById('noeud-capture')).save();
                         }
-                        
-                        // Lancement automatique dès chargement
-                        window.onload = function() {
-                            setTimeout(lancerCaptureAutomatique, 600);
-                        };
-                        
-                        // Sécurité manuelle
+                        window.onload = function() { setTimeout(lancerCaptureAutomatique, 600); };
                         document.getElementById('declencheur-pdf').onclick = lancerCaptureAutomatique;
                     <\/script>
                 </body>
                 </html>
             `;
 
-            // Ouverture dans un nouvel onglet propre pour forcer le dessin des pixels par Android/iOS
             const nouvelOnglet = window.open();
             nouvelOnglet.document.open();
             nouvelOnglet.document.write(codePageApercu);
             nouvelOnglet.document.close();
 
-            // Archivage local automatique
-            const nouveauDevisArchive = {
-                numDevis: numDevis,
-                date: dateJour,
-                client: nomClient,
-                telephone: telClient,
-                totalTtc: netApresAcompte.toLocaleString('fr-FR') + " " + devise
-            };
-            
-            archivesDevis.unshift(nouveauDevisArchive);
+            if(indexArchive === null) {
+                const nouveauDocArchive = {
+                    numDevis: numDoc,
+                    date: dateJour,
+                    client: nomClient,
+                    telephone: telClient,
+                    adresse: adresseClient,
+                    remisePourcent: remisePourcent,
+                    acompte: acompte,
+                    netApresAcompte: netApresAcompte,
+                    articles: itemsUti,
+                    statut: (acompte > 0) ? 'Acompte versé' : 'En attente',
+                    totalTtc: netApresAcompte.toLocaleString('fr-FR') + " " + devise
+                };
+                archivesDevis.unshift(nouveauDocArchive);
+                localStorage.setItem('btp_archives_v5', JSON.stringify(archivesDevis));
+                afficherArchives();
+                calculerStatistiques();
+            }
+        }
+
+        function modifierStatutDocument(index, nouveauStatut) {
+            archivesDevis[index].statut = nouveauStatut;
             localStorage.setItem('btp_archives_v5', JSON.stringify(archivesDevis));
-            afficherArchives();
+            calculerStatistiques();
+            alert("🔹 Statut mis à jour avec succès !");
         }
 
         function afficherArchives() {
@@ -636,40 +728,55 @@
             conteneur.innerHTML = '';
             
             if(archivesDevis.length === 0) {
-                conteneur.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:20px;">Aucun devis archivé.</div>';
+                conteneur.innerHTML = '<div style="color:var(--text-muted); text-align:center; padding:20px;">Aucun document archivé.</div>';
                 return;
             }
 
-            archivesDevis.forEach((arc) => {
+            archivesDevis.forEach((arc, index) => {
                 const div = document.createElement('div');
                 div.className = 'archive-card';
+                
+                // Sélection dynamique du statut
+                let selectStatutHtml = `
+                    <select style="margin-bottom:0; margin-top:5px; padding:6px; font-size:12px;" onchange="modifierStatutDocument(${index}, this.value)">
+                        <option value="En attente" ${arc.statut === 'En attente' ? 'selected' : ''}>⏳ En attente</option>
+                        <option value="Acompte versé" ${arc.statut === 'Acompte versé' ? 'selected' : ''}>💵 Acompte versé</option>
+                        <option value="Payé" ${arc.statut === 'Payé' ? 'selected' : ''}>✅ Entièrement Payé</option>
+                    </select>
+                `;
+
                 div.innerHTML = `
                     <div class="archive-header">
                         <span style="color:var(--primary); font-weight:bold;">${arc.numDevis}</span>
                         <span style="color:var(--text-muted); font-size:12px;">📅 ${arc.date}</span>
                     </div>
                     <div style="font-size:14px; font-weight:bold; margin-bottom:5px;">👤 Client : ${arc.client}</div>
-                    <div style="font-size:13px; color:var(--text-muted); margin-bottom:10px;">Montant Total : <span style="color:var(--primary); font-weight:bold;">${arc.totalTtc}</span></div>
-                    
+                    <div style="font-size:13px; color:var(--text-muted); margin-bottom:5px;">Reste à payer : <span style="color:var(--primary); font-weight:bold;">${arc.totalTtc}</span></div>
+                    <div style="margin-bottom:12px;">
+                        <label style="margin-bottom:2px; font-size:11px;">Statut Paiement :</label>
+                        ${selectStatutHtml}
+                    </div>
                     <div class="archive-actions">
-                        <button class="btn-action btn-whatsapp" onclick="envoyerMessageWhatsAppElite('${arc.client}', '${arc.telephone}', '${arc.numDevis}', '${arc.totalTtc}')">💬 Préparer le Message WhatsApp</button>
+                        <button class="btn-action btn-facture-gen" onclick="ouvrirApercuImprimableElite('FACTURE', ${index})">🧾 Générer Facture Officielle (PDF)</button>
+                        <button class="btn-action btn-whatsapp" onclick="envoyerMessageWhatsAppElite('${arc.client}', '${arc.telephone}', '${arc.numDevis}', '${arc.totalTtc}', '${arc.statut}')">💬 Relance / Envoi WhatsApp</button>
                     </div>
                 `;
                 conteneur.appendChild(div);
             });
         }
 
-        function envoyerMessageWhatsAppElite(client, telephone, numDevis, totalTtc) {
-            if(!telephone || telephone === '-') {
-                return alert("Aucun numéro de téléphone disponible.");
+        function envoyerMessageWhatsAppElite(client, telephone, numDoc, totalTtc, statut) {
+            if(!telephone || telephone === '-') return alert("Aucun numéro de téléphone disponible.");
+            
+            let texteMessage = '';
+            if(statut === 'Payé') {
+                texteMessage = `Bonjour M. ${client},\n\nMerci pour votre confiance. Veuillez trouver ci-joint votre *FACTURE ACQUITTEE* acquittée en totalité.\n\n🧾 *Référence :* ${numDoc.replace('DEV-', 'FAC-')}\n💰 *Montant :* ${totalTtc}\n\nDocument transmis ci-dessous. En restant à votre disposition.`;
+            } else {
+                texteMessage = `Bonjour M. ${client},\n\nVeuillez trouver ci-joint notre document officiel concernant votre chantier.\n\n📄 *Référence :* ${numDoc}\n💰 *Reste à régler :* ${totalTtc}\n\nLe fichier PDF se trouve ci-dessous.\n\nCordialement,\n*Mon Entreprise BTP*`;
             }
-
-            const texteMessage = `Bonjour M. ${client},\n\nVeuillez trouver ci-joint notre proposition tarifaire officielle concernant votre projet.\n\n📄 *Référence :* ${numDevis}\n💰 *Montant Total :* ${totalTtc}\n\nJe vous transmets le document PDF ci-dessous.\n\nCordialement,\n*Mon Entreprise BTP*`;
             
             let numPropre = telephone.replace(/[\s\+\-]/g, '');
-            const urlWhatsApp = `https://api.whatsapp.com/send?phone=${numPropre}&text=${encodeURIComponent(texteMessage)}`;
-            
-            window.open(urlWhatsApp, '_blank');
+            window.open(`https://api.whatsapp.com/send?phone=${numPropre}&text=${encodeURIComponent(texteMessage)}`, '_blank');
         }
     </script>
 </body>
