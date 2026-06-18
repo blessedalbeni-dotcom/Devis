@@ -226,6 +226,9 @@
 </head>
 <body>
 
+<!-- ========================================== -->
+<!-- 🔐 SECTION : ÉCRAN DE VERROUILLAGE SÉCURISÉ -->
+<!-- ========================================== -->
 <div id="lock-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgb(18,18,20); z-index:99999; display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; font-family:sans-serif; padding:20px; box-sizing:border-box;">
     <h2 style="color:#e65100; margin-bottom:5px; letter-spacing:1px;">LES SEIGNEURS DU BTP</h2>
     <p style="color:#aaa; text-align:center; font-size:14px; max-width:300px; margin-bottom:30px;">Cette application est protégée. Veuillez activer votre licence pour y accéder.</p>
@@ -240,7 +243,7 @@
         <button onclick="checkLicense()" style="width:100%; padding:12px; background:#e65100; color:white; border:none; border-radius:6px; font-weight:bold; font-size:16px; cursor:pointer;">⚡ Activer la Licence</button>
     </div>
     
-    <button onclick="toggleAdminPanel()" style="background:none; border:none; color:#333; margin-top:5px; cursor:pointer; font-size:12px;">Espace Administrateur</button>
+    <button onclick="toggleAdminPanel()" style="background:none; border:none; color:#222; margin-top:15px; cursor:pointer; font-size:12px;">Espace Administrateur</button>
     
     <div id="admin-panel" style="display:none; background:#141419; margin-top:15px; padding:15px; border-radius:8px; border:1px solid #e65100; width:100%; max-width:320px; box-sizing:border-box;">
         <h4 style="margin:0 0 10px 0; color:#e65100;">Générateur Interne</h4>
@@ -251,26 +254,16 @@
     </div>
 </div>
 
-<script>
-(function() {
-    if (window.location.hostname !== "blessedalbeni-dotcom.github.io" || window.location.pathname !== "/Devis/") {
-        document.documentElement.innerHTML = `
-            <div style="background:#121214; color:white; font-family:Arial; text-align:center; padding:50px 20px; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center;">
-                <h2 style="color:#d9534f; margin-bottom:10px;">⚠️ Licence Non Validée</h2>
-                <a href="https://blessedalbeni-dotcom.github.io/Devis/" style="background:#e65100; color:white; text-decoration:none; padding:12px 24px; border-radius:5px; font-weight:bold;">Accéder à la version officielle</a>
-            </div>
-        `;
-        throw new Error("Sécurité : Application bloquée.");
-    }
-})();
-</script>
-
+    <!-- ========================================== -->
+    <!-- INTERFACE PRINCIPALE DE L'APPLICATION     -->
+    <!-- ========================================== -->
     <div id="interface-complete">
         <div class="header-app">
             <div class="logo-title">BTP<span>Devis</span> Pro</div>
             <div class="location-badge" id="app-location-badge">Lomé · FCFA</div>
         </div>
 
+        <!-- PARAMÈTRES -->
         <div class="panel" style="background: #19191e; border: 1px dashed var(--primary);">
             <div class="grid-2">
                 <div>
@@ -292,6 +285,7 @@
             </div>
         </div>
 
+        <!-- ONGLETS NAVIGATION -->
         <div style="display: flex; background: #1e1e24; padding: 5px; border-radius: 5px; margin-bottom: 20px; gap: 4px;">
             <button id="tab-btn-creer" style="flex:1; background:var(--primary); color:white; border:none; padding:10px 5px; border-radius:4px; font-weight:bold; font-size:12px;" onclick="changerOnglet('creer')">📝 Créer</button>
             <button id="tab-btn-ia" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px 5px; border-radius:4px; font-size:12px;" onclick="changerOnglet('ia')">🤖 Assistant</button>
@@ -299,6 +293,7 @@
             <button id="tab-btn-stats" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px 5px; border-radius:4px; font-size:12px;" onclick="changerOnglet('stats')">📊 Stats</button>
         </div>
 
+        <!-- TABLEAU DE BORD STATS -->
         <div id="page-statistiques" class="panel hidden">
             <h3 class="panel-title" style="color:var(--whatsapp-color);">📊 TABLEAU DE BORD FINANCIER</h3>
             <div class="grid-3" style="margin-bottom: 15px;">
@@ -317,6 +312,7 @@
             </div>
         </div>
 
+        <!-- ASSISTANT IA -->
         <div id="page-generator-ai" class="panel panel-ai hidden">
             <h3 class="panel-title" style="color:var(--ai-purple);">🤖 ASSISTANT INTEGRATION IA</h3>
             <label>Collez votre texte brut ici :</label>
@@ -324,6 +320,7 @@
             <button class="btn btn-ai-gen" onclick="analyserEtGenererDevisIA()">🤖 Analyser & Remplir</button>
         </div>
 
+        <!-- CLIENT -->
         <div id="section-clients" class="panel">
             <h3 class="panel-title">👥 Informations Client</h3>
             <div class="grid-2">
@@ -340,6 +337,7 @@
             <input type="text" id="client-adresse" placeholder="Ex: Lomé, Agoè">
         </div>
 
+        <!-- ARTICLES -->
         <div id="section-devis" class="panel">
             <h3 class="panel-title">📝 Lignes de Travaux</h3>
             <div id="form-manuel-ajout">
@@ -381,18 +379,22 @@
             </div>
         </div>
 
+        <!-- EXPORTATION PRO -->
         <div id="section-export" class="panel">
             <button class="btn" style="background: #2e7d32; font-size: 15px; padding: 14px;" onclick="ouvrirApercuImprimableElite('DEVIS')">⚡ Générer le PDF & Archiver</button>
         </div>
 
+        <!-- ARCHIVES -->
         <div id="page-historique" class="panel hidden">
             <h3 class="panel-title">🗂️ Archives des Documents</h3>
             <div id="liste-archives"></div>
         </div>
     </div>
 
+    <!-- ========================================== -->
+    <!-- ⚙️ COMPOSANT LOGIQUE LOGICIELLE           -->
+    <!-- ========================================== -->
     <script>
-        // CONFIGURATION SÉCURITÉ
         const ADMIN_PASSWORD = "IBRAHIM2026"; 
 
         function getDeviceID() {
@@ -441,7 +443,6 @@
             document.getElementById('generated-key-result').innerHTML = `Clé :<br><span style="font-size:16px; color:white;">${clientKey}</span>`;
         }
 
-        // LOGIQUE MÉTIER APPLICATION
         let articlesDevis = [];
         let archivesDevis = JSON.parse(localStorage.getItem('btp_archives_v5')) || [];
 
