@@ -6,17 +6,15 @@
     <title>BTPDevis & Facture Pro</title>
     <style>
         :root {
-            --bg-dark: #121214;
-            --card-bg: #1e1e24;
-            --primary: #e65100;
-            --ai-purple: #b388ff;
-            --ai-btn: #7c4dff;
+            --bg-dark: #f4f5f7; /* Fond clair pour une visibilité maximale */
+            --card-bg: #ffffff; /* Cartes blanches */
+            --primary: #e65100; /* Orange BTP */
+            --ai-purple: #7c4dff;
             --blue-facture: #0288d1;
-            --text-main: #ffffff;
-            --text-muted: #aaaaaa;
-            --border-color: #333333;
+            --text-main: #1e1e24; /* Texte principal sombre très lisible */
+            --text-muted: #555555;
+            --border-color: #cccccc;
             --whatsapp-color: #25D366;
-            --stat-green: #2e7d32;
         }
 
         body {
@@ -32,13 +30,14 @@
             justify-content: space-between;
             align-items: center;
             padding: 10px 5px;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 2px solid var(--primary);
             margin-bottom: 20px;
         }
 
         .logo-title {
-            font-size: 20px;
+            font-size: 22px;
             font-weight: bold;
+            color: #1e1e24;
         }
 
         .logo-title span {
@@ -46,12 +45,12 @@
         }
 
         .location-badge {
-            font-size: 12px;
-            color: var(--text-muted);
-            background: #2a2a32;
-            padding: 4px 8px;
-            border-radius: 4px;
-            border: 1px solid var(--border-color);
+            font-size: 13px;
+            font-weight: bold;
+            color: white;
+            background: var(--primary);
+            padding: 5px 10px;
+            border-radius: 20px;
         }
 
         .panel {
@@ -59,7 +58,8 @@
             border-radius: 8px;
             padding: 15px;
             margin-bottom: 20px;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+            border: 1px solid var(--border-color);
         }
 
         .panel-title {
@@ -67,30 +67,38 @@
             margin-top: 0;
             margin-bottom: 15px;
             font-size: 16px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 5px;
         }
 
         .panel-ai {
-            border: 1px solid #4a148c;
-            background: #141419;
+            border: 1px dashed var(--ai-purple);
+            background: #f9f6ff;
         }
 
         label {
             display: block;
             margin-bottom: 5px;
             font-size: 13px;
-            color: var(--text-muted);
+            font-weight: bold;
+            color: var(--text-main);
         }
 
         input, select, textarea {
             width: 100%;
-            padding: 10px;
-            background: #2a2a32;
+            padding: 12px;
+            background: #ffffff;
             border: 1px solid var(--border-color);
-            border-radius: 5px;
-            color: white;
+            border-radius: 6px;
+            color: #1e1e24;
             box-sizing: border-box;
             margin-bottom: 15px;
             font-size: 14px;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            border-color: var(--primary);
+            outline: none;
         }
 
         .grid-2 {
@@ -109,12 +117,12 @@
             background: var(--primary);
             color: white;
             border: none;
-            padding: 12px;
-            border-radius: 5px;
+            padding: 14px;
+            border-radius: 6px;
             font-weight: bold;
             cursor: pointer;
             width: 100%;
-            font-size: 14px;
+            font-size: 15px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -123,40 +131,42 @@
         }
 
         .btn-ai-gen {
-            background: var(--ai-btn);
+            background: var(--ai-purple);
         }
 
         .item-added {
-            background: #2a2a32;
-            padding: 10px;
-            border-radius: 5px;
+            background: #f8f9fa;
+            padding: 12px;
+            border-radius: 6px;
             margin-bottom: 8px;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 13px;
+            font-size: 14px;
+            border-left: 4px solid var(--primary);
         }
 
         .item-added .remove-btn {
             color: #d9534f;
             cursor: pointer;
             font-weight: bold;
-            padding: 0 5px;
+            padding-left: 10px;
         }
 
         .archive-card {
-            background: #25252d;
+            background: #ffffff;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 12px;
             margin-bottom: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
         .archive-header {
             display: flex;
             justify-content: space-between;
             margin-bottom: 8px;
-            border-bottom: 1px dashed #3a3a45;
+            border-bottom: 1px dashed #ccc;
             padding-bottom: 5px;
         }
 
@@ -208,7 +218,7 @@
         }
 
         .stat-card {
-            background: #19191e;
+            background: #ffffff;
             border: 1px solid var(--border-color);
             border-radius: 6px;
             padding: 12px;
@@ -216,41 +226,54 @@
         }
 
         .stat-val {
-            font-size: 18px;
+            font-size: 16px;
             font-weight: bold;
             margin-top: 5px;
         }
 
         .hidden { display: none !important; }
+        
+        /* Style onglets clairs */
+        .tab-btn {
+            flex: 1;
+            background: #e0e0e0;
+            color: #333;
+            border: none;
+            padding: 12px 5px;
+            border-radius: 6px;
+            font-weight: bold;
+            font-size: 13px;
+            cursor: pointer;
+        }
     </style>
 </head>
 <body>
 
 <!-- ========================================== -->
-<!-- 🔐 SECTION : ÉCRAN DE VERROUILLAGE SÉCURISÉ -->
+<!-- 🔐 SECTION : ÉCRAN DE VERROUILLAGE CLAIR  -->
 <!-- ========================================== -->
-<div id="lock-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:rgb(18,18,20); z-index:99999; display:flex; flex-direction:column; align-items:center; justify-content:center; color:white; font-family:sans-serif; padding:20px; box-sizing:border-box;">
-    <h2 style="color:#e65100; margin-bottom:5px; letter-spacing:1px;">LES SEIGNEURS DU BTP</h2>
-    <p style="color:#aaa; text-align:center; font-size:14px; max-width:300px; margin-bottom:30px;">Cette application est protégée. Veuillez activer votre licence pour y accéder.</p>
+<div id="lock-screen" style="position:fixed; top:0; left:0; width:100%; height:100%; background:#f4f5f7; z-index:99999; display:flex; flex-direction:column; align-items:center; justify-content:center; color:#1e1e24; font-family:sans-serif; padding:20px; box-sizing:border-box;">
+    <h2 style="color:#e65100; margin-bottom:5px; letter-spacing:1px; font-size:24px;">LES SEIGNEURS DU BTP</h2>
+    <p style="color:#555; text-align:center; font-size:14px; max-width:300px; margin-bottom:30px;">Cette application est protégée. Veuillez activer votre licence pour y accéder.</p>
     
-    <div style="background:#1e1e24; padding:15px; border-radius:8px; text-align:center; width:100%; max-width:320px; border:1px solid #333;">
-        <span style="font-size:11px; color:#aaa; display:block; margin-bottom:5px;">VOTRE ID APPAREIL :</span>
-        <strong id="display-device-id" style="font-size:22px; color:#fff; letter-spacing:2px;">ANALYSE...</strong>
+    <div style="background:white; padding:15px; border-radius:8px; text-align:center; width:100%; max-width:320px; border:1px solid #ccc; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+        <span style="font-size:12px; color:#555; display:block; margin-bottom:5px; font-weight:bold;">VOTRE ID APPAREIL :</span>
+        <strong id="display-device-id" style="font-size:24px; color:#e65100; letter-spacing:2px;">ANALYSE...</strong>
     </div>
 
     <div style="margin-top:25px; width:100%; max-width:320px;">
-        <input type="text" id="license-key-input" placeholder="Entrez votre Clé d'activation" style="width:100%; padding:12px; border-radius:6px; border:1px solid #333; background:#2a2a32; color:white; font-size:16px; text-align:center; box-sizing:border-box; margin-bottom:12px;">
-        <button onclick="checkLicense()" style="width:100%; padding:12px; background:#e65100; color:white; border:none; border-radius:6px; font-weight:bold; font-size:16px; cursor:pointer;">⚡ Activer la Licence</button>
+        <input type="text" id="license-key-input" placeholder="Entrez votre Clé d'activation" style="width:100%; padding:14px; border-radius:6px; border:1px solid #ccc; background:white; color:black; font-size:16px; text-align:center; box-sizing:border-box; margin-bottom:12px; font-weight:bold;">
+        <button onclick="checkLicense()" style="width:100%; padding:14px; background:#e65100; color:white; border:none; border-radius:6px; font-weight:bold; font-size:16px; cursor:pointer; box-shadow: 0 4px 6px rgba(0,0,0,0.1);">⚡ Activer la Licence</button>
     </div>
     
-    <button onclick="toggleAdminPanel()" style="background:none; border:none; color:#222; margin-top:15px; cursor:pointer; font-size:12px;">Espace Administrateur</button>
+    <button onclick="toggleAdminPanel()" style="background:none; border:none; color:#777; margin-top:25px; cursor:pointer; font-size:14px; font-weight:bold; text-decoration:underline;">Espace Administrateur</button>
     
-    <div id="admin-panel" style="display:none; background:#141419; margin-top:15px; padding:15px; border-radius:8px; border:1px solid #e65100; width:100%; max-width:320px; box-sizing:border-box;">
-        <h4 style="margin:0 0 10px 0; color:#e65100;">Générateur Interne</h4>
-        <input type="password" id="admin-pass" placeholder="Mot de passe Admin" style="width:100%; padding:8px; margin-bottom:8px; background:#2a2a32; color:white; border:1px solid #333; border-radius:4px; box-sizing:border-box;">
-        <input type="text" id="client-id-input" placeholder="Coller l'ID du Client" style="width:100%; padding:8px; margin-bottom:8px; background:#2a2a32; color:white; border:1px solid #333; border-radius:4px; box-sizing:border-box;">
-        <button onclick="generateKeyForClient()" style="width:100%; padding:8px; background:#2e7d32; color:white; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">Calculer la clé</button>
-        <div id="generated-key-result" style="margin-top:10px; font-weight:bold; color:#25D366; text-align:center; font-size:14px; user-select:all;"></div>
+    <div id="admin-panel" style="display:none; background:white; margin-top:15px; padding:15px; border-radius:8px; border:2px dashed #e65100; width:100%; max-width:320px; box-sizing:border-box; box-shadow: 0 4px 10px rgba(0,0,0,0.05);">
+        <h4 style="margin:0 0 10px 0; color:#e65100; text-align:center;">Générateur Interne</h4>
+        <input type="password" id="admin-pass" placeholder="Mot de passe Admin" style="width:100%; padding:10px; margin-bottom:8px; background:white; color:black; border:1px solid #ccc; border-radius:4px; box-sizing:border-box;">
+        <input type="text" id="client-id-input" placeholder="Coller l'ID du Client (ex: 8187)" style="width:100%; padding:10px; margin-bottom:8px; background:white; color:black; border:1px solid #ccc; border-radius:4px; box-sizing:border-box;">
+        <button onclick="generateKeyForClient()" style="width:100%; padding:10px; background:#2e7d32; color:white; border:none; border-radius:4px; font-weight:bold; cursor:pointer;">Calculer la clé</button>
+        <div id="generated-key-result" style="margin-top:10px; font-weight:bold; color:#2e7d32; text-align:center; font-size:15px; user-select:all; background:#e8f5e9; padding:8px; border-radius:4px;"></div>
     </div>
 </div>
 
@@ -264,7 +287,7 @@
         </div>
 
         <!-- PARAMÈTRES -->
-        <div class="panel" style="background: #19191e; border: 1px dashed var(--primary);">
+        <div class="panel" style="background: #fff3e0; border: 1px solid var(--primary);">
             <div class="grid-2">
                 <div>
                     <label style="color: var(--primary); font-weight: bold;">🌍 Zone / Pays :</label>
@@ -286,26 +309,26 @@
         </div>
 
         <!-- ONGLETS NAVIGATION -->
-        <div style="display: flex; background: #1e1e24; padding: 5px; border-radius: 5px; margin-bottom: 20px; gap: 4px;">
-            <button id="tab-btn-creer" style="flex:1; background:var(--primary); color:white; border:none; padding:10px 5px; border-radius:4px; font-weight:bold; font-size:12px;" onclick="changerOnglet('creer')">📝 Créer</button>
-            <button id="tab-btn-ia" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px 5px; border-radius:4px; font-size:12px;" onclick="changerOnglet('ia')">🤖 Assistant</button>
-            <button id="tab-btn-archives" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px 5px; border-radius:4px; font-size:12px;" onclick="changerOnglet('historique')">🗂️ Archives</button>
-            <button id="tab-btn-stats" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px 5px; border-radius:4px; font-size:12px;" onclick="changerOnglet('stats')">📊 Stats</button>
+        <div style="display: flex; background: #e0e0e0; padding: 5px; border-radius: 8px; margin-bottom: 20px; gap: 6px;">
+            <button id="tab-btn-creer" class="tab-btn" style="background:var(--primary); color:white;" onclick="changerOnglet('creer')">📝 Créer</button>
+            <button id="tab-btn-ia" class="tab-btn" onclick="changerOnglet('ia')">🤖 Assistant</button>
+            <button id="tab-btn-archives" class="tab-btn" onclick="changerOnglet('historique')">🗂️ Archives</button>
+            <button id="tab-btn-stats" class="tab-btn" onclick="changerOnglet('stats')">📊 Stats</button>
         </div>
 
         <!-- TABLEAU DE BORD STATS -->
         <div id="page-statistiques" class="panel hidden">
-            <h3 class="panel-title" style="color:var(--whatsapp-color);">📊 TABLEAU DE BORD FINANCIER</h3>
+            <h3 class="panel-title" style="color:#2e7d32;">📊 TABLEAU DE BORD FINANCIER</h3>
             <div class="grid-3" style="margin-bottom: 15px;">
-                <div class="stat-card" style="border-top: 3px solid var(--primary);">
+                <div class="stat-card" style="border-top: 4px solid var(--primary);">
                     <label>Chiffre d'Affaires</label>
                     <div class="stat-val" id="stat-ca" style="color:var(--primary);">0</div>
                 </div>
-                <div class="stat-card" style="border-top: 3px solid var(--whatsapp-color);">
-                    <label>Encaissé (Acomptes+Payés)</label>
-                    <div class="stat-val" id="stat-encaisse" style="color:var(--whatsapp-color);">0</div>
+                <div class="stat-card" style="border-top: 4px solid #2e7d32;">
+                    <label>Encaissé</label>
+                    <div class="stat-val" id="stat-encaisse" style="color:#2e7d32;">0</div>
                 </div>
-                <div class="stat-card" style="border-top: 3px solid #d9534f;">
+                <div class="stat-card" style="border-top: 4px solid #d9534f;">
                     <label>Reste à Recouvrer</label>
                     <div class="stat-val" id="stat-Reste" style="color:#d9534f;">0</div>
                 </div>
@@ -314,9 +337,9 @@
 
         <!-- ASSISTANT IA -->
         <div id="page-generator-ai" class="panel panel-ai hidden">
-            <h3 class="panel-title" style="color:var(--ai-purple);">🤖 ASSISTANT INTEGRATION IA</h3>
+            <h3 class="panel-title" style="color:var(--ai-purple);">🤖 ASSISTANT TEXTE IA</h3>
             <label>Collez votre texte brut ici :</label>
-            <textarea id="ai-raw-text" rows="6" placeholder="Collez le texte brut ici..."></textarea>
+            <textarea id="ai-raw-text" rows="5" placeholder="Ex: Client: M. Ibrahim, Éléments: Maçonnerie Qte 1 PU 50000..."></textarea>
             <button class="btn btn-ai-gen" onclick="analyserEtGenererDevisIA()">🤖 Analyser & Remplir</button>
         </div>
 
@@ -440,7 +463,7 @@
             if (!clientId) { return alert('Entrez l\'ID du client.'); }
             
             const clientKey = calculateKey(clientId);
-            document.getElementById('generated-key-result').innerHTML = `Clé :<br><span style="font-size:16px; color:white;">${clientKey}</span>`;
+            document.getElementById('generated-key-result').innerHTML = `Clé : <strong>${clientKey}</strong>`;
         }
 
         let articlesDevis = [];
@@ -481,10 +504,10 @@
         }
 
         function changerOnglet(onglet) {
-            document.getElementById('tab-btn-creer').style.background = '#2a2a32';
-            document.getElementById('tab-btn-ia').style.background = '#2a2a32';
-            document.getElementById('tab-btn-archives').style.background = '#2a2a32';
-            document.getElementById('tab-btn-stats').style.background = '#2a2a32';
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.style.background = '#e0e0e0';
+                btn.style.color = '#333';
+            });
             
             document.getElementById('page-generator-ai').classList.add('hidden');
             document.getElementById('section-clients').classList.add('hidden');
@@ -495,21 +518,25 @@
 
             if(onglet === 'creer') {
                 document.getElementById('tab-btn-creer').style.background = 'var(--primary)';
+                document.getElementById('tab-btn-creer').style.color = 'white';
                 document.getElementById('section-clients').classList.remove('hidden');
                 document.getElementById('section-devis').classList.remove('hidden');
                 document.getElementById('section-export').classList.remove('hidden');
             } else if(onglet === 'ia') {
-                document.getElementById('tab-btn-ia').style.background = 'var(--ai-btn)';
+                document.getElementById('tab-btn-ia').style.background = 'var(--ai-purple)';
+                document.getElementById('tab-btn-ia').style.color = 'white';
                 document.getElementById('page-generator-ai').classList.remove('hidden');
                 document.getElementById('section-clients').classList.remove('hidden');
                 document.getElementById('section-devis').classList.remove('hidden');
                 document.getElementById('section-export').classList.remove('hidden');
             } else if(onglet === 'historique') {
                 document.getElementById('tab-btn-archives').style.background = 'var(--primary)';
+                document.getElementById('tab-btn-archives').style.color = 'white';
                 document.getElementById('page-historique').classList.remove('hidden');
                 afficherArchives();
             } else if(onglet === 'stats') {
-                document.getElementById('tab-btn-stats').style.background = 'var(--whatsapp-color)';
+                document.getElementById('tab-btn-stats').style.background = '#2e7d32';
+                document.getElementById('tab-btn-stats').style.color = 'white';
                 document.getElementById('page-statistiques').classList.remove('hidden');
                 calculerStatistiques();
             }
@@ -587,6 +614,15 @@
             articlesDevis.splice(index, 1);
             actualiserListeArticles();
             calculerTotauxFinaux();
+        }
+
+        function supprimerArchive(index) {
+            if(confirm("Voulez-vous vraiment supprimer ce document des archives ?")) {
+                archivesDevis.splice(index, 1);
+                localStorage.setItem('btp_archives_v5', JSON.stringify(archivesDevis));
+                afficherArchives();
+                calculerStatistiques();
+            }
         }
 
         function calculerTotauxFinaux() {
@@ -810,7 +846,7 @@
                 div.className = 'archive-card';
                 
                 let selectStatutHtml = `
-                    <select style="margin-bottom:0; margin-top:5px; padding:6px; font-size:12px;" onchange="modifierStatutDocument(${index}, this.value)">
+                    <select style="margin-bottom:0; margin-top:5px; padding:6px; font-size:12px; background:#f4f5f7;" onchange="modifierStatutDocument(${index}, this.value)">
                         <option value="En attente" ${arc.statut === 'En attente' ? 'selected' : ''}>⏳ En attente</option>
                         <option value="Acompte versé" ${arc.statut === 'Acompte versé' ? 'selected' : ''}>💵 Acompte versé</option>
                         <option value="Payé" ${arc.statut === 'Payé' ? 'selected' : ''}>✅ Entièrement Payé</option>
@@ -820,7 +856,10 @@
                 div.innerHTML = `
                     <div class="archive-header">
                         <span style="color:var(--primary); font-weight:bold;">${arc.numDevis}</span>
-                        <span style="color:var(--text-muted); font-size:12px;">📅 ${arc.date}</span>
+                        <div style="display:flex; gap:10px; align-items:center;">
+                            <span style="color:var(--text-muted); font-size:12px;">📅 ${arc.date}</span>
+                            <span style="cursor:pointer; color:#d9534f; font-weight:bold; font-size:12px;" onclick="supprimerArchive(${index})">🗑️</span>
+                        </div>
                     </div>
                     <div style="font-size:14px; font-weight:bold; margin-bottom:5px;">👤 Client : ${arc.client}</div>
                     <div style="font-size:13px; color:var(--text-muted); margin-bottom:5px;">Reste à payer : <span style="color:var(--primary); font-weight:bold;">${arc.totalTtc}</span></div>
