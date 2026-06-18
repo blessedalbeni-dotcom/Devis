@@ -9,6 +9,8 @@
             --bg-dark: #121214;
             --card-bg: #1e1e24;
             --primary: #e65100;
+            --ai-purple: #b388ff;
+            --ai-btn: #7c4dff;
             --text-main: #ffffff;
             --text-muted: #aaaaaa;
             --border-color: #333333;
@@ -64,6 +66,15 @@
             gap: 8px;
         }
 
+        .panel-ai {
+            border: 1px solid #4a148c;
+            background: #141419;
+        }
+
+        .panel-title-ai {
+            color: var(--ai-purple);
+        }
+
         label {
             display: block;
             margin-bottom: 5px;
@@ -81,6 +92,10 @@
             box-sizing: border-box;
             margin-bottom: 15px;
             font-size: 14px;
+        }
+
+        textarea {
+            resize: vertical;
         }
 
         .grid-2 {
@@ -110,8 +125,34 @@
             background: #3a3a45;
         }
 
-        .btn-ai {
-            background: #0288d1;
+        .btn-ai-gen {
+            background: var(--ai-btn);
+        }
+
+        .btn-ai-gen:hover {
+            background: #651fff;
+        }
+
+        .chip-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+
+        .chip {
+            background: #22222b;
+            border: 1px solid #444;
+            color: var(--text-muted);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+        }
+
+        .chip:hover {
+            border-color: var(--ai-purple);
+            color: white;
         }
 
         .item-list {
@@ -197,7 +238,6 @@
 </head>
 <body>
 
-<!-- SECURITE ANTI-PIRATEMENT ET COMPTE GITHUB -->
 <script>
 (function() {
     const domaineAutorise = "blessedalbeni-dotcom.github.io/Devis";
@@ -219,6 +259,28 @@
         <div class="location-badge">Lomé · FCFA · IA</div>
     </div>
 
+    <!-- TABS DE NAVIGATION HAUTE -->
+    <div style="display: flex; background: #1e1e24; padding: 5px; border-radius: 5px; margin-bottom: 20px; gap: 5px;">
+        <button id="tab-btn-creer" style="flex:1; background:var(--primary); color:white; border:none; padding:8px; border-radius:4px; font-size:12px; font-weight:bold;" onclick="changerOnglet('creer')">📝 Créer Devis</button>
+        <button id="tab-btn-ia" style="flex:1; background:#2a2a32; color:white; border:none; padding:8px; border-radius:4px; font-size:12px;" onclick="changerOnglet('ia')">🤖 Générateur IA</button>
+        <button id="tab-btn-archives" style="flex:1; background:#2a2a32; color:white; border:none; padding:8px; border-radius:4px; font-size:12px;" onclick="changerOnglet('historique')">🗂️ Archives</button>
+    </div>
+
+    <!-- SECTION : GENERATEUR DE DEVIS IA -->
+    <div id="page-generator-ai" class="panel panel-ai hidden">
+        <h3 class="panel-title panel-title-ai">🤖 GENERATEUR DE DEVIS IA</h3>
+        <label>Décrivez les travaux ou collez votre texte. L'IA crée automatiquement toutes les lignes :</label>
+        <textarea id="ai-raw-text" rows="6" placeholder="Ex: Installation electrique villa 4 pieces a Lome : tableau, prises, eclairage, main d oeuvre"></textarea>
+        
+        <button class="btn btn-ai-gen" onclick="analyserEtGenererDevisIA()">🤖 Générer le devis</button>
+        
+        <div class="chip-container">
+            <div class="chip" onclick="chargerExempleIA('electricite')">Ex. Électricité</div>
+            <div class="chip" onclick="chargerExempleIA('maconnerie')">Ex. Maçonnerie</div>
+            <div class="chip" onclick="chargerExempleIA('construction')">Ex. Construction</div>
+        </div>
+    </div>
+
     <!-- SECTION 1 : GESTION DES CLIENTS -->
     <div id="section-clients" class="panel">
         <h3 class="panel-title">👥 Gestion de la Base Clients</h3>
@@ -233,11 +295,11 @@
         <div class="grid-2">
             <div>
                 <label>Nom / Entreprise :</label>
-                <input type="text" id="client-nom" placeholder="Ex : Jean Koffi">
+                <input type="text" id="client-nom" placeholder="Ex : M. Amégnran">
             </div>
             <div>
                 <label>Téléphone :</label>
-                <input type="text" id="client-tel" placeholder="Ex : 90 00 00 00">
+                <input type="text" id="client-tel" placeholder="Ex : 90 22 33 44">
             </div>
         </div>
         
@@ -247,7 +309,7 @@
         <button class="btn btn-secondary" onclick="enregistrerClient()">💾 Enregistrer ce client</button>
     </div>
 
-    <!-- SECTION 2 : CREATION DU DEVIS -->
+    <!-- SECTION 2 : CREATION DU DEVIS MANUEL -->
     <div id="section-devis" class="panel">
         <h3 class="panel-title">📝 Contenu du Devis</h3>
         
@@ -289,7 +351,7 @@
                 </div>
             </div>
             <div class="total-row total-final">
-                <span>NET À PAYER :</span>
+                <span>TOTAL TTC :</span>
                 <span><span id="total-net">0</span> FCFA</span>
             </div>
             <div class="total-row" style="color: #4caf50; font-size: 13px; margin-top: 5px;">
@@ -299,33 +361,10 @@
         </div>
     </div>
 
-    <!-- NOUVELLE SECTION : ASSISTANT IA INTEGRATION -->
-    <div id="section-ai" class="panel">
-        <h3 class="panel-title">🤖 Assistant IA Intégré</h3>
-        <label>Texte généré automatiquement pour l'IA :</label>
-        <textarea id="ai-input-text" rows="5" readonly placeholder="Ajoute des articles pour générer le texte..."></textarea>
-        
-        <button class="btn btn-ai" onclick="copierTexteIA()">📋 Copier les données pour l'IA</button>
-        
-        <div style="font-size: 11px; color: var(--text-muted); text-align: center; margin-top: 5px;">
-            Clique sur le bouton bleu, puis viens coller le texte directement dans notre discussion !
-        </div>
-    </div>
-
     <!-- SECTION 3 : APERÇU ET EXPORT -->
     <div id="section-export" class="panel">
         <h3 class="panel-title">📄 Validation & Export PDF</h3>
         <button class="btn" style="background: #2e7d32;" onclick="genererPDF()">🚀 Générer le Devis Professionnel (PDF)</button>
-    </div>
-
-    <!-- BARRE DE NAVIGATION INTERNE -->
-    <div class="nav-bar">
-        <div class="nav-item active" id="nav-creer" onclick="changerOnglet('creer')">
-            <span>📝</span>Créer
-        </div>
-        <div class="nav-item" id="nav-historique" onclick="changerOnglet('historique')">
-            <span>🗂️</span>Archives
-        </div>
     </div>
 
     <!-- PAGE HISTORIQUE -->
@@ -344,28 +383,105 @@
         window.onload = function() {
             actualiserSelectClients();
             afficherArchives();
-            mettreAJourTexteIA();
         };
 
         function changerOnglet(onglet) {
-            document.getElementById('nav-creer').classList.remove('active');
-            document.getElementById('nav-historique').classList.remove('active');
+            document.getElementById('tab-btn-creer').style.background = '#2a2a32';
+            document.getElementById('tab-btn-ia').style.background = '#2a2a32';
+            document.getElementById('tab-btn-archives').style.background = '#2a2a32';
             
+            // Hide all pages
+            document.getElementById('page-generator-ai').classList.add('hidden');
+            document.getElementById('section-clients').classList.add('hidden');
+            document.getElementById('section-devis').classList.add('hidden');
+            document.getElementById('section-export').classList.add('hidden');
+            document.getElementById('page-historique').classList.add('hidden');
+
             if(onglet === 'creer') {
-                document.getElementById('nav-creer').classList.add('active');
+                document.getElementById('tab-btn-creer').style.background = 'var(--primary)';
                 document.getElementById('section-clients').classList.remove('hidden');
                 document.getElementById('section-devis').classList.remove('hidden');
-                document.getElementById('section-ai').classList.remove('hidden');
                 document.getElementById('section-export').classList.remove('hidden');
-                document.getElementById('page-historique').classList.add('hidden');
-            } else {
-                document.getElementById('nav-historique').classList.add('active');
-                document.getElementById('section-clients').classList.add('hidden');
-                document.getElementById('section-devis').classList.add('hidden');
-                document.getElementById('section-ai').classList.add('hidden');
-                document.getElementById('section-export').classList.add('hidden');
+            } else if(onglet === 'ia') {
+                document.getElementById('tab-btn-ia').style.background = 'var(--ai-btn)';
+                document.getElementById('page-generator-ai').classList.remove('hidden');
+                document.getElementById('section-devis').classList.remove('hidden');
+                document.getElementById('section-export').classList.remove('hidden');
+            } else if(onglet === 'historique') {
+                document.getElementById('tab-btn-archives').style.background = 'var(--primary)';
                 document.getElementById('page-historique').classList.remove('hidden');
             }
+        }
+
+        // LE MOTEUR INTELLIGENT DE PARSING IA DE TEXTE
+        function analyserEtGenererDevisIA() {
+            const bruteText = document.getElementById('ai-raw-text').value;
+            if(!bruteText.trim()) {
+                alert("Veuillez saisir ou coller du texte d'abord.");
+                return;
+            }
+
+            // Réinitialiser la liste actuelle pour accueillir la génération IA
+            articlesDevis = [];
+
+            const lignes = bruteText.split('\n');
+            
+            lignes.forEach(ligne => {
+                let texteNet = ligne.trim();
+                if(!texteNet) return;
+
+                // Ignorer les lignes de salutation ou de totaux calculés par l'IA d'en face
+                if(texteNet.toLowerCase().includes('bonjour') || texteNet.toLowerCase().includes('net à payer') || texteNet.includes('---')) return;
+
+                // Analyse Regex pour extraire la désignation, la quantité et le prix unitaire
+                // Gère les formats : "Nom | Qté : X | Prix : Y" ou "Nom (Qté: X, PU: Y)"
+                const regexQte = /(?:Qté|Qte|Quantité|Quantite)\s*[:=]\s*(\d+)/i;
+                const regexPu = /(?:PU|Prix|P\.U|Tarif|P.U)\s*[:=]\s*(\d+[\d\s.]*)/i;
+
+                const trouveQte = texteNet.match(regexQte);
+                const trouvePu = texteNet.match(regexPu);
+
+                if(trouveQte && trouvePu) {
+                    let qte = parseInt(trouveQte[1], 10);
+                    let puStr = trouvePu[1].replace(/[\s.FCFA]/gi, '');
+                    let pu = parseFloat(puStr) || 0;
+
+                    // Nettoyer la description pour enlever les indices de numérotation au début
+                    let nom = texteNet.split(/[|(]/)[0].replace(/^[\d\s.*#\-._]+/g, '').trim();
+
+                    if(nom && pu > 0) {
+                        articlesDevis.push({ nom, qte, pu, total: qte * pu });
+                    }
+                }
+            });
+
+            // Gérer automatiquement la remise et l'acompte si présents dans le texte brut
+            const matchRemise = bruteText.match(/Remise\s*\((?:%)\)\s*[:=]\s*(\d+)/i);
+            const matchAcompte = bruteText.match(/Acompte\s*\((?:FCFA)\)\s*[:=]\s*(\d+[\d\s.]*)/i);
+
+            if(matchRemise) document.getElementById('remise-pourcent').value = matchRemise[1];
+            if(matchAcompte) document.getElementById('acompte-valeur').value = matchAcompte[1].replace(/[\s.]/g, '');
+
+            actualiserListeArticles();
+            calculerTotauxFinaux();
+            
+            if(articlesDevis.length > 0) {
+                alert(`🎉 Moteur IA : ${articlesDevis.length} lignes extraites et ajoutées sans faute !`);
+            } else {
+                alert("⚠️ Aucun article structuré détecté. Assurez-vous d'utiliser un format lisible contenant la quantité et le prix.");
+            }
+        }
+
+        function chargerExempleIA(type) {
+            let exemple = "";
+            if(type === 'electricite') {
+                exemple = "1. Tableau electrique 8 circuits | Qté : 1 | Prix : 45000\n2. Disjoncteur differentiel 30mA | Qté : 2 | Prix : 12000\n3. Main d'oeuvre electricien | Qté : 1 | Prix : 75000";
+            } else if(type === 'maconnerie') {
+                exemple = "1. Ciment CPJ 45 (Le Tonneau) | Qté : 10 | Prix : 5000\n2. Sable de lagune (Camion) | Qté : 2 | Prix : 45000\n3. Main d'oeuvre maçonnerie | Qté : 1 | Prix : 60000";
+            } else if(type === 'construction') {
+                exemple = "1. Fer à béton 10mm (Paquet) | Qté : 5 | Prix : 35000\n2. Camion de gravier concassé | Qté : 1 | Prix : 90000\nRemise (%) : 5\nAcompte (FCFA) : 100000";
+            }
+            document.getElementById('ai-raw-text').value = exemple;
         }
 
         function calculerSousTotalItem() {
@@ -393,7 +509,6 @@
 
             actualiserListeArticles();
             calculerTotauxFinaux();
-            mettreAJourTexteIA();
         }
 
         function actualiserListeArticles() {
@@ -414,7 +529,6 @@
             articlesDevis.splice(index, 1);
             actualiserListeArticles();
             calculerTotauxFinaux();
-            mettreAJourTexteIA();
         }
 
         function calculerTotauxFinaux() {
@@ -429,33 +543,6 @@
             document.getElementById('total-brut').innerText = totalBrut.toLocaleString('fr-FR');
             document.getElementById('total-net').innerText = totalNet.toLocaleString('fr-FR');
             document.getElementById('total-reste').innerText = (resteAPayer < 0 ? 0 : resteAPayer).toLocaleString('fr-FR');
-            mettreAJourTexteIA();
-        }
-
-        function mettreAJourTexteIA() {
-            const nomClient = document.getElementById('client-nom').value || "Non spécifié";
-            const totalNet = document.getElementById('total-net').innerText;
-            const reste = document.getElementById('total-reste').innerText;
-            
-            let texte = `Bonjour l'IA, voici les détails de mon devis BTP :\n`;
-            texte += `- Client : ${nomClient}\n`;
-            texte += `- Articles : \n`;
-            articlesDevis.forEach(a => {
-                texte += `  * ${a.nom} (Qté: ${a.qte}, PU: ${a.pu} FCFA)\n`;
-            });
-            texte += `- NET À PAYER : ${totalNet} FCFA\n`;
-            texte += `- Reste à solder : ${reste} FCFA\n\n`;
-            texte += `Rédige-moi un message WhatsApp ultra-professionnel et poli pour envoyer ce devis à ce client.`;
-            
-            document.getElementById('ai-input-text').value = texte;
-        }
-
-        function copierTexteIA() {
-            const textarea = document.getElementById('ai-input-text');
-            textarea.select();
-            textarea.setSelectionRange(0, 99999);
-            navigator.clipboard.writeText(textarea.value);
-            alert("Données copiées ! Viens les coller dans notre discussion avec l'IA.");
         }
 
         function enregistrerClient() {
@@ -466,7 +553,6 @@
             baseClients.push({ nom, tel, adresse });
             localStorage.setItem('btp_clients', JSON.stringify(baseClients));
             actualiserSelectClients();
-            mettreAJourTexteIA();
             alert("Client sauvegardé !");
         }
 
@@ -488,7 +574,6 @@
             document.getElementById('client-nom').value = client.nom;
             document.getElementById('client-tel').value = client.tel;
             document.getElementById('client-adresse').value = client.adresse;
-            mettreAJourTexteIA();
         }
 
         function genererPDF() {
