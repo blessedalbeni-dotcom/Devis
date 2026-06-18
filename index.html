@@ -193,17 +193,6 @@
         .hidden {
             display: none !important;
         }
-
-        .ai-output {
-            background: #141419;
-            border-left: 3px solid #0288d1;
-            padding: 12px;
-            border-radius: 4px;
-            font-size: 13px;
-            white-space: pre-wrap;
-            color: #e0e0e0;
-            margin-top: 10px;
-        }
     </style>
 </head>
 <body>
@@ -455,7 +444,7 @@
                 texte += `  * ${a.nom} (Qté: ${a.qte}, PU: ${a.pu} FCFA)\n`;
             });
             texte += `- NET À PAYER : ${totalNet} FCFA\n`;
-            texte += `- Reste à solder : ${構|| reste} FCFA\n\n`;
+            texte += `- Reste à solder : ${reste} FCFA\n\n`;
             texte += `Rédige-moi un message WhatsApp ultra-professionnel et poli pour envoyer ce devis à ce client.`;
             
             document.getElementById('ai-input-text').value = texte;
@@ -507,7 +496,6 @@
             if(!nomClient || articlesDevis.length === 0) { alert("Veuillez remplir le client et les articles."); return; }
             const numDevis = "DEV-" + Math.floor(100000 + Math.random() * 900000);
             const dateJour = new Date().toLocaleDateString('fr-FR');
-            // Logique de simulation d'impression simplifiée pour mobile
             alert("Génération du PDF pour " + nomClient + " lancée !");
             archivesDevis.unshift({ numDevis, dateJour, client: nomClient, total: document.getElementById('total-net').innerText });
             localStorage.setItem('btp_archives', JSON.stringify(archivesDevis));
