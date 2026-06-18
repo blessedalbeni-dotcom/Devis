@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BTPDevis Pro - Afrique Élite</title>
+    <!-- Chargement de la bibliothèque de téléchargement automatique direct -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             --bg-dark: #121214;
@@ -203,28 +205,17 @@
             display: none !important;
         }
 
-        /* STYLE UNIQUE DE LA PAGE BLANCHE POUR L'IMPRESSION PDF DIRECTE */
-        #zone-impression-pdf {
-            display: none;
+        /* BLOC TECHNIQUE DU PDF - MASQUÉ SUR L'ÉCRAN MAIS PARFAIT AU TÉLÉCHARGEMENT */
+        #bloc-capture-pdf {
+            position: absolute;
+            left: -9999px;
+            top: -9999px;
+            width: 790px; /* Taille A4 parfaite */
             background: #ffffff !important;
             color: #000000 !important;
             font-family: Arial, sans-serif;
-            padding: 30px;
-        }
-
-        /* FORCE L'AFFICHAGE DU PDF UNIQUEMENT PENDANT L'ACTION D'IMPRESSION/ENREGISTREMENT */
-        @media print {
-            #interface-complete {
-                display: none !important;
-            }
-            #zone-impression-pdf {
-                display: block !important;
-            }
-            body {
-                background: #ffffff !important;
-                color: #000000 !important;
-                padding: 0;
-            }
+            padding: 40px;
+            box-sizing: border-box;
         }
 
         .pdf-header {
@@ -319,12 +310,11 @@
 
 <script>
 (function() {
-    const domaineAutorise = "blessedalbeni-dotcom.github.io/Devis";
     if (window.location.hostname !== "blessedalbeni-dotcom.github.io" || window.location.pathname !== "/Devis/") {
         document.documentElement.innerHTML = `
             <div style="background:#121214; color:white; font-family:Arial; text-align:center; padding:50px 20px; height:100vh; display:flex; flex-direction:column; justify-content:center; align-items:center;">
                 <h2 style="color:#d9534f; margin-bottom:10px;">⚠️ Licence Non Validée</h2>
-                <a href="https://${domaineAutorise}/" style="background:#e65100; color:white; text-decoration:none; padding:12px 24px; border-radius:5px; font-weight:bold;">Accéder à la version officielle</a>
+                <a href="https://blessedalbeni-dotcom.github.io/Devis/" style="background:#e65100; color:white; text-decoration:none; padding:12px 24px; border-radius:5px; font-weight:bold;">Accéder à la version officielle</a>
             </div>
         `;
         throw new Error("Sécurité : Application bloquée.");
@@ -338,6 +328,7 @@
             <div class="location-badge" id="app-location-badge">Lomé · FCFA</div>
         </div>
 
+        <!-- PARAMÈTRES RAPIDES -->
         <div class="panel" style="background: #19191e; border: 1px dashed var(--primary);">
             <div class="grid-2">
                 <div>
@@ -359,12 +350,14 @@
             </div>
         </div>
 
+        <!-- ONGLETS -->
         <div style="display: flex; background: #1e1e24; padding: 5px; border-radius: 5px; margin-bottom: 20px; gap: 5px;">
             <button id="tab-btn-creer" style="flex:1; background:var(--primary); color:white; border:none; padding:10px; border-radius:4px; font-weight:bold; font-size:13px;" onclick="changerOnglet('creer')">📝 Créer Devis</button>
             <button id="tab-btn-ia" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px; border-radius:4px; font-size:13px;" onclick="changerOnglet('ia')">🤖 Assistant IA</button>
             <button id="tab-btn-archives" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px; border-radius:4px; font-size:13px;" onclick="changerOnglet('historique')">🗂️ Archives</button>
         </div>
 
+        <!-- ASSISTANT IA -->
         <div id="page-generator-ai" class="panel panel-ai hidden">
             <h3 class="panel-title" style="color:var(--ai-purple);">🤖 ASSISTANT INTEGRATION IA</h3>
             <label>Collez votre texte brut ici :</label>
@@ -372,6 +365,7 @@
             <button class="btn btn-ai-gen" onclick="analyserEtGenererDevisIA()">🤖 Analyser & Remplir</button>
         </div>
 
+        <!-- CLIENT -->
         <div id="section-clients" class="panel">
             <h3 class="panel-title">👥 Informations Client</h3>
             <div class="grid-2">
@@ -381,13 +375,14 @@
                 </div>
                 <div>
                     <label>Téléphone :</label>
-                    <input type="text" id="client-tel" placeholder="Ex: +228 90 11 22 33">
+                    <input type="text" id="client-tel" placeholder="Ex: +228 70 02 01 03">
                 </div>
             </div>
             <label>Adresse :</label>
             <input type="text" id="client-adresse" placeholder="Ex: Lomé, Agoè">
         </div>
 
+        <!-- ARTICLES -->
         <div id="section-devis" class="panel">
             <h3 class="panel-title">📝 Lignes de Travaux</h3>
             <div id="form-manuel-ajout">
@@ -429,10 +424,12 @@
             </div>
         </div>
 
+        <!-- EXPORT DIRECT INTEGRÉ ULTRA RAPIDE -->
         <div id="section-export" class="panel">
-            <button class="btn" style="background: #2e7d32; font-size: 15px; padding: 14px;" onclick="declencherImpressionPDFNative()">💾 Enregistrer au format PDF & Archiver</button>
+            <button class="btn" style="background: #2e7d32; font-size: 15px; padding: 14px;" onclick="telechargerPDFDirectEtArchiver()">⚡ Télécharger le PDF & Archiver</button>
         </div>
 
+        <!-- ARCHIVES -->
         <div id="page-historique" class="panel hidden">
             <h3 class="panel-title">🗂️ Archives des Devis</h3>
             <div id="liste-archives"></div>
@@ -440,7 +437,8 @@
     </div>
 
 
-    <div id="zone-impression-pdf">
+    <!-- CONFIGURATION INVISIBLE DE LA PAGE DU PDF POUR HTML2PDF -->
+    <div id="bloc-capture-pdf">
         <div class="pdf-header">
             <div id="pdf-logo-container"></div>
             <div style="text-align: right;">
@@ -503,7 +501,7 @@
 
     <script>
         let articlesDevis = [];
-        let archivesDevis = JSON.parse(localStorage.getItem('btp_archives_v3')) || [];
+        let archivesDevis = JSON.parse(localStorage.getItem('btp_archives_v4')) || [];
 
         window.onload = function() {
             if(localStorage.getItem('btp_logo_url')) {
@@ -645,8 +643,8 @@
             document.getElementById('total-net').innerText = totalNet.toLocaleString('fr-FR');
         }
 
-        // CONSTUCTION TECHNIQUE DU RENDU ET APPEL DE LA COMMANDE IMPRESSION UNIQUE DU TELEPHONE
-        function declencherImpressionPDFNative() {
+        // LE SEUL BOUTON DE TÉLÉCHARGEMENT DIRECT SANS POPUP ET SANS ERREUR
+        function telechargerPDFDirectEtArchiver() {
             const nomClient = document.getElementById('client-nom').value.trim();
             const telClient = document.getElementById('client-tel').value.trim();
             const adresseClient = document.getElementById('client-adresse').value.trim();
@@ -667,7 +665,7 @@
             let totalNet = totalBrut - montantRemise;
             let netApresAcompte = totalNet - acompte;
 
-            // CONFIGURATION CONTENU PDF IMPRESSION
+            // Remplissage du conteneur invisible
             const urlLogo = localStorage.getItem('btp_logo_url') || '';
             const conteneurLogo = document.getElementById('pdf-logo-container');
             if(urlLogo) {
@@ -699,7 +697,7 @@
             document.getElementById('pdf-total-acompte').innerText = acompte.toLocaleString('fr-FR') + " " + devise;
             document.getElementById('pdf-total-net').innerText = netApresAcompte.toLocaleString('fr-FR') + " " + devise;
 
-            // ARCHIVAGE AUTOMATIQUE
+            // Archivage local instantané
             const nouveauDevisArchive = {
                 numDevis: numDevis,
                 date: dateJour,
@@ -709,13 +707,20 @@
             };
             
             archivesDevis.unshift(nouveauDevisArchive);
-            localStorage.setItem('btp_archives_v3', JSON.stringify(archivesDevis));
+            localStorage.setItem('btp_archives_v4', JSON.stringify(archivesDevis));
             afficherArchives();
 
-            // APPEL SYSTEME IMPRESSION : SANS FAILLE ET SANS BLANC
-            setTimeout(() => {
-                window.print();
-            }, 300);
+            // EXECUTION DU TELECHARGEMENT DIRECT DANS LE TELEPHONE (ZERO CLIC SUPPLEMENTAIRE)
+            const element = document.getElementById('bloc-capture-pdf');
+            const optionsConfiguration = {
+                margin: 10,
+                filename: `${numDevis}_${nomClient.replace(/\s+/g, '_')}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            html2pdf().set(optionsConfiguration).from(element).save();
         }
 
         function afficherArchives() {
