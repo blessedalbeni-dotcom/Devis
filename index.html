@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BTPDevis Pro - Afrique Élite</title>
-    <!-- Inclusion de la bibliothèque officielle pour le téléchargement PDF direct -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             --bg-dark: #121214;
@@ -205,22 +203,28 @@
             display: none !important;
         }
 
-        /* RENDU DU VISUEL DE PREVIEW POUR RENDRE LA CAPTURE PARFAITE */
-        #container-rendu-visualisation {
-            margin-top: 30px;
-            background: #1a1a1e;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px solid var(--border-color);
-        }
-
-        .pdf-container {
+        /* STYLE UNIQUE DE LA PAGE BLANCHE POUR L'IMPRESSION PDF DIRECTE */
+        #zone-impression-pdf {
+            display: none;
             background: #ffffff !important;
             color: #000000 !important;
             font-family: Arial, sans-serif;
-            padding: 25px;
-            box-sizing: border-box;
-            border-radius: 4px;
+            padding: 30px;
+        }
+
+        /* FORCE L'AFFICHAGE DU PDF UNIQUEMENT PENDANT L'ACTION D'IMPRESSION/ENREGISTREMENT */
+        @media print {
+            #interface-complete {
+                display: none !important;
+            }
+            #zone-impression-pdf {
+                display: block !important;
+            }
+            body {
+                background: #ffffff !important;
+                color: #000000 !important;
+                padding: 0;
+            }
         }
 
         .pdf-header {
@@ -232,14 +236,8 @@
             margin-bottom: 25px;
         }
 
-        .pdf-logo {
-            max-height: 50px;
-            max-width: 200px;
-            object-fit: contain;
-        }
-
         .pdf-title {
-            font-size: 24px;
+            font-size: 26px;
             font-weight: bold;
             color: #e65100;
         }
@@ -255,7 +253,7 @@
             background: #f8f9fa;
             padding: 12px;
             border-radius: 5px;
-            border: 1px solid #e9ecef;
+            border: 1px solid #dee2e6;
         }
 
         .pdf-box h4 {
@@ -274,14 +272,14 @@
         .pdf-table th {
             background: #212529;
             color: white;
-            padding: 8px;
+            padding: 10px;
             text-align: left;
             font-size: 12px;
         }
 
         .pdf-table td {
             border-bottom: 1px solid #dee2e6;
-            padding: 8px;
+            padding: 10px;
             font-size: 12px;
             color: #212529;
         }
@@ -295,23 +293,23 @@
             display: flex;
             justify-content: space-between;
             padding: 5px 0;
-            font-size: 12px;
+            font-size: 13px;
         }
 
         .pdf-total-final {
             background: #e65100;
             color: white;
             font-weight: bold;
-            padding: 8px;
+            padding: 10px;
             border-radius: 4px;
-            font-size: 14px;
+            font-size: 15px;
             margin-top: 5px;
         }
 
         .pdf-footer {
-            margin-top: 30px;
+            margin-top: 40px;
             border-top: 1px solid #dee2e6;
-            padding-top: 10px;
+            padding-top: 15px;
             font-size: 11px;
             color: #6c757d;
         }
@@ -340,7 +338,6 @@
             <div class="location-badge" id="app-location-badge">Lomé · FCFA</div>
         </div>
 
-        <!-- PARAMÈTRES RAPIDES -->
         <div class="panel" style="background: #19191e; border: 1px dashed var(--primary);">
             <div class="grid-2">
                 <div>
@@ -362,22 +359,19 @@
             </div>
         </div>
 
-        <!-- ONGLETS -->
         <div style="display: flex; background: #1e1e24; padding: 5px; border-radius: 5px; margin-bottom: 20px; gap: 5px;">
             <button id="tab-btn-creer" style="flex:1; background:var(--primary); color:white; border:none; padding:10px; border-radius:4px; font-weight:bold; font-size:13px;" onclick="changerOnglet('creer')">📝 Créer Devis</button>
             <button id="tab-btn-ia" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px; border-radius:4px; font-size:13px;" onclick="changerOnglet('ia')">🤖 Assistant IA</button>
             <button id="tab-btn-archives" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px; border-radius:4px; font-size:13px;" onclick="changerOnglet('historique')">🗂️ Archives</button>
         </div>
 
-        <!-- ASSISTANT IA -->
         <div id="page-generator-ai" class="panel panel-ai hidden">
             <h3 class="panel-title" style="color:var(--ai-purple);">🤖 ASSISTANT INTEGRATION IA</h3>
             <label>Collez votre texte brut ici :</label>
-            <textarea id="ai-raw-text" rows="6" placeholder="Collez le texte du devis fourni par l'IA ici..."></textarea>
+            <textarea id="ai-raw-text" rows="6" placeholder="Collez le texte brut ici..."></textarea>
             <button class="btn btn-ai-gen" onclick="analyserEtGenererDevisIA()">🤖 Analyser & Remplir</button>
         </div>
 
-        <!-- CLIENT -->
         <div id="section-clients" class="panel">
             <h3 class="panel-title">👥 Informations Client</h3>
             <div class="grid-2">
@@ -394,7 +388,6 @@
             <input type="text" id="client-adresse" placeholder="Ex: Lomé, Agoè">
         </div>
 
-        <!-- ARTICLES -->
         <div id="section-devis" class="panel">
             <h3 class="panel-title">📝 Lignes de Travaux</h3>
             <div id="form-manuel-ajout">
@@ -436,84 +429,77 @@
             </div>
         </div>
 
-        <!-- VALIDATION -->
         <div id="section-export" class="panel">
-            <button class="btn" style="background: #2e7d32; font-size: 15px; padding: 14px;" onclick="genererEtTelechargerPDF()">💾 Générer & Télécharger le PDF</button>
+            <button class="btn" style="background: #2e7d32; font-size: 15px; padding: 14px;" onclick="declencherImpressionPDFNative()">💾 Enregistrer au format PDF & Archiver</button>
         </div>
 
-        <!-- ARCHIVES -->
         <div id="page-historique" class="panel hidden">
-            <h3 class="panel-title">🗂️ Archives</h3>
+            <h3 class="panel-title">🗂️ Archives des Devis</h3>
             <div id="liste-archives"></div>
         </div>
     </div>
 
-    <!-- ZONE DE PREVIEW VISIBLE : GARANTIT UNE CAPTURE PDF NON VIDE ET RENSEIGNÉE -->
-    <div id="container-rendu-visualisation">
-        <h3 style="color: var(--primary); font-size: 14px; margin-top: 0; margin-bottom: 10px;">👁️ Aperçu du Document (Zone de Capture PDF)</h3>
-        
-        <div id="zone-pdf-strict" class="pdf-container">
-            <div class="pdf-header">
-                <div id="pdf-logo-container"></div>
-                <div style="text-align: right;">
-                    <div class="pdf-title">DEVIS</div>
-                    <div style="font-size: 11px; color: #333; font-family: monospace;" id="pdf-num-date">DEV-XXXXXX</div>
-                </div>
-            </div>
 
-            <div class="pdf-infos">
-                <div class="pdf-box">
-                    <h4>Client</h4>
-                    <div id="pdf-client-infos" style="font-size: 12px; font-weight: bold; color: #111; line-height: 1.4;">-</div>
-                </div>
-                <div class="pdf-box">
-                    <h4>Émetteur</h4>
-                    <div style="font-size: 12px; font-weight: bold; color: #e65100;">Mon Entreprise BTP</div>
-                    <div style="font-size: 11px; color: #444;" id="pdf-emmeteur-pays">Lomé, Togo</div>
-                </div>
-            </div>
-
-            <table class="pdf-table">
-                <thead>
-                    <tr>
-                        <th style="width: 5%;">#</th>
-                        <th style="width: 55%;">Désignation des Travaux</th>
-                        <th style="width: 10%; text-align: center;">Qté</th>
-                        <th style="width: 15%; text-align: right;">P.U</th>
-                        <th style="width: 15%; text-align: right;">Total</th>
-                    </tr>
-                </thead>
-                <tbody id="pdf-table-body">
-                    <tr><td colspan="5" style="text-align:center; color:#888;">Aucun élément inséré</td></tr>
-                </tbody>
-            </table>
-
-            <div class="pdf-totals">
-                <div class="pdf-total-row">
-                    <span>Sous-total HT</span>
-                    <span id="pdf-total-brut">0 F</span>
-                </div>
-                <div class="pdf-total-row">
-                    <span>Remise</span>
-                    <span id="pdf-total-remise">0 F</span>
-                </div>
-                <div class="pdf-total-row">
-                    <span>Acompte</span>
-                    <span id="pdf-total-acompte">0 F</span>
-                </div>
-                <div class="pdf-total-final">
-                    <div style="display: flex; justify-content: space-between;">
-                        <span>TOTAL NET</span>
-                        <span id="pdf-total-net">0 F</span>
-                    </div>
-                </div>
-            </div>
-
-            <div class="pdf-footer">
-                Document officiel généré numériquement. Validité de l'offre : 30 jours.
+    <div id="zone-impression-pdf">
+        <div class="pdf-header">
+            <div id="pdf-logo-container"></div>
+            <div style="text-align: right;">
+                <div class="pdf-title">DEVIS</div>
+                <div style="font-size: 12px; color: #333; font-family: monospace;" id="pdf-num-date">DEV-XXXXXX</div>
             </div>
         </div>
+
+        <div class="pdf-infos">
+            <div class="pdf-box">
+                <h4>Client</h4>
+                <div id="pdf-client-infos" style="font-size: 13px; font-weight: bold; color: #111; line-height: 1.4;">-</div>
+            </div>
+            <div class="pdf-box">
+                <h4>Émetteur</h4>
+                <div style="font-size: 13px; font-weight: bold; color: #e65100;">Mon Entreprise BTP</div>
+                <div style="font-size: 11px; color: #444;" id="pdf-emmeteur-pays">Lomé, Togo</div>
+            </div>
+        </div>
+
+        <table class="pdf-table">
+            <thead>
+                <tr>
+                    <th style="width: 5%;">#</th>
+                    <th style="width: 55%;">Désignation des Travaux</th>
+                    <th style="width: 10%; text-align: center;">Qté</th>
+                    <th style="width: 15%; text-align: right;">P.U</th>
+                    <th style="width: 15%; text-align: right;">Total</th>
+                </tr>
+            </thead>
+            <tbody id="pdf-table-body"></tbody>
+        </table>
+
+        <div class="pdf-totals">
+            <div class="pdf-total-row">
+                <span>Sous-total HT</span>
+                <span id="pdf-total-brut">0 F</span>
+            </div>
+            <div class="pdf-total-row">
+                <span>Remise appliquée</span>
+                <span id="pdf-total-remise">0 F</span>
+            </div>
+            <div class="pdf-total-row">
+                <span>Acompte versé</span>
+                <span id="pdf-total-acompte">0 F</span>
+            </div>
+            <div class="pdf-total-final">
+                <div style="display: flex; justify-content: space-between;">
+                    <span>TOTAL NET TTC</span>
+                    <span id="pdf-total-net">0 F</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="pdf-footer">
+            Document contractuel officiel. Offre valable pendant 30 jours à compter de la date d'émission.
+        </div>
     </div>
+
 
     <script>
         let articlesDevis = [];
@@ -528,22 +514,20 @@
             }
             changerPaysApp();
             afficherArchives();
-            rafraichirRenduVisuelPDF();
         };
 
         function sauvegarderParametres() {
             localStorage.setItem('btp_logo_url', document.getElementById('logo-url').value.trim());
-            rafraichirRenduVisuelPDF();
         }
 
         function changerPaysApp() {
             const select = document.getElementById('select-pays');
             const pays = select.value;
             const capitale = select.options[select.selectedIndex].getAttribute('data-capitale');
-            const cavities = select.options[select.selectedIndex].getAttribute('data-devise');
+            const devise = select.options[select.selectedIndex].getAttribute('data-devise');
             
-            document.getElementById('app-location-badge').innerText = `${capitale} · ${cavities}`;
-            document.querySelectorAll('.devise-txt').forEach(el => { el.innerText = cavities; });
+            document.getElementById('app-location-badge').innerText = `${capitale} · ${devise}`;
+            document.querySelectorAll('.devise-txt').forEach(el => { el.innerText = devise; });
             localStorage.setItem('btp_pays_choisi', pays);
             calculerTotauxFinaux();
         }
@@ -613,6 +597,7 @@
 
             actualiserListeArticles();
             calculerTotauxFinaux();
+            alert("✨ Données extraites avec succès !");
         }
 
         function ajouterArticle() {
@@ -630,13 +615,13 @@
             const conteneur = document.getElementById('liste-articles');
             conteneur.innerHTML = '';
             const select = document.getElementById('select-pays');
-            const cavities = select.options[select.selectedIndex].getAttribute('data-devise');
+            const devise = select.options[select.selectedIndex].getAttribute('data-devise');
 
             articlesDevis.forEach((art, index) => {
                 const div = document.createElement('div');
                 div.className = 'item-added';
                 div.innerHTML = `
-                    <div><strong>${art.nom}</strong><br><span style="color:var(--text-muted);">${art.qte} x ${art.pu.toLocaleString('fr-FR')} ${cavities}</span></div>
+                    <div><strong>${art.nom}</strong><br><span style="color:var(--text-muted);">${art.qte} x ${art.pu.toLocaleString('fr-FR')} ${devise}</span></div>
                     <div style="display:flex; align-items:center; gap:10px;"><span><strong>${art.total.toLocaleString('fr-FR')}</strong> F</span><span class="remove-btn" onclick="supprimerArticle(${index})">❌</span></div>
                 `;
                 conteneur.appendChild(div);
@@ -658,64 +643,10 @@
 
             document.getElementById('total-brut').innerText = totalBrut.toLocaleString('fr-FR');
             document.getElementById('total-net').innerText = totalNet.toLocaleString('fr-FR');
-            
-            rafraichirRenduVisuelPDF();
         }
 
-        function rafraichirRenduVisuelPDF() {
-            const nomClient = document.getElementById('client-nom').value.trim() || '-';
-            const telClient = document.getElementById('client-tel').value.trim() || '-';
-            const adresseClient = document.getElementById('client-adresse').value.trim() || '-';
-            
-            const select = document.getElementById('select-pays');
-            const pays = select.value;
-            const cavities = select.options[select.selectedIndex].getAttribute('data-devise');
-            
-            const urlLogo = localStorage.getItem('btp_logo_url') || '';
-            const conteneurLogo = document.getElementById('pdf-logo-container');
-            
-            if(urlLogo) {
-                conteneurLogo.innerHTML = `<img src="${urlLogo}" class="pdf-logo" alt="Logo">`;
-            } else {
-                conteneurLogo.innerHTML = `<div style="font-size: 16px; font-weight: bold; color: #222;">MON ENTREPRISE BTP</div>`;
-            }
-
-            document.getElementById('pdf-emmeteur-pays').innerText = `${pays}`;
-            document.getElementById('pdf-client-infos').innerHTML = `${nomClient}<br>Tél: ${telClient}<br>${adresseClient}`;
-
-            const tbody = document.getElementById('pdf-table-body');
-            tbody.innerHTML = '';
-            
-            if(articlesDevis.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#888;">Aucun élément inséré</td></tr>`;
-            } else {
-                articlesDevis.forEach((art, idx) => {
-                    tbody.innerHTML += `
-                        <tr>
-                            <td>${idx + 1}</td>
-                            <td>${art.nom}</td>
-                            <td style="text-align:center;">${art.qte}</td>
-                            <td style="text-align:right;">${art.pu.toLocaleString('fr-FR')}</td>
-                            <td style="text-align:right; font-weight:bold;">${art.total.toLocaleString('fr-FR')}</td>
-                        </tr>
-                    `;
-                });
-            }
-
-            let totalBrut = articlesDevis.reduce((sum, art) => sum + art.total, 0);
-            const remisePourcent = parseFloat(document.getElementById('remise-pourcent').value) || 0;
-            const acompte = parseFloat(document.getElementById('acompte-valeur').value) || 0;
-
-            let montantRemise = totalBrut * (remisePourcent / 100);
-            let totalNet = totalBrut - montantRemise;
-
-            document.getElementById('pdf-total-brut').innerText = totalBrut.toLocaleString('fr-FR') + " " + cavities;
-            document.getElementById('pdf-total-remise').innerText = montantRemise.toLocaleString('fr-FR') + ` (${remisePourcent}%)`;
-            document.getElementById('pdf-total-acompte').innerText = acompte.toLocaleString('fr-FR') + " " + cavities;
-            document.getElementById('pdf-total-net').innerText = totalNet.toLocaleString('fr-FR') + " " + cavities;
-        }
-
-        function genererEtTelechargerPDF() {
+        // CONSTUCTION TECHNIQUE DU RENDU ET APPEL DE LA COMMANDE IMPRESSION UNIQUE DU TELEPHONE
+        function declencherImpressionPDFNative() {
             const nomClient = document.getElementById('client-nom').value.trim();
             const telClient = document.getElementById('client-tel').value.trim();
             const adresseClient = document.getElementById('client-adresse').value.trim();
@@ -724,7 +655,7 @@
 
             const select = document.getElementById('select-pays');
             const pays = select.value;
-            const cavities = select.options[select.selectedIndex].getAttribute('data-devise');
+            const devise = select.options[select.selectedIndex].getAttribute('data-devise');
 
             if(!nomClient || articlesDevis.length === 0) return alert("Veuillez indiquer un client et ajouter des travaux.");
 
@@ -734,34 +665,57 @@
             let totalBrut = articlesDevis.reduce((sum, art) => sum + art.total, 0);
             let montantRemise = totalBrut * (remisePourcent / 100);
             let totalNet = totalBrut - montantRemise;
+            let netApresAcompte = totalNet - acompte;
 
+            // CONFIGURATION CONTENU PDF IMPRESSION
+            const urlLogo = localStorage.getItem('btp_logo_url') || '';
+            const conteneurLogo = document.getElementById('pdf-logo-container');
+            if(urlLogo) {
+                conteneurLogo.innerHTML = `<img src="${urlLogo}" style="max-height:50px; max-width:200px; object-fit:contain;" alt="Logo">`;
+            } else {
+                conteneurLogo.innerHTML = `<div style="font-size: 18px; font-weight: bold; color: #222;">MON ENTREPRISE BTP</div>`;
+            }
+
+            document.getElementById('pdf-emmeteur-pays').innerText = `${pays}`;
             document.getElementById('pdf-num-date').innerText = `${numDevis} | Date : ${dateJour}`;
+            document.getElementById('pdf-client-infos').innerHTML = `${nomClient}<br>Tél: ${telClient || '-'}<br>${adresseClient || '-'}`;
 
+            const tbody = document.getElementById('pdf-table-body');
+            tbody.innerHTML = '';
+            articlesDevis.forEach((art, idx) => {
+                tbody.innerHTML += `
+                    <tr>
+                        <td>${idx + 1}</td>
+                        <td>${art.nom}</td>
+                        <td style="text-align:center;">${art.qte}</td>
+                        <td style="text-align:right;">${art.pu.toLocaleString('fr-FR')}</td>
+                        <td style="text-align:right; font-weight:bold;">${art.total.toLocaleString('fr-FR')}</td>
+                    </tr>
+                `;
+            });
+
+            document.getElementById('pdf-total-brut').innerText = totalBrut.toLocaleString('fr-FR') + " " + devise;
+            document.getElementById('pdf-total-remise').innerText = montantRemise.toLocaleString('fr-FR') + ` (${remisePourcent}%)`;
+            document.getElementById('pdf-total-acompte').innerText = acompte.toLocaleString('fr-FR') + " " + devise;
+            document.getElementById('pdf-total-net').innerText = netApresAcompte.toLocaleString('fr-FR') + " " + devise;
+
+            // ARCHIVAGE AUTOMATIQUE
             const nouveauDevisArchive = {
                 numDevis: numDevis,
                 date: dateJour,
                 client: nomClient,
                 telephone: telClient,
-                totalTtc: totalNet.toLocaleString('fr-FR') + " " + cavities
+                totalTtc: netApresAcompte.toLocaleString('fr-FR') + " " + devise
             };
             
             archivesDevis.unshift(nouveauDevisArchive);
             localStorage.setItem('btp_archives_v3', JSON.stringify(archivesDevis));
             afficherArchives();
 
-            // CAPTURE SÉCURISÉE DU VISUEL
-            const element = document.getElementById('zone-pdf-strict');
-            const optionsConfiguration = {
-                margin:       10,
-                filename:     `${numDevis}_${nomClient.replace(/[\s]/g, '_')}.pdf`,
-                image:        { type: 'jpeg', quality: 0.98 },
-                html2canvas:  { scale: 2, useCORS: true },
-                jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-
-            html2pdf().set(optionsConfiguration).from(element).save().then(() => {
-                alert(`💾 PDF généré avec succès dans vos téléchargements !\nRéférence : ${numDevis}`);
-            });
+            // APPEL SYSTEME IMPRESSION : SANS FAILLE ET SANS BLANC
+            setTimeout(() => {
+                window.print();
+            }, 300);
         }
 
         function afficherArchives() {
@@ -794,10 +748,9 @@
 
         function envoyerMessageWhatsAppElite(client, telephone, numDevis, totalTtc) {
             if(!telephone || telephone === '-') {
-                return alert("Aucun numéro de téléphone disponible pour ce client.");
+                return alert("Aucun numéro de téléphone disponible.");
             }
 
-            // Message direct et épuré. Aucune mention de l'application ou de lien internet.
             const texteMessage = `Bonjour M. ${client},\n\nVeuillez trouver ci-joint notre proposition tarifaire officielle concernant votre projet.\n\n📄 *Référence :* ${numDevis}\n💰 *Montant Total :* ${totalTtc}\n\nJe vous transmets le document PDF ci-dessous.\n\nCordialement,\n*Mon Entreprise BTP*`;
             
             let numPropre = telephone.replace(/[\s\+\-]/g, '');
