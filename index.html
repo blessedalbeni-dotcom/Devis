@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BTPDevis Pro - Afrique Élite</title>
-    <!-- Chargement de la bibliothèque de téléchargement automatique direct -->
+    <!-- Bibliothèque de téléchargement direct optimisée -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
@@ -205,17 +205,14 @@
             display: none !important;
         }
 
-        /* BLOC TECHNIQUE DU PDF - MASQUÉ SUR L'ÉCRAN MAIS PARFAIT AU TÉLÉCHARGEMENT */
-        #bloc-capture-pdf {
-            position: absolute;
-            left: -9999px;
-            top: -9999px;
-            width: 790px; /* Taille A4 parfaite */
+        /* LE STYLE BLANC DU PDF VALIDE */
+        .style-pdf-imprimable {
             background: #ffffff !important;
             color: #000000 !important;
             font-family: Arial, sans-serif;
-            padding: 40px;
+            padding: 35px;
             box-sizing: border-box;
+            width: 790px;
         }
 
         .pdf-header {
@@ -328,7 +325,7 @@
             <div class="location-badge" id="app-location-badge">Lomé · FCFA</div>
         </div>
 
-        <!-- PARAMÈTRES RAPIDES -->
+        <!-- PARAMÈTRES -->
         <div class="panel" style="background: #19191e; border: 1px dashed var(--primary);">
             <div class="grid-2">
                 <div>
@@ -350,7 +347,7 @@
             </div>
         </div>
 
-        <!-- ONGLETS -->
+        <!-- TABS -->
         <div style="display: flex; background: #1e1e24; padding: 5px; border-radius: 5px; margin-bottom: 20px; gap: 5px;">
             <button id="tab-btn-creer" style="flex:1; background:var(--primary); color:white; border:none; padding:10px; border-radius:4px; font-weight:bold; font-size:13px;" onclick="changerOnglet('creer')">📝 Créer Devis</button>
             <button id="tab-btn-ia" style="flex:1; background:#2a2a32; color:white; border:none; padding:10px; border-radius:4px; font-size:13px;" onclick="changerOnglet('ia')">🤖 Assistant IA</button>
@@ -424,9 +421,9 @@
             </div>
         </div>
 
-        <!-- EXPORT DIRECT INTEGRÉ ULTRA RAPIDE -->
+        <!-- BOUTON DE TÉLÉCHARGEMENT SECURE DIRECT -->
         <div id="section-export" class="panel">
-            <button class="btn" style="background: #2e7d32; font-size: 15px; padding: 14px;" onclick="telechargerPDFDirectEtArchiver()">⚡ Télécharger le PDF & Archiver</button>
+            <button class="btn" style="background: #2e7d32; font-size: 15px; padding: 14px;" onclick="genererEtTelechargerPDFMobileDirect()">⚡ Télécharger le PDF & Archiver</button>
         </div>
 
         <!-- ARCHIVES -->
@@ -436,72 +433,12 @@
         </div>
     </div>
 
-
-    <!-- CONFIGURATION INVISIBLE DE LA PAGE DU PDF POUR HTML2PDF -->
-    <div id="bloc-capture-pdf">
-        <div class="pdf-header">
-            <div id="pdf-logo-container"></div>
-            <div style="text-align: right;">
-                <div class="pdf-title">DEVIS</div>
-                <div style="font-size: 12px; color: #333; font-family: monospace;" id="pdf-num-date">DEV-XXXXXX</div>
-            </div>
-        </div>
-
-        <div class="pdf-infos">
-            <div class="pdf-box">
-                <h4>Client</h4>
-                <div id="pdf-client-infos" style="font-size: 13px; font-weight: bold; color: #111; line-height: 1.4;">-</div>
-            </div>
-            <div class="pdf-box">
-                <h4>Émetteur</h4>
-                <div style="font-size: 13px; font-weight: bold; color: #e65100;">Mon Entreprise BTP</div>
-                <div style="font-size: 11px; color: #444;" id="pdf-emmeteur-pays">Lomé, Togo</div>
-            </div>
-        </div>
-
-        <table class="pdf-table">
-            <thead>
-                <tr>
-                    <th style="width: 5%;">#</th>
-                    <th style="width: 55%;">Désignation des Travaux</th>
-                    <th style="width: 10%; text-align: center;">Qté</th>
-                    <th style="width: 15%; text-align: right;">P.U</th>
-                    <th style="width: 15%; text-align: right;">Total</th>
-                </tr>
-            </thead>
-            <tbody id="pdf-table-body"></tbody>
-        </table>
-
-        <div class="pdf-totals">
-            <div class="pdf-total-row">
-                <span>Sous-total HT</span>
-                <span id="pdf-total-brut">0 F</span>
-            </div>
-            <div class="pdf-total-row">
-                <span>Remise appliquée</span>
-                <span id="pdf-total-remise">0 F</span>
-            </div>
-            <div class="pdf-total-row">
-                <span>Acompte versé</span>
-                <span id="pdf-total-acompte">0 F</span>
-            </div>
-            <div class="pdf-total-final">
-                <div style="display: flex; justify-content: space-between;">
-                    <span>TOTAL NET TTC</span>
-                    <span id="pdf-total-net">0 F</span>
-                </div>
-            </div>
-        </div>
-
-        <div class="pdf-footer">
-            Document contractuel officiel. Offre valable pendant 30 jours à compter de la date d'émission.
-        </div>
-    </div>
-
+    <!-- ZONE DE RENDU TEMPORAIRE (CREATION DYNAMIQUE CELLULAIRE POUR EVITER LE BLANC) -->
+    <div id="conteneur-temporaire-pdf" style="display: block; opacity: 0; height: 1px; overflow: hidden;"></div>
 
     <script>
         let articlesDevis = [];
-        let archivesDevis = JSON.parse(localStorage.getItem('btp_archives_v4')) || [];
+        let archivesDevis = JSON.parse(localStorage.getItem('btp_archives_v5')) || [];
 
         window.onload = function() {
             if(localStorage.getItem('btp_logo_url')) {
@@ -643,8 +580,8 @@
             document.getElementById('total-net').innerText = totalNet.toLocaleString('fr-FR');
         }
 
-        // LE SEUL BOUTON DE TÉLÉCHARGEMENT DIRECT SANS POPUP ET SANS ERREUR
-        function telechargerPDFDirectEtArchiver() {
+        // LA NOUVELLE LOGIQUE QUI EMPECHE LE PDF VIERGE ET TELECHARGE INSTANTANEMENT
+        function genererEtTelechargerPDFMobileDirect() {
             const nomClient = document.getElementById('client-nom').value.trim();
             const telClient = document.getElementById('client-tel').value.trim();
             const adresseClient = document.getElementById('client-adresse').value.trim();
@@ -665,23 +602,12 @@
             let totalNet = totalBrut - montantRemise;
             let netApresAcompte = totalNet - acompte;
 
-            // Remplissage du conteneur invisible
             const urlLogo = localStorage.getItem('btp_logo_url') || '';
-            const conteneurLogo = document.getElementById('pdf-logo-container');
-            if(urlLogo) {
-                conteneurLogo.innerHTML = `<img src="${urlLogo}" style="max-height:50px; max-width:200px; object-fit:contain;" alt="Logo">`;
-            } else {
-                conteneurLogo.innerHTML = `<div style="font-size: 18px; font-weight: bold; color: #222;">MON ENTREPRISE BTP</div>`;
-            }
+            let baliseLogo = urlLogo ? `<img src="${urlLogo}" style="max-height:50px; max-width:200px; object-fit:contain;" alt="Logo">` : `<div style="font-size: 18px; font-weight: bold; color: #222;">MON ENTREPRISE BTP</div>`;
 
-            document.getElementById('pdf-emmeteur-pays').innerText = `${pays}`;
-            document.getElementById('pdf-num-date').innerText = `${numDevis} | Date : ${dateJour}`;
-            document.getElementById('pdf-client-infos').innerHTML = `${nomClient}<br>Tél: ${telClient || '-'}<br>${adresseClient || '-'}`;
-
-            const tbody = document.getElementById('pdf-table-body');
-            tbody.innerHTML = '';
+            let lignesTableauHtml = '';
             articlesDevis.forEach((art, idx) => {
-                tbody.innerHTML += `
+                lignesTableauHtml += `
                     <tr>
                         <td>${idx + 1}</td>
                         <td>${art.nom}</td>
@@ -692,12 +618,67 @@
                 `;
             });
 
-            document.getElementById('pdf-total-brut').innerText = totalBrut.toLocaleString('fr-FR') + " " + devise;
-            document.getElementById('pdf-total-remise').innerText = montantRemise.toLocaleString('fr-FR') + ` (${remisePourcent}%)`;
-            document.getElementById('pdf-total-acompte').innerText = acompte.toLocaleString('fr-FR') + " " + devise;
-            document.getElementById('pdf-total-net').innerText = netApresAcompte.toLocaleString('fr-FR') + " " + devise;
+            // Injection forcée au premier plan dans le conteneur temporaire actif
+            const conteneurTemp = document.getElementById('conteneur-temporaire-pdf');
+            conteneurTemp.innerHTML = `
+                <div class="style-pdf-imprimable" id="html2pdf-active-node">
+                    <div class="pdf-header">
+                        <div>${baliseLogo}</div>
+                        <div style="text-align: right;">
+                            <div class="pdf-title">DEVIS</div>
+                            <div style="font-size: 12px; color: #333; font-family: monospace;">${numDevis} | Date : ${dateJour}</div>
+                        </div>
+                    </div>
+                    <div class="pdf-infos">
+                        <div class="pdf-box">
+                            <h4>Client</h4>
+                            <div style="font-size: 13px; font-weight: bold; color: #111; line-height: 1.4;">${nomClient}<br>Tél: ${telClient || '-'}<br>${adresseClient || '-'}</div>
+                        </div>
+                        <div class="pdf-box">
+                            <h4>Émetteur</h4>
+                            <div style="font-size: 13px; font-weight: bold; color: #e65100;">Mon Entreprise BTP</div>
+                            <div style="font-size: 11px; color: #444;">${pays}</div>
+                        </div>
+                    </div>
+                    <table class="pdf-table">
+                        <thead>
+                            <tr>
+                                <th style="width: 5%;">#</th>
+                                <th style="width: 55%;">Désignation des Travaux</th>
+                                <th style="width: 10%; text-align: center;">Qté</th>
+                                <th style="width: 15%; text-align: right;">P.U</th>
+                                <th style="width: 15%; text-align: right;">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>${lignesTableauHtml}</tbody>
+                    </table>
+                    <div class="pdf-totals">
+                        <div class="pdf-total-row"><span>Sous-total HT</span><span>${totalBrut.toLocaleString('fr-FR')} ${devise}</span></div>
+                        <div class="pdf-total-row"><span>Remise appliquée</span><span>${montantRemise.toLocaleString('fr-FR')} (${remisePourcent}%)</span></div>
+                        <div class="pdf-total-row"><span>Acompte versé</span><span>${acompte.toLocaleString('fr-FR')} ${devise}</span></div>
+                        <div class="pdf-total-final">
+                            <div style="display: flex; justify-content: space-between;"><span>TOTAL NET TTC</span><span>${netApresAcompte.toLocaleString('fr-FR')} ${devise}</span></div>
+                        </div>
+                    </div>
+                    <div class="pdf-footer">Document contractuel officiel. Offre valable pendant 30 jours à compter de la date d'émission.</div>
+                </div>
+            `;
 
-            // Archivage local instantané
+            const cibleCapture = document.getElementById('html2pdf-active-node');
+            const optionsConfig = {
+                margin: 8,
+                filename: `${numDevis}_${nomClient.replace(/\s+/g, '_')}.pdf`,
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, logging: false },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
+            };
+
+            // Capture instantanée de l'élément actif puis nettoyage de la mémoire vive
+            html2pdf().set(optionsConfig).from(cibleCapture).save().then(() => {
+                conteneurTemp.innerHTML = ''; 
+            });
+
+            // Archivage local automatique
             const nouveauDevisArchive = {
                 numDevis: numDevis,
                 date: dateJour,
@@ -707,20 +688,8 @@
             };
             
             archivesDevis.unshift(nouveauDevisArchive);
-            localStorage.setItem('btp_archives_v4', JSON.stringify(archivesDevis));
+            localStorage.setItem('btp_archives_v5', JSON.stringify(archivesDevis));
             afficherArchives();
-
-            // EXECUTION DU TELECHARGEMENT DIRECT DANS LE TELEPHONE (ZERO CLIC SUPPLEMENTAIRE)
-            const element = document.getElementById('bloc-capture-pdf');
-            const optionsConfiguration = {
-                margin: 10,
-                filename: `${numDevis}_${nomClient.replace(/\s+/g, '_')}.pdf`,
-                image: { type: 'jpeg', quality: 0.98 },
-                html2canvas: { scale: 2, useCORS: true },
-                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-            };
-
-            html2pdf().set(optionsConfiguration).from(element).save();
         }
 
         function afficherArchives() {
