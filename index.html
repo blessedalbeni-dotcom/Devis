@@ -93,6 +93,7 @@
 </head>
 <body>
 
+<!-- ÉCRAN DE VERROUILLAGE UNIQUE PAR CODE -->
 <div id="activation-screen">
     <div class="activation-box">
         <h2 style="color: var(--primary-orange); margin-bottom: 10px; font-size: 20px;">🔒 Application Verrouillée</h2>
@@ -113,6 +114,7 @@
     </div>
 </div>
 
+<!-- CONTAINER PRINCIPAL -->
 <div class="container">
     <div class="header">
         <div class="logo-title">BTP<span>Devis</span> Pro</div>
@@ -125,6 +127,7 @@
         <button class="tab-btn" onclick="switchTab('assistant')">🤖 Assistant IA</button>
     </div>
 
+    <!-- ONGLET : ACCUEIL -->
     <div id="tab-accueil" class="tab-content active">
         <div style="text-align: center; margin: 25px 0;">
             <h2 style="font-size: 20px; color: var(--text-main);">BTP Devis Pro</h2>
@@ -143,6 +146,7 @@
         </div>
     </div>
 
+    <!-- ONGLET : NOUVEAU DEVIS MANUEL -->
     <div id="tab-nouveau" class="tab-content">
         <div class="section-box">
             <div class="section-title">Votre Entreprise</div>
@@ -200,6 +204,7 @@
         <button class="btn btn-orange btn-full" style="padding:15px;" onclick="genererPDF()">📄 Aperçu et PDF</button>
     </div>
 
+    <!-- ONGLET : ASSISTANT IA -->
     <div id="tab-assistant" class="tab-content">
         <div class="section-box">
             <div class="section-title" style="color: var(--primary-purple);">🤖 Générateur de Devis IA Intellect</div>
@@ -224,6 +229,7 @@
     </div>
 </div>
 
+<!-- IMPRESSION BLANCHE PDF -->
 <div id="print-area">
     <div class="pdf-header">
         <div>
@@ -259,25 +265,35 @@
 
 <div id="toast" class="toast">📋 Action effectuée !</div>
 
+<!-- LA PARTIE SCRIPT ET LE CODE LOGIQUE DE L'APPLICATION (TOUT EST INCLUS ICI) -->
 <script>
     let lignesDevis = [];
     let nombreAleatoireUnique = 0;
 
-    // --- LOGIQUE DE VÉROUILLAGE UNIQUE ET SÉCURISÉ ---
+    // --- LOGIQUE DE VÉROUILLAGE UNIQUE SÉCURISÉE ET FIXÉE ---
     window.onload = function() {
         if(localStorage.getItem('btp_devis_pro_activated') === 'true') {
             document.getElementById('activation-screen').style.display = 'none';
         } else {
-            // Génère un code d'identification unique basé sur l'heure pour chaque appareil
-            nombreAleatoireUnique = Math.floor(1000 + Math.random() * 9000);
-            document.getElementById('displayClientCode').innerText = "BTP-" + nombreAleatoireUnique;
+            // On vérifie si un code client permanent existe déjà pour ce téléphone
+            let codeStocke = localStorage.getItem('btp_devis_pro_client_id');
+            
+            if (!codeStocke) {
+                // S'il n'existe pas, on le génère UNE SEULE FOIS pour toujours
+                nombreAleatoireUnique = Math.floor(1000 + Math.random() * 9000);
+                localStorage.setItem('btp_devis_pro_client_id', nombreAleatoireUnique);
+                codeStocke = nombreAleatoireUnique;
+            } else {
+                nombreAleatoireUnique = parseInt(codeStocke);
+            }
+            
+            document.getElementById('displayClientCode').innerText = "BTP-" + codeStocke;
         }
     }
 
     function verifierLicence() {
         const keySaisie = document.getElementById('inputActivationKey').value.trim();
-        // RÈGLE MATHÉMATIQUE SECRÈTE POUR APPRENDRE VOTRE CLÉ : 
-        // La bonne clé est TOUJOURS le numéro client suivi du chiffre 99 (Ex: si client = 4520, clé = 452099)
+        // Clé secrète : Code permanent + 99
         const bonneCle = nombreAleatoireUnique.toString() + "99";
 
         if(keySaisie === bonneCle) {
@@ -292,15 +308,16 @@
     function acheterLicenceWhatsApp() {
         const code = document.getElementById('displayClientCode').innerText;
         const message = encodeURIComponent("Bonjour, je souhaite acheter le code d'activation unique pour mon application BTP Devis Pro. Mon Code Client est : " + code);
-        // Remplacez le numéro ci-dessous par votre numéro de vente WhatsApp si nécessaire
         window.open("https://wa.me/22890000000?text=" + message, '_blank');
     }
 
-    // --- LE RESTE DES FONCTIONS CLASSIQUES (INCHANGÉES) ---
+    // --- LOGIQUE DES DEVIS ---
     function switchTab(tabId) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-        event.currentTarget.classList.add('active');
+        if(window.event && window.event.currentTarget) {
+            window.event.currentTarget.classList.add('active');
+        }
         document.getElementById('tab-' + tabId).classList.add('active');
     }
 
