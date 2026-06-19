@@ -3,533 +3,512 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BTP Devis Pro</title>
+    <title>Générateur de Devis & Suivi Paiements BTP</title>
     <style>
         :root {
-            --bg-main: #0f111a;
-            --bg-card: #1a1d29;
-            --bg-input: #24283b;
-            --border: #2f354e;
-            --text-main: #ffffff;
-            --text-muted: #8a93b2;
-            --primary-orange: #e67e22;
-            --primary-purple: #9b5de5;
-            --danger: #e74c3c;
-            --success: #2ecc71;
+            --primary-color: #0056b3;
+            --secondary-color: #28a745;
+            --danger-color: #dc3545;
+            --bg-color: #f8f9fa;
+            --text-color: #333;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        body { background-color: var(--bg-main); color: var(--text-main); padding: 10px; }
-        .container { max-width: 600px; margin: 0 auto; background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        
-        /* Écran de verrouillage de licence */
-        #activation-screen {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
-            background: var(--bg-main); z-index: 9999; display: flex; 
-            align-items: center; justify-content: center; padding: 20px;
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 10px;
         }
-        .activation-box { background: var(--bg-card); border: 1px solid var(--border); padding: 25px; border-radius: 16px; width: 100%; max-width: 400px; text-align: center; }
 
-        #print-area { display: none; }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
 
-        /* Header & Onglets */
-        .header { display: flex; justify-content: space-between; align-items: center; padding: 18px; border-bottom: 1px solid var(--border); }
-        .logo-title { font-size: 22px; font-weight: bold; }
-        .logo-title span { color: var(--primary-orange); }
-        .badge { background: rgba(230, 126, 34, 0.15); color: var(--primary-orange); padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; border: 1px solid rgba(230, 126, 34, 0.3); }
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #ddd;
+            padding-bottom: 10px;
+        }
 
-        .tabs { display: flex; background: #131622; padding: 5px; margin: 15px; border-radius: 10px; gap: 5px; overflow-x: auto; }
-        .tab-btn { flex: 1; padding: 10px 5px; border: none; background: none; font-size: 12px; font-weight: 500; cursor: pointer; color: var(--text-muted); border-radius: 8px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 4px; white-space: nowrap; }
-        .tab-btn.active { background: var(--bg-input); color: var(--text-main); border-bottom: 2px solid var(--primary-orange); }
+        .tab-btn {
+            flex: 1;
+            padding: 12px;
+            background: #e9ecef;
+            border: none;
+            border-radius: 5px;
+            font-weight: bold;
+            cursor: pointer;
+            font-size: 14px;
+            transition: 0.3s;
+        }
 
-        .tab-content { display: none; padding: 0 15px 15px 15px; }
-        .tab-content.active { display: block; }
+        .tab-btn.active {
+            background: var(--primary-color);
+            color: white;
+        }
 
-        /* Métiers élargis */
-        .grid-metiers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
-        .metier-card { background: #1e2235; border: 1px solid var(--border); border-radius: 8px; padding: 12px 5px; text-align: center; cursor: pointer; transition: 0.2s; }
-        .metier-card:hover, .metier-card.selected { border-color: var(--primary-orange); background: rgba(230, 126, 34, 0.1); }
-        .metier-icon { font-size: 18px; margin-bottom: 6px; display: block; }
-        .metier-name { font-size: 10px; font-weight: 600; color: var(--text-main); }
+        .tab-content {
+            display: none;
+        }
 
-        /* Sections & Formulaires */
-        .section-box { background: rgba(36, 40, 59, 0.3); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
-        .section-title { font-size: 12px; font-weight: bold; color: var(--primary-orange); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
+        .tab-content.active {
+            display: block;
+        }
 
-        .form-group { margin-bottom: 12px; }
-        label { display: block; font-size: 11px; margin-bottom: 4px; color: var(--text-muted); }
-        input, select, textarea { width: 100%; padding: 10px; background: var(--bg-input); border: 1px solid var(--border); border-radius: 6px; font-size: 13px; color: var(--text-main); outline: none; }
-        .row-inputs { display: flex; gap: 8px; }
-        .row-inputs .form-group { flex: 1; }
+        h2, h3 {
+            color: #222;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 8px;
+        }
 
-        .btn { padding: 10px 16px; border: none; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; }
-        .btn-orange { background: var(--primary-orange); color: white; }
-        .btn-purple { background: var(--primary-purple); color: white; }
-        .btn-dark { background: #131622; color: var(--text-muted); border: 1px solid var(--border); }
-        .btn-danger { background: var(--danger); color: white; padding: 6px; font-size: 12px; }
-        .btn-full { width: 100%; display: flex; }
+        .form-group {
+            margin-bottom: 15px;
+        }
 
-        .line-item-row { display: flex; gap: 6px; align-items: center; background: #131622; padding: 8px; border-radius: 6px; margin-bottom: 6px; font-size: 12px; }
-        
-        .summary-line { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; border-bottom: 1px dashed var(--border); }
-        .summary-total { font-size: 16px; font-weight: bold; color: var(--primary-orange); border-top: 1px solid var(--border); padding-top: 8px; }
-        .calc-input { width: 60px; padding: 4px; text-align: center; background: #131622; }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+        }
 
-        /* Style des Archives */
-        .archive-item { background: #131622; border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
-        .archive-info { font-size: 13px; line-height: 1.4; }
-        .archive-price { font-weight: bold; color: var(--primary-orange); font-size: 14px; }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+            font-size: 15px;
+        }
+
+        button.btn-action {
+            width: 100%;
+            padding: 12px;
+            background: var(--secondary-color);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .history-list {
+            margin-top: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            max-height: 200px;
+            overflow-y: auto;
+            background: #fafafa;
+        }
+
+        .history-item {
+            padding: 10px;
+            border-bottom: 1px solid #eee;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 14px;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .btn-delete {
+            background: var(--danger-color);
+            color: white;
+            border: none;
+            padding: 5px 8px;
+            border-radius: 3px;
+            cursor: pointer;
+        }
+
+        /* Styles d'impression et rendu PDF */
+        #pdf-preview {
+            background: white;
+            padding: 30px;
+            border: 1px solid #ccc;
+            margin-top: 20px;
+        }
+
+        .pdf-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 30px;
+        }
+
+        .pdf-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        .pdf-table th, .pdf-table td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+
+        .pdf-table th {
+            background-color: #f1f1f1;
+        }
+
+        .text-right {
+            text-align: right;
+        }
+
+        .totals-box {
+            margin-top: 20px;
+            margin-left: auto;
+            width: 300px;
+        }
+
+        .totals-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px 0;
+            border-bottom: 1px solid #eee;
+        }
+
+        .totals-row.final {
+            font-weight: bold;
+            font-size: 18px;
+            border-top: 2px solid #333;
+            color: #000;
+        }
 
         @media print {
-            body { background: white !important; color: black !important; padding: 0; margin: 0; }
-            .container { display: none !important; }
-            #print-area { display: block !important; background: white !important; color: black !important; padding: 20px !important; }
-            #print-area * { color: black !important; background: transparent !important; }
-            .pdf-header { display: flex; justify-content: space-between; border-bottom: 2px solid #333; padding-bottom: 15px; margin-bottom: 20px; }
-            .pdf-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-            .pdf-table th, .pdf-table td { border: 1px solid #ddd !important; padding: 10px; text-align: left; }
-            .pdf-table th { background: #f5f5f5 !important; font-weight: bold; }
-            .pdf-summary { float: right; width: 250px; margin-top: 20px; }
-            .pdf-summary div { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #ddd; }
+            body * {
+                visibility: hidden;
+            }
+            #pdf-preview, #pdf-preview * {
+                visibility: visible;
+            }
+            #pdf-preview {
+                position: absolute;
+                left: 0;
+                top: 0;
+                width: 100%;
+                border: none;
+                padding: 0;
+            }
+            .no-print {
+                display: none !important;
+            }
         }
     </style>
 </head>
 <body>
 
-<!-- ÉCRAN DE VERROUILLAGE UNIQUE PAR CODE -->
-<div id="activation-screen">
-    <div class="activation-box">
-        <h2 style="color: var(--primary-orange); margin-bottom: 10px; font-size: 20px;">🔒 Application Verrouillée</h2>
-        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Veuillez activer votre licence unique pour utiliser le générateur de devis BTP.</p>
-        
-        <div style="background: #131622; padding: 12px; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--border);">
-            <label style="margin-bottom: 2px;">Votre Code Client Unique :</label>
-            <div id="displayClientCode" style="font-size: 18px; font-weight: bold; color: white; letter-spacing: 1px;">BTP-XXXX</div>
-        </div>
-
-        <div class="form-group" style="text-align: left;">
-            <label>Entrez votre code secret de déverrouillage :</label>
-            <input type="text" id="inputActivationKey" placeholder="Ex: 859382" style="text-align: center; font-size: 16px; font-weight: bold; letter-spacing: 2px; border-color: var(--primary-purple);">
-        </div>
-
-        <button class="btn btn-orange btn-full" style="margin-bottom: 10px;" onclick="verifierLicence()">🔓 Activer l'Application</button>
-        <button class="btn btn-dark btn-full" onclick="acheterLicenceWhatsApp()">💬 Acheter ma clé d'accès (WhatsApp)</button>
-    </div>
-</div>
-
-<!-- CONTAINER PRINCIPAL -->
 <div class="container">
-    <div class="header">
-        <div class="logo-title">BTP<span>Devis</span> Pro</div>
-        <div class="badge">Lome · FCFA · IA</div>
+    <!-- Onglets de navigation -->
+    <div class="tabs no-print">
+        <button class="tab-btn active" onclick="switchTab('devis-tab')">📝 Créer un Devis</button>
+        <button class="tab-btn" onclick="switchTab('paiement-tab')">💳 Suivi des Paiements</button>
     </div>
 
-    <div class="tabs">
-        <button class="tab-btn active" onclick="switchTab('accueil')">🏠 Accueil</button>
-        <button class="tab-btn" onclick="switchTab('nouveau')">📋 Nouveau Devis</button>
-        <button class="tab-btn" onclick="switchTab('assistant')">🤖 Assistant IA</button>
-        <button class="tab-btn" onclick="switchTab('archives')">📁 Archives</button>
-    </div>
-
-    <!-- ONGLET : ACCUEIL -->
-    <div id="tab-accueil" class="tab-content active">
-        <div style="text-align: center; margin: 20px 0;">
-            <h2 style="font-size: 20px; color: var(--text-main);">BTP Devis Pro</h2>
-            <p style="color: var(--text-muted); font-size: 12px; margin-top: 4px;">Devis professionnels - Lome, Togo</p>
-        </div>
-
-        <div class="grid-metiers">
-            <div class="metier-card" onclick="selectMetier('Electricité', '⚡')"><span class="metier-icon">⚡</span><span class="metier-name">Electricite</span></div>
-            <div class="metier-card" onclick="selectMetier('Plomberie', '🔧')"><span class="metier-icon">🔧</span><span class="metier-name">Plomberie</span></div>
-            <div class="metier-card" onclick="selectMetier('Menuiserie', '🪚')"><span class="metier-icon">🪚</span><span class="metier-name">Menuiserie</span></div>
-            <div class="metier-card" onclick="selectMetier('Maçonnerie', '🧱')"><span class="metier-icon">🧱</span><span class="metier-name">Maconnerie</span></div>
-            <div class="metier-card" onclick="selectMetier('Soudure', '🔥')"><span class="metier-icon">🔥</span><span class="metier-name">Soudure</span></div>
-            <div class="metier-card" onclick="selectMetier('Ferraillage', '⚙️')"><span class="metier-icon">⚙️</span><span class="metier-name">Ferraillage</span></div>
-            <div class="metier-card" onclick="selectMetier('Peinture', '🎨')"><span class="metier-icon">🎨</span><span class="metier-name">Peinture</span></div>
-            <div class="metier-card" onclick="selectMetier('Construction', '🏠')"><span class="metier-icon">🏠</span><span class="metier-name">Construction</span></div>
-            <div class="metier-card" onclick="selectMetier('Carrelage', '📐')"><span class="metier-icon">📐</span><span class="metier-name">Carrelage</span></div>
-            <div class="metier-card" onclick="selectMetier('Faux-plafond / BA13', '🔨')"><span class="metier-icon">🔨</span><span class="metier-name">BA13 / Plafond</span></div>
-            <div class="metier-card" onclick="selectMetier('Étanchéité', '💧')"><span class="metier-icon">💧</span><span class="metier-name">Etancheite</span></div>
-            <div class="metier-card" onclick="selectMetier('Climatisation / Froid', '❄️')"><span class="metier-icon">❄️</span><span class="metier-name">Climatisation</span></div>
-        </div>
-    </div>
-
-    <!-- ONGLET : NOUVEAU DEVIS MANUEL -->
-    <div id="tab-nouveau" class="tab-content">
-        <button class="btn btn-full" style="background: #c0392b; color: white; margin-bottom: 15px; font-size: 12px;" onclick="reinitialiserNouveauDevis()">🗑️ Commencer un Nouveau Devis (Tout effacer)</button>
-
-        <div class="section-box">
-            <div class="section-title">Votre Entreprise</div>
-            <div class="form-group"><input type="text" id="entNom" placeholder="ex: Travaux KOKOU"></div>
-            <div class="row-inputs">
-                <div class="form-group"><input type="text" id="entTel" placeholder="+228 90 00 00 00"></div>
-                <div class="form-group"><input type="text" id="entEmail" placeholder="contact@email.com"></div>
-            </div>
-            <div class="form-group"><input type="text" id="entAdresse" placeholder="ex: Adidogome, Lome"></div>
-        </div>
-
-        <div class="section-box">
-            <div class="section-title">Client</div>
-            <div class="form-group"><input type="text" id="cliNom" placeholder="Nom complet du client"></div>
-            <div class="row-inputs">
-                <div class="form-group"><input type="text" id="cliTel" placeholder="Téléphone client (ex: +228...)"></div>
-                <div class="form-group"><input type="text" id="cliAdresse" placeholder="Quartier, Ville"></div>
-            </div>
-            <div class="form-group"><input type="date" id="devisDate" value="2026-06-19"></div>
-        </div>
-
-        <div class="section-box">
-            <div class="section-title">Lignes de Travaux</div>
-            <div class="form-group"><input type="text" id="inputDesignation" placeholder="Désignation des travaux..."></div>
-            <div class="row-inputs">
-                <div class="form-group"><input type="number" id="inputQte" placeholder="Qte" value="1"></div>
-                <div class="form-group">
-                    <select id="inputUnite">
-                        <option value="forfait">forfait</option>
-                        <option value="m²">m²</option>
-                        <option value="ml">ml</option>
-                        <option value="U">Unité</option>
-                        <option value="Sacs">Sacs</option>
-                        <option value="Camion">Camion</option>
-                        <option value="Barre">Barre</option>
-                    </select>
-                </div>
-                <div class="form-group"><input type="number" id="inputPu" placeholder="Prix Unitaire (F)"></div>
-            </div>
-            <button class="btn btn-dark" style="margin-top:10px;" onclick="ajouterLigneManuelle()">+ Ajouter ligne</button>
-            <div id="listeLignesDevis" style="margin-top: 15px;"></div>
-        </div>
-
-        <div class="section-box">
-            <div class="summary-line"><span>Sous-total HT</span><span id="txtSousTotal">0 FCFA</span></div>
-            <div class="summary-line"><span>Remise (%) <input type="number" id="inputRemise" class="calc-input" value="0" oninput="calculerTotaux()"></span><span id="txtRemise" style="color: var(--danger);">0 FCFA</span></div>
-            <div class="summary-line"><span>Net HT</span><span id="txtNetHT">0 FCFA</span></div>
-            <div class="summary-line"><span>TVA (%) <input type="number" id="inputTva" class="calc-input" value="0" oninput="calculerTotaux()"></span><span id="txtTva">0 FCFA</span></div>
-            <div class="summary-line summary-total"><span>TOTAL TTC</span><span id="txtTotalTTC">0 FCFA</span></div>
-            <div class="summary-line" style="margin-top: 8px;"><span>Acompte (F) <input type="number" id="inputAcompte" class="calc-input" style="width:90px;" value="0" oninput="calculerTotaux()"></span><span id="txtAcompte" style="color: var(--success);">0 FCFA</span></div>
-            <div class="summary-line" style="font-weight: bold;"><span>Reste à payer</span><span id="txtReste">0 FCFA</span></div>
-        </div>
-
+    <!-- ONGLET 1 : CRÉATION DE DEVIS -->
+    <div id="devis-tab" class="tab-content active">
+        <h2>Création du Devis</h2>
         <div class="form-group">
-            <label>Notes et conditions</label>
-            <textarea id="devisNotes">Paiement : 50% à la commande, 50% à la livraison.&#10;Délai d'exécution : à préciser après validation.</textarea>
+            <label>Assistant IA (Coller le texte du devis ici) :</label>
+            <textarea id="ai-input" rows="6" placeholder="Collez les lignes du devis générées par l'IA..."></textarea>
         </div>
-        <button class="btn btn-orange btn-full" style="padding:15px;" onclick="genererPDF()">📄 Aperçu et PDF</button>
+        <div class="form-group">
+            <label>Nom du Client / Projet :</label>
+            <input type="text" id="client-name" placeholder="Ex: Jean DUPONT - Électricité Villa">
+        </div>
+        <button class="btn-action" onclick="genererDevis()">Générer le Devis PDF</button>
     </div>
 
-    <!-- ONGLET : ASSISTANT IA -->
-    <div id="tab-assistant" class="tab-content">
-        <div class="section-box">
-            <div class="section-title" style="color: var(--primary-purple);">🤖 Générateur de Devis IA Intellect</div>
-            <textarea id="texteDescriptionIA" style="height: 220px;" placeholder="Collez vos lignes détaillées ici (Matériaux, forfaits...).&#10;&#10;Exemple :&#10;Désignation : Ciment CPJ 45&#10;Quantité : 20&#10;Unité : Sacs&#10;Prix Unitaire : 5000&#10;&#10;Désignation : Main d'oeuvre Maçonnerie&#10;Quantité : 1&#10;Unité : forfait&#10;Prix Unitaire : 150000"></textarea>
-            <button class="btn btn-purple btn-full" style="margin-top:10px;" onclick="genererDepuisTexte()">Analyser et Détailler le Devis</button>
+    <!-- ONGLET 2 : SUIVI DES PAIEMENTS -->
+    <div id="paiement-tab" class="tab-content">
+        <h2>Enregistrer un Règlement</h2>
+        <div class="form-group">
+            <label>Montant total du contrat (FCFA) :</label>
+            <input type="number" id="pay-total-contrat" oninput="calculerReste()" placeholder="Ex: 6382500">
+        </div>
+        <div class="form-group">
+            <label>Nouveau Versement reçu (FCFA) :</label>
+            <input type="number" id="pay-versement" placeholder="Ex: 3000000">
+        </div>
+        <div class="form-group">
+            <label>Mode de règlement :</label>
+            <select id="pay-mode">
+                <option value="Mobile Money (T-Money/Flooz)">Mobile Money (T-Money/Flooz)</option>
+                <option value="Espèces">Espèces</option>
+                <option value="Virement Bancaire">Virement Bancaire</option>
+                <option value="Chèque">Chèque</option>
+            </select>
+        </select>
+        </div>
+        <button class="btn-action" style="background-color: var(--primary-color);" onclick="ajouterPaiement()">Enregistrer & Mettre à jour le Reçu</button>
+
+        <h3>Historique des versements pour ce projet</h3>
+        <div class="history-list" id="history-box">
+            <!-- Rempli en JS -->
         </div>
 
-        <div class="section-box">
-            <div class="section-title">⚡ Générateur Rapide Express</div>
-            <div class="row-inputs" style="margin-bottom: 10px;">
-                <div style="flex: 2;">
-                    <select id="domaineBTP">
-                        <option value="maconnerie">🧱 Gros Œuvre (m²)</option>
-                        <option value="peinture">🎨 Peinture (m²)</option>
-                        <option value="carrelage">📐 Carrelage (m²)</option>
-                    </select>
-                </div>
-                <div style="flex: 1;"><input type="number" id="quantiteAssistant" value="60"></div>
-            </div>
-            <button class="btn btn-orange btn-full" onclick="genererDevisRapide()">Calculer et Injecter</button>
-        </div>
+        <button class="btn-action" style="margin-top: 20px;" onclick="window.print()">🖨️ Imprimer / Enregistrer le Reçu en PDF</button>
     </div>
 
-    <!-- ONGLET : ARCHIVES -->
-    <div id="tab-archives" class="tab-content">
-        <div class="section-box">
-            <div class="section-title">📂 Historique des Devis & Clients</div>
-            <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 15px;">Tous les devis créés s'enregistrent ici automatiquement.</p>
-            <div id="containerArchives"></div>
-            <button class="btn btn-dark btn-full" style="margin-top: 15px; color: var(--danger); border-color: rgba(231, 76, 60, 0.2);" onclick="effacerToutHistorique()">🗑️ Effacer tout l'historique</button>
-        </div>
-    </div>
-</div>
+    <hr class="no-print" style="margin: 30px 0; border: 1px solid #ddd;">
 
-<!-- IMPRESSION BLANCHE PDF -->
-<div id="print-area">
-    <div class="pdf-header">
-        <div>
-            <h1 id="pdfEntNom" style="color:#e67e22; font-size: 26px; margin-bottom: 5px;">ENTREPRISE</h1>
-            <p id="pdfEntTel"></p><p id="pdfEntEmail"></p><p id="pdfEntAdresse"></p>
-        </div>
-        <div style="text-align: right;">
-            <h2 style="font-size: 22px; color: #333;">DEVIS DE TRAVAUX</h2>
-            <p id="pdfDate" style="font-weight: bold; margin-bottom: 15px;"></p>
-            <p><strong>Destinataire :</strong></p>
-            <p id="pdfCliNom" style="font-weight: bold;"></p><p id="pdfCliTel"></p><p id="pdfCliAdresse"></p>
-        </div>
-    </div>
-    <table class="pdf-table">
-        <thead>
-            <tr><th>Désignation des travaux</th><th style="text-align:center;">Quantité</th><th style="text-align:center;">Unité</th><th style="text-align:right;">Prix Unitaire</th><th style="text-align:right;">Total</th></tr>
-        </thead>
-        <tbody id="pdfTableBody"></tbody>
-    </table>
-    <div class="pdf-summary">
-        <div><span>Sous-total HT :</span> <span id="pdfSub">0 F</span></div>
-        <div><span>Remise :</span> <span id="pdfRem">0 F</span></div>
-        <div><span>Net HT :</span> <span id="pdfNet">0 F</span></div>
-        <div><span>TVA :</span> <span id="pdfTva">0 F</span></div>
-        <div style="font-weight: bold; border-top: 2px solid #333; padding-top: 5px; font-size: 15px;"><span>TOTAL TTC :</span> <span id="pdfTotal">0 F</span></div>
-        <div><span>Acompte :</span> <span id="pdfAcompte">0 F</span></div>
-        <div style="font-weight: bold; color: #e67e22; font-size: 15px;"><span>Reste à payer :</span> <span id="pdfReste">0 F</span></div>
-    </div>
-    <div style="margin-top: 140px; border-top: 1px solid #ddd; padding-top: 10px; font-size: 12px; clear: both;">
-        <strong>Notes & Conditions :</strong><p id="pdfNotes" style="white-space: pre-line; color: #555; margin-top: 5px;"></p>
+    <!-- ZONE D'APERÇU DU DOCUMENT (DEVIS OU REÇU PAIEMENT) -->
+    <div id="pdf-preview">
+        <!-- Le contenu dynamique du PDF (Devis ou Reçu) s'affichera ici -->
+        <p style="text-align: center; color: #777;">Remplissez les informations ci-dessus pour générer le document.</p>
     </div>
 </div>
 
 <script>
-    let lignesDevis = [];
-    let nombreAleatoireUnique = 0;
-    let listeArchives = [];
+    // Variables globales pour stocker les états
+    let devisLignes = [];
+    let paiementsHistorique = JSON.parse(localStorage.getItem('btp_paiements')) || [];
 
-    window.onload = function() {
-        let archivesSauvegardees = localStorage.getItem('btp_devis_pro_archives');
-        if (archivesSauvegardees) {
-            listeArchives = JSON.parse(archivesSauvegardees);
-        }
-        renderArchives();
-
-        if(localStorage.getItem('btp_devis_pro_activated') === 'true') {
-            document.getElementById('activation-screen').style.display = 'none';
-        } else {
-            let codeStocke = localStorage.getItem('btp_devis_pro_client_id');
-            if (!codeStocke) {
-                nombreAleatoireUnique = Math.floor(1000 + Math.random() * 9000);
-                localStorage.setItem('btp_devis_pro_client_id', nombreAleatoireUnique);
-                codeStocke = nombreAleatoireUnique;
-            } else {
-                nombreAleatoireUnique = parseInt(codeStocke);
-            }
-            document.getElementById('displayClientCode').innerText = "BTP-" + codeStocke;
-        }
-    }
-
-    function verifierLicence() {
-        const keySaisie = document.getElementById('inputActivationKey').value.trim();
-        const bonneCle = nombreAleatoireUnique.toString() + "99";
-
-        if(keySaisie === bonneCle) {
-            localStorage.setItem('btp_devis_pro_activated', 'true');
-            document.getElementById('activation-screen').style.display = 'none';
-            alert("✅ Félicitations ! Votre application BTP Devis Pro est activée définitivement.");
-        } else {
-            alert("❌ Code d'activation incorrect. Veuillez contacter le vendeur.");
-        }
-    }
-
-    function acheterLicenceWhatsApp() {
-        const code = document.getElementById('displayClientCode').innerText;
-        const texteWhatsApp = "Bonjour Ibrahim, je viens d'installer l'application BTP Devis Pro. Je souhaite acheter ma clé d'activation unique.\n\n👉 Mon Code Client unique est : " + code;
-        const message = encodeURIComponent(texteWhatsApp);
-        window.open("https://wa.me/22890000000?text=" + message, '_blank');
-    }
-
+    // Changer d'onglet
     function switchTab(tabId) {
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
         
-        document.querySelectorAll('.tab-btn').forEach(btn => {
-            if(btn.getAttribute('onclick').includes(tabId)) btn.classList.add('active');
-        });
-        
-        document.getElementById('tab-' + tabId).classList.add('active');
-    }
+        document.getElementById(tabId).classList.add('active');
+        event.currentTarget.classList.add('active');
 
-    function selectMetier(nom, icone) {
-        document.getElementById('inputDesignation').value = nom + " - ";
-        switchTab('nouveau');
-    }
-
-    function reinitialiserNouveauDevis() {
-        if(confirm("Voulez-vous vider toutes les lignes actuelles pour commencer un nouveau devis ?")) {
-            lignesDevis = [];
-            renderLignes();
-            calculerTotaux();
-            document.getElementById('cliNom').value = "";
-            document.getElementById('cliTel').value = "";
-            document.getElementById('cliAdresse').value = "";
+        if(tabId === 'paiement-tab') {
+            afficherHistorique();
+            genererRecuHTML();
         }
     }
 
-    function ajouterLigneManuelle() {
-        const des = document.getElementById('inputDesignation').value;
-        const qte = parseFloat(document.getElementById('inputQte').value) || 1;
-        const uni = document.getElementById('inputUnite').value;
-        const pu = parseFloat(document.getElementById('inputPu').value) || 0;
-        if(!des) return;
-        lignesDevis.push({ designation: des, qte: qte, unite: uni, pu: pu, total: qte * pu });
-        renderLignes(); calculerTotaux();
-        document.getElementById('inputDesignation').value = ""; document.getElementById('inputPu').value = "";
+    // Formater les prix proprement (Ex: 6 382 500 F)
+    function formatMoney(amount) {
+        return Number(amount).toLocaleString('fr-FR') + " F";
     }
 
-    function supprimerLigne(index) {
-        lignesDevis.splice(index, 1); renderLignes(); calculerTotaux();
-    }
-
-    function renderLignes() {
-        const container = document.getElementById('listeLignesDevis'); container.innerHTML = "";
-        lignesDevis.forEach((l, i) => {
-            container.innerHTML += `<div class="line-item-row"><div style="flex:2;"><strong>${l.designation}</strong></div><div style="flex:1; text-align:center;">${l.qte} ${l.unite}</div><div style="flex:1; text-align:right;">${l.total.toLocaleString()} F</div><button class="btn btn-danger" onclick="supprimerLigne(${i})">X</button></div>`;
-        });
-    }
-
-    function calculerTotaux() {
-        let subtotal = lignesDevis.reduce((sum, item) => sum + item.total, 0);
-        let pctRemise = parseFloat(document.getElementById('inputRemise').value) || 0;
-        let valRemise = subtotal * (pctRemise / 100);
-        let netHt = subtotal - valRemise;
-        let pctTva = parseFloat(document.getElementById('inputTva').value) || 0;
-        let valTva = netHt * (pctTva / 100);
-        let totalTtc = netHt + valTva;
-        let acompte = parseFloat(document.getElementById('inputAcompte').value) || 0;
-        let reste = totalTtc - acompte;
-
-        document.getElementById('txtSousTotal').innerText = subtotal.toLocaleString() + " FCFA";
-        document.getElementById('txtRemise').innerText = valRemise.toLocaleString() + " FCFA";
-        document.getElementById('txtNetHT').innerText = netHt.toLocaleString() + " FCFA";
-        document.getElementById('txtTva').innerText = valTva.toLocaleString() + " FCFA";
-        document.getElementById('txtTotalTTC').innerText = totalTtc.toLocaleString() + " FCFA";
-        document.getElementById('txtAcompte').innerText = acompte.toLocaleString() + " FCFA";
-        document.getElementById('txtReste').innerText = reste.toLocaleString() + " FCFA";
-    }
-
-    // --- ANALYSE IA STRICTEMENT CORRIGÉE POUR L'UNITÉ "FORFAIT" ---
-    function genererDepuisTexte() {
-        const texteBrut = document.getElementById('texteDescriptionIA').value;
-        if(!texteBrut.trim()) {
-            alert("Veuillez d'abord insérer les instructions ou le texte du devis.");
+    // ANALYSE ET GÉNÉRATION DE DEVIS
+    function genererDevis() {
+        const text = document.getElementById('ai-input').value;
+        const client = document.getElementById('client-name').value || "Client / Particulier";
+        
+        if(!text.trim()) {
+            alert("Veuillez d'abord coller le texte du devis !");
             return;
         }
 
-        lignesDevis = [];
-
-        // On découpe par bloc dès que le mot "Désignation" apparaît
-        const blocs = texteBrut.split(/(?=Désignation|Designation|Travaux)/i);
-
-        blocs.forEach(bloc => {
-            if(!bloc.trim()) return;
-
-            const regexDesignation = /(?:Désignation|Designation|Travaux)\s*:\s*([^\n\r]+)/i;
-            const regexQuantite = /(?:Quantité|Quantite|Qte)\s*:\s*([\d\.,]+)/i;
-            const regexUnite = /(?:Unité|Unite|Unit)\s*:\s*([^\n\r]+)/i;
-            const regexPrix = /(?:Prix Unitaire|Prix|PU)\s*:\s*([\d\s]+)/i;
-
-            const matchDes = bloc.match(regexDesignation);
-            const matchQte = bloc.match(regexQuantite);
-            const matchUni = bloc.match(regexUnite);
-            const matchPrix = bloc.match(regexPrix);
-
-            if (matchDes) {
-                let designation = matchDes[1].trim();
-                let qte = matchQte ? parseFloat(matchQte[1].replace(',', '.')) : 1;
-                // CORRECTION ICI : Pas de nettoyage sauvage pour ne pas transformer forfait en orait
-                let unite = matchUni ? matchUni[1].trim() : "m²"; 
-                let pu = matchPrix ? parseInt(matchPrix[1].replace(/\s/g, '')) : 0;
-
-                lignesDevis.push({
-                    designation: designation,
-                    qte: qte,
-                    unite: unite,
-                    pu: pu,
-                    total: qte * pu
-                });
+        devisLignes = [];
+        const blocks = text.split(/\n\s*\n/);
+        
+        blocks.forEach(block => {
+            const lignes = block.split('\n');
+            let item = { designation: '', quantite: 0, unite: '', prix: 0 };
+            
+            lignes.forEach(l => {
+                if(l.startsWith('Désignation :')) item.designation = l.replace('Désignation :', '').trim();
+                if(l.startsWith('Quantité :')) item.quantite = parseInt(l.replace('Quantité :', '').trim()) || 0;
+                if(l.startsWith('Unité :')) item.unite = l.replace('Unité :', '').trim();
+                if(l.startsWith('Prix Unitaire :')) item.prix = parseFloat(l.replace('Prix Unitaire :', '').trim()) || 0;
+            });
+            
+            if(item.designation) {
+                devisLignes.push(item);
             }
         });
 
-        if (lignesDevis.length === 0 && texteBrut.toLowerCase().includes("carrelage")) {
-            lignesDevis.push({ designation: "Revêtement sol en carreaux grès cérame (Carrelage)", qte: 50, unite: "m²", pu: 5500, total: 275000 });
-        }
+        let totalGeneral = 0;
+        let tableauHTML = '';
 
-        renderLignes();
-        calculerTotaux();
-        switchTab('nouveau');
-        document.getElementById('texteDescriptionIA').value = "";
-    }
-
-    function archiverNouveauDevis() {
-        const nomClient = document.getElementById('cliNom').value.trim() || "Client Anonyme";
-        const telClient = document.getElementById('cliTel').value.trim() || "Aucun numéro";
-        const dateDevis = document.getElementById('devisDate').value;
-        const totalFacture = document.getElementById('txtTotalTTC').innerText;
-
-        if (lignesDevis.length === 0) return;
-
-        const nouvelArchive = { nom: nomClient, tel: telClient, date: dateDevis, total: totalFacture };
-        listeArchives.unshift(nouvelArchive);
-        localStorage.setItem('btp_devis_pro_archives', JSON.stringify(listeArchives));
-        renderArchives();
-    }
-
-    function renderArchives() {
-        const container = document.getElementById('containerArchives');
-        if (listeArchives.length === 0) {
-            container.innerHTML = `<p style="color: var(--text-muted); font-size:13px; text-align:center; padding: 20px;">Aucun devis archivé pour le moment.</p>`;
-            return;
-        }
-        container.innerHTML = "";
-        listeArchives.forEach(item => {
-            container.innerHTML += `<div class="archive-item"><div class="archive-info"><strong style="color: white; font-size: 14px;">👤 ${item.nom}</strong><br><span style="color: var(--text-muted);">📞 Tel : ${item.tel}</span><br><span style="color: var(--text-muted); font-size: 11px;">📅 ${item.date}</span></div><div class="archive-price">${item.total}</div></div>`;
-        });
-    }
-
-    function effacerToutHistorique() {
-        if(confirm("Voulez-vous vraiment supprimer tout l'historique des archives ?")) {
-            listeArchives = [];
-            localStorage.removeItem('btp_devis_pro_archives');
-            renderArchives();
-        }
-    }
-
-    function genererDevisRapide() {
-        const dom = document.getElementById('domaineBTP').value;
-        const qte = parseFloat(document.getElementById('quantiteAssistant').value) || 60;
-        lignesDevis = [];
-        if(dom === "maconnerie") {
-            lignesDevis = [
-                { designation: "Murs en parpaings de 15 renforcés", qte: qte, unite: "m²", pu: 10500, total: qte * 10500 },
-                { designation: "Main d'œuvre Maçon Professionnel", qte: qte, unite: "m²", pu: 7500, total: qte * 7500 }
-            ];
-        } else {
-            lignesDevis = [{ designation: "Prestation Complète Finition " + dom, qte: qte, unite: "m²", pu: 4500, total: qte * 4500 }];
-        }
-        renderLignes(); calculerTotaux(); switchTab('nouveau');
-    }
-
-    function genererPDF() {
-        archiverNouveauDevis();
-        document.getElementById('pdfEntNom').innerText = document.getElementById('entNom').value || "VOTRE ENTREPRISE";
-        document.getElementById('pdfEntTel').innerText = "Tel: " + (document.getElementById('entTel').value || "+228 ...");
-        document.getElementById('pdfEntEmail').innerText = "Email: " + (document.getElementById('entEmail').value || "...");
-        document.getElementById('pdfEntAdresse').innerText = "Adresse: " + (document.getElementById('entAdresse').value || "Lomé");
-        document.getElementById('pdfCliNom').innerText = document.getElementById('cliNom').value || "Client / Particulier";
-        document.getElementById('pdfCliTel').innerText = "Tel: " + (document.getElementById('cliTel').value || "...");
-        document.getElementById('pdfCliAdresse').innerText = "Chantier: " + (document.getElementById('cliAdresse').value || "...");
-        document.getElementById('pdfDate').innerText = "Date d'émission: " + document.getElementById('devisDate').value;
-        document.getElementById('pdfNotes').innerText = document.getElementById('devisNotes').value;
-
-        const tbody = document.getElementById('pdfTableBody'); tbody.innerHTML = "";
-        lignesDevis.forEach(l => {
-            tbody.innerHTML += `<tr><td>${l.designation}</td><td style="text-align:center;">${l.qte}</td><td style="text-align:center;">${l.unite}</td><td style="text-align:right;">${l.pu.toLocaleString()} F</td><td style="text-align:right; font-weight:bold;">${l.total.toLocaleString()} F</td></tr>`;
+        devisLignes.forEach(l => {
+            let totalLigne = l.quantite * l.prix;
+            totalGeneral += totalLigne;
+            tableauHTML += `
+                <tr>
+                    <td>${l.designation}</td>
+                    <td class="text-right">${l.quantite}</td>
+                    <td>${l.unite}</td>
+                    <td class="text-right">${formatMoney(l.prix)}</td>
+                    <td class="text-right" style="font-weight: bold;">${formatMoney(totalLigne)}</td>
+                </tr>
+            `;
         });
 
-        document.getElementById('pdfSub').innerText = document.getElementById('txtSousTotal').innerText;
-        document.getElementById('pdfRem').innerText = document.getElementById('txtRemise').innerText;
-        document.getElementById('pdfNet').innerText = document.getElementById('txtNetHT').innerText;
-        document.getElementById('pdfTva').innerText = document.getElementById('txtTva').innerText;
-        document.getElementById('pdfTotal').innerText = document.getElementById('txtTotalTTC').innerText;
-        document.getElementById('pdfAcompte').innerText = document.getElementById('txtAcompte').innerText;
-        document.getElementById('pdfReste').innerText = document.getElementById('txtReste').innerText;
+        // Préchauffer le montant du contrat dans l'onglet Paiement
+        document.getElementById('pay-total-contrat').value = totalGeneral;
+
+        const dateDuJour = new Date().toLocaleDateString('fr-FR');
+
+        document.getElementById('pdf-preview').innerHTML = `
+            <div class="pdf-header">
+                <div>
+                    <h1 style="margin: 0; font-size: 22px; font-weight: bold; letter-spacing: 0.5px;">VOTRE ENTREPRISE</h1>
+                    <p style="margin: 5px 0; font-size: 13px; color: #55px;">Tel: +228 ...<br>Adresse: Lomé</p>
+                </div>
+                <div class="text-right">
+                    <h2 style="margin: 0; font-size: 18px; color: #111; border: none; padding: 0;">DEVIS DE TRAVAUX</h2>
+                    <p style="margin: 5px 0; font-size: 13px;"><b>Date d'émission :</b> ${dateDuJour}</p>
+                    <p style="margin: 10px 0 0 0; font-size: 13px; border: 1px solid #ccc; padding: 5px; text-align: left; border-radius: 4px;">
+                        <b>Destinataire :</b><br>${client}
+                    </p>
+                </div>
+            </div>
+            
+            <table class="pdf-table">
+                <thead>
+                    <tr>
+                        <th>Désignation des travaux</th>
+                        <th class="text-right">Quantité</th>
+                        <th>Unité</th>
+                        <th class="text-right">Prix Unitaire</th>
+                        <th class="text-right">Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${tableauHTML}
+                </tbody>
+            </table>
+
+            <div class="totals-box">
+                <div class="totals-row"><span>Sous-total HT :</span> <span>${formatMoney(totalGeneral)}</span></div>
+                <div class="totals-row"><span>Remise :</span> <span>0 F</span></div>
+                <div class="totals-row final"><span>TOTAL TTC :</span> <span>${formatMoney(totalGeneral)}</span></div>
+            </div>
+
+            <div style="margin-top: 40px; font-size: 11px; color: #55px;">
+                <p><b>Notes & Conditions :</b><br>Paiement : 50% à la commande, 50% à la livraison.<br>Délai d'exécution : à préciser après validation.</p>
+            </div>
+        `;
+        
+        // Déclencher automatiquement la fonction d'impression native du téléphone
         window.print();
     }
+
+    // GESTION DU SUIVI DES PAIEMENTS
+    function ajouterPaiement() {
+        const totalContrat = parseFloat(document.getElementById('pay-total-contrat').value) || 0;
+        const versement = parseFloat(document.getElementById('pay-versement').value) || 0;
+        const mode = document.getElementById('pay-mode').value;
+        const date = new Date().toLocaleDateString('fr-FR');
+
+        if(versement <= 0) {
+            alert("Veuillez saisir un montant de versement valide.");
+            return;
+        }
+
+        // Ajouter à l'historique
+        paiementsHistorique.push({ date, mode, versement });
+        localStorage.setItem('btp_paiements', JSON.stringify(paiementsHistorique));
+
+        // Reset le champ versement
+        document.getElementById('pay-versement').value = '';
+
+        afficherHistorique();
+        genererRecuHTML();
+    }
+
+    function supprimerPaiement(index) {
+        if(confirm("Supprimer ce versement ?")) {
+            paiementsHistorique.splice(index, 1);
+            localStorage.setItem('btp_paiements', JSON.stringify(paiementsHistorique));
+            afficherHistorique();
+            genererRecuHTML();
+        }
+    }
+
+    function afficherHistorique() {
+        const box = document.getElementById('history-box');
+        if(paiementsHistorique.length === 0) {
+            box.innerHTML = '<p style="padding: 10px; color: #777; margin:0;">Aucun versement enregistré.</p>';
+            return;
+        }
+
+        box.innerHTML = paiementsHistorique.map((p, index) => `
+            <div class="history-item">
+                <div>
+                    <b>${p.date}</b> - ${p.mode}<br>
+                    <span style="color: var(--secondary-color); font-weight: bold;">+ ${formatMoney(p.versement)}</span>
+                </div>
+                <button class="btn-delete" onclick="supprimerPaiement(${index})">❌</button>
+            </div>
+        `).join('');
+    }
+
+    function genererRecuHTML() {
+        const totalContrat = parseFloat(document.getElementById('pay-total-contrat').value) || 0;
+        const client = document.getElementById('client-name').value || "Client / Particulier";
+        const dateDuJour = new Date().toLocaleDateString('fr-FR');
+
+        let cumulVerse = 0;
+        let tableauPaiementsHTML = '';
+
+        paiementsHistorique.forEach((p, i) => {
+            cumulVerse += p.versement;
+            tableauPaiementsHTML += `
+                <tr>
+                    <td>Versement N°${i+1} (${p.date})</td>
+                    <td>${p.mode}</td>
+                    <td class="text-right" style="color: green; font-weight: bold;">- ${formatMoney(p.versement)}</td>
+                </tr>
+            `;
+        });
+
+        const resteAPayer = totalContrat - cumulVerse;
+
+        document.getElementById('pdf-preview').innerHTML = `
+            <div class="pdf-header">
+                <div>
+                    <h1 style="margin: 0; font-size: 22px; font-weight: bold; letter-spacing: 0.5px;">VOTRE ENTREPRISE</h1>
+                    <p style="margin: 5px 0; font-size: 13px; color: #555;">Tel: +228 ...<br>Adresse: Lomé</p>
+                </div>
+                <div class="text-right">
+                    <h2 style="margin: 0; font-size: 18px; color: #dc3545; border: none; padding: 0;">SITUATION DE PAIEMENT</h2>
+                    <p style="margin: 5px 0; font-size: 13px;"><b>Date de mise à jour :</b> ${dateDuJour}</p>
+                    <p style="margin: 10px 0 0 0; font-size: 13px; border: 1px solid #ccc; padding: 5px; text-align: left; border-radius: 4px;">
+                        <b>Client :</b> ${client}
+                    </p>
+                </div>
+            </div>
+
+            <h3 style="margin-top: 30px;">Historique des Règlements Reçus</h3>
+            <table class="pdf-table">
+                <thead>
+                    <tr>
+                        <th>Désignation du paiement</th>
+                        <th>Mode de règlement</th>
+                        <th class="text-right">Montant Versé</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><b>Montant Initial du Contrat / Chantier</b></td>
+                        <td>—</td>
+                        <td class="text-right" style="font-weight: bold;">${formatMoney(totalContrat)}</td>
+                    </tr>
+                    ${tableauPaiementsHTML}
+                </tbody>
+            </table>
+
+            <div class="totals-box" style="width: 350px;">
+                <div class="totals-row"><span>Total déjà payé :</span> <span style="color: green; font-weight:bold;">${formatMoney(cumulVerse)}</span></div>
+                <div class="totals-row final" style="color: ${resteAPayer <= 0 ? 'green' : 'var(--danger-color)'};">
+                    <span>RESTE À PAYER :</span> 
+                    <span>${formatMoney(resteAPayer)}</span>
+                </div>
+            </div>
+
+            <div style="margin-top: 60px; border-top: 1px dashed #ccc; padding-top: 15px; text-align: center; font-size: 13px; color: #555;">
+                <p><i>Ce document certifie la bonne réception des sommes mentionnées ci-dessus.<br>Fait pour servir de preuve tangible et de reçu de paiement officiel.</i></p>
+            </div>
+        `;
+    }
 </script>
+
 </body>
 </html>
