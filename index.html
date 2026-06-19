@@ -72,7 +72,6 @@
         .line-item-row { display: flex; gap: 6px; align-items: center; background: #131622; padding: 8px; border-radius: 6px; margin-bottom: 6px; font-size: 12px; }
         
         .summary-line { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; border-bottom: 1px dashed var(--border); }
-        .summary-line { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; border-bottom: 1px dashed var(--border); }
         .summary-total { font-size: 16px; font-weight: bold; color: var(--primary-orange); border-top: 1px solid var(--border); padding-top: 8px; }
         .calc-input { width: 60px; padding: 4px; text-align: center; background: #131622; }
 
@@ -403,7 +402,7 @@
         document.getElementById('txtReste').innerText = reste.toLocaleString() + " FCFA";
     }
 
-    // --- LOGIQUE MULTI-LIGNES AVANCÉE : MATÉRIAUX + MAIN D'ŒUVRE ---
+    // --- ANALYSE IA STRICTEMENT CORRIGÉE POUR L'UNITÉ "FORFAIT" ---
     function genererDepuisTexte() {
         const texteBrut = document.getElementById('texteDescriptionIA').value;
         if(!texteBrut.trim()) {
@@ -432,7 +431,8 @@
             if (matchDes) {
                 let designation = matchDes[1].trim();
                 let qte = matchQte ? parseFloat(matchQte[1].replace(',', '.')) : 1;
-                let unite = matchUni ? matchUni[1].trim().replace(/FCFA|F/gi, '').trim() : "m²";
+                // CORRECTION ICI : Pas de nettoyage sauvage pour ne pas transformer forfait en orait
+                let unite = matchUni ? matchUni[1].trim() : "m²"; 
                 let pu = matchPrix ? parseInt(matchPrix[1].replace(/\s/g, '')) : 0;
 
                 lignesDevis.push({
