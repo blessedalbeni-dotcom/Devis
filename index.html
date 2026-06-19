@@ -22,7 +22,7 @@
         body { background-color: var(--bg-main); color: var(--text-main); padding: 10px; }
         .container { max-width: 600px; margin: 0 auto; background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
-        /* Écran de verrouillage de licence (Bloque tout le reste) */
+        /* Écran de verrouillage de licence */
         #activation-screen {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
             background: var(--bg-main); z-index: 9999; display: flex; 
@@ -54,7 +54,7 @@
 
         /* Sections & Formulaires */
         .section-box { background: rgba(36, 40, 59, 0.3); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
-        .section-title { font-size: 12px; font-weight: bold; color: var(--primary-orange); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px; }
+        .section-title { font-size: 12px; font-weight: bold; color: var(--primary-orange); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
 
         .form-group { margin-bottom: 12px; }
         label { display: block; font-size: 11px; margin-bottom: 4px; color: var(--text-muted); }
@@ -154,6 +154,8 @@
     </div>
 
     <div id="tab-nouveau" class="tab-content">
+        <button class="btn btn-full" style="background: #c0392b; color: white; margin-bottom: 15px; font-size: 12px;" onclick="reinitialiserNouveauDevis()">🗑️ Commencer un Nouveau Devis (Tout effacer)</button>
+
         <div class="section-box">
             <div class="section-title">Votre Entreprise</div>
             <div class="form-group"><input type="text" id="entNom" placeholder="ex: Travaux KOKOU"></div>
@@ -213,7 +215,7 @@
     <div id="tab-assistant" class="tab-content">
         <div class="section-box">
             <div class="section-title" style="color: var(--primary-purple);">🤖 Générateur de Devis IA Intellect</div>
-            <textarea id="texteDescriptionIA" placeholder="Ex: Installation électrique villa 4 pièces à Lomé : tableau, prises..."></textarea>
+            <textarea id="texteDescriptionIA" style="height: 150px;" placeholder="Collez vos lignes ici...&#10;Exemple :&#10;Désignation : Revêtement sol en carreaux grès cérame&#10;Quantité : 50&#10;Unité : m²&#10;Prix Unitaire : 5500"></textarea>
             <button class="btn btn-purple btn-full" style="margin-top:10px;" onclick="genererDepuisTexte()">Analyser et Injecter le Devis</button>
         </div>
 
@@ -276,15 +278,12 @@
     </div>
 </div>
 
-<div id="toast" class="toast">📋 Action effectuée !</div>
-
 <script>
     let lignesDevis = [];
     let nombreAleatoireUnique = 0;
     let listeArchives = [];
 
     window.onload = function() {
-        // Charger les archives sauvegardées
         let archivesSauvegardees = localStorage.getItem('btp_devis_pro_archives');
         if (archivesSauvegardees) {
             listeArchives = JSON.parse(archivesSauvegardees);
@@ -319,35 +318,39 @@
         }
     }
 
-    // --- MODIFICATION DU MESSAGE WHATSAPP AUTOMATIQUE ---
     function acheterLicenceWhatsApp() {
         const code = document.getElementById('displayClientCode').innerText;
-        
-        // TEXTE DU MESSAGE PERSONNALISÉ
         const texteWhatsApp = "Bonjour Ibrahim, je viens d'installer l'application BTP Devis Pro. Je souhaite acheter ma clé d'activation unique.\n\n👉 Mon Code Client unique est : " + code;
         const message = encodeURIComponent(texteWhatsApp);
-        
-        // Remplacez '22890000000' par votre numéro WhatsApp de gestion
-        window.open("https://wa.me/22872353734?text=" + message, '_blank');
+        window.open("https://wa.me/22890000000?text=" + message, '_blank');
     }
 
     function switchTab(tabId) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-        if(window.event && window.event.currentTarget) {
-            window.event.currentTarget.classList.add('active');
-        } else {
-            // Si switch direct via code sans event click
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                if(btn.getAttribute('onclick').includes(tabId)) btn.classList.add('active');
-            });
-        }
+        
+        // Activer visuellement le bouton d'onglet correspondant
+        document.querySelectorAll('.tab-btn').forEach(btn => {
+            if(btn.getAttribute('onclick').includes(tabId)) btn.classList.add('active');
+        });
+        
         document.getElementById('tab-' + tabId).classList.add('active');
     }
 
     function selectMetier(nom, icone) {
         document.getElementById('inputDesignation').value = nom + " - ";
         switchTab('nouveau');
+    }
+
+    function reinitialiserNouveauDevis() {
+        if(confirm("Voulez-vous vider toutes les lignes actuelles pour commencer un nouveau devis ?")) {
+            lignesDevis = [];
+            renderLignes();
+            calculerTotaux();
+            document.getElementById('cliNom').value = "";
+            document.getElementById('cliTel').value = "";
+            document.getElementById('cliAdresse').value = "";
+        }
     }
 
     function ajouterLigneManuelle() {
@@ -390,27 +393,72 @@
         document.getElementById('txtTotalTTC').innerText = totalTtc.toLocaleString() + " FCFA";
         document.getElementById('txtAcompte').innerText = acompte.toLocaleString() + " FCFA";
         document.getElementById('txtReste').innerText = reste.toLocaleString() + " FCFA";
-        return totalTtc.toLocaleString() + " FCFA";
     }
 
-    // --- LOGIQUE AUTOMATIQUE D'ARCHIVAGE DES CLIENTS ---
+    // --- NOUVELLE LOGIQUE D'ANALYSE DYNAMIQUE DE L'ASSISTANT IA ---
+    function genererDepuisTexte() {
+        const texteBrut = document.getElementById('texteDescriptionIA').value;
+        if(!texteBrut.trim()) {
+            alert("Veuillez d'abord insérer les instructions ou le texte du devis.");
+            return;
+        }
+
+        // On nettoie le tableau pour accueillir les nouvelles lignes de l'IA
+        lignesDevis = [];
+
+        // Recherche des expressions régulières pour capturer les champs peu importe les espaces
+        const regexDesignation = /(?:Désignation|Designation|Travaux)\s*:\s*([^\n\r]+)/i;
+        const regexQuantite = /(?:Quantité|Quantite|Qte)\s*:\s*(\d+)/i;
+        const regexUnite = /(?:Unité|Unite|Unit)\s*:\s*([^\n\r]+)/i;
+        const regexPrix = /(?:Prix Unitaire|Prix|PU)\s*:\s*([\d\s]+)/i;
+
+        // Extraction des valeurs
+        const matchDes = texteBrut.match(regexDesignation);
+        const matchQte = texteBrut.match(regexQuantite);
+        const matchUni = texteBrut.match(regexUnite);
+        const matchPrix = texteBrut.match(regexPrix);
+
+        let designation = matchDes ? matchDes[1].trim() : "Travaux personnalisés";
+        let qte = matchQte ? parseInt(matchQte[1]) : 1;
+        let unite = matchUni ? matchUni[1].trim().replace(/FCFA|F/gi, '').trim() : "m²";
+        let pu = matchPrix ? parseInt(matchPrix[1].replace(/\s/g, '')) : 0;
+
+        // Fallback de sécurité si le texte brut contient juste des mots clés (ex: "Carrelage")
+        if (!matchDes && texteBrut.toLowerCase().includes("carrelage")) {
+            designation = "Revêtement sol en carreaux grès cérame (Carrelage)";
+            qte = 50;
+            unite = "m²";
+            pu = 5500;
+        }
+
+        // Injection dans le tableau de l'application
+        lignesDevis.push({
+            designation: designation,
+            qte: qte,
+            unite: unite,
+            pu: pu,
+            total: qte * pu
+        });
+
+        // Mise à jour de l'interface
+        renderLignes();
+        calculerTotaux();
+        
+        // Redirection vers l'onglet de modification
+        switchTab('nouveau');
+        document.getElementById('texteDescriptionIA').value = "";
+    }
+
     function archiverNouveauDevis() {
         const nomClient = document.getElementById('cliNom').value.trim() || "Client Anonyme";
         const telClient = document.getElementById('cliTel').value.trim() || "Aucun numéro";
         const dateDevis = document.getElementById('devisDate').value;
         const totalFacture = document.getElementById('txtTotalTTC').innerText;
 
-        // Éviter d'archiver un devis vide
         if (lignesDevis.length === 0) return;
 
-        const nouvelArchive = {
-            nom: nomClient,
-            tel: telClient,
-            date: dateDevis,
-            total: totalFacture
-        };
-
-        listeArchives.unshift(nouvelArchive); // Ajoute en haut de liste
+        const nouvelArchive = { nom: nomClient, tel: telClient, date: dateDevis, total: totalFacture };
+        listeArchives.unshift(nouvelArchive);
         localStorage.setItem('btp_devis_pro_archives', JSON.stringify(listeArchives));
         renderArchives();
     }
@@ -421,42 +469,24 @@
             container.innerHTML = `<p style="color: var(--text-muted); font-size:13px; text-align:center; padding: 20px;">Aucun devis archivé pour le moment.</p>`;
             return;
         }
-
         container.innerHTML = "";
         listeArchives.forEach(item => {
-            container.innerHTML += `
-                <div class="archive-item">
-                    <div class="archive-info">
-                        <strong style="color: white; font-size: 14px;">👤 ${item.nom}</strong><br>
-                        <span style="color: var(--text-muted);">📞 Tel : ${item.tel}</span><br>
-                        <span style="color: var(--text-muted); font-size: 11px;">📅 ${item.date}</span>
-                    </div>
-                    <div class="archive-price">${item.total}</div>
-                </div>
-            `;
+            container.innerHTML += `<div class="archive-item"><div class="archive-info"><strong style="color: white; font-size: 14px;">👤 ${item.nom}</strong><br><span style="color: var(--text-muted);">📞 Tel : ${item.tel}</span><br><span style="color: var(--text-muted); font-size: 11px;">📅 ${item.date}</span></div><div class="archive-price">${item.total}</div></div>`;
         });
     }
 
     function effacerToutHistorique() {
-        if(confirm("Voulez-vous vraiment supprimer tout l'historique de vos clients et devis d'archives ?")) {
+        if(confirm("Voulez-vous vraiment supprimer tout l'historique des archives ?")) {
             listeArchives = [];
             localStorage.removeItem('btp_devis_pro_archives');
             renderArchives();
         }
     }
 
-    function genererDepuisTexte() {
-        lignesDevis = [
-            { designation: "Installation Tableau Électrique Principal", qte: 1, unite: "U", pu: 120000, total: 120000 },
-            { designation: "Câblage, Fil de Terre & Gaines Isolantes", qte: 45, unite: "ml", pu: 3500, total: 157500 },
-            { designation: "Main d'œuvre Électricien Qualifié", qte: 1, unite: "forfait", pu: 75000, total: 75000 }
-        ];
-        renderLignes(); calculerTotaux(); switchTab('nouveau');
-    }
-
     function genererDevisRapide() {
         const dom = document.getElementById('domaineBTP').value;
         const qte = parseFloat(document.getElementById('quantiteAssistant').value) || 60;
+        lignesDevis = []; // Vide le tableau précédent
         if(dom === "maconnerie") {
             lignesDevis = [
                 { designation: "Murs en parpaings de 15 renforcés", qte: qte, unite: "m²", pu: 10500, total: qte * 10500 },
@@ -469,9 +499,7 @@
     }
 
     function genererPDF() {
-        // Enregistre les informations du client dans les archives internes du téléphone avant d'ouvrir la page d'impression
         archiverNouveauDevis();
-
         document.getElementById('pdfEntNom').innerText = document.getElementById('entNom').value || "VOTRE ENTREPRISE";
         document.getElementById('pdfEntTel').innerText = "Tel: " + (document.getElementById('entTel').value || "+228 ...");
         document.getElementById('pdfEntEmail').innerText = "Email: " + (document.getElementById('entEmail').value || "...");
