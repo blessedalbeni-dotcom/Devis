@@ -45,7 +45,7 @@
         .tab-content { display: none; padding: 0 15px 15px 15px; }
         .tab-content.active { display: block; }
 
-        /* Métiers */
+        /* Métiers élargis */
         .grid-metiers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
         .metier-card { background: #1e2235; border: 1px solid var(--border); border-radius: 8px; padding: 12px 5px; text-align: center; cursor: pointer; transition: 0.2s; }
         .metier-card:hover, .metier-card.selected { border-color: var(--primary-orange); background: rgba(230, 126, 34, 0.1); }
@@ -75,6 +75,11 @@
         .summary-total { font-size: 16px; font-weight: bold; color: var(--primary-orange); border-top: 1px solid var(--border); padding-top: 8px; }
         .calc-input { width: 60px; padding: 4px; text-align: center; background: #131622; }
 
+        /* Style des Archives */
+        .archive-item { background: #131622; border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+        .archive-info { font-size: 13px; line-height: 1.4; }
+        .archive-price { font-weight: bold; color: var(--primary-orange); font-size: 14px; }
+
         .toast { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: bold; z-index: 1000; }
 
         @media print {
@@ -93,7 +98,6 @@
 </head>
 <body>
 
-<!-- ÉCRAN DE VERROUILLAGE UNIQUE PAR CODE -->
 <div id="activation-screen">
     <div class="activation-box">
         <h2 style="color: var(--primary-orange); margin-bottom: 10px; font-size: 20px;">🔒 Application Verrouillée</h2>
@@ -114,7 +118,6 @@
     </div>
 </div>
 
-<!-- CONTAINER PRINCIPAL -->
 <div class="container">
     <div class="header">
         <div class="logo-title">BTP<span>Devis</span> Pro</div>
@@ -125,11 +128,11 @@
         <button class="tab-btn active" onclick="switchTab('accueil')">🏠 Accueil</button>
         <button class="tab-btn" onclick="switchTab('nouveau')">📋 Nouveau Devis</button>
         <button class="tab-btn" onclick="switchTab('assistant')">🤖 Assistant IA</button>
+        <button class="tab-btn" onclick="switchTab('archives')">📁 Archives</button>
     </div>
 
-    <!-- ONGLET : ACCUEIL -->
     <div id="tab-accueil" class="tab-content active">
-        <div style="text-align: center; margin: 25px 0;">
+        <div style="text-align: center; margin: 20px 0;">
             <h2 style="font-size: 20px; color: var(--text-main);">BTP Devis Pro</h2>
             <p style="color: var(--text-muted); font-size: 12px; margin-top: 4px;">Devis professionnels - Lome, Togo</p>
         </div>
@@ -143,10 +146,13 @@
             <div class="metier-card" onclick="selectMetier('Ferraillage', '⚙️')"><span class="metier-icon">⚙️</span><span class="metier-name">Ferraillage</span></div>
             <div class="metier-card" onclick="selectMetier('Peinture', '🎨')"><span class="metier-icon">🎨</span><span class="metier-name">Peinture</span></div>
             <div class="metier-card" onclick="selectMetier('Construction', '🏠')"><span class="metier-icon">🏠</span><span class="metier-name">Construction</span></div>
+            <div class="metier-card" onclick="selectMetier('Carrelage', '📐')"><span class="metier-icon">📐</span><span class="metier-name">Carrelage</span></div>
+            <div class="metier-card" onclick="selectMetier('Faux-plafond / BA13', '🔨')"><span class="metier-icon">🔨</span><span class="metier-name">BA13 / Plafond</span></div>
+            <div class="metier-card" onclick="selectMetier('Étanchéité', '💧')"><span class="metier-icon">💧</span><span class="metier-name">Etancheite</span></div>
+            <div class="metier-card" onclick="selectMetier('Climatisation / Froid', '❄️')"><span class="metier-icon">❄️</span><span class="metier-name">Climatisation</span></div>
         </div>
     </div>
 
-    <!-- ONGLET : NOUVEAU DEVIS MANUEL -->
     <div id="tab-nouveau" class="tab-content">
         <div class="section-box">
             <div class="section-title">Votre Entreprise</div>
@@ -160,9 +166,9 @@
 
         <div class="section-box">
             <div class="section-title">Client</div>
-            <div class="form-group"><input type="text" id="cliNom" placeholder="M. / Mme ..."></div>
+            <div class="form-group"><input type="text" id="cliNom" placeholder="Nom complet du client"></div>
             <div class="row-inputs">
-                <div class="form-group"><input type="text" id="cliTel" placeholder="+228 ..."></div>
+                <div class="form-group"><input type="text" id="cliTel" placeholder="Téléphone client (ex: +228...)"></div>
                 <div class="form-group"><input type="text" id="cliAdresse" placeholder="Quartier, Ville"></div>
             </div>
             <div class="form-group"><input type="date" id="devisDate" value="2026-06-19"></div>
@@ -204,7 +210,6 @@
         <button class="btn btn-orange btn-full" style="padding:15px;" onclick="genererPDF()">📄 Aperçu et PDF</button>
     </div>
 
-    <!-- ONGLET : ASSISTANT IA -->
     <div id="tab-assistant" class="tab-content">
         <div class="section-box">
             <div class="section-title" style="color: var(--primary-purple);">🤖 Générateur de Devis IA Intellect</div>
@@ -227,9 +232,17 @@
             <button class="btn btn-orange btn-full" onclick="genererDevisRapide()">Calculer et Injecter</button>
         </div>
     </div>
+
+    <div id="tab-archives" class="tab-content">
+        <div class="section-box">
+            <div class="section-title">📂 Historique des Devis & Clients</div>
+            <p style="color: var(--text-muted); font-size: 12px; margin-bottom: 15px;">Tous les devis créés s'enregistrent ici automatiquement.</p>
+            <div id="containerArchives"></div>
+            <button class="btn btn-dark btn-full" style="margin-top: 15px; color: var(--danger); border-color: rgba(231, 76, 60, 0.2);" onclick="effacerToutHistorique()">🗑️ Effacer tout l'historique</button>
+        </div>
+    </div>
 </div>
 
-<!-- IMPRESSION BLANCHE PDF -->
 <div id="print-area">
     <div class="pdf-header">
         <div>
@@ -265,35 +278,36 @@
 
 <div id="toast" class="toast">📋 Action effectuée !</div>
 
-<!-- LA PARTIE SCRIPT ET LE CODE LOGIQUE DE L'APPLICATION (TOUT EST INCLUS ICI) -->
 <script>
     let lignesDevis = [];
     let nombreAleatoireUnique = 0;
+    let listeArchives = [];
 
-    // --- LOGIQUE DE VÉROUILLAGE UNIQUE SÉCURISÉE ET FIXÉE ---
     window.onload = function() {
+        // Charger les archives sauvegardées
+        let archivesSauvegardees = localStorage.getItem('btp_devis_pro_archives');
+        if (archivesSauvegardees) {
+            listeArchives = JSON.parse(archivesSauvegardees);
+        }
+        renderArchives();
+
         if(localStorage.getItem('btp_devis_pro_activated') === 'true') {
             document.getElementById('activation-screen').style.display = 'none';
         } else {
-            // On vérifie si un code client permanent existe déjà pour ce téléphone
             let codeStocke = localStorage.getItem('btp_devis_pro_client_id');
-            
             if (!codeStocke) {
-                // S'il n'existe pas, on le génère UNE SEULE FOIS pour toujours
                 nombreAleatoireUnique = Math.floor(1000 + Math.random() * 9000);
                 localStorage.setItem('btp_devis_pro_client_id', nombreAleatoireUnique);
                 codeStocke = nombreAleatoireUnique;
             } else {
                 nombreAleatoireUnique = parseInt(codeStocke);
             }
-            
             document.getElementById('displayClientCode').innerText = "BTP-" + codeStocke;
         }
     }
 
     function verifierLicence() {
         const keySaisie = document.getElementById('inputActivationKey').value.trim();
-        // Clé secrète : Code permanent + 99
         const bonneCle = nombreAleatoireUnique.toString() + "99";
 
         if(keySaisie === bonneCle) {
@@ -305,18 +319,28 @@
         }
     }
 
+    // --- MODIFICATION DU MESSAGE WHATSAPP AUTOMATIQUE ---
     function acheterLicenceWhatsApp() {
         const code = document.getElementById('displayClientCode').innerText;
-        const message = encodeURIComponent("Bonjour, je souhaite acheter le code d'activation unique pour mon application BTP Devis Pro. Mon Code Client est : " + code);
-        window.open("https://wa.me/22890000000?text=" + message, '_blank');
+        
+        // TEXTE DU MESSAGE PERSONNALISÉ
+        const texteWhatsApp = "Bonjour Ibrahim, je viens d'installer l'application BTP Devis Pro. Je souhaite acheter ma clé d'activation unique.\n\n👉 Mon Code Client unique est : " + code;
+        const message = encodeURIComponent(texteWhatsApp);
+        
+        // Remplacez '22890000000' par votre numéro WhatsApp de gestion
+        window.open("https://wa.me/22872353734?text=" + message, '_blank');
     }
 
-    // --- LOGIQUE DES DEVIS ---
     function switchTab(tabId) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
         if(window.event && window.event.currentTarget) {
             window.event.currentTarget.classList.add('active');
+        } else {
+            // Si switch direct via code sans event click
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                if(btn.getAttribute('onclick').includes(tabId)) btn.classList.add('active');
+            });
         }
         document.getElementById('tab-' + tabId).classList.add('active');
     }
@@ -366,6 +390,59 @@
         document.getElementById('txtTotalTTC').innerText = totalTtc.toLocaleString() + " FCFA";
         document.getElementById('txtAcompte').innerText = acompte.toLocaleString() + " FCFA";
         document.getElementById('txtReste').innerText = reste.toLocaleString() + " FCFA";
+        return totalTtc.toLocaleString() + " FCFA";
+    }
+
+    // --- LOGIQUE AUTOMATIQUE D'ARCHIVAGE DES CLIENTS ---
+    function archiverNouveauDevis() {
+        const nomClient = document.getElementById('cliNom').value.trim() || "Client Anonyme";
+        const telClient = document.getElementById('cliTel').value.trim() || "Aucun numéro";
+        const dateDevis = document.getElementById('devisDate').value;
+        const totalFacture = document.getElementById('txtTotalTTC').innerText;
+
+        // Éviter d'archiver un devis vide
+        if (lignesDevis.length === 0) return;
+
+        const nouvelArchive = {
+            nom: nomClient,
+            tel: telClient,
+            date: dateDevis,
+            total: totalFacture
+        };
+
+        listeArchives.unshift(nouvelArchive); // Ajoute en haut de liste
+        localStorage.setItem('btp_devis_pro_archives', JSON.stringify(listeArchives));
+        renderArchives();
+    }
+
+    function renderArchives() {
+        const container = document.getElementById('containerArchives');
+        if (listeArchives.length === 0) {
+            container.innerHTML = `<p style="color: var(--text-muted); font-size:13px; text-align:center; padding: 20px;">Aucun devis archivé pour le moment.</p>`;
+            return;
+        }
+
+        container.innerHTML = "";
+        listeArchives.forEach(item => {
+            container.innerHTML += `
+                <div class="archive-item">
+                    <div class="archive-info">
+                        <strong style="color: white; font-size: 14px;">👤 ${item.nom}</strong><br>
+                        <span style="color: var(--text-muted);">📞 Tel : ${item.tel}</span><br>
+                        <span style="color: var(--text-muted); font-size: 11px;">📅 ${item.date}</span>
+                    </div>
+                    <div class="archive-price">${item.total}</div>
+                </div>
+            `;
+        });
+    }
+
+    function effacerToutHistorique() {
+        if(confirm("Voulez-vous vraiment supprimer tout l'historique de vos clients et devis d'archives ?")) {
+            listeArchives = [];
+            localStorage.removeItem('btp_devis_pro_archives');
+            renderArchives();
+        }
     }
 
     function genererDepuisTexte() {
@@ -392,6 +469,9 @@
     }
 
     function genererPDF() {
+        // Enregistre les informations du client dans les archives internes du téléphone avant d'ouvrir la page d'impression
+        archiverNouveauDevis();
+
         document.getElementById('pdfEntNom').innerText = document.getElementById('entNom').value || "VOTRE ENTREPRISE";
         document.getElementById('pdfEntTel').innerText = "Tel: " + (document.getElementById('entTel').value || "+228 ...");
         document.getElementById('pdfEntEmail').innerText = "Email: " + (document.getElementById('entEmail').value || "...");
