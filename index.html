@@ -72,6 +72,7 @@
         .line-item-row { display: flex; gap: 6px; align-items: center; background: #131622; padding: 8px; border-radius: 6px; margin-bottom: 6px; font-size: 12px; }
         
         .summary-line { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; border-bottom: 1px dashed var(--border); }
+        .summary-line { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; border-bottom: 1px dashed var(--border); }
         .summary-total { font-size: 16px; font-weight: bold; color: var(--primary-orange); border-top: 1px solid var(--border); padding-top: 8px; }
         .calc-input { width: 60px; padding: 4px; text-align: center; background: #131622; }
 
@@ -79,8 +80,6 @@
         .archive-item { background: #131622; border: 1px solid var(--border); border-radius: 8px; padding: 12px; margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
         .archive-info { font-size: 13px; line-height: 1.4; }
         .archive-price { font-weight: bold; color: var(--primary-orange); font-size: 14px; }
-
-        .toast { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: bold; z-index: 1000; }
 
         @media print {
             body { background: white !important; color: black !important; padding: 0; margin: 0; }
@@ -98,6 +97,7 @@
 </head>
 <body>
 
+<!-- ÉCRAN DE VERROUILLAGE UNIQUE PAR CODE -->
 <div id="activation-screen">
     <div class="activation-box">
         <h2 style="color: var(--primary-orange); margin-bottom: 10px; font-size: 20px;">🔒 Application Verrouillée</h2>
@@ -118,6 +118,7 @@
     </div>
 </div>
 
+<!-- CONTAINER PRINCIPAL -->
 <div class="container">
     <div class="header">
         <div class="logo-title">BTP<span>Devis</span> Pro</div>
@@ -131,6 +132,7 @@
         <button class="tab-btn" onclick="switchTab('archives')">📁 Archives</button>
     </div>
 
+    <!-- ONGLET : ACCUEIL -->
     <div id="tab-accueil" class="tab-content active">
         <div style="text-align: center; margin: 20px 0;">
             <h2 style="font-size: 20px; color: var(--text-main);">BTP Devis Pro</h2>
@@ -153,6 +155,7 @@
         </div>
     </div>
 
+    <!-- ONGLET : NOUVEAU DEVIS MANUEL -->
     <div id="tab-nouveau" class="tab-content">
         <button class="btn btn-full" style="background: #c0392b; color: white; margin-bottom: 15px; font-size: 12px;" onclick="reinitialiserNouveauDevis()">🗑️ Commencer un Nouveau Devis (Tout effacer)</button>
 
@@ -187,6 +190,9 @@
                         <option value="m²">m²</option>
                         <option value="ml">ml</option>
                         <option value="U">Unité</option>
+                        <option value="Sacs">Sacs</option>
+                        <option value="Camion">Camion</option>
+                        <option value="Barre">Barre</option>
                     </select>
                 </div>
                 <div class="form-group"><input type="number" id="inputPu" placeholder="Prix Unitaire (F)"></div>
@@ -212,11 +218,12 @@
         <button class="btn btn-orange btn-full" style="padding:15px;" onclick="genererPDF()">📄 Aperçu et PDF</button>
     </div>
 
+    <!-- ONGLET : ASSISTANT IA -->
     <div id="tab-assistant" class="tab-content">
         <div class="section-box">
             <div class="section-title" style="color: var(--primary-purple);">🤖 Générateur de Devis IA Intellect</div>
-            <textarea id="texteDescriptionIA" style="height: 150px;" placeholder="Collez vos lignes ici...&#10;Exemple :&#10;Désignation : Revêtement sol en carreaux grès cérame&#10;Quantité : 50&#10;Unité : m²&#10;Prix Unitaire : 5500"></textarea>
-            <button class="btn btn-purple btn-full" style="margin-top:10px;" onclick="genererDepuisTexte()">Analyser et Injecter le Devis</button>
+            <textarea id="texteDescriptionIA" style="height: 220px;" placeholder="Collez vos lignes détaillées ici (Matériaux, forfaits...).&#10;&#10;Exemple :&#10;Désignation : Ciment CPJ 45&#10;Quantité : 20&#10;Unité : Sacs&#10;Prix Unitaire : 5000&#10;&#10;Désignation : Main d'oeuvre Maçonnerie&#10;Quantité : 1&#10;Unité : forfait&#10;Prix Unitaire : 150000"></textarea>
+            <button class="btn btn-purple btn-full" style="margin-top:10px;" onclick="genererDepuisTexte()">Analyser et Détailler le Devis</button>
         </div>
 
         <div class="section-box">
@@ -235,6 +242,7 @@
         </div>
     </div>
 
+    <!-- ONGLET : ARCHIVES -->
     <div id="tab-archives" class="tab-content">
         <div class="section-box">
             <div class="section-title">📂 Historique des Devis & Clients</div>
@@ -245,6 +253,7 @@
     </div>
 </div>
 
+<!-- IMPRESSION BLANCHE PDF -->
 <div id="print-area">
     <div class="pdf-header">
         <div>
@@ -329,7 +338,6 @@
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
         
-        // Activer visuellement le bouton d'onglet correspondant
         document.querySelectorAll('.tab-btn').forEach(btn => {
             if(btn.getAttribute('onclick').includes(tabId)) btn.classList.add('active');
         });
@@ -395,7 +403,7 @@
         document.getElementById('txtReste').innerText = reste.toLocaleString() + " FCFA";
     }
 
-    // --- NOUVELLE LOGIQUE D'ANALYSE DYNAMIQUE DE L'ASSISTANT IA ---
+    // --- LOGIQUE MULTI-LIGNES AVANCÉE : MATÉRIAUX + MAIN D'ŒUVRE ---
     function genererDepuisTexte() {
         const texteBrut = document.getElementById('texteDescriptionIA').value;
         if(!texteBrut.trim()) {
@@ -403,48 +411,46 @@
             return;
         }
 
-        // On nettoie le tableau pour accueillir les nouvelles lignes de l'IA
         lignesDevis = [];
 
-        // Recherche des expressions régulières pour capturer les champs peu importe les espaces
-        const regexDesignation = /(?:Désignation|Designation|Travaux)\s*:\s*([^\n\r]+)/i;
-        const regexQuantite = /(?:Quantité|Quantite|Qte)\s*:\s*(\d+)/i;
-        const regexUnite = /(?:Unité|Unite|Unit)\s*:\s*([^\n\r]+)/i;
-        const regexPrix = /(?:Prix Unitaire|Prix|PU)\s*:\s*([\d\s]+)/i;
+        // On découpe par bloc dès que le mot "Désignation" apparaît
+        const blocs = texteBrut.split(/(?=Désignation|Designation|Travaux)/i);
 
-        // Extraction des valeurs
-        const matchDes = texteBrut.match(regexDesignation);
-        const matchQte = texteBrut.match(regexQuantite);
-        const matchUni = texteBrut.match(regexUnite);
-        const matchPrix = texteBrut.match(regexPrix);
+        blocs.forEach(bloc => {
+            if(!bloc.trim()) return;
 
-        let designation = matchDes ? matchDes[1].trim() : "Travaux personnalisés";
-        let qte = matchQte ? parseInt(matchQte[1]) : 1;
-        let unite = matchUni ? matchUni[1].trim().replace(/FCFA|F/gi, '').trim() : "m²";
-        let pu = matchPrix ? parseInt(matchPrix[1].replace(/\s/g, '')) : 0;
+            const regexDesignation = /(?:Désignation|Designation|Travaux)\s*:\s*([^\n\r]+)/i;
+            const regexQuantite = /(?:Quantité|Quantite|Qte)\s*:\s*([\d\.,]+)/i;
+            const regexUnite = /(?:Unité|Unite|Unit)\s*:\s*([^\n\r]+)/i;
+            const regexPrix = /(?:Prix Unitaire|Prix|PU)\s*:\s*([\d\s]+)/i;
 
-        // Fallback de sécurité si le texte brut contient juste des mots clés (ex: "Carrelage")
-        if (!matchDes && texteBrut.toLowerCase().includes("carrelage")) {
-            designation = "Revêtement sol en carreaux grès cérame (Carrelage)";
-            qte = 50;
-            unite = "m²";
-            pu = 5500;
-        }
+            const matchDes = bloc.match(regexDesignation);
+            const matchQte = bloc.match(regexQuantite);
+            const matchUni = bloc.match(regexUnite);
+            const matchPrix = bloc.match(regexPrix);
 
-        // Injection dans le tableau de l'application
-        lignesDevis.push({
-            designation: designation,
-            qte: qte,
-            unite: unite,
-            pu: pu,
-            total: qte * pu
+            if (matchDes) {
+                let designation = matchDes[1].trim();
+                let qte = matchQte ? parseFloat(matchQte[1].replace(',', '.')) : 1;
+                let unite = matchUni ? matchUni[1].trim().replace(/FCFA|F/gi, '').trim() : "m²";
+                let pu = matchPrix ? parseInt(matchPrix[1].replace(/\s/g, '')) : 0;
+
+                lignesDevis.push({
+                    designation: designation,
+                    qte: qte,
+                    unite: unite,
+                    pu: pu,
+                    total: qte * pu
+                });
+            }
         });
 
-        // Mise à jour de l'interface
+        if (lignesDevis.length === 0 && texteBrut.toLowerCase().includes("carrelage")) {
+            lignesDevis.push({ designation: "Revêtement sol en carreaux grès cérame (Carrelage)", qte: 50, unite: "m²", pu: 5500, total: 275000 });
+        }
+
         renderLignes();
         calculerTotaux();
-        
-        // Redirection vers l'onglet de modification
         switchTab('nouveau');
         document.getElementById('texteDescriptionIA').value = "";
     }
@@ -486,7 +492,7 @@
     function genererDevisRapide() {
         const dom = document.getElementById('domaineBTP').value;
         const qte = parseFloat(document.getElementById('quantiteAssistant').value) || 60;
-        lignesDevis = []; // Vide le tableau précédent
+        lignesDevis = [];
         if(dom === "maconnerie") {
             lignesDevis = [
                 { designation: "Murs en parpaings de 15 renforcés", qte: qte, unite: "m²", pu: 10500, total: qte * 10500 },
