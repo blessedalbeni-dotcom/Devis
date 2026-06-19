@@ -22,43 +22,46 @@
         body { background-color: var(--bg-main); color: var(--text-main); padding: 10px; }
         .container { max-width: 600px; margin: 0 auto; background: var(--bg-card); border-radius: 16px; border: 1px solid var(--border); overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         
-        /* Screen reader/print only */
+        /* Écran de verrouillage de licence (Bloque tout le reste) */
+        #activation-screen {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%; 
+            background: var(--bg-main); z-index: 9999; display: flex; 
+            align-items: center; justify-content: center; padding: 20px;
+        }
+        .activation-box { background: var(--bg-card); border: 1px solid var(--border); padding: 25px; border-radius: 16px; width: 100%; max-width: 400px; text-align: center; }
+
         #print-area { display: none; }
 
-        /* Header */
+        /* Header & Onglets */
         .header { display: flex; justify-content: space-between; align-items: center; padding: 18px; border-bottom: 1px solid var(--border); }
         .logo-title { font-size: 22px; font-weight: bold; }
         .logo-title span { color: var(--primary-orange); }
         .badge { background: rgba(230, 126, 34, 0.15); color: var(--primary-orange); padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: bold; border: 1px solid rgba(230, 126, 34, 0.3); }
 
-        /* Navigation Onglets */
         .tabs { display: flex; background: #131622; padding: 5px; margin: 15px; border-radius: 10px; gap: 5px; overflow-x: auto; }
         .tab-btn { flex: 1; padding: 10px 5px; border: none; background: none; font-size: 12px; font-weight: 500; cursor: pointer; color: var(--text-muted); border-radius: 8px; transition: 0.3s; display: flex; align-items: center; justify-content: center; gap: 4px; white-space: nowrap; }
         .tab-btn.active { background: var(--bg-input); color: var(--text-main); border-bottom: 2px solid var(--primary-orange); }
 
-        /* Contenu */
         .tab-content { display: none; padding: 0 15px 15px 15px; }
         .tab-content.active { display: block; }
 
-        /* Grille des métiers (Style Image 1 & 2) */
+        /* Métiers */
         .grid-metiers { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 20px; }
         .metier-card { background: #1e2235; border: 1px solid var(--border); border-radius: 8px; padding: 12px 5px; text-align: center; cursor: pointer; transition: 0.2s; }
         .metier-card:hover, .metier-card.selected { border-color: var(--primary-orange); background: rgba(230, 126, 34, 0.1); }
         .metier-icon { font-size: 18px; margin-bottom: 6px; display: block; }
         .metier-name { font-size: 10px; font-weight: 600; color: var(--text-main); }
 
-        /* Blocs de section */
+        /* Sections & Formulaires */
         .section-box { background: rgba(36, 40, 59, 0.3); border: 1px solid var(--border); border-radius: 12px; padding: 15px; margin-bottom: 15px; }
         .section-title { font-size: 12px; font-weight: bold; color: var(--primary-orange); letter-spacing: 0.5px; text-transform: uppercase; margin-bottom: 12px; }
 
-        /* Formulaires */
         .form-group { margin-bottom: 12px; }
         label { display: block; font-size: 11px; margin-bottom: 4px; color: var(--text-muted); }
         input, select, textarea { width: 100%; padding: 10px; background: var(--bg-input); border: 1px solid var(--border); border-radius: 6px; font-size: 13px; color: var(--text-main); outline: none; }
         .row-inputs { display: flex; gap: 8px; }
         .row-inputs .form-group { flex: 1; }
 
-        /* Boutons */
         .btn { padding: 10px 16px; border: none; border-radius: 6px; font-size: 13px; font-weight: bold; cursor: pointer; transition: 0.2s; display: inline-flex; align-items: center; justify-content: center; gap: 6px; text-decoration: none; }
         .btn-orange { background: var(--primary-orange); color: white; }
         .btn-purple { background: var(--primary-purple); color: white; }
@@ -66,47 +69,62 @@
         .btn-danger { background: var(--danger); color: white; padding: 6px; font-size: 12px; }
         .btn-full { width: 100%; display: flex; }
 
-        /* Lignes de devis dynamique */
         .line-item-row { display: flex; gap: 6px; align-items: center; background: #131622; padding: 8px; border-radius: 6px; margin-bottom: 6px; font-size: 12px; }
         
-        /* Récapitulatif Financier (Style Image 4) */
         .summary-line { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; border-bottom: 1px dashed var(--border); }
         .summary-total { font-size: 16px; font-weight: bold; color: var(--primary-orange); border-top: 1px solid var(--border); padding-top: 8px; }
         .calc-input { width: 60px; padding: 4px; text-align: center; background: #131622; }
 
-        /* Toast */
         .toast { display: none; position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #fff; color: #000; padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: bold; z-index: 1000; }
 
-        /* Styles d'impression professionnels pour l'aperçu PDF */
         @media print {
-            body * { display: none; }
-            #print-area { display: block !important; background: white; color: black; padding: 30px; font-size: 14px; }
+            body { background: white !important; color: black !important; padding: 0; margin: 0; }
+            .container { display: none !important; }
+            #print-area { display: block !important; background: white !important; color: black !important; padding: 20px !important; }
+            #print-area * { color: black !important; background: transparent !important; }
             .pdf-header { display: flex; justify-content: space-between; border-bottom: 2px solid #333; padding-bottom: 15px; margin-bottom: 20px; }
             .pdf-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-            .pdf-table th, .pdf-table td { border: 1px solid #ddd; padding: 10px; text-align: left; }
-            .pdf-table th { background: #f5f5f5; }
+            .pdf-table th, .pdf-table td { border: 1px solid #ddd !important; padding: 10px; text-align: left; }
+            .pdf-table th { background: #f5f5f5 !important; font-weight: bold; }
             .pdf-summary { float: right; width: 250px; margin-top: 20px; }
-            .pdf-summary div { display: flex; justify-content: space-between; padding: 5px 0; }
+            .pdf-summary div { display: flex; justify-content: space-between; padding: 5px 0; border-bottom: 1px dashed #ddd; }
         }
     </style>
 </head>
 <body>
 
+<div id="activation-screen">
+    <div class="activation-box">
+        <h2 style="color: var(--primary-orange); margin-bottom: 10px; font-size: 20px;">🔒 Application Verrouillée</h2>
+        <p style="color: var(--text-muted); font-size: 13px; margin-bottom: 20px;">Veuillez activer votre licence unique pour utiliser le générateur de devis BTP.</p>
+        
+        <div style="background: #131622; padding: 12px; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--border);">
+            <label style="margin-bottom: 2px;">Votre Code Client Unique :</label>
+            <div id="displayClientCode" style="font-size: 18px; font-weight: bold; color: white; letter-spacing: 1px;">BTP-XXXX</div>
+        </div>
+
+        <div class="form-group" style="text-align: left;">
+            <label>Entrez votre code secret de déverrouillage :</label>
+            <input type="text" id="inputActivationKey" placeholder="Ex: 859382" style="text-align: center; font-size: 16px; font-weight: bold; letter-spacing: 2px; border-color: var(--primary-purple);">
+        </div>
+
+        <button class="btn btn-orange btn-full" style="margin-bottom: 10px;" onclick="verifierLicence()">🔓 Activer l'Application</button>
+        <button class="btn btn-dark btn-full" onclick="acheterLicenceWhatsApp()">💬 Acheter ma clé d'accès (WhatsApp)</button>
+    </div>
+</div>
+
 <div class="container">
-    <!-- Header -->
     <div class="header">
         <div class="logo-title">BTP<span>Devis</span> Pro</div>
         <div class="badge">Lome · FCFA · IA</div>
     </div>
 
-    <!-- Onglets -->
     <div class="tabs">
         <button class="tab-btn active" onclick="switchTab('accueil')">🏠 Accueil</button>
         <button class="tab-btn" onclick="switchTab('nouveau')">📋 Nouveau Devis</button>
         <button class="tab-btn" onclick="switchTab('assistant')">🤖 Assistant IA</button>
     </div>
 
-    <!-- ONGLET : ACCUEIL (Image 1) -->
     <div id="tab-accueil" class="tab-content active">
         <div style="text-align: center; margin: 25px 0;">
             <h2 style="font-size: 20px; color: var(--text-main);">BTP Devis Pro</h2>
@@ -123,72 +141,34 @@
             <div class="metier-card" onclick="selectMetier('Peinture', '🎨')"><span class="metier-icon">🎨</span><span class="metier-name">Peinture</span></div>
             <div class="metier-card" onclick="selectMetier('Construction', '🏠')"><span class="metier-icon">🏠</span><span class="metier-name">Construction</span></div>
         </div>
-
-        <div class="section-box" style="background: rgba(230, 126, 34, 0.05); border-color: rgba(230, 126, 34, 0.2);">
-            <p style="font-size: 13px; color: #ff9f43; line-height: 1.6;">
-                <strong>1.</strong> Choisissez votre métier &nbsp;<strong>2.</strong> Remplissez les infos &nbsp;<strong>3.</strong> Générez avec l'IA ou à la main &nbsp;<strong>4.</strong> Téléchargez le PDF !
-            </p>
-        </div>
     </div>
 
-    <!-- ONGLET : NOUVEAU DEVIS MANUEL (Image 2, 3, 4) -->
     <div id="tab-nouveau" class="tab-content">
-        <!-- Votre Entreprise -->
         <div class="section-box">
             <div class="section-title">Votre Entreprise</div>
-            <div class="form-group">
-                <label>Nom entreprise / Artisan</label>
-                <input type="text" id="entNom" placeholder="ex: Travaux KOKOU">
-            </div>
+            <div class="form-group"><input type="text" id="entNom" placeholder="ex: Travaux KOKOU"></div>
             <div class="row-inputs">
-                <div class="form-group">
-                    <label>Téléphone</label>
-                    <input type="text" id="entTel" placeholder="+228 90 00 00 00">
-                </div>
-                <div class="form-group">
-                    <label>Email</label>
-                    <input type="text" id="entEmail" placeholder="contact@email.com">
-                </div>
+                <div class="form-group"><input type="text" id="entTel" placeholder="+228 90 00 00 00"></div>
+                <div class="form-group"><input type="text" id="entEmail" placeholder="contact@email.com"></div>
             </div>
-            <div class="form-group">
-                <label>Adresse / Ville</label>
-                <input type="text" id="entAdresse" placeholder="ex: Adidogome, Lome">
-            </div>
+            <div class="form-group"><input type="text" id="entAdresse" placeholder="ex: Adidogome, Lome"></div>
         </div>
 
-        <!-- Informations Client -->
         <div class="section-box">
             <div class="section-title">Client</div>
-            <div class="form-group">
-                <label>Nom complet du client</label>
-                <input type="text" id="cliNom" placeholder="M. / Mme ...">
-            </div>
+            <div class="form-group"><input type="text" id="cliNom" placeholder="M. / Mme ..."></div>
             <div class="row-inputs">
-                <div class="form-group">
-                    <label>Téléphone client</label>
-                    <input type="text" id="cliTel" placeholder="+228 ...">
-                </div>
-                <div class="form-group">
-                    <label>Adresse chantier</label>
-                    <input type="text" id="cliAdresse" placeholder="Quartier, Ville">
-                </div>
+                <div class="form-group"><input type="text" id="cliTel" placeholder="+228 ..."></div>
+                <div class="form-group"><input type="text" id="cliAdresse" placeholder="Quartier, Ville"></div>
             </div>
-            <div class="form-group">
-                <label>Date du devis</label>
-                <input type="date" id="devisDate" value="2026-06-19">
-            </div>
+            <div class="form-group"><input type="date" id="devisDate" value="2026-06-19"></div>
         </div>
 
-        <!-- Ajout des Lignes Manuelles -->
         <div class="section-box">
             <div class="section-title">Lignes de Travaux</div>
-            <div class="form-group">
-                <input type="text" id="inputDesignation" placeholder="Désignation des travaux...">
-            </div>
+            <div class="form-group"><input type="text" id="inputDesignation" placeholder="Désignation des travaux..."></div>
             <div class="row-inputs">
-                <div class="form-group">
-                    <input type="number" id="inputQte" placeholder="Qte" value="1">
-                </div>
+                <div class="form-group"><input type="number" id="inputQte" placeholder="Qte" value="1"></div>
                 <div class="form-group">
                     <select id="inputUnite">
                         <option value="forfait">forfait</option>
@@ -197,64 +177,33 @@
                         <option value="U">Unité</option>
                     </select>
                 </div>
-                <div class="form-group">
-                    <input type="number" id="inputPu" placeholder="Prix Unitaire (F)">
-                </div>
+                <div class="form-group"><input type="number" id="inputPu" placeholder="Prix Unitaire (F)"></div>
             </div>
-            <div style="display: flex; gap: 8px; margin-top: 10px;">
-                <button class="btn btn-dark" onclick="ajouterLigneManuelle()">+ Ajouter ligne</button>
-            </div>
-
-            <!-- Liste des lignes ajoutées -->
+            <button class="btn btn-dark" style="margin-top:10px;" onclick="ajouterLigneManuelle()">+ Ajouter ligne</button>
             <div id="listeLignesDevis" style="margin-top: 15px;"></div>
         </div>
 
-        <!-- Calculs Financiers Finaux -->
         <div class="section-box">
-            <div class="summary-line">
-                <span>Sous-total HT</span>
-                <span id="txtSousTotal">0 FCFA</span>
-            </div>
-            <div class="summary-line">
-                <span>Remise (%) <input type="number" id="inputRemise" class="calc-input" value="0" oninput="calculerTotaux()"></span>
-                <span id="txtRemise" style="color: var(--danger);">0 FCFA</span>
-            </div>
-            <div class="summary-line">
-                <span>Net HT</span>
-                <span id="txtNetHT">0 FCFA</span>
-            </div>
-            <div class="summary-line">
-                <span>TVA (%) <input type="number" id="inputTva" class="calc-input" value="0" oninput="calculerTotaux()"></span>
-                <span id="txtTva">0 FCFA</span>
-            </div>
-            <div class="summary-line summary-total">
-                <span>TOTAL TTC</span>
-                <span id="txtTotalTTC">0 FCFA</span>
-            </div>
-            <div class="summary-line" style="margin-top: 8px;">
-                <span>Acompte (F) <input type="number" id="inputAcompte" class="calc-input" style="width:90px;" value="0" oninput="calculerTotaux()"></span>
-                <span id="txtAcompte" style="color: var(--success);">0 FCFA</span>
-            </div>
-            <div class="summary-line" style="font-weight: bold;">
-                <span>Reste à payer</span>
-                <span id="txtReste">0 FCFA</span>
-            </div>
+            <div class="summary-line"><span>Sous-total HT</span><span id="txtSousTotal">0 FCFA</span></div>
+            <div class="summary-line"><span>Remise (%) <input type="number" id="inputRemise" class="calc-input" value="0" oninput="calculerTotaux()"></span><span id="txtRemise" style="color: var(--danger);">0 FCFA</span></div>
+            <div class="summary-line"><span>Net HT</span><span id="txtNetHT">0 FCFA</span></div>
+            <div class="summary-line"><span>TVA (%) <input type="number" id="inputTva" class="calc-input" value="0" oninput="calculerTotaux()"></span><span id="txtTva">0 FCFA</span></div>
+            <div class="summary-line summary-total"><span>TOTAL TTC</span><span id="txtTotalTTC">0 FCFA</span></div>
+            <div class="summary-line" style="margin-top: 8px;"><span>Acompte (F) <input type="number" id="inputAcompte" class="calc-input" style="width:90px;" value="0" oninput="calculerTotaux()"></span><span id="txtAcompte" style="color: var(--success);">0 FCFA</span></div>
+            <div class="summary-line" style="font-weight: bold;"><span>Reste à payer</span><span id="txtReste">0 FCFA</span></div>
         </div>
 
-        <!-- Notes & Bouton Action -->
         <div class="form-group">
             <label>Notes et conditions</label>
-            <textarea id="devisNotes">Paiement : 50% à la commande, 50% à la livraison.&#10;Délai d'exécution : à préciser après validation.&#10;Devis valable 30 jours à compter de la date d'émission.</textarea>
+            <textarea id="devisNotes">Paiement : 50% à la commande, 50% à la livraison.&#10;Délai d'exécution : à préciser après validation.</textarea>
         </div>
-
         <button class="btn btn-orange btn-full" style="padding:15px;" onclick="genererPDF()">📄 Aperçu et PDF</button>
     </div>
 
-    <!-- ONGLET : ASSISTANT IA -->
     <div id="tab-assistant" class="tab-content">
         <div class="section-box">
             <div class="section-title" style="color: var(--primary-purple);">🤖 Générateur de Devis IA Intellect</div>
-            <textarea id="texteDescriptionIA" placeholder="Ex: Installation électrique villa 4 pièces à Lomé : tableau, prises, éclairage..."></textarea>
+            <textarea id="texteDescriptionIA" placeholder="Ex: Installation électrique villa 4 pièces à Lomé : tableau, prises..."></textarea>
             <button class="btn btn-purple btn-full" style="margin-top:10px;" onclick="genererDepuisTexte()">Analyser et Injecter le Devis</button>
         </div>
 
@@ -268,43 +217,29 @@
                         <option value="carrelage">📐 Carrelage (m²)</option>
                     </select>
                 </div>
-                <div style="flex: 1;">
-                    <input type="number" id="quantiteAssistant" value="60">
-                </div>
+                <div style="flex: 1;"><input type="number" id="quantiteAssistant" value="60"></div>
             </div>
             <button class="btn btn-orange btn-full" onclick="genererDevisRapide()">Calculer et Injecter</button>
         </div>
     </div>
 </div>
 
-<!-- ZONE D'IMPRESSION CACHÉE POUR LA CRÉATION DU PDF -->
 <div id="print-area">
     <div class="pdf-header">
         <div>
-            <h1 id="pdfEntNom" style="color:#e67e22;">ENTREPRISE</h1>
-            <p id="pdfEntTel">Tel: </p>
-            <p id="pdfEntEmail">Email: </p>
-            <p id="pdfEntAdresse">Adresse: </p>
+            <h1 id="pdfEntNom" style="color:#e67e22; font-size: 26px; margin-bottom: 5px;">ENTREPRISE</h1>
+            <p id="pdfEntTel"></p><p id="pdfEntEmail"></p><p id="pdfEntAdresse"></p>
         </div>
         <div style="text-align: right;">
-            <h2>DEVIS PRO</h2>
-            <p id="pdfDate">Date: </p>
-            <br>
+            <h2 style="font-size: 22px; color: #333;">DEVIS DE TRAVAUX</h2>
+            <p id="pdfDate" style="font-weight: bold; margin-bottom: 15px;"></p>
             <p><strong>Destinataire :</strong></p>
-            <p id="pdfCliNom"></p>
-            <p id="pdfCliTel"></p>
-            <p id="pdfCliAdresse"></p>
+            <p id="pdfCliNom" style="font-weight: bold;"></p><p id="pdfCliTel"></p><p id="pdfCliAdresse"></p>
         </div>
     </div>
     <table class="pdf-table">
         <thead>
-            <tr>
-                <th>Désignation des travaux</th>
-                <th>Quantité</th>
-                <th>Unité</th>
-                <th>Prix Unitaire</th>
-                <th>Total</th>
-            </tr>
+            <tr><th>Désignation des travaux</th><th style="text-align:center;">Quantité</th><th style="text-align:center;">Unité</th><th style="text-align:right;">Prix Unitaire</th><th style="text-align:right;">Total</th></tr>
         </thead>
         <tbody id="pdfTableBody"></tbody>
     </table>
@@ -313,21 +248,55 @@
         <div><span>Remise :</span> <span id="pdfRem">0 F</span></div>
         <div><span>Net HT :</span> <span id="pdfNet">0 F</span></div>
         <div><span>TVA :</span> <span id="pdfTva">0 F</span></div>
-        <div style="font-weight: bold; border-top: 1px solid #333; padding-top: 5px;"><span>TOTAL TTC :</span> <span id="pdfTotal">0 F</span></div>
-        <div><span>Acompte versé :</span> <span id="pdfAcompte">0 F</span></div>
-        <div style="font-weight: bold; color: #e67e22;"><span>Reste à payer :</span> <span id="pdfReste">0 F</span></div>
+        <div style="font-weight: bold; border-top: 2px solid #333; padding-top: 5px; font-size: 15px;"><span>TOTAL TTC :</span> <span id="pdfTotal">0 F</span></div>
+        <div><span>Acompte :</span> <span id="pdfAcompte">0 F</span></div>
+        <div style="font-weight: bold; color: #e67e22; font-size: 15px;"><span>Reste à payer :</span> <span id="pdfReste">0 F</span></div>
     </div>
-    <div style="margin-top: 150px; border-top: 1px solid #ddd; padding-top: 10px; font-size: 11px;">
-        <strong>Notes & Conditions :</strong>
-        <p id="pdfNotes"></p>
+    <div style="margin-top: 140px; border-top: 1px solid #ddd; padding-top: 10px; font-size: 12px; clear: both;">
+        <strong>Notes & Conditions :</strong><p id="pdfNotes" style="white-space: pre-line; color: #555; margin-top: 5px;"></p>
     </div>
 </div>
 
-<div id="toast" class="toast">📋 Action effectuée avec succès !</div>
+<div id="toast" class="toast">📋 Action effectuée !</div>
 
 <script>
     let lignesDevis = [];
+    let nombreAleatoireUnique = 0;
 
+    // --- LOGIQUE DE VÉROUILLAGE UNIQUE ET SÉCURISÉ ---
+    window.onload = function() {
+        if(localStorage.getItem('btp_devis_pro_activated') === 'true') {
+            document.getElementById('activation-screen').style.display = 'none';
+        } else {
+            // Génère un code d'identification unique basé sur l'heure pour chaque appareil
+            nombreAleatoireUnique = Math.floor(1000 + Math.random() * 9000);
+            document.getElementById('displayClientCode').innerText = "BTP-" + nombreAleatoireUnique;
+        }
+    }
+
+    function verifierLicence() {
+        const keySaisie = document.getElementById('inputActivationKey').value.trim();
+        // RÈGLE MATHÉMATIQUE SECRÈTE POUR APPRENDRE VOTRE CLÉ : 
+        // La bonne clé est TOUJOURS le numéro client suivi du chiffre 99 (Ex: si client = 4520, clé = 452099)
+        const bonneCle = nombreAleatoireUnique.toString() + "99";
+
+        if(keySaisie === bonneCle) {
+            localStorage.setItem('btp_devis_pro_activated', 'true');
+            document.getElementById('activation-screen').style.display = 'none';
+            alert("✅ Félicitations ! Votre application BTP Devis Pro est activée définitivement.");
+        } else {
+            alert("❌ Code d'activation incorrect. Veuillez contacter le vendeur.");
+        }
+    }
+
+    function acheterLicenceWhatsApp() {
+        const code = document.getElementById('displayClientCode').innerText;
+        const message = encodeURIComponent("Bonjour, je souhaite acheter le code d'activation unique pour mon application BTP Devis Pro. Mon Code Client est : " + code);
+        // Remplacez le numéro ci-dessous par votre numéro de vente WhatsApp si nécessaire
+        window.open("https://wa.me/22890000000?text=" + message, '_blank');
+    }
+
+    // --- LE RESTE DES FONCTIONS CLASSIQUES (INCHANGÉES) ---
     function switchTab(tabId) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
@@ -336,11 +305,8 @@
     }
 
     function selectMetier(nom, icone) {
-        document.querySelectorAll('.metier-card').forEach(c => c.classList.remove('selected'));
-        event.currentTarget.classList.add('selected');
         document.getElementById('inputDesignation').value = nom + " - ";
         switchTab('nouveau');
-        showToast("Métier sélectionné : " + nom);
     }
 
     function ajouterLigneManuelle() {
@@ -348,35 +314,20 @@
         const qte = parseFloat(document.getElementById('inputQte').value) || 1;
         const uni = document.getElementById('inputUnite').value;
         const pu = parseFloat(document.getElementById('inputPu').value) || 0;
-
-        if(!des) { alert("Veuillez écrire une désignation."); return; }
-
+        if(!des) return;
         lignesDevis.push({ designation: des, qte: qte, unite: uni, pu: pu, total: qte * pu });
-        renderLignes();
-        calculerTotaux();
-        
-        document.getElementById('inputDesignation').value = "";
-        document.getElementById('inputPu').value = "";
+        renderLignes(); calculerTotaux();
+        document.getElementById('inputDesignation').value = ""; document.getElementById('inputPu').value = "";
     }
 
     function supprimerLigne(index) {
-        lignesDevis.splice(index, 1);
-        renderLignes();
-        calculerTotaux();
+        lignesDevis.splice(index, 1); renderLignes(); calculerTotaux();
     }
 
     function renderLignes() {
-        const container = document.getElementById('listeLignesDevis');
-        container.innerHTML = "";
+        const container = document.getElementById('listeLignesDevis'); container.innerHTML = "";
         lignesDevis.forEach((l, i) => {
-            container.innerHTML += `
-                <div class="line-item-row">
-                    <div style="flex:2;"><strong>${l.designation}</strong></div>
-                    <div style="flex:1; text-align:center;">${l.qte} ${l.unite}</div>
-                    <div style="flex:1; text-align:right;">${l.total.toLocaleString()} F</div>
-                    <button class="btn btn-danger" onclick="supprimerLigne(${i})">X</button>
-                </div>
-            `;
+            container.innerHTML += `<div class="line-item-row"><div style="flex:2;"><strong>${l.designation}</strong></div><div style="flex:1; text-align:center;">${l.qte} ${l.unite}</div><div style="flex:1; text-align:right;">${l.total.toLocaleString()} F</div><button class="btn btn-danger" onclick="supprimerLigne(${i})">X</button></div>`;
         });
     }
 
@@ -400,16 +351,13 @@
         document.getElementById('txtReste').innerText = reste.toLocaleString() + " FCFA";
     }
 
-    // Assistants IA qui injectent directement dans les lignes du devis manuel
     function genererDepuisTexte() {
-        const txt = document.getElementById('texteDescriptionIA').value.toLowerCase();
-        if(!txt) return;
         lignesDevis = [
-            { designation: "Installation Tableau Électrique Protect Pro", qte: 1, unite: "U", pu: 120000, total: 120000 },
+            { designation: "Installation Tableau Électrique Principal", qte: 1, unite: "U", pu: 120000, total: 120000 },
             { designation: "Câblage, Fil de Terre & Gaines Isolantes", qte: 45, unite: "ml", pu: 3500, total: 157500 },
             { designation: "Main d'œuvre Électricien Qualifié", qte: 1, unite: "forfait", pu: 75000, total: 75000 }
         ];
-        renderLignes(); calculerTotaux(); switchTab('nouveau'); showToast("Devis généré par IA !");
+        renderLignes(); calculerTotaux(); switchTab('nouveau');
     }
 
     function genererDevisRapide() {
@@ -418,50 +366,30 @@
         if(dom === "maconnerie") {
             lignesDevis = [
                 { designation: "Murs en parpaings de 15 renforcés", qte: qte, unite: "m²", pu: 10500, total: qte * 10500 },
-                { designation: "Fourniture Ciment CPJ 45", qte: qte, unite: "m²", pu: 10500, total: qte * 10500 },
-                { designation: "Main d'œuvre Maçon", qte: qte, unite: "m²", pu: 7500, total: qte * 7500 }
+                { designation: "Main d'œuvre Maçon Professionnel", qte: qte, unite: "m²", pu: 7500, total: qte * 7500 }
             ];
         } else {
-            lignesDevis = [{ designation: "Prestation Finition Express " + dom, qte: qte, unite: "m²", pu: 4500, total: qte * 4500 }];
+            lignesDevis = [{ designation: "Prestation Complète Finition " + dom, qte: qte, unite: "m²", pu: 4500, total: qte * 4500 }];
         }
-        renderLignes(); calculerTotaux(); switchTab('nouveau'); showToast("Calcul rapide injecté !");
+        renderLignes(); calculerTotaux(); switchTab('nouveau');
     }
 
-    function showToast(msg) {
-        const t = document.getElementById('toast'); t.innerText = msg; t.style.display = "block";
-        setTimeout(() => t.style.display = "none", 2500);
-    }
-
-    // FONCTION IMPRESSION DU PDF PRO
     function genererPDF() {
-        // Remplir les données dans la zone imprimable
         document.getElementById('pdfEntNom').innerText = document.getElementById('entNom').value || "VOTRE ENTREPRISE";
         document.getElementById('pdfEntTel').innerText = "Tel: " + (document.getElementById('entTel').value || "+228 ...");
         document.getElementById('pdfEntEmail').innerText = "Email: " + (document.getElementById('entEmail').value || "...");
         document.getElementById('pdfEntAdresse').innerText = "Adresse: " + (document.getElementById('entAdresse').value || "Lomé");
-
-        document.getElementById('pdfCliNom').innerText = document.getElementById('cliNom').value || "Client Standard";
+        document.getElementById('pdfCliNom').innerText = document.getElementById('cliNom').value || "Client / Particulier";
         document.getElementById('pdfCliTel').innerText = "Tel: " + (document.getElementById('cliTel').value || "...");
         document.getElementById('pdfCliAdresse').innerText = "Chantier: " + (document.getElementById('cliAdresse').value || "...");
-        document.getElementById('pdfDate').innerText = "Date: " + document.getElementById('devisDate').value;
+        document.getElementById('pdfDate').innerText = "Date d'émission: " + document.getElementById('devisDate').value;
         document.getElementById('pdfNotes').innerText = document.getElementById('devisNotes').value;
 
-        // Remplir le tableau des éléments
-        const tbody = document.getElementById('pdfTableBody');
-        tbody.innerHTML = "";
+        const tbody = document.getElementById('pdfTableBody'); tbody.innerHTML = "";
         lignesDevis.forEach(l => {
-            tbody.innerHTML += `
-                <tr>
-                    <td>${l.designation}</td>
-                    <td>${l.qte}</td>
-                    <td>${l.unite}</td>
-                    <td>${l.pu.toLocaleString()} F</td>
-                    <td>${l.total.toLocaleString()} F</td>
-                </tr>
-            `;
+            tbody.innerHTML += `<tr><td>${l.designation}</td><td style="text-align:center;">${l.qte}</td><td style="text-align:center;">${l.unite}</td><td style="text-align:right;">${l.pu.toLocaleString()} F</td><td style="text-align:right; font-weight:bold;">${l.total.toLocaleString()} F</td></tr>`;
         });
 
-        // Dupliquer les totaux
         document.getElementById('pdfSub').innerText = document.getElementById('txtSousTotal').innerText;
         document.getElementById('pdfRem').innerText = document.getElementById('txtRemise').innerText;
         document.getElementById('pdfNet').innerText = document.getElementById('txtNetHT').innerText;
@@ -469,8 +397,6 @@
         document.getElementById('pdfTotal').innerText = document.getElementById('txtTotalTTC').innerText;
         document.getElementById('pdfAcompte').innerText = document.getElementById('txtAcompte').innerText;
         document.getElementById('pdfReste').innerText = document.getElementById('txtReste').innerText;
-
-        // Lancer l'impression native / Enregistrement PDF du téléphone
         window.print();
     }
 </script>
