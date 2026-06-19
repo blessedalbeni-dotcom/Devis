@@ -3,512 +3,395 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Générateur de Devis & Suivi Paiements BTP</title>
+    <title>Générateur de Devis Professionnel</title>
     <style>
         :root {
-            --primary-color: #0056b3;
-            --secondary-color: #28a745;
-            --danger-color: #dc3545;
-            --bg-color: #f8f9fa;
-            --text-color: #333;
+            --primary: #1e293b;
+            --accent: #0284c7;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --bg: #f1f5f9;
+            --border: #cbd5e1;
         }
 
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg);
             margin: 0;
-            padding: 10px;
+            padding: 20px 10px;
+            color: #0f172a;
         }
 
-        .container {
-            max-width: 800px;
+        .app-wrapper {
+            max-width: 850px;
             margin: 0 auto;
-            background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        .tabs {
+        /* Panneau de contrôle épuré */
+        .control-panel {
+            background: #ffffff;
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 25px;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05);
+            border: 1px solid var(--border);
+        }
+
+        .nav-pills {
             display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            border-bottom: 2px solid #ddd;
-            padding-bottom: 10px;
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 12px;
-            background: #e9ecef;
-            border: none;
-            border-radius: 5px;
-            font-weight: bold;
-            cursor: pointer;
-            font-size: 14px;
-            transition: 0.3s;
-        }
-
-        .tab-btn.active {
-            background: var(--primary-color);
-            color: white;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        h2, h3 {
-            color: #222;
-            border-left: 4px solid var(--primary-color);
-            padding-left: 8px;
-        }
-
-        .form-group {
+            gap: 8px;
+            background: #f8fafc;
+            padding: 4px;
+            border-radius: 8px;
             margin-bottom: 15px;
+            border: 1px solid #e2e8f0;
         }
 
-        label {
-            display: block;
-            margin-bottom: 5px;
+        .nav-link {
+            flex: 1;
+            text-align: center;
+            padding: 8px;
+            background: transparent;
+            border: none;
+            border-radius: 6px;
             font-weight: 600;
+            font-size: 14px;
+            color: #64748b;
+            cursor: pointer;
+            transition: 0.2s;
         }
 
-        input, select, textarea {
+        .nav-link.active {
+            background: #ffffff;
+            color: var(--primary);
+            box-shadow: 0 1px 3px rgb(0 0 0 / 0.1);
+        }
+
+        .form-grid {
+            display: grid;
+            gap: 12px;
+        }
+
+        .pane { display: none; }
+        .pane.active { display: block; }
+
+        textarea, input, select {
             width: 100%;
             padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 5px;
+            border: 1px solid var(--border);
+            border-radius: 6px;
+            font-size: 14px;
+            background: #f8fafc;
             box-sizing: border-box;
-            font-size: 15px;
         }
 
-        button.btn-action {
-            width: 100%;
-            padding: 12px;
-            background: var(--secondary-color);
+        textarea:focus, input:focus {
+            outline: none;
+            border-color: var(--accent);
+            background: #fff;
+        }
+
+        .btn {
+            background: var(--primary);
             color: white;
             border: none;
-            border-radius: 5px;
-            font-size: 16px;
+            padding: 12px;
+            border-radius: 6px;
             font-weight: bold;
+            font-size: 15px;
             cursor: pointer;
-            margin-top: 10px;
+            width: 100%;
+            transition: 0.2s;
         }
+
+        .btn:hover { opacity: 0.9; }
+        .btn-success { background: var(--success); }
 
         .history-list {
-            margin-top: 15px;
-            border: 1px solid #ddd;
-            border-radius: 5px;
-            max-height: 200px;
+            margin-top: 10px;
+            background: #f8fafc;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+            max-height: 150px;
             overflow-y: auto;
-            background: #fafafa;
         }
 
         .history-item {
-            padding: 10px;
-            border-bottom: 1px solid #eee;
             display: flex;
             justify-content: space-between;
             align-items: center;
-            font-size: 14px;
+            padding: 8px 12px;
+            border-bottom: 1px solid #e2e8f0;
+            font-size: 13px;
         }
 
-        .history-item:last-child {
-            border-bottom: none;
-        }
+        .history-item:last-child { border-bottom: none; }
 
-        .btn-delete {
-            background: var(--danger-color);
-            color: white;
-            border: none;
-            padding: 5px 8px;
-            border-radius: 3px;
-            cursor: pointer;
-        }
-
-        /* Styles d'impression et rendu PDF */
-        #pdf-preview {
+        /* ZONE DU DOCUMENT PDF (Rendu impeccable) */
+        .document-preview {
             background: white;
-            padding: 30px;
-            border: 1px solid #ccc;
-            margin-top: 20px;
+            padding: 40px;
+            border-radius: 4px;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.05);
+            border: 1px solid var(--border);
+            min-height: 297mm; /* Format A4 proportionnel */
+            box-sizing: border-box;
         }
 
-        .pdf-header {
+        .doc-header {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 30px;
+            margin-bottom: 35px;
         }
 
-        .pdf-table {
+        .doc-title {
+            font-size: 20px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            margin: 0;
+        }
+
+        .doc-table {
             width: 100%;
             border-collapse: collapse;
-            margin-top: 20px;
+            margin: 25px 0;
         }
 
-        .pdf-table th, .pdf-table td {
-            border: 1px solid #ddd;
+        .doc-table th {
+            background: #f8fafc;
+            color: #475569;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 11px;
+            letter-spacing: 0.5px;
+            border-bottom: 2px solid #cbd5e1;
             padding: 10px;
             text-align: left;
         }
 
-        .pdf-table th {
-            background-color: #f1f1f1;
+        .doc-table td {
+            padding: 12px 10px;
+            border-bottom: 1px solid #f1f5f9;
+            font-size: 14px;
+            color: #334155;
         }
 
-        .text-right {
-            text-align: right;
-        }
-
-        .totals-box {
-            margin-top: 20px;
+        .text-right { text-align: right !important; }
+        
+        .doc-totals {
             margin-left: auto;
-            width: 300px;
+            width: 320px;
+            margin-top: 20px;
         }
 
-        .totals-row {
+        .total-row {
             display: flex;
             justify-content: space-between;
             padding: 8px 0;
-            border-bottom: 1px solid #eee;
+            font-size: 14px;
+            color: #475569;
         }
 
-        .totals-row.final {
-            font-weight: bold;
-            font-size: 18px;
-            border-top: 2px solid #333;
-            color: #000;
+        .total-row.grand-total {
+            font-weight: 700;
+            font-size: 16px;
+            color: #0f172a;
+            border-top: 1px solid #0f172a;
+            padding-top: 12px;
+            margin-top: 8px;
         }
 
+        .doc-footer {
+            margin-top: 50px;
+            font-size: 12px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+
+        /* IMPRESSION NETTE */
         @media print {
-            body * {
-                visibility: hidden;
-            }
-            #pdf-preview, #pdf-preview * {
-                visibility: visible;
-            }
-            #pdf-preview {
-                position: absolute;
-                left: 0;
-                top: 0;
-                width: 100%;
-                border: none;
-                padding: 0;
-            }
-            .no-print {
-                display: none !important;
-            }
+            body { background: white; padding: 0; }
+            .control-panel, .no-print { display: none !important; }
+            .document-preview { border: none; box-shadow: none; padding: 0; width: 100%; }
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <!-- Onglets de navigation -->
-    <div class="tabs no-print">
-        <button class="tab-btn active" onclick="switchTab('devis-tab')">📝 Créer un Devis</button>
-        <button class="tab-btn" onclick="switchTab('paiement-tab')">💳 Suivi des Paiements</button>
+<div class="app-wrapper">
+    <!-- PANNEAU DE CONFIGURATION DISCRET -->
+    <div class="control-panel no-print">
+        <div class="nav-pills">
+            <button class="nav-link active" onclick="togglePane('devis-pane')">📝 Édition du Devis</button>
+            <button class="nav-link" onclick="togglePane('paiement-pane')">💳 Situations & Acomptes</button>
+        </div>
+
+        <!-- SAISIE DEVIS -->
+        <div id="devis-pane" class="pane active">
+            <div class="form-grid">
+                <textarea id="raw-input" rows="4" placeholder="Collez ici les lignes de l'assistant IA..."></textarea>
+                <input type="text" id="client" placeholder="Nom du client ou référence du projet">
+                <button class="btn btn-success" onclick="buildDevis()">Générer le document</button>
+            </div>
+        </div>
+
+        <!-- SAISIE PAIEMENT -->
+        <div id="paiement-pane" class="pane">
+            <div class="form-grid" style="grid-template-columns: 1fr 1fr; gap: 10px;">
+                <div style="grid-column: span 2;">
+                    <input type="number" id="total-contrat" placeholder="Montant total du marché (FCFA)">
+                </div>
+                <div>
+                    <input type="number" id="amount-paid" placeholder="Montant versé (FCFA)">
+                </div>
+                <div>
+                    <select id="pay-method">
+                        <option value="Mobile Money">Mobile Money</option>
+                        <option value="Espèces">Espèces</option>
+                        <option value="Virement">Virement</option>
+                    </select>
+                </div>
+                <button class="btn" style="grid-column: span 2;" onclick="savePayment()">Enregistrer le versement</button>
+            </div>
+            <div class="history-list" id="history-render"></div>
+            <button class="btn btn-success" style="margin-top: 12px;" onclick="window.print()">Imprimer la situation</button>
+        </div>
     </div>
 
-    <!-- ONGLET 1 : CRÉATION DE DEVIS -->
-    <div id="devis-tab" class="tab-content active">
-        <h2>Création du Devis</h2>
-        <div class="form-group">
-            <label>Assistant IA (Coller le texte du devis ici) :</label>
-            <textarea id="ai-input" rows="6" placeholder="Collez les lignes du devis générées par l'IA..."></textarea>
+    <!-- LE DOCUMENT UNIQUE PROPRE ET NET -->
+    <div class="document-preview" id="document-view">
+        <div style="text-align: center; color: #94a3b8; padding-top: 100px;">
+            <p>Le document professionnel (Devis ou Reçu) s'affichera ici instantanément après saisie.</p>
         </div>
-        <div class="form-group">
-            <label>Nom du Client / Projet :</label>
-            <input type="text" id="client-name" placeholder="Ex: Jean DUPONT - Électricité Villa">
-        </div>
-        <button class="btn-action" onclick="genererDevis()">Générer le Devis PDF</button>
-    </div>
-
-    <!-- ONGLET 2 : SUIVI DES PAIEMENTS -->
-    <div id="paiement-tab" class="tab-content">
-        <h2>Enregistrer un Règlement</h2>
-        <div class="form-group">
-            <label>Montant total du contrat (FCFA) :</label>
-            <input type="number" id="pay-total-contrat" oninput="calculerReste()" placeholder="Ex: 6382500">
-        </div>
-        <div class="form-group">
-            <label>Nouveau Versement reçu (FCFA) :</label>
-            <input type="number" id="pay-versement" placeholder="Ex: 3000000">
-        </div>
-        <div class="form-group">
-            <label>Mode de règlement :</label>
-            <select id="pay-mode">
-                <option value="Mobile Money (T-Money/Flooz)">Mobile Money (T-Money/Flooz)</option>
-                <option value="Espèces">Espèces</option>
-                <option value="Virement Bancaire">Virement Bancaire</option>
-                <option value="Chèque">Chèque</option>
-            </select>
-        </select>
-        </div>
-        <button class="btn-action" style="background-color: var(--primary-color);" onclick="ajouterPaiement()">Enregistrer & Mettre à jour le Reçu</button>
-
-        <h3>Historique des versements pour ce projet</h3>
-        <div class="history-list" id="history-box">
-            <!-- Rempli en JS -->
-        </div>
-
-        <button class="btn-action" style="margin-top: 20px;" onclick="window.print()">🖨️ Imprimer / Enregistrer le Reçu en PDF</button>
-    </div>
-
-    <hr class="no-print" style="margin: 30px 0; border: 1px solid #ddd;">
-
-    <!-- ZONE D'APERÇU DU DOCUMENT (DEVIS OU REÇU PAIEMENT) -->
-    <div id="pdf-preview">
-        <!-- Le contenu dynamique du PDF (Devis ou Reçu) s'affichera ici -->
-        <p style="text-align: center; color: #777;">Remplissez les informations ci-dessus pour générer le document.</p>
     </div>
 </div>
 
 <script>
-    // Variables globales pour stocker les états
-    let devisLignes = [];
-    let paiementsHistorique = JSON.parse(localStorage.getItem('btp_paiements')) || [];
+    let rowsData = [];
+    let ledger = JSON.parse(localStorage.getItem('app_ledger')) || [];
 
-    // Changer d'onglet
-    function switchTab(tabId) {
-        document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-        document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-        
-        document.getElementById(tabId).classList.add('active');
+    function togglePane(paneId) {
+        document.querySelectorAll('.pane').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-link').forEach(b => b.classList.remove('active'));
+        document.getElementById(paneId).classList.add('active');
         event.currentTarget.classList.add('active');
-
-        if(tabId === 'paiement-tab') {
-            afficherHistorique();
-            genererRecuHTML();
-        }
+        if(paneId === 'paiement-pane') { renderLedger(); buildReceipt(); }
     }
 
-    // Formater les prix proprement (Ex: 6 382 500 F)
-    function formatMoney(amount) {
-        return Number(amount).toLocaleString('fr-FR') + " F";
-    }
+    function format(val) { return Number(val).toLocaleString('fr-FR') + " F"; }
 
-    // ANALYSE ET GÉNÉRATION DE DEVIS
-    function genererDevis() {
-        const text = document.getElementById('ai-input').value;
-        const client = document.getElementById('client-name').value || "Client / Particulier";
-        
-        if(!text.trim()) {
-            alert("Veuillez d'abord coller le texte du devis !");
-            return;
-        }
+    function buildDevis() {
+        const txt = document.getElementById('raw-input').value;
+        const clientName = document.getElementById('client').value || "Client / Particulier";
+        if(!txt.trim()) return;
 
-        devisLignes = [];
-        const blocks = text.split(/\n\s*\n/);
-        
-        blocks.forEach(block => {
-            const lignes = block.split('\n');
-            let item = { designation: '', quantite: 0, unite: '', prix: 0 };
-            
-            lignes.forEach(l => {
-                if(l.startsWith('Désignation :')) item.designation = l.replace('Désignation :', '').trim();
-                if(l.startsWith('Quantité :')) item.quantite = parseInt(l.replace('Quantité :', '').trim()) || 0;
-                if(l.startsWith('Unité :')) item.unite = l.replace('Unité :', '').trim();
-                if(l.startsWith('Prix Unitaire :')) item.prix = parseFloat(l.replace('Prix Unitaire :', '').trim()) || 0;
+        rowsData = [];
+        txt.split(/\n\s*\n/).forEach(b => {
+            let item = { d: '', q: 0, u: '', p: 0 };
+            b.split('\n').forEach(l => {
+                if(l.startsWith('Désignation :')) item.d = l.replace('Désignation :', '').trim();
+                if(l.startsWith('Quantité :')) item.q = parseInt(l.replace('Quantité :', '').trim()) || 0;
+                if(l.startsWith('Unité :')) item.u = l.replace('Unité :', '').trim();
+                if(l.startsWith('Prix Unitaire :')) item.p = parseFloat(l.replace('Prix Unitaire :', '').trim()) || 0;
             });
-            
-            if(item.designation) {
-                devisLignes.push(item);
-            }
+            if(item.d) rowsData.push(item);
         });
 
-        let totalGeneral = 0;
-        let tableauHTML = '';
+        let total = 0;
+        let rowsHtml = rowsData.map(r => {
+            let t = r.q * r.p; total += t;
+            return `<tr><td>${r.d}</td><td class="text-right">${r.q}</td><td>${r.u}</td><td class="text-right">${format(r.p)}</td><td class="text-right" style="font-weight:600;">${format(t)}</td></tr>`;
+        }).join('');
 
-        devisLignes.forEach(l => {
-            let totalLigne = l.quantite * l.prix;
-            totalGeneral += totalLigne;
-            tableauHTML += `
-                <tr>
-                    <td>${l.designation}</td>
-                    <td class="text-right">${l.quantite}</td>
-                    <td>${l.unite}</td>
-                    <td class="text-right">${formatMoney(l.prix)}</td>
-                    <td class="text-right" style="font-weight: bold;">${formatMoney(totalLigne)}</td>
-                </tr>
-            `;
-        });
+        document.getElementById('total-contrat').value = total;
 
-        // Préchauffer le montant du contrat dans l'onglet Paiement
-        document.getElementById('pay-total-contrat').value = totalGeneral;
-
-        const dateDuJour = new Date().toLocaleDateString('fr-FR');
-
-        document.getElementById('pdf-preview').innerHTML = `
-            <div class="pdf-header">
+        document.getElementById('document-view').innerHTML = `
+            <div class="doc-header">
                 <div>
-                    <h1 style="margin: 0; font-size: 22px; font-weight: bold; letter-spacing: 0.5px;">VOTRE ENTREPRISE</h1>
-                    <p style="margin: 5px 0; font-size: 13px; color: #55px;">Tel: +228 ...<br>Adresse: Lomé</p>
+                    <h1 style="margin:0; font-size:22px; font-weight:800; color:#0f172a;">VOTRE ENTREPRISE</h1>
+                    <p style="margin:4px 0; font-size:13px; color:#64748b;">Lomé, Togo • Tél: +228 ...</p>
                 </div>
                 <div class="text-right">
-                    <h2 style="margin: 0; font-size: 18px; color: #111; border: none; padding: 0;">DEVIS DE TRAVAUX</h2>
-                    <p style="margin: 5px 0; font-size: 13px;"><b>Date d'émission :</b> ${dateDuJour}</p>
-                    <p style="margin: 10px 0 0 0; font-size: 13px; border: 1px solid #ccc; padding: 5px; text-align: left; border-radius: 4px;">
-                        <b>Destinataire :</b><br>${client}
+                    <h2 class="doc-title">DEVIS DE TRAVAUX</h2>
+                    <p style="margin:4px 0; font-size:13px; color:#64748b;"><b>Date :</b> ${new Date().toLocaleDateString('fr-FR')}</p>
+                    <p style="margin:10px 0 0 0; font-size:13px; border:1px solid var(--border); padding:6px 12px; border-radius:6px; inline-block; text-align:left;">
+                        <b>Client :</b> ${clientName}
                     </p>
                 </div>
             </div>
-            
-            <table class="pdf-table">
-                <thead>
-                    <tr>
-                        <th>Désignation des travaux</th>
-                        <th class="text-right">Quantité</th>
-                        <th>Unité</th>
-                        <th class="text-right">Prix Unitaire</th>
-                        <th class="text-right">Total</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${tableauHTML}
-                </tbody>
+            <table class="doc-table">
+                <thead><tr><th>Désignation</th><th class="text-right">Qté</th><th>Unité</th><th class="text-right">P.U.</th><th class="text-right">Total</th></tr></thead>
+                <tbody>${rowsHtml}</tbody>
             </table>
-
-            <div class="totals-box">
-                <div class="totals-row"><span>Sous-total HT :</span> <span>${formatMoney(totalGeneral)}</span></div>
-                <div class="totals-row"><span>Remise :</span> <span>0 F</span></div>
-                <div class="totals-row final"><span>TOTAL TTC :</span> <span>${formatMoney(totalGeneral)}</span></div>
+            <div class="doc-totals">
+                <div class="total-row"><span>Sous-total HT</span> <span>${format(total)}</span></div>
+                <div class="total-row grand-total"><span>TOTAL TTC</span> <span>${format(total)}</span></div>
             </div>
-
-            <div style="margin-top: 40px; font-size: 11px; color: #55px;">
-                <p><b>Notes & Conditions :</b><br>Paiement : 50% à la commande, 50% à la livraison.<br>Délai d'exécution : à préciser après validation.</p>
-            </div>
-        `;
-        
-        // Déclencher automatiquement la fonction d'impression native du téléphone
+            <div class="doc-footer">
+                <p><b>Conditions de règlement :</b> 50% à la commande, 50% à la livraison complète du chantier.</p>
+            </div>`;
         window.print();
     }
 
-    // GESTION DU SUIVI DES PAIEMENTS
-    function ajouterPaiement() {
-        const totalContrat = parseFloat(document.getElementById('pay-total-contrat').value) || 0;
-        const versement = parseFloat(document.getElementById('pay-versement').value) || 0;
-        const mode = document.getElementById('pay-mode').value;
-        const date = new Date().toLocaleDateString('fr-FR');
+    function savePayment() {
+        const total = parseFloat(document.getElementById('total-contrat').value) || 0;
+        const v = parseFloat(document.getElementById('amount-paid').value) || 0;
+        const m = document.getElementById('pay-method').value;
+        if(v <= 0) return;
 
-        if(versement <= 0) {
-            alert("Veuillez saisir un montant de versement valide.");
-            return;
-        }
-
-        // Ajouter à l'historique
-        paiementsHistorique.push({ date, mode, versement });
-        localStorage.setItem('btp_paiements', JSON.stringify(paiementsHistorique));
-
-        // Reset le champ versement
-        document.getElementById('pay-versement').value = '';
-
-        afficherHistorique();
-        genererRecuHTML();
+        ledger.push({ date: new Date().toLocaleDateString('fr-FR'), method: m, value: v });
+        localStorage.setItem('app_ledger', JSON.stringify(ledger));
+        document.getElementById('amount-paid').value = '';
+        renderLedger();
+        buildReceipt();
     }
 
-    function supprimerPaiement(index) {
-        if(confirm("Supprimer ce versement ?")) {
-            paiementsHistorique.splice(index, 1);
-            localStorage.setItem('btp_paiements', JSON.stringify(paiementsHistorique));
-            afficherHistorique();
-            genererRecuHTML();
-        }
+    function removePayment(i) {
+        ledger.splice(i, 1);
+        localStorage.setItem('app_ledger', JSON.stringify(ledger));
+        renderLedger();
+        buildReceipt();
     }
 
-    function afficherHistorique() {
-        const box = document.getElementById('history-box');
-        if(paiementsHistorique.length === 0) {
-            box.innerHTML = '<p style="padding: 10px; color: #777; margin:0;">Aucun versement enregistré.</p>';
-            return;
-        }
+    function renderLedger() {
+        const box = document.getElementById('history-render');
+        if(!ledger.length) { box.innerHTML = '<p style="padding:10px; color:#94a3b8; font-size:12px; margin:0;">Aucun versement enregistré</p>'; return; }
+        box.innerHTML = ledger.map((p, i) => `<div class="history-item"><div><b>${p.value.toLocaleString()} F</b> (${p.method})</div><button style="background:none; border:none; cursor:pointer;" onclick="removePayment(${i})">❌</button></div>`).join('');
+    }
 
-        box.innerHTML = paiementsHistorique.map((p, index) => `
-            <div class="history-item">
+    function buildReceipt() {
+        const total = parseFloat(document.getElementById('total-contrat').value) || 0;
+        const clientName = document.getElementById('client').value || "Client / Particulier";
+        let paid = 0;
+        let rows = ledger.map((p, i) => { paid += p.value; return `<tr><td>Acompte N°${i+1} (${p.date})</td><td>${p.method}</td><td class="text-right" style="color:#16a34a; font-weight:600;">- ${format(p.value)}</td></tr>`; }).join('');
+
+        document.getElementById('document-view').innerHTML = `
+            <div class="doc-header">
                 <div>
-                    <b>${p.date}</b> - ${p.mode}<br>
-                    <span style="color: var(--secondary-color); font-weight: bold;">+ ${formatMoney(p.versement)}</span>
-                </div>
-                <button class="btn-delete" onclick="supprimerPaiement(${index})">❌</button>
-            </div>
-        `).join('');
-    }
-
-    function genererRecuHTML() {
-        const totalContrat = parseFloat(document.getElementById('pay-total-contrat').value) || 0;
-        const client = document.getElementById('client-name').value || "Client / Particulier";
-        const dateDuJour = new Date().toLocaleDateString('fr-FR');
-
-        let cumulVerse = 0;
-        let tableauPaiementsHTML = '';
-
-        paiementsHistorique.forEach((p, i) => {
-            cumulVerse += p.versement;
-            tableauPaiementsHTML += `
-                <tr>
-                    <td>Versement N°${i+1} (${p.date})</td>
-                    <td>${p.mode}</td>
-                    <td class="text-right" style="color: green; font-weight: bold;">- ${formatMoney(p.versement)}</td>
-                </tr>
-            `;
-        });
-
-        const resteAPayer = totalContrat - cumulVerse;
-
-        document.getElementById('pdf-preview').innerHTML = `
-            <div class="pdf-header">
-                <div>
-                    <h1 style="margin: 0; font-size: 22px; font-weight: bold; letter-spacing: 0.5px;">VOTRE ENTREPRISE</h1>
-                    <p style="margin: 5px 0; font-size: 13px; color: #555;">Tel: +228 ...<br>Adresse: Lomé</p>
+                    <h1 style="margin:0; font-size:22px; font-weight:800; color:#0f172a;">VOTRE ENTREPRISE</h1>
+                    <p style="margin:4px 0; font-size:13px; color:#64748b;">Lomé, Togo</p>
                 </div>
                 <div class="text-right">
-                    <h2 style="margin: 0; font-size: 18px; color: #dc3545; border: none; padding: 0;">SITUATION DE PAIEMENT</h2>
-                    <p style="margin: 5px 0; font-size: 13px;"><b>Date de mise à jour :</b> ${dateDuJour}</p>
-                    <p style="margin: 10px 0 0 0; font-size: 13px; border: 1px solid #ccc; padding: 5px; text-align: left; border-radius: 4px;">
-                        <b>Client :</b> ${client}
-                    </p>
+                    <h2 class="doc-title" style="color:var(--danger);">SITUATION DE COMPTE</h2>
+                    <p style="margin:4px 0; font-size:13px; color:#64748b;"><b>Mise à jour :</b> ${new Date().toLocaleDateString('fr-FR')}</p>
+                    <p style="margin:10px 0 0 0; font-size:13px; border:1px solid var(--border); padding:6px 12px; border-radius:6px; text-align:left;"><b>Client :</b> ${clientName}</p>
                 </div>
             </div>
-
-            <h3 style="margin-top: 30px;">Historique des Règlements Reçus</h3>
-            <table class="pdf-table">
-                <thead>
-                    <tr>
-                        <th>Désignation du paiement</th>
-                        <th>Mode de règlement</th>
-                        <th class="text-right">Montant Versé</th>
-                    </tr>
-                </thead>
+            <table class="doc-table">
+                <thead><tr><th>Désignation du mouvement</th><th>Mode</th><th class="text-right">Montant</th></tr></thead>
                 <tbody>
-                    <tr>
-                        <td><b>Montant Initial du Contrat / Chantier</b></td>
-                        <td>—</td>
-                        <td class="text-right" style="font-weight: bold;">${formatMoney(totalContrat)}</td>
-                    </tr>
-                    ${tableauPaiementsHTML}
+                    <tr><td><b>Montant total initial du marché</b></td><td>—</td><td class="text-right" style="font-weight:600;">${format(total)}</td></tr>
+                    ${rows}
                 </tbody>
             </table>
-
-            <div class="totals-box" style="width: 350px;">
-                <div class="totals-row"><span>Total déjà payé :</span> <span style="color: green; font-weight:bold;">${formatMoney(cumulVerse)}</span></div>
-                <div class="totals-row final" style="color: ${resteAPayer <= 0 ? 'green' : 'var(--danger-color)'};">
-                    <span>RESTE À PAYER :</span> 
-                    <span>${formatMoney(resteAPayer)}</span>
-                </div>
+            <div class="doc-totals">
+                <div class="total-row"><span>Total encaissé :</span> <span style="color:#16a34a; font-weight:600;">${format(paid)}</span></div>
+                <div class="total-row grand-total" style="color:var(--danger);"><span>RESTE À PAYER :</span> <span>${format(total - paid)}</span></div>
             </div>
-
-            <div style="margin-top: 60px; border-top: 1px dashed #ccc; padding-top: 15px; text-align: center; font-size: 13px; color: #555;">
-                <p><i>Ce document certifie la bonne réception des sommes mentionnées ci-dessus.<br>Fait pour servir de preuve tangible et de reçu de paiement officiel.</i></p>
-            </div>
-        `;
+            <div class="doc-footer" style="text-align:center; border-top:1px dashed var(--border); padding-top:20px;">
+                <p><i>Ce relevé certifie la situation financière du projet à ce jour. Document édité pour servir de reçu officiel.</i></p>
+            </div>`;
     }
 </script>
-
 </body>
 </html>
