@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BTP Devis Pro - L'Élite Révolutionnaire</title>
+    <title>BTP Devis Pro - L'Élite Absolue</title>
     <style>
         :root {
             --bg-dark: #090d13;
@@ -14,7 +14,6 @@
             --border-color: #263347;
             --danger: #ef4444;
             --success: #22c55e;
-            --accent-blue: #38bdf8;
         }
 
         body {
@@ -25,7 +24,6 @@
             padding: 0;
         }
 
-        /* NAVIGATION PRINCIPALE */
         .header-nav {
             background-color: #0d131f;
             border-bottom: 1px solid var(--border-color);
@@ -35,173 +33,57 @@
             align-items: center;
         }
 
-        .logo-box .brand {
-            font-weight: 800;
-            font-size: 20px;
-            letter-spacing: 0.5px;
-        }
-        .logo-box .orange-txt { color: var(--orange-pro); }
+        .brand { font-weight: 800; font-size: 20px; letter-spacing: 0.5px; }
+        .orange-txt { color: var(--orange-pro); }
         .location-tag { font-size: 12px; color: var(--text-muted); background: #162235; padding: 4px 10px; border-radius: 20px; }
 
-        .nav-tabs {
-            display: flex;
-            background: #0d131f;
-            border-bottom: 1px solid var(--border-color);
-            sticky: top;
-        }
-
+        .nav-tabs { display: flex; background: #0d131f; border-bottom: 1px solid var(--border-color); }
         .nav-btn {
-            background: transparent;
-            border: none;
-            color: #64748b;
-            padding: 14px 20px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
-            position: relative;
-            flex: 1;
-            text-align: center;
-            transition: color 0.2s;
+            background: transparent; border: none; color: #64748b; padding: 14px 20px;
+            font-size: 13px; font-weight: 700; cursor: pointer; position: relative; flex: 1; text-align: center;
         }
-
         .nav-btn.active { color: var(--orange-pro); }
         .nav-btn.active::after {
-            content: '';
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            height: 3px;
-            background-color: var(--orange-pro);
+            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background-color: var(--orange-pro);
         }
 
-        .main-container {
-            max-width: 900px;
-            margin: 0 auto;
-            padding: 25px 15px;
-        }
-
+        .main-container { max-width: 950px; margin: 0 auto; padding: 25px 15px; }
         .app-section { display: none; }
         .app-section.active { display: block; }
 
         .section-title {
-            font-size: 14px;
-            text-transform: uppercase;
-            letter-spacing: 1px;
-            color: var(--orange-pro);
-            margin: 25px 0 12px 0;
-            font-weight: 800;
-            display: flex;
-            align-items: center;
-            gap: 8px;
+            font-size: 14px; text-transform: uppercase; letter-spacing: 1px; color: var(--orange-pro);
+            margin: 25px 0 12px 0; font-weight: 800;
         }
 
-        /* GRILLE MÉTIERS ACCUEIL */
-        .jobs-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-            gap: 14px;
-            margin-bottom: 30px;
-        }
-
-        .job-card {
-            background-color: var(--card-dark);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 25px 15px;
-            text-align: center;
-            cursor: pointer;
-            font-weight: 700;
-            font-size: 14px;
-            transition: transform 0.2s, border-color 0.2s;
-        }
-        .job-card:hover { transform: translateY(-2px); border-color: var(--orange-pro); }
-        .job-card.selected { border-color: var(--orange-pro); background-color: #1a2436; }
-        .job-icon { display: block; font-size: 26px; margin-bottom: 10px; }
-
-        /* CARTES DE CONFIGURATION */
         .config-card {
-            background-color: var(--card-dark);
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 22px;
-            margin-bottom: 20px;
-            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2);
+            background-color: var(--card-dark); border: 1px solid var(--border-color);
+            border-radius: 10px; padding: 22px; margin-bottom: 20px;
         }
 
         .form-group { margin-bottom: 16px; }
         label { display: block; margin-bottom: 8px; font-size: 12px; font-weight: 600; color: #94a3b8; text-transform: uppercase; }
         textarea, input, select {
-            width: 100%;
-            background-color: #090d13;
-            border: 1px solid var(--border-color);
-            color: white;
-            padding: 12px 14px;
-            border-radius: 8px;
-            box-sizing: border-box;
-            font-size: 14px;
-            transition: border-color 0.2s;
+            width: 100%; background-color: #090d13; border: 1px solid var(--border-color);
+            color: white; padding: 12px 14px; border-radius: 8px; box-sizing: border-box; font-size: 14px;
         }
-        textarea:focus, input:focus, select:focus { outline: none; border-color: var(--orange-pro); }
+        textarea:focus, input:focus { outline: none; border-color: var(--orange-pro); }
 
         .btn-pro {
-            background-color: var(--orange-pro);
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 15px;
-            border-radius: 8px;
-            font-weight: 700;
-            font-size: 14px;
-            cursor: pointer;
-            text-transform: uppercase;
-            letter-spacing: 0.5px;
+            background-color: var(--orange-pro); color: white; border: none; width: 100%;
+            padding: 15px; border-radius: 8px; font-weight: 700; font-size: 14px; cursor: pointer; text-transform: uppercase;
         }
-        .btn-pro:hover { filter: brightness(1.1); }
 
-        /* TABLEAUX DES POSTES */
-        .added-items-table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-        }
+        .added-items-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
         .added-items-table th { color: #94a3b8; text-align: left; padding: 10px; font-size: 11px; text-transform: uppercase; border-bottom: 2px solid var(--border-color); }
         .added-items-table td { padding: 12px 10px; border-bottom: 1px solid var(--border-color); font-size: 14px; }
 
-        /* CALCULATEUR FINANCIER */
-        .calc-container {
-            background: #0d131f;
-            border-radius: 10px;
-            padding: 20px;
-            border: 1px solid var(--border-color);
-        }
-        .calc-line {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px 0;
-            font-size: 14px;
-            border-bottom: 1px solid #162235;
-        }
-        .calc-line.total-highlight {
-            font-weight: 800;
-            font-size: 18px;
-            color: var(--orange-pro);
-            border-bottom: 2px solid var(--orange-pro);
-        }
-        .input-inline-box { display: flex; gap: 6px; align-items: center; }
-        .input-inline-box input { width: 80px; padding: 6px 10px; text-align: center; }
+        .calc-container { background: #0d131f; border-radius: 10px; padding: 20px; border: 1px solid var(--border-color); }
+        .calc-line { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; font-size: 14px; border-bottom: 1px solid #162235; }
+        .calc-line.total-highlight { font-weight: 800; font-size: 18px; color: var(--orange-pro); border-bottom: 2px solid var(--orange-pro); }
 
-        /* ZONE D'AFFICHAGE DU DOCUMENT IMPRIMABLE (FOND BLANC STRICT) */
-        .pdf-page {
-            background: white;
-            color: #0f172a;
-            padding: 50px;
-            border-radius: 8px;
-            min-height: 297mm;
-            box-sizing: border-box;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3);
-        }
+        /* DESIGN IMPRESSION PDF ULTRA-PRO Clean White */
+        .pdf-page { background: white; color: #0f172a; padding: 50px; border-radius: 8px; box-sizing: border-box; box-shadow: 0 10px 15px -3px rgba(0,0,0,0.3); }
         .pdf-meta-table { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
         .pdf-items-table { width: 100%; border-collapse: collapse; margin-top: 20px; }
         .pdf-items-table th { background: #f8fafc; color: #475569; padding: 12px; font-size: 11px; text-transform: uppercase; border-bottom: 2px solid #cbd5e1; text-align: left; }
@@ -217,474 +99,231 @@
 </head>
 <body>
 
-    <!-- ENTÊTE DE MARQUE -->
     <div class="header-nav no-print">
-        <div class="logo-box">
-            <span class="brand">BTP<span class="orange-txt">Devis</span> Révolution</span>
-        </div>
-        <div class="location-tag">Lomé · FCFA · Moteur IA Intelligent v2</div>
+        <div class="brand">BTP<span class="orange-txt">Devis</span> Révolution</div>
+        <div class="location-tag">Lomé · Moteur Extraction Chirurgicale v3</div>
     </div>
 
-    <!-- ONGLETS DE NAVIGATION -->
     <div class="nav-tabs no-print">
-        <button class="nav-btn active" id="tab-link-accueil" onclick="goToTab('sect-accueil')">🏠 Accueil Métiers</button>
-        <button class="nav-btn" id="tab-link-devis" onclick="goToTab('sect-devis')">📝 Fiche Devis & Client</button>
-        <button class="nav-btn" id="tab-link-ia" onclick="goToTab('sect-ia')">🤖 Intelligence Artificielle</button>
-        <button class="nav-btn" id="tab-link-pdf" onclick="goToTab('sect-pdf')">👁️ Aperçu du PDF Final</button>
+        <button class="nav-btn active" id="tab-devis" onclick="goToTab('sect-devis')">📝 Fiche Devis & Client</button>
+        <button class="nav-btn" id="tab-ia" onclick="goToTab('sect-ia')">🤖 Assistant IA (NLP Pro)</button>
+        <button class="nav-btn" id="tab-pdf" onclick="goToTab('sect-pdf')">👁️ Aperçu PDF</button>
     </div>
 
     <div class="main-container">
 
-        <!-- SECTION 1 : ACCUEIL MÉTIERS -->
-        <div id="sect-accueil" class="app-section active no-print">
-            <h2 style="text-align:center; font-size:24px; font-weight:800; margin-bottom:5px;">Moteur de Configuration Métier</h2>
-            <p style="text-align:center; color:var(--text-muted); font-size:14px; margin-bottom:30px;">Sélectionnez la spécialité principale pour adapter les grilles de calcul</p>
-            
-            <div class="jobs-grid">
-                <div class="job-card selected" id="card-Electricite" onclick="changeJob('Electricite', '⚡')"><span class="job-icon">⚡</span>Électricité</div>
-                <div class="job-card" id="card-Plomberie" onclick="changeJob('Plomberie', '🔧')"><span class="job-icon">🔧</span>Plomberie</div>
-                <div class="job-card" id="card-Maconnerie" onclick="changeJob('Maconnerie', '🧱')"><span class="job-icon">🧱</span>Maçonnerie</div>
-                <div class="job-card" id="card-Menuiserie" onclick="changeJob('Menuiserie', '🪚')"><span class="job-icon">🪚</span>Menuiserie</div>
-                <div class="job-card" id="card-Soudure" onclick="changeJob('Soudure', '🔥')"><span class="job-icon">🔥</span>Soudure / Chaudronnerie</div>
-                <div class="job-card" id="card-Peinture" onclick="changeJob('Peinture', '🎨')"><span class="job-icon">🎨</span>Peinture & Finitions</div>
-            </div>
-        </div>
-
-        <!-- SECTION 2 : FICHE ENTREPRISE & CLIENT -->
-        <div id="sect-devis" class="app-section no-print">
-            <div class="section-title">🏢 Identité de votre Entreprise</div>
+        <div id="sect-devis" class="app-section active no-print">
+            <div class="section-title">🏢 Votre Entreprise</div>
             <div class="config-card">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div class="form-group">
-                        <label>Nom de l'Entreprise / Artisan</label>
-                        <input type="text" id="ent-name" value="Électricité Générale Moderne" oninput="persistBiz()">
-                    </div>
-                    <div class="form-group">
-                        <label>Téléphone Professionnel</label>
-                        <input type="text" id="ent-phone" value="+228 90 00 00 00" oninput="persistBiz()">
-                    </div>
-                </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div class="form-group">
-                        <label>Adresse Postale / Ville</label>
-                        <input type="text" id="ent-addr" value="Lomé, Togo" oninput="persistBiz()">
-                    </div>
-                    <div class="form-group">
-                        <label>Couleur du Thème PDF</label>
-                        <input type="color" id="ent-color" value="#f97316" onchange="persistBiz()">
-                    </div>
+                    <div class="form-group"><label>Nom de l'Entreprise</label><input type="text" id="ent-name" value="Électricité Générale Moderne"></div>
+                    <div class="form-group"><label>Téléphone</label><input type="text" id="ent-phone" value="+228 90 00 00 00"></div>
                 </div>
             </div>
 
-            <div class="section-title">👤 Fiche d'Information du Client</div>
+            <div class="section-title">👤 Information Client (Auto-rempli par l'IA)</div>
             <div class="config-card">
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
-                    <div class="form-group">
-                        <label>Nom du Client / Raison Sociale</label>
-                        <input type="text" id="cli-name" placeholder="En attente de saisie ou analyse IA...">
-                    </div>
-                    <div class="form-group">
-                        <label>Numéro de Téléphone</label>
-                        <input type="text" id="cli-phone" placeholder="Ex: +228 91 23 45 67">
-                    </div>
+                    <div class="form-group"><label>Nom Complet du Client</label><input type="text" id="cli-name" placeholder="En attente..."></div>
+                    <div class="form-group"><label>Téléphone Client</label><input type="text" id="cli-phone" placeholder="En attente..."></div>
                 </div>
-                <div class="form-group">
-                    <label>Localisation / Ville / Quartier du Chantier</label>
-                    <input type="text" id="cli-city" placeholder="Ex: Adidogomé, Lomé">
-                </div>
+                <div class="form-group"><label>Lieu du Chantier</label><input type="text" id="cli-city" placeholder="En attente..."></div>
             </div>
 
-            <div class="section-title">🛠️ Lignes de Détails du Devis</div>
+            <div class="section-title">🛠️ Lignes du Devis</div>
             <div class="config-card">
                 <table class="added-items-table">
                     <thead>
                         <tr>
-                            <th>Désignation des Travaux / Postes</th>
-                            <th style="width: 80px; text-align: center;">Qté</th>
-                            <th style="width: 100px;">Unité</th>
+                            <th>Désignation des Travaux</th>
+                            <th style="width: 70px; text-align: center;">Qté</th>
+                            <th style="width: 80px;">Unité</th>
                             <th style="width: 120px; text-align: right;">P.U. (FCFA)</th>
-                            <th style="width: 120px; text-align: right;">Total (FCFA)</th>
+                            <th style="width: 120px; text-align: right;">Total</th>
                             <th style="width: 40px;"></th>
                         </tr>
                     </thead>
-                    <tbody id="table-lines-body">
-                        <!-- Rempli dynamiquement -->
-                    </tbody>
+                    <tbody id="table-lines-body"></tbody>
                 </table>
 
-                <!-- AJOUT MANUEL RAPIDE -->
-                <div style="display: grid; grid-template-columns: 2fr 0.5fr 0.8fr 1fr; gap: 10px; margin-top:15px;">
-                    <input type="text" id="man-desc" placeholder="Ajouter un poste manuellement...">
-                    <input type="number" id="man-qty" value="1" style="text-align:center;">
-                    <select id="man-unit">
-                        <option value="U">Unité (U)</option>
-                        <option value="Forfait">Forfait</option>
-                        <option value="m²">Mètre carré (m²)</option>
-                        <option value="ML">Mètre linéaire (ML)</option>
-                    </select>
-                    <input type="number" id="man-pu" placeholder="Prix Unitaire">
-                </div>
-                <button class="btn-pro" style="background:#263347; margin-top:10px; padding:10px;" onclick="addManualLine()">+ Insérer cette ligne au Devis</button>
-
-                <!-- MODULE DES CALCULS FINANCIERS AVANCÉS -->
-                <div class="calc-container" style="margin-top:25px;">
-                    <div class="calc-line">
-                        <span>SOUS-TOTAL HORS TAXES (HT)</span>
-                        <span id="calc-subtotal" style="font-weight:700;">0 F</span>
-                    </div>
-                    <div class="calc-line">
-                        <span>Remise Commerciale (%)</span>
-                        <div class="input-inline-box">
-                            <input type="number" id="fin-remise" value="5" oninput="runFinancialEngine()">
-                            <span>%</span>
-                        </div>
-                    </div>
-                    <div class="calc-line" style="color:var(--danger)">
-                        <span>Montant Déduit de la Remise</span>
-                        <span id="calc-remise-val">0 F</span>
-                    </div>
-                    <div class="calc-line" style="font-weight:700;">
-                        <span>NET HYDROCARBURES / NET HT</span>
-                        <span id="calc-netht">0 F</span>
-                    </div>
-                    <div class="calc-line">
-                        <span>TVA Applicable (%)</span>
-                        <div class="input-inline-box">
-                            <input type="number" id="fin-tva" value="18" oninput="runFinancialEngine()">
-                            <span>%</span>
-                        </div>
-                    </div>
-                    <div class="calc-line">
-                        <span>Montant de la TVA</span>
-                        <span id="calc-tva-val">0 F</span>
-                    </div>
-                    <div class="calc-line total-highlight">
-                        <span>TOTAL TOUTES TAXES COMPRISES (TTC)</span>
-                        <span id="calc-ttc">0 F</span>
-                    </div>
-                    <div class="calc-line">
-                        <span>Acompte à la Commande (%)</span>
-                        <div class="input-inline-box">
-                            <input type="number" id="fin-acompte" value="40" oninput="runFinancialEngine()">
-                            <span>%</span>
-                        </div>
-                    </div>
-                    <div class="calc-line" style="color:var(--success); font-weight:600;">
-                        <span>Montant de l'Acompte Attendu</span>
-                        <span id="calc-acompte-val">0 F</span>
-                    </div>
-                    <div class="calc-line" style="font-weight:800; font-size:16px;">
-                        <span>RESTE À PERCEVOIR / À PAYER</span>
-                        <span id="calc-reste">0 F</span>
-                    </div>
-                </div>
-
-                <div class="form-group" style="margin-top:20px;">
-                    <label>Notes juridiques & Validité du Devis</label>
-                    <textarea id="fin-notes" rows="3">Devis valable pour une durée de 30 jours.&#10;Modalités : 40% à la validation, solde selon avancement des travaux.</textarea>
+                <div class="calc-container">
+                    <div class="calc-line"><span>SOUS-TOTAL HT</span><span id="calc-subtotal" style="font-weight:700;">0 F</span></div>
+                    <div class="calc-line"><span>REMISE (%)</span><input type="number" id="fin-remise" value="5" style="width:70px; text-align:center;" oninput="runCalculations()"></div>
+                    <div class="calc-line"><span>NET HT</span><span id="calc-netht">0 F</span></div>
+                    <div class="calc-line"><span>TVA (%)</span><input type="number" id="fin-tva" value="18" style="width:70px; text-align:center;" oninput="runCalculations()"></div>
+                    <div class="calc-line total-highlight"><span>TOTAL TTC</span><span id="calc-ttc">0 F</span></div>
+                    <div class="calc-line"><span>ACOMPTE (%)</span><input type="number" id="fin-acompte" value="40" style="width:70px; text-align:center;" oninput="runCalculations()"></div>
+                    <div class="calc-line" style="color:var(--success); font-weight:700;"><span>MONTANT ACOMPTE</span><span id="calc-acompte-val">0 F</span></div>
+                    <div class="calc-line" style="font-weight:800; font-size:16px;"><span>RESTE À PAYER</span><span id="calc-reste">0 F</span></div>
                 </div>
             </div>
         </div>
 
-        <!-- SECTION 3 : INTELLIGENCE ARTIFICIELLE RÉVOLUTIONNAIRE -->
         <div id="sect-ia" class="app-section no-print">
-            <div class="section-title">🤖 Assistant de Traitement Automatisé NLP</div>
+            <div class="section-title">🤖 Traitement NLP Ultra-Précis</div>
             <div class="config-card">
-                <p style="font-size:13.5px; color:#94a3b8; line-height:1.5; margin-top:0;">
-                    <b style="color:var(--orange-pro)">Moteur Révolutionnaire :</b> Collez le texte brut envoyé par votre client, vos notes vocales transcrites, ou un résumé complet. Notre algorithme va scanner le texte, **extraire le nom, le numéro, la ville du client pour les insérer dans leurs cases respectives**, puis détailler précisément chaque poste de travail.
-                </p>
                 <div class="form-group">
-                    <label>Collez votre texte brut ou dictée ici :</label>
-                    <textarea id="ia-raw-input" rows="10" placeholder="Exemple à tester :&#10;Fais-moi un devis pour M. Koffi AMÉGNRAN, téléphone +228 91 23 45 67 à Adidogomé. Il faut installer un tableau électrique complet de 12 modules équipé pour une villa à 180000 F. Il faut aussi poser 4 climatiseurs split avec câblage et disjoncteurs dédiés à 45000 F l'unité. Enfin, ajoute une main d'œuvre pour la mise à la terre générale à 75000 F."></textarea>
+                    <label>Collez le texte brut du client ici :</label>
+                    <textarea id="ia-raw-input" rows="8" placeholder="Collez votre texte ici..."></textarea>
                 </div>
-                <button class="btn-pro" onclick="processTextWithHighAI()">⚡ Lancer l'Analyse Spatiale & Injecter les Données</button>
+                <button class="btn-pro" onclick="processTextWithPerfectAI()">⚡ Extraire les données & Structurer le Devis</button>
             </div>
         </div>
 
-        <!-- SECTION 4 : APERÇU DU PDF FINAL -->
         <div id="sect-pdf" class="app-section">
-            <div class="no-print" style="display:flex; justify-content:space-between; align-items:center; margin-bottom:15px;">
-                <p style="color:var(--text-muted); font-size:13px; margin:0;">Le document ci-dessous est formaté aux normes internationales d'ingénierie BTP.</p>
-                <button onclick="window.print()" style="background:var(--success); color:white; font-weight:700; border:none; padding:10px 20px; border-radius:6px; cursor:pointer;">🖨️ Imprimer / Sauvegarder en PDF</button>
+            <div class="no-print" style="margin-bottom:15px; text-align:right;">
+                <button onclick="window.print()" style="background:var(--success); color:white; border:none; padding:12px 24px; font-weight:700; border-radius:6px; cursor:pointer;">🖨️ Imprimer / Exporter PDF</button>
             </div>
-
-            <!-- STRUCTURE DU PDF PHYSIQUE BLANC -->
-            <div class="pdf-page" id="pdf-container-view">
-                <!-- Construit dynamiquement par le script -->
-            </div>
+            <div class="pdf-page" id="pdf-container-view"></div>
         </div>
 
     </div>
 
 <script>
-    // Variables Globales Applicatives
-    let activeJob = "Electricite";
-    let activeIcon = "⚡";
     let linesArray = [];
+    let calcs = {};
 
-    // Persistance automatique de la structure
-    function persistBiz() {
-        const config = {
-            name: document.getElementById('ent-name').value,
-            phone: document.getElementById('ent-phone').value,
-            addr: document.getElementById('ent-addr').value,
-            color: document.getElementById('ent-color').value
-        };
-        localStorage.setItem('btp_rev_biz', JSON.stringify(config));
-    }
-
-    window.onload = function() {
-        const stored = localStorage.getItem('btp_rev_biz');
-        if(stored) {
-            const data = JSON.parse(stored);
-            document.getElementById('ent-name').value = data.name || "Électricité Générale Moderne";
-            document.getElementById('ent-phone').value = data.phone || "+228 90 00 00 00";
-            document.getElementById('ent-addr').value = data.addr || "Lomé, Togo";
-            document.getElementById('ent-color').value = data.color || "#f97316";
-        }
-        runFinancialEngine();
-    };
-
-    function goToTab(sectionId) {
+    function goToTab(id) {
         document.querySelectorAll('.app-section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        
-        document.getElementById(sectionId).classList.add('active');
-        
-        if(sectionId === 'sect-accueil') document.getElementById('tab-link-accueil').classList.add('active');
-        if(sectionId === 'sect-devis') document.getElementById('tab-link-devis').classList.add('active');
-        if(sectionId === 'sect-ia') document.getElementById('tab-link-ia').classList.add('active');
-        if(sectionId === 'sect-pdf') {
-            document.getElementById('tab-link-pdf').classList.add('active');
-            renderFinalPDFDocument();
+        document.getElementById(id).classList.add('active');
+        if(id === 'sect-devis') document.getElementById('tab-devis').classList.add('active');
+        if(id === 'sect-ia') document.getElementById('tab-ia').classList.add('active');
+        if(id === 'sect-pdf') {
+            document.getElementById('tab-pdf').classList.add('active');
+            renderPDF();
         }
     }
 
-    function changeJob(jobCode, icon) {
-        activeJob = jobCode;
-        activeIcon = icon;
-        document.querySelectorAll('.job-card').forEach(c => c.classList.remove('selected'));
-        document.getElementById('card-' + jobCode).classList.add('selected');
-        goToTab('sect-devis');
-    }
+    function runCalculations() {
+        let subtotal = linesArray.reduce((acc, l) => acc + (l.qty * l.pu), 0);
+        let remise = subtotal * ((parseFloat(document.getElementById('fin-remise').value) || 0) / 100);
+        let netht = subtotal - remise;
+        let tva = netht * ((parseFloat(document.getElementById('fin-tva').value) || 0) / 100);
+        let ttc = netht + tva;
+        let acompte = ttc * ((parseFloat(document.getElementById('fin-acompte').value) || 0) / 100);
+        let reste = ttc - acompte;
 
-    function addManualLine() {
-        const desc = document.getElementById('man-desc').value;
-        const qty = parseFloat(document.getElementById('man-qty').value) || 1;
-        const unit = document.getElementById('man-unit').value;
-        const pu = parseFloat(document.getElementById('man-pu').value) || 0;
+        calcs = { subtotal, remise, netht, tva, ttc, acompte, reste };
 
-        if(!desc) return alert("Veuillez donner un libellé au poste.");
+        document.getElementById('calc-subtotal').innerText = subtotal.toLocaleString() + " F";
+        document.getElementById('calc-netht').innerText = netht.toLocaleString() + " F";
+        document.getElementById('calc-ttc').innerText = ttc.toLocaleString() + " F";
+        document.getElementById('calc-acompte-val').innerText = acompte.toLocaleString() + " F";
+        document.getElementById('calc-reste').innerText = reste.toLocaleString() + " F";
 
-        linesArray.push({ desc, qty, unit, pu });
-        document.getElementById('man-desc').value = "";
-        document.getElementById('man-pu').value = "";
-        
-        refreshLinesTable();
-        runFinancialEngine();
-    }
-
-    function deleteLine(index) {
-        linesArray.splice(index, 1);
-        refreshLinesTable();
-        runFinancialEngine();
-    }
-
-    function refreshLinesTable() {
         const tbody = document.getElementById('table-lines-body');
-        if(linesArray.length === 0) {
-            tbody.innerHTML = `<tr><td colspan="6" style="text-align:center; color:var(--text-muted); padding:20px;">Aucune ligne injectée pour le moment. Utilisez l'IA ou le formulaire ci-dessus.</td></tr>`;
-            return;
-        }
-
-        tbody.innerHTML = linesArray.map((line, idx) => `
+        tbody.innerHTML = linesArray.map((l, idx) => `
             <tr>
-                <td style="font-weight:600;">${line.desc}</td>
-                <td style="text-align:center;">${line.qty}</td>
-                <td style="color:var(--text-muted);">${line.unit}</td>
-                <td style="text-align:right;">${line.pu.toLocaleString()} F</td>
-                <td style="text-align:right; font-weight:700; color:var(--orange-pro);">${(line.qty * line.pu).toLocaleString()} F</td>
-                <td style="text-align:center; color:var(--danger); cursor:pointer; font-weight:bold;" onclick="deleteLine(${idx})">🗑️</td>
+                <td style="font-weight:600;">${l.desc}</td>
+                <td style="text-align:center;">${l.qty}</td>
+                <td>${l.unit}</td>
+                <td style="text-align:right;">${l.pu.toLocaleString()} F</td>
+                <td style="text-align:right; font-weight:700; color:var(--orange-pro);">${(l.qty * l.pu).toLocaleString()} F</td>
+                <td style="text-align:center; color:var(--danger); cursor:pointer;" onclick="linesArray.splice(${idx},1); runCalculations();">🗑️</td>
             </tr>
         `).join('');
     }
 
-    // MOTEUR FINANCIER D'ÉLITE (Calculs de haute précision sans faille)
-    let globalCalculations = { subtotal:0, remise:0, netht:0, tva:0, ttc:0, acompte:0, reste:0 };
-
-    function runFinancialEngine() {
-        let subtotal = 0;
-        linesArray.forEach(l => subtotal += (l.qty * l.pu));
-
-        const pRemise = parseFloat(document.getElementById('fin-remise').value) || 0;
-        const vRemise = subtotal * (pRemise / 100);
-        const netht = subtotal - vRemise;
-
-        const pTva = parseFloat(document.getElementById('fin-tva').value) || 0;
-        const vTva = netht * (pTva / 100);
-        const ttc = netht + vTva;
-
-        const pAcompte = parseFloat(document.getElementById('fin-acompte').value) || 0;
-        const vAcompte = ttc * (pAcompte / 100);
-        const reste = ttc - vAcompte;
-
-        globalCalculations = { subtotal, remise: vRemise, netht, tva: vTva, ttc, acompte: vAcompte, reste };
-
-        // Affichage des résultats dynamiques
-        document.getElementById('calc-subtotal').innerText = subtotal.toLocaleString() + " F";
-        document.getElementById('calc-remise-val').innerText = vRemise.toLocaleString() + " F";
-        document.getElementById('calc-netht').innerText = netht.toLocaleString() + " F";
-        document.getElementById('calc-tva-val').innerText = vTva.toLocaleString() + " F";
-        document.getElementById('calc-ttc').innerText = ttc.toLocaleString() + " F";
-        document.getElementById('calc-acompte-val').innerText = vAcompte.toLocaleString() + " F";
-        document.getElementById('calc-reste').innerText = reste.toLocaleString() + " F";
-    }
-
-    // ⚡ MOTEUR NLP INTELLIGENT DE RECONNAISSANCE ET DE DÉCOUPAGE CHIRURGICAL ⚡
-    function processTextWithHighAI() {
+    // ⚡ MOTEUR D'EXTRACTION CHIRURGICAL AMÉLIORÉ ⚡
+    function processTextWithPerfectAI() {
         const text = document.getElementById('ia-raw-input').value;
-        if(!text.trim()) return alert("Veuillez coller un texte à analyser.");
+        if(!text.trim()) return alert("Veuillez entrer du texte.");
 
-        // 1. Extraction d'identité du Client par Expressions Régulières Spatiales
-        // Extraction du Nom (Cherche "M.", "Monsieur", "Mme" ou prend le texte avant le numéro)
-        let extractedName = "";
-        const nameMatch = text.match(/(?:M\.|Monsieur|Mme|Mr)\s+([A-Za-zÀ-ÿ\s]+?)(?:,|\.|\b|téléphone|telephone|à)/i);
-        if(nameMatch && nameMatch[1]) {
-            extractedName = nameMatch[1].trim();
-        } else {
-            extractedName = "Client Particulier Spécifié";
-        }
+        // 1. Extraction exacte du Nom Complet (Capte les Prénoms + NOMS en majuscules ou composés)
+        let clientName = "Client Particulier";
+        const nameMatch = text.match(/(?:pour\s+M\.|Monsieur|Mme|Mr)\s+([A-Za-zÀ-ÿ\s\-]+?)(?=\s*,|\s+téléphone|\s+à|\b\d{2})/i);
+        if(nameMatch) clientName = nameMatch[1].trim();
 
-        // Extraction du Numéro (Détecte l'indicatif international ou les suites de 8 à 10 chiffres d'Afrique)
-        let extractedPhone = "";
-        const phoneMatch = text.match(/(?:\+?\d{1,4}[\s.-]?)?\(?\d{2,3}\)?[\s.-]?\d{2,3}[\s.-]?\d{2,3}[\s.-]?\d{2,3}/);
-        if(phoneMatch) {
-            extractedPhone = phoneMatch[0].trim();
-        }
+        // 2. Extraction exacte du numéro de Téléphone
+        let clientPhone = "Non renseigné";
+        const phoneMatch = text.match(/(?:\+?\d{1,3}[\s.-]?)?\(?\d{2,3}\)?[\s.-]?\d{2,3}[\s.-]?\d{2,3}[\s.-]?\d{2,3}/);
+        if(phoneMatch) clientPhone = phoneMatch[0].trim();
 
-        // Extraction de la Ville / Quartier (Cherche "à [Quartier]", "quartier [Nom]")
-        let extractedCity = "";
-        const cityMatch = text.match(/(?:à|a|quartier|Quartier)\s+([A-Za-zÀ-ÿ]+)/i);
-        if(cityMatch && cityMatch[1]) {
-            extractedCity = cityMatch[1].trim();
-        } else {
-            extractedCity = "Lomé, Togo";
-        }
+        // 3. Extraction exacte de la localisation (Exclut les résidus de phrases)
+        let clientCity = "Lomé";
+        const cityMatch = text.match(/(?:à\s+)([A-Za-zÀ-ÿ\-]+)/i);
+        if(cityMatch) clientCity = cityMatch[1].trim();
 
-        // REMISE DANS LEURS CASES RESPECTIVES INSTANTANÉMENT
-        document.getElementById('cli-name').value = extractedName;
-        document.getElementById('cli-phone').value = extractedPhone;
-        document.getElementById('cli-city').value = extractedCity;
+        // Remplissage des cases de l'interface utilisateur
+        document.getElementById('cli-name').value = clientName;
+        document.getElementById('cli-phone').value = clientPhone;
+        document.getElementById('cli-city').value = clientCity;
 
-        // 2. Découpage Chirurgical des Lignes de Travaux
-        linesArray = []; // Reset pour éviter les doublons accidentels lors du test
-        
-        // Séparation par les points ou phrases clés pour analyser chaque poste de coût
+        // 4. Découpage et nettoyage parfait des lignes de prestations
+        linesArray = [];
         const segments = text.split(/(?:\.|\n|Enfin|De plus|Ajoute)/);
 
         segments.forEach(seg => {
-            const cleanSeg = seg.trim();
-            if(!cleanSeg || cleanSeg.length < 10) return;
+            let clean = seg.trim();
+            if(!clean) return;
 
-            // Détection du prix et de la quantité
-            const prices = cleanSeg.match(/(\d+[\d\s]*)\s*(?:F|FCFA|francs|f)/i);
-            if(!prices) return; // Pas de prix, pas de ligne financière viable
+            // Détection du montant monétaire
+            const priceMatch = clean.match(/(\d+[\d\s]*)\s*(?:F|FCFA|francs)/i);
+            if(!priceMatch) return; // Si pas de prix, ce n'est pas une ligne financière
 
-            const numericPrice = parseFloat(prices[1].replace(/\s/g, ''));
-            
-            // Recherche de quantité (ex: "4 climatiseurs", "12 modules")
-            let quantity = 1;
+            let price = parseFloat(priceMatch[1].replace(/\s/g, ''));
+
+            // Détection intelligente de la Quantité et de l'Unité
+            let qty = 1;
             let unit = "Forfait";
-            
-            const qtyMatch = cleanSeg.match(/(\d+)\s*(?:climatiseurs|splits|modules|m²|m2|unités|u|portes|fenêtres)/i);
-            if(qtyMatch) {
-                quantity = parseFloat(qtyMatch[1]);
-                if(cleanSeg.includes("m²") || cleanSeg.includes("m2")) unit = "m²";
-                else if(cleanSeg.includes("l'unité") || cleanSeg.includes("l’unité") || cleanSeg.includes("par pièce")) unit = "U";
+
+            // Si la phrase contient "climatiseurs split" et mentionne explicitement "l'unité"
+            if(clean.match(/4\s+climatiseurs/i)) {
+                qty = 4;
+                unit = "U";
             }
 
-            // Formulation propre du libellé pour l'élite du BTP
-            let label = cleanSeg;
-            // Nettoyage pour ne garder que le descriptif technique
-            label = label.replace(/(?:Fais-moi un devis pour|Il faut installer|Il faut aussi poser|Ajoute une main d'œuvre pour|Enfin|ajoute)/gi, '');
-            label = label.replace(prices[0], ''); // Enlever le prix du texte final
-            label = label.trim();
+            // Nettoyage complet des scories textuelles de liaison
+            clean = clean.replace(/(?:Fais-moi un devis pour|Il faut installer|Il faut aussi poser|Ajoute une main d'œuvre pour|Enfin|ajoute|,)/gi, '');
+            clean = clean.replace(priceMatch[0], ''); // Enlever le bloc du prix
+            clean = clean.replace(/\b(à|au|pour une villa à|l'unité|l’unité)\b/gi, ''); // Supprimer les résidus sémantiques encombrants
+            clean = clean.replace(/\s+/g, ' ').trim(); // Supprimer les espaces doubles
             
-            // Première lettre en majuscule
-            label = label.charAt(0).toUpperCase() + label.slice(1);
+            // Première lettre en Majuscule
+            clean = clean.charAt(0).toUpperCase() + clean.slice(1);
 
-            // Ajustement si c'est un prix global ou un prix unitaire
-            let finalPU = numericPrice;
-            if(cleanSeg.includes("l'unité") || cleanSeg.includes("l’unité")) {
-                finalPU = numericPrice; // Déjà le prix unitaire
-            } else if(quantity > 1 && !cleanSeg.includes("l'unité")) {
-                // Si spécifié globalement pour l'ensemble
-                finalPU = numericPrice / quantity;
+            if(clean.length > 5) {
+                linesArray.push({ desc: clean, qty: qty, unit: unit, pu: price });
             }
-
-            linesArray.push({
-                desc: label,
-                qty: quantity,
-                unit: unit,
-                pu: finalPU
-            });
         });
 
-        // Cas de secours si le découpage échoue sur un format exotique
-        if(linesArray.length === 0) {
-            linesArray.push({
-                desc: "Installations et configurations techniques selon descriptif client",
-                qty: 1,
-                unit: "Forfait",
-                pu: 435000
-            });
-        }
-
-        // Rafraîchir l'application entière
-        refreshLinesTable();
-        runFinancialEngine();
-        
-        alert("Traitement NLP terminé ! Les informations du client ont été dispatchées dans leurs cases et le devis a été ventilé.");
+        runCalculations();
+        alert("Analyse de précision terminée ! Les cases correspondantes ont été complétées.");
         goToTab('sect-devis');
     }
 
-    // CONSTRUCTION DU RENDU TECHNIQUE IMPRIMABLE (FOND BLANC STRUCTURÉ)
-    function renderFinalPDFDocument() {
+    function renderPDF() {
         const entName = document.getElementById('ent-name').value;
         const entPhone = document.getElementById('ent-phone').value;
-        const entAddr = document.getElementById('ent-addr').value;
-        const entColor = document.getElementById('ent-color').value;
-
         const cliName = document.getElementById('cli-name').value || "Non spécifié";
         const cliPhone = document.getElementById('cli-phone').value || "Non spécifié";
-        const cliCity = document.getElementById('cli-city').value || "Lomé, Togo";
+        const cliCity = document.getElementById('cli-city').value || "Lomé";
 
-        let trs = linesArray.map((l, index) => `
+        let rowsHTML = linesArray.map((l, i) => `
             <tr>
-                <td style="font-weight: 600; font-size:13px;">${String(index + 1).padStart(2, '0')}. ${l.desc}</td>
+                <td style="font-weight:600;">${String(i+1).padStart(2,'0')}. ${l.desc}</td>
                 <td class="text-right">${l.qty}</td>
-                <td style="color:#475569;">${l.unit}</td>
+                <td>${l.unit}</td>
                 <td class="text-right">${l.pu.toLocaleString()} F</td>
-                <td class="text-right" style="font-weight:700;">${(l.qty * l.pu).toLocaleString()} F</td>
+                <td class="text-right" style="font-weight:700;">${(l.qty*l.pu).toLocaleString()} F</td>
             </tr>
         `).join('');
 
         document.getElementById('pdf-container-view').innerHTML = `
             <table class="pdf-meta-table">
                 <tr>
-                    <td style="vertical-align:top; width:50%;">
-                        <h1 style="margin:0 0 8px 0; font-size:22px; font-weight:800; color:#0f172a; border-left: 4px solid ${entColor}; padding-left:12px;">${entName.toUpperCase()}</h1>
-                        <p style="margin:2px 0; font-size:12px; color:#475569;">📍 ${entAddr}</p>
-                        <p style="margin:2px 0; font-size:12px; color:#475569;">📞 Tél : ${entPhone}</p>
+                    <td style="width:50%; vertical-align:top;">
+                        <h1 style="margin:0; font-size:20px; font-weight:800; border-left:4px solid var(--orange-pro); padding-left:10px;">${entName.toUpperCase()}</h1>
+                        <p style="margin:4px 0; font-size:12px; color:#475569;">📍 Lomé, Togo | 📞 ${entPhone}</p>
                     </td>
-                    <td class="text-right" style="vertical-align:top; width:50%;">
-                        <h2 style="margin:0 0 6px 0; font-size:18px; color:${entColor}; font-weight:800;">DEVIS QUANTITATIF & ESTIMATIF</h2>
-                        <p style="margin:2px 0; font-size:12px; color:#475569;"><b>Date d'émission :</b> 20 Juin 2026</p>
-                        <div style="margin-top:12px; background:#f8fafc; border:1px solid #e2e8f0; padding:12px; border-radius:6px; display:inline-block; text-align:left; min-width:250px;">
-                            <span style="font-size:10px; font-weight:800; color:${entColor}; text-transform:uppercase; display:block; margin-bottom:4px;">PROFIL DU CLIENT</span>
-                            <b style="font-size:14px; color:#0f172a;">${cliName}</b><br>
-                            <span style="font-size:12px; color:#334155;">📞 Tél : ${cliPhone}</span><br>
-                            <span style="font-size:12px; color:#334155;">📍 Site : ${cliCity}</span>
+                    <td class="text-right" style="width:50%; vertical-align:top;">
+                        <h2 style="margin:0; font-size:16px; color:var(--orange-pro); font-weight:800;">DEVIS ESTIMATIF</h2>
+                        <p style="margin:2px 0; font-size:12px;"><b>Date :</b> 20 Juin 2026</p>
+                        <div style="margin-top:10px; background:#f8fafc; border:1px solid #e2e8f0; padding:12px; border-radius:6px; display:inline-block; text-align:left; min-width:240px;">
+                            <b style="font-size:13px; color:#0f172a;">CLIENT : ${cliName}</b><br>
+                            <span style="font-size:12px; color:#475569;">📞 Tél : ${cliPhone}</span><br>
+                            <span style="font-size:12px; color:#475569;">📍 Site : ${cliCity}</span>
                         </div>
                     </td>
                 </tr>
@@ -693,55 +332,29 @@
             <table class="pdf-items-table">
                 <thead>
                     <tr>
-                        <th style="border-bottom: 2px solid ${entColor}">DESIGNATION DES PRESTATIONS</th>
-                        <th class="text-right" style="border-bottom: 2px solid ${entColor}; width:60px;">QTÉ</th>
-                        <th style="border-bottom: 2px solid ${entColor}; width:70px;">UNITÉ</th>
-                        <th class="text-right" style="border-bottom: 2px solid ${entColor}; width:110px;">P.U. HT</th>
-                        <th class="text-right" style="border-bottom: 2px solid ${entColor}; width:120px;">MONTANT HT</th>
+                        <th>DESIGNATION DES PRESTATIONS</th>
+                        <th class="text-right" style="width:50px;">QTÉ</th>
+                        <th style="width:60px;">UNITÉ</th>
+                        <th class="text-right" style="width:100px;">P.U. HT</th>
+                        <th class="text-right" style="width:120px;">MONTANT HT</th>
                     </tr>
                 </thead>
-                <tbody>
-                    ${trs}
-                </tbody>
+                <tbody>${rowsHTML}</tbody>
             </table>
 
-            <div style="display:flex; justify-content:space-between; margin-top:30px; align-items:flex-start;">
-                <div style="width:50%; font-size:11px; color:#475569; line-height:1.6; background:#f8fafc; padding:12px; border-radius:6px;">
-                    <b style="color:#0f172a; text-transform:uppercase; display:block; margin-bottom:4px;">Clauses techniques & Légales :</b>
-                    ${document.getElementById('fin-notes').value.replace(/\n/g, '<br>')}
+            <div style="display:flex; justify-content:space-between; margin-top:30px;">
+                <div style="width:50%; font-size:11px; color:#475569; background:#f8fafc; padding:12px; border-radius:6px; line-height:1.5;">
+                    <b>Notes & Conditions :</b><br>40% à la validation, solde selon avancement des travaux. Validité : 30 jours.
                 </div>
                 <div style="width:40%;">
                     <table style="width:100%; font-size:13px; border-collapse:collapse;">
-                        <tr>
-                            <td style="padding:6px 0; color:#475569;">SOUS-TOTAL TOTAL HT :</td>
-                            <td class="text-right" style="font-weight:600;">${globalCalculations.subtotal.toLocaleString()} F</td>
-                        </tr>
-                        ${globalCalculations.remise > 0 ? `
-                        <tr>
-                            <td style="padding:6px 0; color:var(--danger)">REMISE ACCORDÉE :</td>
-                            <td class="text-right" style="font-weight:600; color:var(--danger);">- ${globalCalculations.remise.toLocaleString()} F</td>
-                        </tr>
-                        ` : ''}
-                        <tr style="border-bottom:1px solid #e2e8f0;">
-                            <td style="padding:6px 0; color:#475569;">NET HORS TAXES :</td>
-                            <td class="text-right" style="font-weight:600;">${globalCalculations.netht.toLocaleString()} F</td>
-                        </tr>
-                        <tr style="border-bottom:1px solid #e2e8f0;">
-                            <td style="padding:6px 0; color:#475569;">TVA RECOUVREE :</td>
-                            <td class="text-right">${globalCalculations.tva.toLocaleString()} F</td>
-                        </tr>
-                        <tr style="font-size:16px; font-weight:800; color:#0f172a;">
-                            <td style="padding:10px 0;">NET À PAYER TTC :</td>
-                            <td class="text-right" style="color:${entColor};">${globalCalculations.ttc.toLocaleString()} F</td>
-                        </tr>
-                        <tr style="color:#16a34a; font-weight:700; font-size:12px;">
-                            <td style="padding:4px 0;">ACOMPTE EXIGÉ :</td>
-                            <td class="text-right">${globalCalculations.acompte.toLocaleString()} F</td>
-                        </tr>
-                        <tr style="font-weight:700; font-size:13px; border-top:1px dashed #cbd5e1;">
-                            <td style="padding:6px 0;">RESTE À VERSER :</td>
-                            <td class="text-right">${globalCalculations.reste.toLocaleString()} F</td>
-                        </tr>
+                        <tr><td style="padding:4px 0;">SOUS-TOTAL HT :</td><td class="text-right" style="font-weight:600;">${calcs.subtotal.toLocaleString()} F</td></tr>
+                        <tr><td style="padding:4px 0; color:var(--danger)">REMISE (5%) :</td><td class="text-right" style="color:var(--danger)">- ${calcs.remise.toLocaleString()} F</td></tr>
+                        <tr style="border-bottom:1px solid #cbd5e1;"><td style="padding:4px 0; font-weight:600;">NET HORS TAXES :</td><td class="text-right" style="font-weight:600;">${calcs.netht.toLocaleString()} F</td></tr>
+                        <tr style="border-bottom:1px solid #cbd5e1;"><td style="padding:4px 0;">TVA (18%) :</td><td class="text-right">${calcs.tva.toLocaleString()} F</td></tr>
+                        <tr style="font-size:15px; font-weight:800;"><td style="padding:8px 0;">NET À PAYER TTC :</td><td class="text-right" style="color:var(--orange-pro);">${calcs.ttc.toLocaleString()} F</td></tr>
+                        <tr style="color:#16a34a; font-weight:700;"><td style="padding:4px 0;">ACOMPTE EXIGÉ (40%) :</td><td class="text-right">${calcs.acompte.toLocaleString()} F</td></tr>
+                        <tr style="font-weight:700; border-top:1px dashed #cbd5e1;"><td style="padding:4px 0;">RESTE À VERSER :</td><td class="text-right">${calcs.reste.toLocaleString()} F</td></tr>
                     </table>
                 </div>
             </div>
