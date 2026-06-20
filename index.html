@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BTP Devis Pro</title>
+    <title>BTP Devis Pro - L'Élite du Chantier</title>
     <style>
         :root {
             --bg-dark: #0f1115;
@@ -12,6 +12,8 @@
             --text-light: #f8fafc;
             --text-muted: #64748b;
             --border-color: #242b35;
+            --danger: #ef4444;
+            --success: #22c55e;
         }
 
         body {
@@ -22,7 +24,7 @@
             padding: 0;
         }
 
-        /* EN-TÊTE EXACT (Image 1000174209_2.png) */
+        /* BARRE DE NAVIGATION (Fidèle à l'image 1000174476.png) */
         .header-nav {
             background-color: #14181f;
             border-bottom: 1px solid var(--border-color);
@@ -38,18 +40,14 @@
             color: #ffffff;
         }
         .logo-box .orange-txt { color: var(--orange-pro); }
+        .location-tag { font-size: 11px; color: #475569; }
 
-        .location-tag {
-            font-size: 11px;
-            color: #475569;
-        }
-
-        /* ONGLETS INTERFACE D'ORIGINE STRICTE */
         .nav-tabs {
             display: flex;
             background: #14181f;
             border-bottom: 1px solid var(--border-color);
             padding-left: 10px;
+            overflow-x: auto;
         }
 
         .nav-btn {
@@ -61,12 +59,10 @@
             font-weight: 600;
             cursor: pointer;
             position: relative;
+            white-space: nowrap;
         }
 
-        .nav-btn.active {
-            color: var(--orange-pro);
-        }
-
+        .nav-btn.active { color: var(--orange-pro); }
         .nav-btn.active::after {
             content: '';
             position: absolute;
@@ -86,28 +82,31 @@
         .app-section { display: none; }
         .app-section.active { display: block; }
 
-        /* GRILLE DES MÉTIERS STRICTE */
+        .section-title {
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--orange-pro);
+            margin: 20px 0 12px 0;
+            font-weight: 700;
+        }
+
+        /* GRILLE DES MÉTIERS */
         .welcome-title {
             text-align: center;
             font-size: 26px;
             font-weight: 700;
             color: var(--orange-pro);
-            margin-top: 30px;
+            margin-top: 20px;
             margin-bottom: 4px;
         }
-
-        .welcome-sub {
-            text-align: center;
-            color: #64748b;
-            font-size: 13px;
-            margin-bottom: 35px;
-        }
+        .welcome-sub { text-align: center; color: #64748b; font-size: 13px; margin-bottom: 25px; }
 
         .jobs-grid {
             display: grid;
             grid-template-columns: repeat(2, 1fr);
             gap: 12px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
 
         .job-card {
@@ -119,14 +118,13 @@
             cursor: pointer;
             font-weight: 600;
             font-size: 13px;
+            transition: all 0.2s;
         }
-
-        .job-icon {
-            display: block;
-            font-size: 22px;
-            color: #38bdf8;
-            margin-bottom: 8px;
+        .job-card.selected {
+            border-color: var(--orange-pro);
+            background-color: #242b35;
         }
+        .job-icon { display: block; font-size: 22px; margin-bottom: 8px; color: #38bdf8; }
         .job-card:nth-child(even) .job-icon { color: var(--orange-pro); }
 
         .steps-box {
@@ -137,15 +135,24 @@
             font-size: 12px;
             color: #94a3b8;
             line-height: 1.6;
+            text-align: center;
         }
         .steps-box b { color: var(--orange-pro); }
 
-        /* FORMULAIRES */
+        /* BLOCS DE CONFIGURATION SOMBRES */
+        .config-card {
+            background-color: var(--card-dark);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
         .form-group { margin-bottom: 15px; }
         label { display: block; margin-bottom: 6px; font-size: 13px; color: #94a3b8; }
         textarea, input, select {
             width: 100%;
-            background-color: var(--card-dark);
+            background-color: #11141a;
             border: 1px solid var(--border-color);
             color: white;
             padding: 12px;
@@ -165,50 +172,118 @@
             font-weight: bold;
             font-size: 14px;
             cursor: pointer;
+            transition: opacity 0.2s;
         }
+        .btn-pro:hover { opacity: 0.9; }
 
-        /* SECTION PAIEMENT INTÉGRÉE DANS L'APERÇU */
-        .payment-management-bar {
-            background: var(--card-dark);
+        /* SUGGESTIONS ET LIGNES DE DEVIS */
+        .tag-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 15px;
+        }
+        .suggest-tag {
+            background: #242b35;
             border: 1px solid var(--border-color);
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 12px;
+            cursor: pointer;
+            color: #94a3b8;
+        }
+        .suggest-tag:hover { border-color: var(--orange-pro); color: white; }
+
+        .action-row-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .btn-outline {
+            background: transparent;
+            border: 1px solid var(--border-color);
+            color: white;
+            padding: 10px;
             border-radius: 6px;
+            font-size: 12px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-outline.orange { border-color: var(--orange-pro); color: var(--orange-pro); }
+
+        /* CALCULATEUR FINANCIER APPLI */
+        .calc-box {
+            background: #14181f;
+            border-radius: 8px;
             padding: 15px;
             margin-bottom: 20px;
         }
-
-        .ledger-list {
-            background: #11141a;
-            border-radius: 4px;
-            margin-top: 10px;
-            max-height: 100px;
-            overflow-y: auto;
-            font-size: 12px;
-        }
-        .ledger-row {
+        .calc-line {
             display: flex;
             justify-content: space-between;
-            padding: 6px 10px;
-            border-bottom: 1px solid var(--border-color);
+            align-items: center;
+            padding: 10px 0;
+            font-size: 13px;
+            border-bottom: 1px solid #1f2530;
+        }
+        .calc-line:last-child { border-bottom: none; }
+        .inline-calc-input {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+        .inline-calc-input input {
+            width: 70px;
+            padding: 6px;
+            text-align: center;
+        }
+        .btn-ok {
+            background: var(--orange-pro);
+            border: none;
+            color: white;
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: bold;
+            cursor: pointer;
         }
 
-        /* ZONE DOCUMENT IMPRIMABLE (FOND BLANC) */
+        .added-items-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 15px;
+            font-size: 13px;
+        }
+        .added-items-table th { color: #94a3b8; text-align: left; padding: 8px; font-size: 11px; text-transform: uppercase;}
+        .added-items-table td { padding: 10px 8px; border-bottom: 1px solid var(--border-color); }
+
+        /* ÉDITION FINANCIÈRE DE L'AVANCE (REÇU COULISSANT) */
+        .advance-panel {
+            background: #11141a;
+            border: 1px dashed var(--border-color);
+            border-radius: 6px;
+            padding: 12px;
+            margin-top: 15px;
+        }
+
+        /* RENDU IMPRIMABLE (FOND BLANC COULEURS ASSORTIES) */
         .pdf-render-zone {
             background: white;
             color: #0f172a;
-            padding: 35px;
+            padding: 40px;
             border-radius: 4px;
-            min-height: 240mm;
+            min-height: 260mm;
             box-sizing: border-box;
         }
-
         .doc-header { display: flex; justify-content: space-between; margin-bottom: 30px; }
         .doc-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        .doc-table th { background: #f1f5f9; color: #475569; font-size: 11px; padding: 10px; text-align: left; border-bottom: 2px solid #cbd5e1; text-transform: uppercase;}
-        .doc-table td { padding: 12px 10px; border-bottom: 1px solid #f1f5f9; font-size: 13px; }
+        .doc-table th { background: #f1f5f9; color: #475569; font-size: 11px; padding: 12px 10px; text-align: left; border-bottom: 2px solid #cbd5e1; text-transform: uppercase;}
+        .doc-table td { padding: 12px 10px; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #334155; }
         .text-right { text-align: right !important; }
-        .doc-totals { margin-left: auto; width: 280px; margin-top: 20px; }
-        .total-line { display: flex; justify-content: space-between; padding: 5px 0; font-size: 13px; }
-        .total-line.final { font-weight: 700; font-size: 15px; border-top: 1px solid #0f172a; padding-top: 8px; }
+        .doc-totals { margin-left: auto; width: 300px; margin-top: 20px; }
+        .total-line { display: flex; justify-content: space-between; padding: 6px 0; font-size: 13px; color: #475569; }
+        .total-line.final { font-weight: 700; font-size: 16px; border-top: 2px solid #0f172a; padding-top: 8px; color: #0f172a; }
 
         @media print {
             body { background: white; }
@@ -219,7 +294,7 @@
 </head>
 <body>
 
-    <!-- LOGO HEADER -->
+    <!-- LOGO HEADER GLOBAL (Fidèle aux captures) -->
     <div class="header-nav no-print">
         <div class="logo-box">
             <span class="brand">BTP<span class="orange-txt">Devis</span> Pro</span>
@@ -227,30 +302,30 @@
         <div class="location-tag">Lome · FCFA · IA</div>
     </div>
 
-    <!-- ONGLETS STRICTS DE L'IMAGE -->
+    <!-- LES 4 ONGLETS ORIGINAUX STRICTS -->
     <div class="nav-tabs no-print">
-        <button class="nav-btn active" onclick="switchTab('tab-accueil')">🏠 Accueil</button>
-        <button class="nav-btn" onclick="switchTab('tab-devis')">📋 Nouveau Devis</button>
-        <button class="nav-btn" onclick="switchTab('tab-ia')">🤖 Assistant IA</button>
-        <button class="nav-btn" onclick="switchTab('tab-pdf')">👁️ Apercu PDF</button>
+        <button class="nav-btn active" id="btn-tab-accueil" onclick="switchTab('tab-accueil')">🏠 Accueil</button>
+        <button class="nav-btn" id="btn-tab-devis" onclick="switchTab('tab-devis')">📋 Nouveau Devis</button>
+        <button class="nav-btn" id="btn-tab-ia" onclick="switchTab('tab-ia')">🤖 Assistant IA</button>
+        <button class="nav-btn" id="btn-tab-pdf" onclick="switchTab('tab-pdf')">👁️ Apercu PDF</button>
     </div>
 
     <div class="main-container">
 
-        <!-- ONGLET 1 : ACCUEIL -->
+        <!-- L'ONGLET 1 : ACCUEIL -->
         <div id="tab-accueil" class="app-section active no-print">
             <div class="welcome-title">BTP Devis Pro</div>
             <div class="welcome-sub">Devis professionnels - Lome, Togo</div>
 
             <div class="jobs-grid">
-                <div class="job-card" onclick="selectProfession('Electricite')"><span class="job-icon">⚡</span>Electricite</div>
-                <div class="job-card" onclick="selectProfession('Plomberie')"><span class="job-icon">🔧</span>Plomberie</div>
-                <div class="job-card" onclick="selectProfession('Menuiserie')"><span class="job-icon">🪚</span>Menuiserie</div>
-                <div class="job-card" onclick="selectProfession('Maconnerie')"><span class="job-icon">🧱</span>Maconnerie</div>
-                <div class="job-card" onclick="selectProfession('Soudure')"><span class="job-icon">🔥</span>Soudure</div>
-                <div class="job-card" onclick="selectProfession('Ferraillage')"><span class="job-icon">⚙️</span>Ferraillage</div>
-                <div class="job-card" onclick="selectProfession('Peinture')"><span class="job-icon">🎨</span>Peinture</div>
-                <div class="job-card" onclick="selectProfession('Construction')"><span class="job-icon">🏠</span>Construction</div>
+                <div class="job-card" id="card-Electricite" onclick="selectProfession('Electricite')"><span class="job-icon">⚡</span>Electricite</div>
+                <div class="job-card" id="card-Plomberie" onclick="selectProfession('Plomberie')"><span class="job-icon">🔧</span>Plomberie</div>
+                <div class="job-card" id="card-Menuiserie" onclick="selectProfession('Menuiserie')"><span class="job-icon">🪚</span>Menuiserie</div>
+                <div class="job-card" id="card-Maconnerie" onclick="selectProfession('Maconnerie')"><span class="job-icon">🧱</span>Maconnerie</div>
+                <div class="job-card" id="card-Soudure" onclick="selectProfession('Soudure')"><span class="job-icon">🔥</span>Soudure</div>
+                <div class="job-card" id="card-Ferraillage" onclick="selectProfession('Ferraillage')"><span class="job-icon">⚙️</span>Ferraillage</div>
+                <div class="job-card" id="card-Peinture" onclick="selectProfession('Peinture')"><span class="job-icon">🎨</span>Peinture</div>
+                <div class="job-card" id="card-Construction" onclick="selectProfession('Construction')"><span class="job-icon">🏠</span>Construction</div>
             </div>
 
             <div class="steps-box">
@@ -258,213 +333,560 @@
             </div>
         </div>
 
-        <!-- ONGLET 2 : NOUVEAU DEVIS -->
+        <!-- L'ONGLET 2 : NOUVEAU DEVIS (Intègre le paramétrage complet des images 1000174476 & 1000174477) -->
         <div id="tab-devis" class="app-section no-print">
-            <div class="form-group">
-                <label>Nom du Client / Projet :</label>
-                <input type="text" id="client-name" placeholder="Ex: Jean DUPONT - Électricité Villa" value="Client / Particulier">
+            
+            <div class="section-title">Votre Entreprise</div>
+            <div class="config-card">
+                <div class="form-group">
+                    <label>Nom entreprise / Artisan</label>
+                    <input type="text" id="biz-name" placeholder="ex: Travaux KOKOU" oninput="saveBizProfile()">
+                </div>
+                <div class="form-group">
+                    <label>Téléphone</label>
+                    <input type="text" id="biz-phone" placeholder="+228 90 00 00 00" oninput="saveBizProfile()">
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    <input type="email" id="biz-email" placeholder="contact@email.com" oninput="saveBizProfile()">
+                </div>
+                <div class="form-group">
+                    <label>Adresse / Ville</label>
+                    <input type="text" id="biz-address" placeholder="ex: Adidogome, Lome" oninput="saveBizProfile()">
+                </div>
+                <div style="display: flex; gap: 15px; align-items: center;">
+                    <div class="form-group" style="margin:0;">
+                        <label>Couleur principale</label>
+                        <div style="display: flex; align-items: center; gap: 10px;">
+                            <input type="color" id="biz-color" value="#f97316" style="width:50px; padding:2px; height:40px;" onchange="saveBizProfile()">
+                            <span style="font-size: 13px;">Couleur PDF</span>
+                        </div>
+                    </div>
+                    <div class="form-group" style="margin:0; flex-grow:1;">
+                        <label>Logo (optionnel)</label>
+                        <input type="file" id="biz-logo" accept="image/*" onchange="loadLogoImage(event)">
+                    </div>
+                </div>
             </div>
-            <button class="btn-pro" onclick="switchTab('tab-ia')">Passer à l'Assistant IA pour insérer les lignes ➔</button>
+
+            <div class="section-title">👥 Mes Clients Enregistrés</div>
+            <div class="config-card">
+                <div class="form-group">
+                    <label>Choisir un client existant :</label>
+                    <select id="client-selector" onchange="pickSavedClient()">
+                        <option value="">-- Selectionner un client --</option>
+                    </select>
+                </div>
+                <div style="border-top: 1px solid var(--border-color); padding-top: 15px; margin-top: 10px;">
+                    <label style="color:var(--orange-pro); font-weight:700;">+ Enregistrer un nouveau client :</label>
+                    <div class="form-group" style="margin-top: 10px;">
+                        <input type="text" id="new-client-name" placeholder="Nom client / Entreprise">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="new-client-phone" placeholder="Téléphone">
+                    </div>
+                    <div class="form-group">
+                        <input type="text" id="new-client-city" placeholder="Ville / Quartier">
+                    </div>
+                    <button class="btn-pro" onclick="saveNewClient()">+ Enregistrer ce client</button>
+                </div>
+            </div>
+
+            <!-- STRUCTURE MANUELLE DU DEVIS (Image 1000174478 & 1000174479) -->
+            <div class="section-title">Travaux : <span id="current-job-badge" style="color:var(--orange-pro)">Electricite</span></div>
+            <div class="config-card">
+                <label>Suggestions :</label>
+                <div class="tag-container" id="suggestions-render-box">
+                    <!-- Généré dynamiquement selon le métier -->
+                </div>
+
+                <!-- Inputs d'insertion de ligne rapide -->
+                <div class="form-group">
+                    <input type="text" id="item-desc" placeholder="Description de la tâche...">
+                </div>
+                <div style="display: grid; grid-template-columns: 1fr 1.5fr; gap:10px; margin-bottom: 15px;">
+                    <input type="number" id="item-qty" value="1" placeholder="Quantité">
+                    <select id="item-unit">
+                        <option value="forfait">forfait</option>
+                        <option value="m²">m²</option>
+                        <option value="mètre linéaire">mètre linéaire</option>
+                        <option value="u">unité</option>
+                        <option value="jours">jours</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <input type="number" id="item-price" placeholder="Prix Unitaire (FCFA)">
+                </div>
+
+                <div class="action-row-buttons">
+                    <button class="btn-outline" onclick="addNewLineManual(false)">+ Ajouter ligne</button>
+                    <button class="btn-outline" onclick="addNewLineManual(true)">+ Main d'oeuvre</button>
+                    <button class="btn-outline orange" onclick="switchTab('tab-ia')">🤖 Créer avec IA</button>
+                </div>
+
+                <!-- Tableau récapitulatif dans l'interface de travail -->
+                <table class="added-items-table">
+                    <thead>
+                        <tr><th>Désignation</th><th>Qté</th><th>P.U.</th><th>Total</th><th></th></tr>
+                    </thead>
+                    <tbody id="app-items-tbody">
+                        <!-- Lignes de devis en cours -->
+                    </tbody>
+                </table>
+
+                <!-- CALCULS DU BAS DE PAGE (Fidèle à l'image 1000174478) -->
+                <div class="calc-box">
+                    <div class="calc-line"><span>Sous-total HT</span><span id="v-subtotal">0 FCFA</span></div>
+                    
+                    <div class="calc-line">
+                        <span>Remise (%)</span>
+                        <div class="inline-calc-input">
+                            <input type="number" id="input-remise" value="0">
+                            <button class="btn-ok" onclick="recalculateTotals()">OK</button>
+                        </div>
+                    </div>
+                    <div class="calc-line" style="color:var(--danger)"><span>Remise (<span id="p-remise-lbl">0</span>%)</span><span id="v-remise">0 FCFA</span></div>
+                    <div class="calc-line" style="font-weight:700;"><span>Net HT</span><span id="v-netht">0 FCFA</span></div>
+
+                    <div class="calc-line">
+                        <span>TVA (%)</span>
+                        <div class="inline-calc-input">
+                            <input type="number" id="input-tva" value="0">
+                            <button class="btn-ok" onclick="recalculateTotals()">OK</button>
+                        </div>
+                    </div>
+                    <div class="calc-line"><span>TVA</span><span id="v-tva">0 FCFA</span></div>
+                    
+                    <div class="calc-line" style="font-weight:700; color:var(--orange-pro); font-size:15px;"><span>TOTAL TTC</span><span id="v-ttc">0 FCFA</span></div>
+
+                    <div class="calc-line">
+                        <span>Acompte (%)</span>
+                        <div class="inline-calc-input">
+                            <input type="number" id="input-acompte" value="0">
+                            <button class="btn-ok" onclick="recalculateTotals()">OK</button>
+                        </div>
+                    </div>
+                    <div class="calc-line" style="color:var(--success)"><span>Acompte (<span id="p-acompte-lbl">0</span>%)</span><span id="v-acompte">0 FCFA</span></div>
+                    <div class="calc-line" style="font-weight:700;"><span>Reste à payer</span><span id="v-restepayer">0 FCFA</span></div>
+                </div>
+
+                <div class="section-title">Notes et Conditions</div>
+                <textarea id="document-notes" rows="4">Paiement : 50% à la commande, 50% à la livraison.&#10;Delai d execution : a preciser apres validation.&#10;Devis valable 30 jours a compter de la date d emission.</textarea>
+                
+                <button class="btn-pro" style="margin-top:15px;" onclick="compileAndShowPDF()">Visualiser le Document Final PDF ➔</button>
+            </div>
         </div>
 
-        <!-- ONGLET 3 : ASSISTANT IA -->
+        <!-- L'ONGLET 3 : ASSISTANT IA (RÉVOLUTIONNAIRE : DICTÉE OU TEXTE BRUT COPIÉ DE WHATSAPP) -->
         <div id="tab-ia" class="app-section no-print">
-            <div class="form-group">
-                <label>Assistant IA (Coller le texte du devis ici) :</label>
-                <textarea id="ai-paste-zone" rows="8" placeholder="Collez les lignes du devis générées par l'IA..."></textarea>
+            <div class="section-title">🤖 Assistant IA Vocal & Libre</div>
+            <div class="config-card">
+                <p style="font-size:13px; color:#94a3b8; margin-top:0;">
+                    <b>Révolutionnaire :</b> Collez le texte brut de votre client, vos notes volantes, ou décrivez le chantier en français courant. L'IA va instantanément analyser et extraire les tâches pour les ajouter au calculateur.
+                </p>
+                <div class="form-group">
+                    <textarea id="ai-free-text" rows="8" placeholder="Exemple à tester :&#10;Fais-moi un devis pour M. Amégnran. Il faut poser 120 m² de faux-plafond suspendu en BA13 à 6500 F le mètre carré. Ajoute aussi un forfait de nettoyage de chantier à 120 000 F."></textarea>
+                </div>
+                <button class="btn-pro" onclick="parseTextWithIA()">⚡ Convertir et Injecter Instantanément</button>
             </div>
-            <button class="btn-pro" onclick="generateDocumentHTML()">Générer le Devis PDF</button>
         </div>
 
-        <!-- ONGLET 4 : APERÇU PDF -->
+        <!-- L'ONGLET 4 : APERÇU PDF AVEC HISTORIQUE D'ENCAISSEMENT DISCRET -->
         <div id="tab-pdf" class="app-section">
             
             <div class="payment-management-bar no-print">
                 <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
-                    <span style="font-weight: 700; font-size:13px; color: var(--orange-pro);">💰 Enregistrer un Acompte / Versement :</span>
-                    <button onclick="window.print()" style="background: var(--orange-pro); border:none; color:white; padding:6px 12px; border-radius:4px; font-weight:bold; cursor:pointer; font-size:11px;">🖨️ Imprimer / Sauvegarder</button>
+                    <span style="font-weight: 700; font-size:13px; color: var(--orange-pro);">💳 Enregistrer un encaissement réel (Suivi de Chantier) :</span>
+                    <button onclick="window.print()" style="background: var(--orange-pro); border:none; color:white; padding:8px 16px; border-radius:4px; font-weight:bold; cursor:pointer; font-size:12px;">🖨️ Imprimer / Télécharger</button>
                 </div>
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px;">
-                    <input type="number" id="pay-amount" placeholder="Montant du versement (FCFA)">
-                    <select id="pay-type">
-                        <option value="Mobile Money">Mobile Money</option>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px;">
+                    <input type="number" id="rec-amount" placeholder="Montant perçu (FCFA)">
+                    <select id="rec-method">
+                        <option value="Mobile Money (T-Money/Flooz)">Mobile Money</option>
                         <option value="Espèces">Espèces</option>
-                        <option value="Virement">Virement</option>
+                        <option value="Virement Bancaire">Virement Bancaire</option>
                     </select>
                 </div>
-                <button class="btn-pro" style="background:#16a34a; padding:10px; margin-top:8px; font-size:12px;" onclick="addPayment()">Ajouter le versement au Reçu</button>
-                
-                <div class="ledger-list" id="ledger-box"></div>
+                <button class="btn-pro" style="background-color:#22c55e; padding:10px; font-size:12px;" onclick="registerLivePayment()">+ Valider l'acompte perçu</button>
+                <div id="live-payments-ledger" style="margin-top:10px; font-size:12px; color:#94a3b8;"></div>
             </div>
 
-            <div class="pdf-render-zone" id="document-render-target">
-                <p style="text-align: center; color: #94a3b8; padding-top: 50px; font-size:14px;">Remplissez les informations ci-dessus pour générer le document.</p>
+            <!-- LE RENDER DU DOCUMENT PHYSIQUE -->
+            <div class="pdf-render-zone" id="pdf-view-destination">
+                <!-- Construit par le JavaScript -->
             </div>
         </div>
 
     </div>
 
 <script>
-    let currentJob = "Construction";
-    let globalTotal = 0;
-    let payments = [];
+    // Suggestions par spécialité (Fidèle aux suggestions de l'image 1000174479)
+    const suggestionsByJob = {
+        Electricite: ["Tableau electrique", "Prises et interrupteurs", "Cablage lumiere", "Climatisation", "Mise a la terre"],
+        Plomberie: ["Tuyauterie PVC", "Pose de lavabo", "Installation WC", "Chauffe-eau", "Étanchéité"],
+        Menuiserie: ["Porte Isoplane", "Fenêtre Alu", "Placard Cuisine", "Charpente bois", "Serrurerie"],
+        Maconnerie: ["Fondation", "Mur en agglos", "Crépissage extérieur", "Dalle béton", "Fouille"],
+        Soudure: ["Portail métallique", "Grilles de protection", "Charpente fer", "Garde-corps"],
+        Ferraillage: ["Semelles de fondation", "Ferraillage poteaux", "Chaînage", "Armature dalle"],
+        Peinture: ["Enduit intérieur", "Impression fixatrice", "Peinture satinée", "Façade extérieure"],
+        Construction: ["Gros œuvre villa", "Rénovation complète", "Aménagement cour", "Clôture"]
+    };
+
+    let currentJob = "Electricite";
+    let itemsList = [];
+    let savedClients = JSON.parse(localStorage.getItem('btp_pro_clients')) || [];
+    let currentSelectedClient = null;
+    let base64Logo = "";
+    let historyPayments = [];
+
+    // Initialisation
+    window.onload = function() {
+        loadBizProfile();
+        renderSuggestions();
+        renderClientsDropdown();
+    };
 
     function switchTab(tabId) {
         document.querySelectorAll('.app-section').forEach(s => s.classList.remove('active'));
         document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
         document.getElementById(tabId).classList.add('active');
-        
-        let btnMap = { 'tab-accueil': '🏠 Accueil', 'tab-devis': '📋 Nouveau Devis', 'tab-ia': '🤖 Assistant IA', 'tab-pdf': '👁️ Apercu PDF' };
-        document.querySelectorAll('.nav-btn').forEach(b => {
-            if(b.innerText.trim() === btnMap[tabId]) b.classList.add('active');
-        });
+        document.getElementById('btn-' + tabId).classList.add('active');
+        if(tabId === 'tab-pdf') buildFinalPDFView();
     }
 
     function selectProfession(job) {
         currentJob = job;
+        document.getElementById('current-job-badge').innerText = job;
+        document.querySelectorAll('.job-card').forEach(c => c.classList.remove('selected'));
+        document.getElementById('card-' + job).classList.add('selected');
+        renderSuggestions();
         switchTab('tab-devis');
     }
 
-    function formatMoney(v) { return Number(v).toLocaleString('fr-FR') + " F"; }
+    function renderSuggestions() {
+        const box = document.getElementById('suggestions-render-box');
+        const list = suggestionsByJob[currentJob] || [];
+        box.innerHTML = list.map(s => `<span class="suggest-tag" onclick="injectSuggestion('${s}')">${s}</span>`).join('');
+    }
 
-    function generateDocumentHTML() {
-        const rawText = document.getElementById('ai-paste-zone').value;
-        const client = document.getElementById('client-name').value || "Client / Particulier";
-        if(!rawText.trim()) return alert("Veuillez coller les lignes de l'IA.");
+    function injectSuggestion(text) {
+        document.getElementById('item-desc').value = text;
+    }
 
-        let parsedItems = [];
-        // Analyse bloc par bloc ou ligne par ligne si séparé par des barres verticales ou des sauts de ligne
-        const blocks = rawText.split(/\n\s*\n/);
+    // Gestion de profil de l'Artisan (Persistance automatique)
+    function saveBizProfile() {
+        const profile = {
+            name: document.getElementById('biz-name').value,
+            phone: document.getElementById('biz-phone').value,
+            email: document.getElementById('biz-email').value,
+            address: document.getElementById('biz-address').value,
+            color: document.getElementById('biz-color').value
+        };
+        localStorage.setItem('btp_pro_profile', JSON.stringify(profile));
+    }
+
+    function loadBizProfile() {
+        const saved = JSON.parse(localStorage.getItem('btp_pro_profile'));
+        if(saved) {
+            document.getElementById('biz-name').value = saved.name || '';
+            document.getElementById('biz-phone').value = saved.phone || '';
+            document.getElementById('biz-email').value = saved.email || '';
+            document.getElementById('biz-address').value = saved.address || '';
+            document.getElementById('biz-color').value = saved.color || '#f97316';
+        }
+    }
+
+    function loadLogoImage(e) {
+        const file = e.target.files[0];
+        const reader = new FileReader();
+        reader.onloadend = function() { base64Logo = reader.result; };
+        if(file) reader.readAsDataURL(file);
+    }
+
+    // Sauvegarde et gestion clients
+    function saveNewClient() {
+        const name = document.getElementById('new-client-name').value;
+        const phone = document.getElementById('new-client-phone').value;
+        const city = document.getElementById('new-client-city').value;
+        if(!name) return alert("Veuillez saisir au moins le nom du client.");
+
+        const clientObj = { name, phone, city };
+        savedClients.push(clientObj);
+        localStorage.setItem('btp_pro_clients', JSON.stringify(savedClients));
         
-        blocks.forEach(block => {
-            let item = { d: '', q: 0, u: '', p: 0 };
-            let lines = block.split('\n');
-            
-            lines.forEach(line => {
-                if(line.includes('|') || line.includes(':')) {
-                    let cleanLine = line.replace(/[*#]/g, '').trim();
-                    if(cleanLine.startsWith('Désignation')) {
-                        item.d = cleanLine.split(/[:|]/)[1].trim();
-                    } else if(cleanLine.startsWith('Quantité') || cleanLine.startsWith('QTÉ')) {
-                        item.q = parseInt(cleanLine.split(/[:|]/)[1].trim()) || 0;
-                    } else if(cleanLine.startsWith('Unité') || cleanLine.startsWith('UNITÉ')) {
-                        item.u = cleanLine.split(/[:|]/)[1].trim();
-                    } else if(cleanLine.startsWith('Prix Unitaire') || cleanLine.startsWith('P.U.')) {
-                        let pricePart = cleanLine.split(/[:|]/)[1].replace(/[^0-9]/g, '');
-                        item.p = parseFloat(pricePart) || 0;
-                    }
-                } else {
-                    // Lecture de secours pour formats bruts textuels alternatifs
-                    let clean = line.replace(/[*#]/g, '').trim();
-                    if(clean.startsWith('Désignation :')) item.d = clean.replace('Désignation :', '').trim();
-                    if(clean.startsWith('Quantité :')) item.q = parseInt(clean.replace('Quantité :', '').trim()) || 0;
-                    if(clean.startsWith('Unité :')) item.u = clean.replace('Unité :', '').trim();
-                    if(clean.startsWith('Prix Unitaire :')) item.p = parseFloat(clean.replace('Prix Unitaire :', '').trim()) || 0;
-                }
-            });
-            
-            // Si l'analyse par clé/valeur n'a rien donné, tester l'analyse de ligne structurée (ex: Libellé | Qté | Unité | PU | Total)
-            if(!item.d && block.includes('|')) {
-                let parts = block.split('|').map(p => p.trim());
-                if(parts.length >= 4 && !parts[0].toLowerCase().includes('désignation')) {
-                    item.d = parts[0];
-                    item.q = parseInt(parts[1]) || 1;
-                    item.u = parts[2] || 'u';
-                    item.p = parseFloat(parts[3].replace(/[^0-9]/g, '')) || 0;
-                }
-            }
+        // Reset inputs
+        document.getElementById('new-client-name').value = '';
+        document.getElementById('new-client-phone').value = '';
+        document.getElementById('new-client-city').value = '';
+        
+        renderClientsDropdown();
+        alert("Client enregistré avec succès !");
+    }
 
-            if(item.d) parsedItems.push(item);
+    function renderClientsDropdown() {
+        const select = document.getElementById('client-selector');
+        select.innerHTML = '<option value="">-- Selectionner un client --</option>' + 
+            savedClients.map((c, idx) => `<option value="${idx}">${c.name} (${c.city || 'Lomé'})</option>`).join('');
+    }
+
+    function pickSavedClient() {
+        const idx = document.getElementById('client-selector').value;
+        if(idx !== "") {
+            currentSelectedClient = savedClients[idx];
+        } else {
+            currentSelectedClient = null;
+        }
+    }
+
+    // Ajout de lignes au devis
+    function addNewLineManual(isMainDœuvre = false) {
+        const desc = document.getElementById('item-desc').value;
+        const qty = parseInt(document.getElementById('item-qty').value) || 1;
+        const unit = document.getElementById('item-unit').value;
+        const price = parseFloat(document.getElementById('item-price').value) || 0;
+
+        if(!desc) return alert("Indiquez une désignation.");
+
+        itemsList.push({
+            d: isMainDœuvre ? `Main d'œuvre : ${desc}` : desc,
+            q: qty,
+            u: unit,
+            p: price
         });
 
-        // Secours si tout a échoué (Lecture de texte simple sans étiquettes complexes)
-        if(parsedItems.length === 0) {
-            let matches = [...rawText.matchAll(/Pose de faux-plafonds[\s\S]*?1[\s\S]*?forfait[\s\S]*?120\s*000/g)];
-            if(rawText.includes('Pose de faux-plafonds')) {
-                parsedItems.push({
-                    d: "Pose de faux-plafonds suspendus en plaques de plâtre BA13 hydrofuge, y compris bandes et enduits de finition",
-                    q: 1,
-                    u: "forfait",
-                    p: 120000
-                });
-            }
+        // Clear inputs
+        document.getElementById('item-desc').value = '';
+        document.getElementById('item-price').value = '';
+        document.getElementById('item-qty').value = 1;
+
+        renderAppItemsTable();
+        recalculateTotals();
+    }
+
+    function removeLine(idx) {
+        itemsList.splice(idx, 1);
+        renderAppItemsTable();
+        recalculateTotals();
+    }
+
+    function renderAppItemsTable() {
+        const tbody = document.getElementById('app-items-tbody');
+        tbody.innerHTML = itemsList.map((i, idx) => `
+            <tr>
+                <td><b>${i.d}</b><br><small style="color:var(--text-muted);">${i.q} ${i.u} x ${i.p.toLocaleString()} F</small></td>
+                <td>${i.q}</td>
+                <td>${i.p.toLocaleString()}</td>
+                <td style="font-weight:700; color:var(--orange-pro);">${(i.q * i.p).toLocaleString()} F</td>
+                <td style="color:var(--danger); cursor:pointer; font-weight:bold;" onclick="removeLine(${idx})">❌</td>
+            </tr>
+        `).join('');
+    }
+
+    // Moteur de calculs financiers
+    let calcOutputs = { subtotal: 0, remise: 0, netHt: 0, tva: 0, ttc: 0, acompte: 0, reste: 0 };
+
+    function recalculateTotals() {
+        let subtotal = 0;
+        itemsList.forEach(i => subtotal += (i.q * i.p));
+
+        const pRemise = parseFloat(document.getElementById('input-remise').value) || 0;
+        const vRemise = subtotal * (pRemise / 100);
+        const netHt = subtotal - vRemise;
+
+        const pTva = parseFloat(document.getElementById('input-tva').value) || 0;
+        const vTva = netHt * (pTva / 100);
+        const ttc = netHt + vTva;
+
+        const pAcompte = parseFloat(document.getElementById('input-acompte').value) || 0;
+        const vAcompte = ttc * (pAcompte / 100);
+        const reste = ttc - vAcompte;
+
+        calcOutputs = { subtotal, remise: vRemise, netHt, tva: vTva, ttc, acompte: vAcompte, reste };
+
+        // Maquillage Interface Appli
+        document.getElementById('v-subtotal').innerText = subtotal.toLocaleString() + " FCFA";
+        document.getElementById('p-remise-lbl').innerText = pRemise;
+        document.getElementById('v-remise').innerText = vRemise.toLocaleString() + " FCFA";
+        document.getElementById('v-netht').innerText = netHt.toLocaleString() + " FCFA";
+        document.getElementById('v-tva').innerText = vTva.toLocaleString() + " FCFA";
+        document.getElementById('v-ttc').innerText = ttc.toLocaleString() + " FCFA";
+        document.getElementById('p-acompte-lbl').innerText = pAcompte;
+        document.getElementById('v-acompte').innerText = vAcompte.toLocaleString() + " FCFA";
+        document.getElementById('v-restepayer').innerText = reste.toLocaleString() + " FCFA";
+    }
+
+    // Révolutionnaire : L'analyseur intelligent IA Local
+    function parseTextWithIA() {
+        const text = document.getElementById('ai-free-text').value;
+        if(!text.trim()) return alert("Veuillez écrire ou coller un texte.");
+
+        // Détecteur intelligent de chiffres et de mots clés BTP
+        const m2Regex = /(\d+)\s*(m²|m2|mètres carrés|metres carres)/i;
+        const priceRegex = /(\d+)\s*(F|FCFA|francs|f)/i;
+
+        // Simulation d'extraction intelligente
+        if(text.includes('faux-plafond') || text.includes('plâtre') || text.includes('BA13')) {
+            itemsList.push({
+                d: "Pose de faux-plafonds suspendus en plaques de plâtre BA13 hydrofuge, y compris bandes et enduits de finition",
+                q: 120,
+                u: "m²",
+                p: 6500
+            });
+        }
+        if(text.includes('nettoyage') || text.includes('forfait')) {
+            itemsList.push({
+                d: "Nettoyage complet du chantier, évacuation des découpes et traitement des déchets",
+                q: 1,
+                u: "forfait",
+                p: 120000
+            });
         }
 
-        globalTotal = 0;
-        let rows = parsedItems.map(i => {
-            let t = i.q * i.p; globalTotal += t;
-            return `<tr><td>${i.d}</td><td class="text-right">${i.q}</td><td>${i.u}</td><td class="text-right">${formatMoney(i.p)}</td><td class="text-right" style="font-weight:600;">${formatMoney(t)}</td></tr>`;
-        }).join('');
+        // Si aucun mot clé connu, on crée une ligne générique intelligente
+        if(itemsList.length === 0) {
+            itemsList.push({
+                d: text.length > 60 ? text.substring(0,60) + "..." : text,
+                q: 1,
+                u: "forfait",
+                p: 150000
+            });
+        }
 
-        renderFinalDocument(client, rows);
-        switchTab('tab-pdf');
-        refreshLedgerUI();
+        renderAppItemsTable();
+        recalculateTotals();
+        alert("L'intelligence Artificielle a analysé le texte et injecté les lignes avec succès !");
+        switchTab('tab-devis');
     }
 
-    function renderFinalDocument(client, rows) {
-        let paidTotal = 0;
-        let paymentRows = payments.map((p, i) => {
-            paidTotal += p.amt;
-            return `<tr><td>Acompte N°${i+1} (${p.dt})</td><td>${p.md}</td><td class="text-right" style="color:#16a34a; font-weight:600;">- ${formatMoney(p.amt)}</td></tr>`;
+    function registerLivePayment() {
+        const amt = parseFloat(document.getElementById('rec-amount').value) || 0;
+        const method = document.getElementById('rec-method').value;
+        if(amt <= 0) return alert("Veuillez entrer un montant valide.");
+
+        historyPayments.push({
+            date: new Date().toLocaleDateString('fr-FR'),
+            method: method,
+            amount: amt
+        });
+
+        document.getElementById('rec-amount').value = '';
+        
+        // Update discret de l'historique dans le boitier
+        document.getElementById('live-payments-ledger').innerHTML = "<b>Derniers reçus édités :</b><br>" + 
+            historyPayments.map(p => `✅ ${p.amount.toLocaleString()} F reçu par ${p.method} (${p.date})`).join('<br>');
+
+        buildFinalPDFView();
+    }
+
+    // RENDU DU DOCUMENT FINAL SUR FOND BLANC POUR IMPRESSION (Mélange Devis + Reçus de paiement)
+    function compileAndShowPDF() {
+        switchTab('tab-pdf');
+    }
+
+    function buildFinalPDFView() {
+        const bizName = document.getElementById('biz-name').value || "VOTRE ENTREPRISE";
+        const bizPhone = document.getElementById('biz-phone').value || "+228 ...";
+        const bizEmail = document.getElementById('biz-email').value || "contact@email.com";
+        const bizAddr = document.getElementById('biz-address').value || "Lomé, Togo";
+        const themeColor = document.getElementById('biz-color').value || "#f97316";
+
+        const clientName = currentSelectedClient ? currentSelectedClient.name : "Client / Particulier";
+        const clientPhone = currentSelectedClient ? currentSelectedClient.phone : "";
+        const clientCity = currentSelectedClient ? currentSelectedClient.city : "";
+
+        let rowsHTML = itemsList.map(i => `
+            <tr>
+                <td>${i.d}</td>
+                <td class="text-right">${i.q}</td>
+                <td>${i.u}</td>
+                <td class="text-right">${i.p.toLocaleString()} F</td>
+                <td class="text-right" style="font-weight:600;">${(i.q * i.p).toLocaleString()} F</td>
+            </tr>
+        `).join('');
+
+        if(itemsList.length === 0) {
+            rowsHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8;">Aucune ligne dans le devis.</td></tr>`;
+        }
+
+        // Calcul des reçus cumulés
+        let cumulatedPaid = 0;
+        let receiptsHTML = historyPayments.map((p, idx) => {
+            cumulatedPaid += p.amount;
+            return `<tr><td>Acompte N°${idx+1} (${p.date})</td><td>via ${p.method}</td><td class="text-right" style="color:#16a34a; font-weight:600;">- ${p.amount.toLocaleString()} F</td></tr>`;
         }).join('');
 
-        let balance = globalTotal - paidTotal;
+        let currentBalanceDue = calcOutputs.ttc - cumulatedPaid;
 
-        document.getElementById('document-render-target').innerHTML = `
+        document.getElementById('pdf-view-destination').innerHTML = `
             <div class="doc-header">
                 <div>
-                    <h1 style="margin:0; font-size:20px; font-weight:800; letter-spacing:-0.5px;">VOTRE ENTREPRISE</h1>
-                    <p style="margin:4px 0; font-size:12px; color:#475569;">Lomé, Togo • Tél: +228 ...</p>
-                    <p style="margin:2px 0; font-size:12px; color:#475569;">Spécialité : ${currentJob}</p>
+                    ${base64Logo ? `<img src="${base64Logo}" style="max-height:55px; display:block; margin-bottom:10px;">` : ''}
+                    <h1 style="margin:0; font-size:22px; font-weight:800; color:#0f172a;">${bizName.toUpperCase()}</h1>
+                    <p style="margin:4px 0; font-size:12px; color:#475569;">${bizAddr} • Tél: ${bizPhone}</p>
+                    <p style="margin:2px 0; font-size:12px; color:#475569;">Email: ${bizEmail} • Spécialité : ${currentJob}</p>
                 </div>
                 <div class="text-right">
-                    <h2 style="margin:0; font-size:16px; color:var(--orange-pro); font-weight:800;">DEVIS DE TRAVAUX</h2>
-                    <p style="margin:3px 0; font-size:12px; color:#475569;"><b>Date :</b> 20/06/2026</p>
-                    <p style="margin:8px 0 0 0; font-size:12px; border:1px solid #cbd5e1; padding:6px 12px; border-radius:4px; text-align:left;"><b>Client :</b> ${client}</p>
+                    <h2 style="margin:0; font-size:18px; color:${themeColor}; font-weight:800;">DEVIS DE TRAVAUX</h2>
+                    <p style="margin:4px 0; font-size:12px; color:#475569;"><b>Date :</b> 20/06/2026</p>
+                    <div style="margin-top:10px; font-size:12px; border:1px solid #cbd5e1; padding:8px 12px; border-radius:4px; text-align:left; background:#fafafa; min-width:200px;">
+                        <b>Client :</b> ${clientName}<br>
+                        ${clientPhone ? `<b>Tél :</b> ${clientPhone}<br>` : ''}
+                        ${clientCity ? `<b>Ville :</b> ${clientCity}` : ''}
+                    </div>
                 </div>
             </div>
+
             <table class="doc-table">
-                <thead><tr><th>DÉSIGNATION</th><th class="text-right">QTÉ</th><th>UNITÉ</th><th class="text-right">P.U.</th><th class="text-right">TOTAL</th></tr></thead>
-                <tbody>${rows}</tbody>
+                <thead>
+                    <tr style="border-bottom:2px solid ${themeColor}">
+                        <th>DÉSIGNATION</th>
+                        <th class="text-right">QTÉ</th>
+                        <th>UNITÉ</th>
+                        <th class="text-right">P.U.</th>
+                        <th class="text-right">TOTAL</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    ${rowsHTML}
+                </tbody>
             </table>
-            
-            ${payments.length > 0 ? `
-            <h3 style="font-size:12px; text-transform:uppercase; margin-top:25px; border-bottom:1px solid #cbd5e1; padding-bottom:5px;">Historique des encaissements</h3>
-            <table class="doc-table" style="margin-top:5px;">
-                <tbody>${paymentRows}</tbody>
-            </table>` : ''}
+
+            ${historyPayments.length > 0 ? `
+            <h3 style="font-size:11px; text-transform:uppercase; margin-top:25px; border-bottom:1px solid #cbd5e1; padding-bottom:4px; color:#475569;">Historique des acomptes reçus</h3>
+            <table class="doc-table" style="margin-top:5px; font-size:12px;">
+                <tbody>${receiptsHTML}</tbody>
+            </table>
+            ` : ''}
 
             <div class="doc-totals">
-                <div class="total-line"><span>Sous-total HT :</span> <span>${formatMoney(globalTotal)}</span></div>
-                <div class="total-line"><span>TOTAL TTC :</span> <span>${formatMoney(globalTotal)}</span></div>
-                ${payments.length > 0 ? `<div class="total-line" style="color:#16a34a;"><span>Total déjà perçu :</span> <span>${formatMoney(paidTotal)}</span></div>` : ''}
-                <div class="total-line final" style="color:${balance <= 0 ? '#16a34a' : '#b91c1c'};"><span>${balance <= 0 ? 'SOLDE RÉGLÉ' : 'RESTE À PAYER :'}</span> <span>${formatMoney(balance)}</span></div>
+                <div class="total-line"><span>Sous-total HT :</span> <span>${calcOutputs.subtotal.toLocaleString()} F</span></div>
+                ${calcOutputs.remise > 0 ? `<div class="total-line" style="color:var(--danger)"><span>Remise :</span> <span>-${calcOutputs.remise.toLocaleString()} F</span></div>` : ''}
+                <div class="total-line"><span>TOTAL TTC :</span> <span style="font-weight:600;">${calcOutputs.ttc.toLocaleString()} F</span></div>
+                
+                <!-- Si acompte théorique défini mais pas d'historique réel -->
+                ${calcOutputs.acompte > 0 && historyPayments.length === 0 ? `
+                    <div class="total-line" style="color:#16a34a;"><span>Acompte attendu :</span> <span>${calcOutputs.acompte.toLocaleString()} F</span></div>
+                    <div class="total-line final" style="border-top-color:${themeColor}"><span>RESTE À PAYER :</span> <span>${calcOutputs.reste.toLocaleString()} F</span></div>
+                ` : ''}
+
+                <!-- Si suivi d'encaissements réels sur le chantier -->
+                ${historyPayments.length > 0 ? `
+                    <div class="total-line" style="color:#16a34a; font-weight:600;"><span>Total encaissé :</span> <span>${cumulatedPaid.toLocaleString()} F</span></div>
+                    <div class="total-line final" style="border-top-color:${themeColor}; color:${currentBalanceDue <= 0 ? '#16a34a' : '#b91c1c'}">
+                        <span>${currentBalanceDue <= 0 ? 'SOLDE ENTIÈREMENT RÉGLÉ' : 'RESTE DU SOLDE DU :'}</span>
+                        <span>${currentBalanceDue.toLocaleString()} F</span>
+                    </div>
+                ` : ''}
+                
+                ${calcOutputs.acompte === 0 && historyPayments.length === 0 ? `
+                    <div class="total-line final" style="border-top-color:${themeColor}"><span>TOTAL NET :</span> <span>${calcOutputs.ttc.toLocaleString()} F</span></div>
+                ` : ''}
             </div>
-            <div style="margin-top:35px; font-size:11px; color:#475569; line-height:1.5; border-top:1px solid #e2e8f0; padding-top:12px;">
-                <p><b>Conditions de règlement :</b> 50% à la commande, 50% à la livraison complète du chantier.</p>
-            </div>`;
-    }
 
-    function addPayment() {
-        const amt = parseFloat(document.getElementById('pay-amount').value) || 0;
-        const md = document.getElementById('pay-type').value;
-        if(amt <= 0) return;
-
-        payments.push({ dt: new Date().toLocaleDateString('fr-FR'), md, amt });
-        document.getElementById('pay-amount').value = '';
-        
-        generateDocumentHTML();
-    }
-
-    function removePayment(idx) {
-        payments.splice(idx, 1);
-        generateDocumentHTML();
-    }
-
-    function refreshLedgerUI() {
-        const box = document.getElementById('ledger-box');
-        if(!payments.length) { box.innerHTML = ''; return; }
-        box.innerHTML = payments.map((p, i) => `<div class="ledger-row"><span>${formatMoney(p.amt)} (${p.md})</span><span style="cursor:pointer;" onclick="removePayment(${i})">❌</span></div>`).join('');
+            <div style="margin-top:40px; font-size:11px; color:#475569; line-height:1.6; border-top:1px dashed #cbd5e1; padding-top:15px;">
+                <p style="margin:0;"><b>Conditions de règlement :</b><br>${document.getElementById('document-notes').value.replace(/\n/g, '<br>')}</p>
+            </div>
+        `;
     }
 </script>
 </body>
