@@ -3,15 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BTP Devis Pro - Le Sommet de la Vision IA</title>
+    <title>BTP Devis Pro - L'Arme Absolue</title>
+    <!-- Moteur OCR Mondial de Référence -->
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
     <style>
         :root {
-            --bg-dark: #0f141c;
-            --card-dark: #171f2b;
+            --bg-main: #0f141c;
+            --bg-card: #171f2b;
             --orange-pro: #f97316;
-            --border-color: #243145;
-            --text-light: #f8fafc;
+            --orange-hover: #ea580c;
+            --border: #243145;
+            --text: #f8fafc;
             --text-muted: #94a3b8;
             --success: #22c55e;
             --danger: #ef4444;
@@ -20,444 +22,648 @@
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-dark);
-            color: var(--text-light);
+            background-color: var(--bg-main);
+            color: var(--text);
             margin: 0;
             padding: 0;
         }
 
-        .header-nav {
+        .no-print { display: block; }
+        .print-only { display: none; }
+
+        /* Navigation & Top Bar */
+        .top-bar {
             background-color: #0b0f16;
-            border-bottom: 1px solid var(--border-color);
+            border-bottom: 1px solid var(--border);
             padding: 15px 20px;
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+        .logo-area { font-weight: 900; font-size: 22px; letter-spacing: -0.5px; }
+        .logo-area span { color: var(--orange-pro); }
+        .meta-badge { font-size: 11px; background: #1e293b; padding: 5px 12px; border-radius: 20px; color: var(--text-muted); font-weight: 600; }
 
-        .brand { font-weight: 800; font-size: 20px; }
-        .brand span { color: var(--orange-pro); }
-        .badge-version { font-size: 11px; background: #1e293b; padding: 4px 10px; border-radius: 12px; color: var(--text-muted); }
-
-        .nav-tabs { display: flex; background: #0b0f16; border-bottom: 1px solid var(--border-color); }
-        .nav-btn {
-            background: transparent; border: none; color: var(--text-muted); padding: 15px;
+        .tabs-nav { display: flex; background: #0b0f16; border-bottom: 1px solid var(--border); }
+        .tab-btn {
+            background: transparent; border: none; color: var(--text-muted); padding: 16px;
             font-size: 13px; font-weight: 700; cursor: pointer; flex: 1; text-align: center; position: relative;
+            transition: color 0.2s;
         }
-        .nav-btn.active { color: var(--orange-pro); }
-        .nav-btn.active::after {
+        .tab-btn.active { color: var(--orange-pro); }
+        .tab-btn.active::after {
             content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background-color: var(--orange-pro);
         }
 
-        .main-container { max-width: 1000px; margin: 0 auto; padding: 20px 12px; }
-        .app-section { display: none; }
-        .app-section.active { display: block; }
+        /* Interface Layout */
+        .container { max-width: 1100px; margin: 0 auto; padding: 25px 15px; }
+        .app-panel { display: none; }
+        .app-panel.active { display: block; }
 
-        .section-title {
-            font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: var(--orange-pro);
-            margin: 20px 0 10px 0; font-weight: 800;
+        .panel-title {
+            font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--orange-pro);
+            margin: 25px 0 12px 0; font-weight: 900; display: flex; align-items: center; gap: 8px;
         }
 
-        .config-card {
-            background-color: var(--card-dark); border: 1px solid var(--border-color);
-            border-radius: 8px; padding: 20px; margin-bottom: 20px;
+        .card {
+            background-color: var(--bg-card); border: 1px solid var(--border);
+            border-radius: 10px; padding: 22px; margin-bottom: 25px; box-shadow: 0 4px 6px -1px rgba(0,0,0,0.2);
         }
 
-        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
-        @media(max-width: 600px) { .form-row { grid-template-columns: 1fr; } }
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .grid-3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 15px; }
+        @media(max-width: 768px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
 
-        .form-group { margin-bottom: 15px; }
-        label { display: block; margin-bottom: 6px; font-size: 11px; font-weight: 700; color: var(--text-muted); text-transform: uppercase; }
+        .field-group { margin-bottom: 16px; position: relative; }
+        label { display: block; margin-bottom: 6px; font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
         input, select, textarea {
-            width: 100%; background-color: #0b0f16; border: 1px solid var(--border-color);
-            color: white; padding: 12px; border-radius: 6px; box-sizing: border-box; font-size: 14px;
+            width: 100%; background-color: #0b0f16; border: 1px solid var(--border);
+            color: white; padding: 12px 14px; border-radius: 8px; box-sizing: border-box; font-size: 14px;
+            transition: border-color 0.2s;
         }
+        input:focus, select:focus, textarea:focus { border-color: var(--orange-pro); outline: none; }
 
-        /* Zone de téléversement Drag & Drop de captures d'écran */
-        .dropzone-box {
-            border: 2px dashed var(--accent); background: #111924;
-            padding: 30px 20px; border-radius: 8px; text-align: center; cursor: pointer;
-            transition: background 0.2s; margin-bottom: 15px;
+        /* Boutons d'élite */
+        .btn {
+            background-color: var(--orange-pro); color: white; border: none;
+            padding: 14px 20px; border-radius: 8px; font-weight: 700; font-size: 13px;
+            cursor: pointer; text-transform: uppercase; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: background 0.2s;
         }
-        .dropzone-box:hover { background: #162232; }
-        .preview-img-container { text-align: center; margin-top: 15px; display: none; }
-        .preview-img-container img { max-width: 100%; max-height: 250px; border-radius: 6px; border: 1px solid var(--border-color); }
+        .btn:hover { background-color: var(--orange-hover); }
+        .btn-secondary { background-color: #1e293b; border: 1px solid var(--border); color: var(--text); }
+        .btn-secondary:hover { background-color: #2d3748; }
+        .btn-danger { background-color: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
+        .btn-danger:hover { background-color: rgba(239, 68, 68, 0.25); }
 
-        .btn-action {
-            background-color: var(--orange-pro); color: white; border: none; width: 100%;
-            padding: 14px; border-radius: 6px; font-weight: 700; font-size: 14px; cursor: pointer; text-transform: uppercase;
+        /* Vision Engine Box */
+        .vision-dropzone {
+            border: 2px dashed var(--accent); background: #111a24;
+            padding: 40px 20px; border-radius: 10px; text-align: center; cursor: pointer;
+            transition: all 0.2s; margin-bottom: 20px;
         }
-        .btn-action:disabled { background-color: #3b485d; cursor: not-allowed; }
+        .vision-dropzone:hover { background: #162435; border-color: var(--orange-pro); }
+        .preview-wrapper { text-align: center; margin-top: 15px; display: none; }
+        .preview-wrapper img { max-width: 100%; max-height: 300px; border-radius: 8px; border: 1px solid var(--border); }
+        .ocr-progress-bar { display: none; background: #0b0f16; padding: 15px; border-radius: 8px; text-align: center; font-weight: 700; color: var(--accent); margin-top: 15px; }
 
-        .status-ocr { font-size: 13px; font-weight: 600; color: var(--accent); text-align: center; margin-top: 10px; display: none; }
-
-        /* Lignes de devis */
-        .line-item {
-            background: #0b0f16; padding: 12px; border-radius: 6px; border: 1px solid var(--border-color);
-            margin-bottom: 10px; display: flex; justify-content: space-between; align-items: center;
+        /* Dynamic Table Item Rows */
+        .table-row-item {
+            background: #0b0f16; padding: 15px; border-radius: 8px; border: 1px solid var(--border);
+            margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 15px;
         }
-        .line-info { flex: 1; padding-right: 15px; }
-        .line-title { font-weight: 600; font-size: 14px; margin-bottom: 4px; }
-        .line-meta { font-size: 12px; color: var(--text-muted); }
-        .line-total { font-weight: 700; color: var(--orange-pro); font-size: 15px; }
-        .btn-delete { color: var(--danger); background: none; border: none; cursor: pointer; font-size: 16px; margin-left: 15px; }
+        .item-details { flex: 1; }
+        .item-title { font-weight: 700; font-size: 15px; margin-bottom: 4px; color: var(--text); }
+        .item-subtext { font-size: 12px; color: var(--text-muted); }
+        .item-financial { text-align: right; }
+        .item-price { font-weight: 800; color: var(--orange-pro); font-size: 16px; }
 
-        .calc-wrapper { background: #0b0f16; border-radius: 8px; padding: 15px; border: 1px solid var(--border-color); margin-top: 20px; }
-        .calc-row { display: flex; justify-content: space-between; align-items: center; padding: 10px 0; font-size: 14px; border-bottom: 1px solid #17202c; }
-        .calc-row input { width: 80px; padding: 6px; text-align: center; margin-left: 10px; }
-        .calc-row.total { font-weight: 800; font-size: 18px; color: var(--orange-pro); border-bottom: 2px solid var(--orange-pro); }
+        /* Totals Block */
+        .summary-box { background: #0b0f16; border-radius: 10px; padding: 20px; border: 1px solid var(--border); margin-top: 25px; }
+        .summary-line { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; font-size: 14px; border-bottom: 1px solid #1a2432; }
+        .summary-line.grand-total { font-weight: 900; font-size: 20px; color: var(--orange-pro); border-bottom: 2px solid var(--orange-pro); padding-top: 15px; }
+        .inline-input { width: 90px; padding: 8px; text-align: center; margin-left: 10px; background: var(--bg-card); }
 
-        /* PDF IMPRESSION STYLISE */
-        .pdf-page { background: white; color: #0f172a; padding: 45px; border-radius: 6px; box-shadow: 0 4px 12px rgba(0,0,0,0.5); box-sizing: border-box; }
-        .pdf-header-table { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
-        .pdf-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        .pdf-table th { background: #f8fafc; color: #475569; padding: 10px; font-size: 11px; text-transform: uppercase; border-bottom: 2px solid #cbd5e1; text-align: left; }
-        .pdf-table td { padding: 12px 10px; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #334155; }
-        .text-right { text-align: right !important; }
+        /* RENDU PDF ULTRA-PRO */
+        .pdf-container { background: white; color: #0f172a; padding: 50px; border-radius: 8px; box-shadow: 0 10px 25px rgba(0,0,0,0.4); box-sizing: border-box; }
+        .pdf-header { width: 100%; border-collapse: collapse; margin-bottom: 35px; }
+        .pdf-clean-table { width: 100%; border-collapse: collapse; margin: 25px 0; }
+        .pdf-clean-table th { background: #f1f5f9; color: #334155; padding: 12px 10px; font-size: 11px; text-transform: uppercase; font-weight: 800; border-bottom: 2px solid #cbd5e1; text-align: left; }
+        .pdf-clean-table td { padding: 14px 10px; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #334155; vertical-align: top; }
+        .align-right { text-align: right !important; }
 
         @media print {
-            body { background: white; color: black; }
             .no-print { display: none !important; }
-            .pdf-page { padding: 0; border: none; box-shadow: none; background: white; }
+            .print-only { display: block !important; }
+            body { background: white; color: black; }
+            .pdf-container { padding: 0; border: none; box-shadow: none; background: white; }
         }
     </style>
 </head>
 <body>
 
-    <div class="header-nav no-print">
-        <div class="brand">BTP<span>Devis</span> Pro</div>
-        <div class="badge-version">Moteur Vision IA Intégré (Tesseract OCR)</div>
+    <!-- Top Bar Bureau / Mobile -->
+    <div class="top-bar no-print">
+        <div class="logo-area">BTP<span>Devis</span> Pro</div>
+        <div class="meta-badge">Moteur Industriel & Vision IA v5.0</div>
     </div>
 
-    <div class="nav-tabs no-print">
-        <button class="nav-btn active" id="tab-devis" onclick="switchSection('sect-devis')">📝 Fiche Devis</button>
-        <button class="nav-btn" id="tab-vision" onclick="switchSection('sect-vision')">📸 Scanner une Capture / Photo</button>
-        <button class="nav-btn" id="tab-pdf" onclick="switchSection('sect-pdf')">👁️ Aperçu PDF</button>
+    <!-- Onglets de Commandement Professionnels -->
+    <div class="tabs-nav no-print">
+        <button class="tab-btn active" id="btn-tab-doc" onclick="openPanel('panel-doc')">📝 Éditeur de Document</button>
+        <button class="tab-btn" id="btn-tab-vision" onclick="openPanel('panel-vision')">📸 Vision IA & Capture</button>
+        <button class="tab-btn" id="btn-tab-preview" onclick="openPanel('panel-preview')">👁️ Rendu Impression PDF</button>
     </div>
 
-    <div class="main-container">
+    <div class="container">
 
-        <div id="sect-devis" class="app-section active no-print">
-            <div class="section-title">👤 COORDONNÉES CLIENT (Extraites par Vision / IA)</div>
-            <div class="config-card">
-                <div class="form-row">
-                    <div class="form-group"><label>Nom Complet du Client</label><input type="text" id="cli-name" placeholder="En attente de scan..."></div>
-                    <div class="form-group"><label>Numéro de Téléphone</label><input type="text" id="cli-phone" placeholder="En attente de scan..."></div>
-                </div>
-                <div class="form-group"><label>Localisation du Chantier</label><input type="text" id="cli-location" placeholder="En attente de scan..."></div>
-            </div>
-
-            <div class="section-title">🛠️ TRAVAUX ET TARIFICATION EXTRAITS</div>
-            <div class="config-card">
-                <div id="items-list-container">
-                    </div>
-
-                <div class="calc-wrapper">
-                    <div class="calc-row"><span>SOUS-TOTAL HT</span><span id="meta-subtotal" style="font-weight:700;">0 F</span></div>
-                    <div class="calc-row"><span>Remise Commerciale (%)</span><input type="number" id="cfg-remise" value="5" oninput="calculateFinancials()"></div>
-                    <div class="calc-row" style="color:var(--danger)"><span>Montant Déduit de la Remise</span><span id="meta-remise-val">0 F</span></div>
-                    <div class="calc-row"><span>NET HT</span><span id="meta-netht" style="font-weight:600;">0 F</span></div>
-                    <div class="calc-row"><span>TVA Applicable (%)</span><input type="number" id="cfg-tva" value="18" oninput="calculateFinancials()"></div>
-                    <div class="calc-row total"><span>TOTAL TOUTES TAXES COMPRISES (TTC)</span><span id="meta-ttc">0 F</span></div>
-                    <div class="calc-row"><span>Acompte (%)</span><input type="number" id="cfg-acompte" value="40" oninput="calculateFinancials()"></div>
-                    <div class="calc-row" style="color:var(--success); font-weight:700;"><span>MONTANT ACOMPTE ATTEINDU</span><span id="meta-acompte-val">0 F</span></div>
-                    <div class="calc-row" style="font-weight:800; font-size:16px;"><span>RESTE À VERSER</span><span id="meta-reste">0 F</span></div>
-                </div>
-            </div>
-        </div>
-
-        <div id="sect-vision" class="app-section no-print">
-            <div class="section-title">📸 SCANNER UNE CAPTURE D'ÉCRAN OU UNE PHOTO</div>
-            <div class="config-card">
-                <p style="font-size:13px; color:var(--text-muted); line-height:1.5; margin-top:0;">
-                    <span style="color:var(--accent); font-weight:bold;">Comment ça marche :</span> Sélectionnez ou déposez une capture d'écran de votre choix (un texte brut, un mémo, un écrit papier, un récapitulatif). Notre intelligence artificielle va lire les écritures, extraire le client, trier les prix et générer instantanément la structure financière.
-                </p>
-                
-                <div class="dropzone-box" onclick="document.getElementById('file-input-ocr').click()">
-                    <span style="font-size:30px; display:block; margin-bottom:8px;">📥</span>
-                    <b>Cliquez ou glissez-déposez la capture d'écran ici</b>
-                    <span style="display:block; font-size:11px; color:var(--text-muted); margin-top:4px;">Accepte PNG, JPG, JPEG</span>
-                </div>
-                <input type="file" id="file-input-ocr" accept="image/*" style="display:none;" onchange="handleImageUpload(event)">
-
-                <div class="preview-img-container" id="img-preview-box">
-                    <img id="source-image-ocr" src="#" alt="Aperçu du scan">
-                </div>
-
-                <div class="status-ocr" id="ocr-loading-status">🔄 Lecture optique des caractères en cours... <span id="ocr-progress">0%</span></div>
-                
-                <button class="btn-action" id="btn-trigger-ocr" style="margin-top:15px;" onclick="startVisionAnalysis()" disabled>⚡ Lancer la lecture par Vision IA</button>
-            </div>
+        <!-- PANNEAU 1 : EDITEUR DE DOCUMENT -->
+        <div id="panel-doc" class="app-panel active no-print">
             
-            <div class="section-title">TEXTE BRUT RECONNU (POUR CONTROLE)</div>
-            <div class="config-card">
-                <textarea id="ia-debug-raw" rows="6" placeholder="Le texte extrait par l'œil de l'IA apparaîtra ici pour vérification..."></textarea>
+            <div class="grid-2">
+                <!-- Bloc Configuration Émetteur -->
+                <div>
+                    <div class="panel-title">🏢 Votre Entreprise (En-tête PDF)</div>
+                    <div class="card">
+                        <div class="field-group">
+                            <label>Nom de l'Entreprise / Raison Sociale</label>
+                            <input type="text" id="biz-name" value="ÉLECTRICITÉ GÉNÉRALE MODERNE" oninput="refreshCalculations()">
+                        </div>
+                        <div class="grid-2">
+                            <div class="field-group"><label>Téléphone Professionnel</label><input type="text" id="biz-phone" value="+228 90 00 00 00" oninput="refreshCalculations()"></div>
+                            <div class="field-group"><label>Ville / Pays</label><input type="text" id="biz-address" value="Lomé, Togo" oninput="refreshCalculations()"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Bloc Sauvegarde & Sélection Directe Client -->
+                <div>
+                    <div class="panel-title">👥 Gestion Base Clientèle</div>
+                    <div class="card">
+                        <div class="field-group">
+                            <label>Sélectionner un client existant</label>
+                            <select id="client-selector" onchange="loadSelectedClient()">
+                                <option value="">-- Choisir un client de la base --</option>
+                            </select>
+                        </div>
+                        <div style="text-align: right; margin-top: -5px; margin-bottom: 15px;">
+                            <span style="font-size:11px; color:var(--accent); cursor:pointer; font-weight:700;" onclick="saveCurrentClientIntoBase()">💾 Sauvegarder ce client dans la base</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-title">📄 Nature & Coordonnées du Destinataire</div>
+            <div class="card">
+                <div class="grid-3">
+                    <div class="field-group">
+                        <label>Nature du Document</label>
+                        <select id="doc-type" onchange="refreshCalculations()">
+                            <option value="DEVIS QUANTITATIF & ESTIMATIF">DEVIS QUANTITATIF & ESTIMATIF</option>
+                            <option value="FACTURE COMMERCIALE">FACTURE COMMERCIALE</option>
+                            <option value="FACTURE PROFORMA">FACTURE PROFORMA</option>
+                        </select>
+                    </div>
+                    <div class="field-group"><label>Numéro unique</label><input type="text" id="doc-id" value="DEV-2026-001"></div>
+                    <div class="field-group"><label>Date d'émission</label><input type="date" id="doc-date"></div>
+                </div>
+
+                <div class="grid-3">
+                    <div class="field-group"><label>Nom Complet du Client</label><input type="text" id="cli-name" placeholder="Ex: M. Koffi AMÉGNRAN"></div>
+                    <div class="field-group"><label>Numéro de Téléphone</label><input type="text" id="cli-phone" placeholder="Ex: +228 91 23 45 67"></div>
+                    <div class="field-group"><label>Localisation / Chantier</label><input type="text" id="cli-location" placeholder="Ex: Adidogomé, Lomé"></div>
+                </div>
+            </div>
+
+            <div class="panel-title">🏗️ Lignes de Prestations Métiers & Matériaux</div>
+            <div class="card">
+                <!-- Formulaire d'ajout rapide de ligne -->
+                <div class="grid-3" style="background: #0b0f16; padding: 15px; border-radius: 8px; margin-bottom: 20px; border: 1px solid var(--border);">
+                    <div class="field-group" style="margin:0;"><label>Désignation précise des travaux</label><input type="text" id="add-desc" placeholder="Ex: Fourniture et pose de câble R2V 3G2.5"></div>
+                    <div class="field-group" style="margin:0;"><label>Quantité</label><input type="number" id="add-qty" value="1"></div>
+                    <div class="field-group" style="margin:0;">
+                        <label>Unité Métier</label>
+                        <select id="add-unit">
+                            <option value="forfait">Forfait</option>
+                            <option value="U">Unité (U)</option>
+                            <option value="m">Mètre linéaire (m)</option>
+                            <option value="m²">Mètre carré (m²)</option>
+                            <option value="m³">Mètre cube (m³)</option>
+                            <option value="Ens">Ensemble (Ens)</option>
+                            <option value="Kg">Kilogramme (Kg)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="grid-2" style="margin-bottom: 20px;">
+                    <div class="field-group" style="margin:0;"><label>Prix Unitaire HT (FCFA)</label><input type="number" id="add-pu" placeholder="Ex: 45000"></div>
+                    <div style="display:flex; align-items:flex-end;">
+                        <button class="btn" style="width:100%;" onclick="addNewLineItem()">➕ Insérer la ligne au devis</button>
+                    </div>
+                </div>
+
+                <!-- Container dynamique des lignes insérées -->
+                <div id="items-dynamic-container"></div>
+
+                <!-- Calculateur Financier Intégré -->
+                <div class="summary-box">
+                    <div class="summary-line"><span>SOUS-TOTAL TOTAL HORS TAXES (HT)</span><span id="calc-subtotal" style="font-weight:700;">0 FCFA</span></div>
+                    <div class="summary-line"><span>Remise Commerciale (%)</span><div><input type="number" id="input-remise" value="0" class="inline-input" oninput="refreshCalculations()"></div></div>
+                    <div class="summary-line" style="color:var(--danger)"><span>Déduction Remise</span><span id="calc-remise-val">0 FCFA</span></div>
+                    <div class="summary-line"><span>NET HORS TAXES</span><span id="calc-netht" style="font-weight:700;">0 FCFA</span></div>
+                    <div class="summary-line"><span>TVA Spécifique (%)</span><div><input type="number" id="input-tva" value="18" class="inline-input" oninput="refreshCalculations()"></div></div>
+                    <div class="summary-line"><span>Montant TVA</span><span id="calc-tva-val">0 FCFA</span></div>
+                    <div class="summary-line grand-total"><span>TOTAL TOUTES TAXES COMPRISES (TTC)</span><span id="calc-ttc">0 FCFA</span></div>
+                    <div class="summary-line"><span>Acompte à la commande (%)</span><div><input type="number" id="input-acompte" value="40" class="inline-input" oninput="refreshCalculations()"></div></div>
+                    <div class="summary-line" style="color:var(--success); font-weight:700;"><span>Montant de l'Acompte Exigé</span><span id="calc-acompte-val">0 FCFA</span></div>
+                    <div class="summary-line" style="font-weight:900; font-size:16px;"><span>SOLDE RESTE À VERSER</span><span id="calc-solde">0 FCFA</span></div>
+                </div>
+
+                <div class="panel-title">📝 Clauses, Mentions Légales & Conditions</div>
+                <div class="field-group" style="margin-top:10px;">
+                    <textarea id="input-notes" rows="3">Paiement : 40% à la commande, solde selon avancement des travaux.&#10;Délai d'exécution : À préciser après validation de la commande.&#10;Devis valable 30 jours à compter de sa date d'émission.</textarea>
+                </div>
             </div>
         </div>
 
-        <div id="sect-pdf" class="app-section">
-            <div class="no-print" style="margin-bottom:15px; text-align:right;">
-                <button onclick="window.print()" style="background:var(--success); color:white; border:none; padding:12px 25px; font-weight:700; border-radius:6px; cursor:pointer;">🖨️ Télécharger / Imprimer en PDF</button>
+        <!-- PANNEAU 2 : MODULE VISION IA SCANNER -->
+        <div id="panel-vision" class="app-panel no-print">
+            <div class="panel-title">📸 Analyse de Capture d'Écran par Reconnaissance Optique</div>
+            <div class="card">
+                <p style="font-size:13px; color:var(--text-muted); line-height:1.6; margin-top:0;">
+                    Sélectionnez une capture d'écran de message WhatsApp, une photo de bon de commande ou un ancien devis écrit. L'intelligence artificielle va décrypter le texte brut pour isoler le nom, le numéro de téléphone du client et extraire automatiquement les postes de travaux ainsi que leurs prix.
+                </p>
+
+                <div class="vision-dropzone" onclick="document.getElementById('ocr-file-picker').click()">
+                    <span style="font-size:36px; display:block; margin-bottom:10px;">📥</span>
+                    <b style="font-size:14px; color:white;">Cliquez ou Glissez-Déposez la capture d'écran ici</b>
+                    <span style="display:block; font-size:11px; color:var(--text-muted); margin-top:5px;">Formats acceptés : PNG, JPG, JPEG</span>
+                </div>
+                <input type="file" id="ocr-file-picker" accept="image/*" style="display:none;" onchange="loadOcrImage(event)">
+
+                <div class="preview-wrapper" id="ocr-preview-container">
+                    <img id="ocr-preview-img" src="#" alt="Aperçu">
+                </div>
+
+                <div class="ocr-progress-bar" id="ocr-status-bar">⚡ Traitement optique en cours : <span id="ocr-percentage">0%</span></div>
+
+                <button class="btn" id="ocr-exec-btn" style="width:100%; margin-top:20px;" onclick="runOcrEngine()" disabled>⚡ Lancer l'extraction automatique par Vision</button>
             </div>
-            <div class="pdf-page" id="pdf-render-zone"></div>
+
+            <div class="panel-title">📄 Flux de Texte Brut Détecté (Contrôle Technique)</div>
+            <div class="card">
+                <textarea id="ocr-raw-output" rows="6" placeholder="Le texte extrait par l'œil de la régie OCR apparaîtra ici..."></textarea>
+            </div>
+        </div>
+
+        <!-- PANNEAU 3 : APERÇU RENDU IMPRESSION PDF -->
+        <div id="panel-preview" class="app-panel">
+            <div class="no-print" style="margin-bottom:20px; text-align:right;">
+                <button class="btn" style="background-color:var(--success);" onclick="window.print()">🖨️ Générer et Imprimer le PDF Officiel</button>
+            </div>
+            <!-- Zone d'injection du modèle comptable blanc -->
+            <div class="pdf-container" id="pdf-view-target"></div>
         </div>
 
     </div>
 
 <script>
-    let devisLines = [];
-    let totals = {};
-    let selectedImageFile = null;
+    // Variables d'état globales de l'infrastructure
+    let lineItems = [];
+    let databaseClients = JSON.parse(localStorage.getItem('btp_client_db')) || [
+        { name: "M. Koffi AMÉGNRAN", phone: "+228 91 23 45 67", location: "Adidogomé, Lomé" },
+        { name: "Madame Afiwa TOGBUI", phone: "+228 99 88 77 66", location: "Baguida, Lomé" }
+    ];
+    let selectedFileObject = null;
 
-    function switchSection(id) {
-        document.querySelectorAll('.app-section').forEach(s => s.classList.remove('active'));
-        document.querySelectorAll('.nav-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(id).classList.add('active');
-        if(id === 'sect-devis') document.getElementById('tab-devis').classList.add('active');
-        if(id === 'sect-vision') document.getElementById('tab-vision').classList.add('active');
-        if(id === 'sect-pdf') {
-            document.getElementById('tab-pdf').classList.add('active');
-            renderPDFView();
+    // Gestion de l'affichage des onglets
+    function openPanel(panelId) {
+        document.querySelectorAll('.app-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(panelId).classList.add('active');
+        
+        if(panelId === 'panel-doc') document.getElementById('btn-tab-doc').classList.add('active');
+        if(panelId === 'panel-vision') document.getElementById('btn-tab-vision').classList.add('active');
+        if(panelId === 'panel-preview') {
+            document.getElementById('btn-tab-preview').classList.add('active');
+            generatePdfRendu();
         }
     }
 
-    // Gestion du chargement de la capture d'écran
-    function handleImageUpload(event) {
-        const file = event.target.files[0];
-        if(!file) return;
-        selectedImageFile = file;
+    // Initialisation automatique à la date du jour
+    window.onload = function() {
+        const today = new Date().toISOString().split('T')[0];
+        document.getElementById('doc-date').value = today;
+        refreshClientDropdown();
+        refreshCalculations();
+    };
 
-        const reader = new FileReader();
-        reader.onload = function(e) {
-            document.getElementById('source-image-ocr').src = e.target.result;
-            document.getElementById('img-preview-box').style.display = 'block';
-            document.getElementById('btn-trigger-ocr').disabled = false;
-        };
-        reader.readAsDataURL(file);
-    }
-
-    // 🕵️ MOTEUR DE VISION IA (TESSERACT OCR) EN PUR JAVASCRIPT LOCAL 🕵️
-    function startVisionAnalysis() {
-        if(!selectedImageFile) return;
-
-        const statusBox = document.getElementById('ocr-loading-status');
-        const progressText = document.getElementById('ocr-progress');
-        const btn = document.getElementById('btn-trigger-ocr');
-
-        statusBox.style.display = 'block';
-        btn.disabled = true;
-
-        // Appel du Worker de reconnaissance optique multilingue (Français)
-        Tesseract.recognize(
-            selectedImageFile,
-            'fra',
-            { logger: m => {
-                if(m.status === 'recognizing text') {
-                    progressText.innerText = Math.round(m.progress * 100) + "%";
-                }
-            }}
-        ).then(({ data: { text } }) => {
-            document.getElementById('ia-debug-raw').value = text;
-            statusBox.style.display = 'none';
-            btn.disabled = false;
-
-            // Une fois le texte extrait de la capture, on applique notre algorithme d'analyse sémantique d'élite
-            executeAdvancedSemanticExtraction(text);
-        }).catch(err => {
-            alert("Erreur de lecture de l'image : " + err.message);
-            statusBox.style.display = 'none';
-            btn.disabled = false;
+    // Base de données clients locale
+    function refreshClientDropdown() {
+        const select = document.getElementById('client-selector');
+        select.innerHTML = '<option value="">-- Choisir un client de la base --</option>';
+        databaseClients.forEach((c, index) => {
+            select.innerHTML += `<option value="${index}">${c.name} (${c.location})</option>`;
         });
     }
 
-    // ⚡ ALGORITHME EXTRACTION SÉMANTIQUE DE PRÉCISION CHIRURGICALE v4.5 ⚡
-    function executeAdvancedSemanticExtraction(text) {
-        // 1. Extraction du Nom Complet
-        let extractedName = "";
-        const nameMatch = text.match(/(?:pour\s+M\.|Monsieur|Mme|Mr)\s+([A-Za-zÀ-ÿ\s\-]+?)(?=\s*,|\s+téléphone|\s+à|\b\d{2})/i);
-        if(nameMatch) {
-            extractedName = nameMatch[1].replace(/\s+/g, ' ').trim();
+    function loadSelectedClient() {
+        const idx = document.getElementById('client-selector').value;
+        if(idx === "") return;
+        const client = databaseClients[idx];
+        document.getElementById('cli-name').value = client.name;
+        document.getElementById('cli-phone').value = client.phone;
+        document.getElementById('cli-location').value = client.location;
+    }
+
+    function saveCurrentClientIntoBase() {
+        const name = document.getElementById('cli-name').value.trim();
+        const phone = document.getElementById('cli-phone').value.trim();
+        const location = document.getElementById('cli-location').value.trim();
+
+        if(!name) { alert("Le nom du client est obligatoire pour la sauvegarde."); return; }
+        
+        const exist = databaseClients.some(c => c.name.toLowerCase() === name.toLowerCase());
+        if(!exist) {
+            databaseClients.push({ name, phone, location });
+            localStorage.setItem('btp_client_db', JSON.stringify(databaseClients));
+            refreshClientDropdown();
+            alert("✅ Client enregistré avec succès dans votre base de données locale.");
         } else {
-            extractedName = "Koffi AMÉGNRAN"; // Secours intelligent ou valeur par défaut
+            alert("Ce client existe déjà dans la base.");
         }
-
-        // 2. Extraction du Téléphone
-        let extractedPhone = "";
-        const phoneMatch = text.match(/(?:\+?\d{1,3}[\s.-]?)?\(?\d{2,3}\)?[\s.-]?\d{2,3}[\s.-]?\d{2,3}[\s.-]?\d{2,3}/);
-        extractedPhone = phoneMatch ? phoneMatch[0].trim() : "+228 91 23 45 67";
-
-        // 3. Extraction Localisation
-        let extractedLoc = "";
-        const locMatch = text.match(/(?:à\s+)([A-Za-zÀ-ÿ\-]+)/i);
-        extractedLoc = locMatch ? locMatch[1].trim() : "Adidogomé";
-
-        // Renseignement automatique des champs
-        document.getElementById('cli-name').value = extractedName;
-        document.getElementById('cli-phone').value = extractedPhone;
-        document.getElementById('cli-location').value = extractedLoc;
-
-        // 4. Segmentation fine des lignes de prestations financières
-        devisLines = [];
-        const segments = text.split(/(?:\.|\n|Enfin|De plus|Ajoute)/);
-
-        segments.forEach(seg => {
-            let chunk = seg.trim();
-            if(!chunk) return;
-
-            // Recherche de montants monétaires valides
-            const priceMatch = chunk.match(/(\d+[\d\s]*)\s*(?:F|FCFA|francs)/i);
-            if(!priceMatch) return; 
-
-            let price = parseFloat(priceMatch[1].replace(/\s/g, ''));
-            let qty = 1;
-            let unit = "forfait";
-
-            // Détection du cas des climatiseurs
-            if(chunk.match(/4\s+climatiseurs/i) || chunk.match(/climatiseurs/i)) {
-                qty = 4;
-                unit = "U";
-            }
-
-            // Détection du cas spécifique du tableau électrique 12 modules
-            if(chunk.match(/tableau\s+électrique/i) || chunk.match(/modules/i)) {
-                qty = 1;
-                unit = "forfait";
-            }
-
-            // Nettoyage parfait des scories textuelles résiduelles
-            chunk = chunk.replace(/(?:Fais-moi un devis pour|Il faut installer|Il faut aussi poser|Ajoute une main d'œuvre pour|Enfin|ajoute)/gi, '');
-            chunk = chunk.replace(priceMatch[0], ''); 
-            chunk = chunk.replace(/\b(à|au|pour une villa à|l'unité|l’unité)\b/gi, ''); 
-            chunk = chunk.replace(/[,\s\-\.]+$/, ''); 
-            chunk = chunk.replace(/^\s*[,\-\.]+/g, ''); 
-            chunk = chunk.replace(/\s+/g, ' ').trim(); 
-
-            chunk = chunk.charAt(0).toUpperCase() + chunk.slice(1);
-
-            if(chunk.length > 4) {
-                devisLines.push({ desc: chunk, qty: qty, unit: unit, pu: price });
-            }
-        });
-
-        // Calculs automatiques immédiats
-        calculateFinancials();
-        alert("✨ Révolution Vision ! L'image a été lue avec succès. Les coordonnées du client et les 3 postes de travaux ont été injectés sans faute.");
-        switchSection('sect-devis');
     }
 
-    function calculateFinancials() {
-        let subtotal = devisLines.reduce((sum, item) => sum + (item.qty * item.pu), 0);
-        let pctRemise = parseFloat(document.getElementById('cfg-remise').value) || 0;
+    // Gestion des items du Devis
+    function addNewLineItem() {
+        const desc = document.getElementById('add-desc').value.trim();
+        const qty = parseFloat(document.getElementById('add-qty').value) || 1;
+        const unit = document.getElementById('add-unit').value;
+        const pu = parseFloat(document.getElementById('add-pu').value) || 0;
+
+        if(!desc) { alert("Veuillez saisir un intitulé pour vos travaux."); return; }
+
+        lineItems.push({ desc, qty, unit, pu });
+        
+        // Reset formulaire rapide
+        document.getElementById('add-desc').value = "";
+        document.getElementById('add-qty').value = "1";
+        document.getElementById('add-pu').value = "";
+
+        refreshCalculations();
+    }
+
+    function removeLineItem(index) {
+        lineItems.splice(index, 1);
+        refreshCalculations();
+    }
+
+    // Calculateur financier global de précision
+    function refreshCalculations() {
+        let subtotal = lineItems.reduce((sum, item) => sum + (item.qty * item.pu), 0);
+        let pctRemise = parseFloat(document.getElementById('input-remise').value) || 0;
         let valRemise = subtotal * (pctRemise / 100);
         let netHT = subtotal - valRemise;
-        let pctTVA = parseFloat(document.getElementById('cfg-tva').value) || 0;
+        let pctTVA = parseFloat(document.getElementById('input-tva').value) || 0;
         let valTVA = netHT * (pctTVA / 100);
         let totalTTC = netHT + valTVA;
-        let pctAcompte = parseFloat(document.getElementById('cfg-acompte').value) || 0;
+        let pctAcompte = parseFloat(document.getElementById('input-acompte').value) || 0;
         let valAcompte = totalTTC * (pctAcompte / 100);
-        let resteAPayer = totalTTC - valAcompte;
+        let soldeReste = totalTTC - valAcompte;
 
-        totals = { subtotal, valRemise, netHT, valTVA, totalTTC, valAcompte, resteAPayer };
+        // Rendu interface
+        document.getElementById('calc-subtotal').innerText = subtotal.toLocaleString('fr-FR') + " FCFA";
+        document.getElementById('calc-remise-val').innerText = valRemise.toLocaleString('fr-FR') + " FCFA";
+        document.getElementById('calc-netht').innerText = netHT.toLocaleString('fr-FR') + " FCFA";
+        document.getElementById('calc-tva-val').innerText = valTVA.toLocaleString('fr-FR') + " FCFA";
+        document.getElementById('calc-ttc').innerText = totalTTC.toLocaleString('fr-FR') + " FCFA";
+        document.getElementById('calc-acompte-val').innerText = valAcompte.toLocaleString('fr-FR') + " FCFA";
+        document.getElementById('calc-solde').innerText = soldeReste.toLocaleString('fr-FR') + " FCFA";
 
-        document.getElementById('meta-subtotal').innerText = subtotal.toLocaleString() + " F";
-        document.getElementById('meta-remise-val').innerText = valRemise.toLocaleString() + " F";
-        document.getElementById('meta-netht').innerText = netHT.toLocaleString() + " F";
-        document.getElementById('meta-tva-val').innerText = valTVA.toLocaleString() + " F";
-        document.getElementById('meta-ttc').innerText = totalTTC.toLocaleString() + " F";
-        document.getElementById('meta-acompte-val').innerText = valAcompte.toLocaleString() + " F";
-        document.getElementById('meta-reste').innerText = resteAPayer.toLocaleString() + " F";
-
-        const container = document.getElementById('items-list-container');
-        if (devisLines.length === 0) {
-            container.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:20px; font-size:14px;">Aucun poste. Scannez une capture d'écran pour commencer.</div>`;
+        // Injection HTML dynamique des lignes
+        const container = document.getElementById('items-dynamic-container');
+        if(lineItems.length === 0) {
+            container.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:15px; font-size:13px;">Aucun poste inséré. Ajoutez une ligne ou lancez l'extraction par Vision.</div>`;
             return;
         }
 
-        container.innerHTML = devisLines.map((l, index) => `
-            <div class="line-item">
-                <div class="line-info">
-                    <div class="line-title">${l.desc}</div>
-                    <div class="line-meta">Quantité : <b>${l.qty}</b> | Unité : <b>${l.unit}</b> | P.U. : <b>${l.pu.toLocaleString()} F</b></div>
+        container.innerHTML = lineItems.map((item, index) => `
+            <div class="table-row-item">
+                <div class="item-details">
+                    <div class="item-title">${item.desc}</div>
+                    <div class="item-subtext">Quantité : <b>${item.qty}</b> | Unité : <b>${item.unit}</b> | P.U. HT : <b>${item.pu.toLocaleString('fr-FR')} FCFA</b></div>
                 </div>
-                <div style="display:flex; align-items:center;">
-                    <div class="line-total">${(l.qty * l.pu).toLocaleString()} F</div>
-                    <button class="btn-delete" onclick="devisLines.splice(${index}, 1); calculateFinancials();">🗑️</button>
+                <div style="display:flex; align-items:center; gap:20px;">
+                    <div class="item-financial">
+                        <div class="item-price">${(item.qty * item.pu).toLocaleString('fr-FR')} F</div>
+                    </div>
+                    <button class="btn btn-danger" style="padding:6px 10px;" onclick="removeLineItem(${index})">🗑️</button>
                 </div>
             </div>
         `).join('');
     }
 
-    function renderPDFView() {
-        const entN = "ÉLECTRICITÉ GÉNÉRALE MODERNE";
+    // Gestion et chargement de la Capture d'Écran
+    function loadOcrImage(event) {
+        const file = event.target.files[0];
+        if(!file) return;
+        selectedFileObject = file;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            document.getElementById('ocr-preview-img').src = e.target.result;
+            document.getElementById('ocr-preview-container').style.display = 'block';
+            document.getElementById('ocr-exec-btn').disabled = false;
+        };
+        reader.readAsDataURL(file);
+    }
+
+    // Exécution du moteur OCR (Tesseract.js)
+    function runOcrEngine() {
+        if(!selectedFileObject) return;
+
+        const statusBar = document.getElementById('ocr-status-bar');
+        const percentageText = document.getElementById('ocr-percentage');
+        const runBtn = document.getElementById('ocr-exec-btn');
+
+        statusBar.style.display = 'block';
+        runBtn.disabled = true;
+
+        Tesseract.recognize(
+            selectedFileObject,
+            'fra',
+            { logger: m => {
+                if(m.status === 'recognizing text') {
+                    percentageText.innerText = Math.round(m.progress * 100) + "%";
+                }
+            }}
+        ).then(({ data: { text } }) => {
+            document.getElementById('ocr-raw-output').value = text;
+            statusBar.style.display = 'none';
+            runBtn.disabled = false;
+
+            // Lancement de l'analyse sémantique adaptative multi-lignes
+            parseExtractedOcrText(text);
+        }).catch(err => {
+            alert("Erreur lors de la lecture optique : " + err.message);
+            statusBar.style.display = 'none';
+            runBtn.disabled = false;
+        });
+    }
+
+    // Extraction sémantique de précision
+    function parseExtractedOcrText(text) {
+        // Extraction Nom
+        let extractedName = "";
+        const nameMatch = text.match(/(?:pour\s+M\.|Monsieur|Mme|Mr|Client\s*:\s*M\.|Destinataire\s*:\s*Madame|Destinataire\s*:\s*M\.)\s+([A-Za-zÀ-ÿ\s\-]+?)(?=\s*,|\s+téléphone|\s+à|\b\d{2}|\n)/i);
+        if(nameMatch) extractedName = nameMatch[1].replace(/\s+/g, ' ').trim();
+
+        // Extraction Téléphone
+        let extractedPhone = "";
+        const phoneMatch = text.match(/(?:\+?\d{1,3}[\s.-]?)?\(?\d{2,3}\)?[\s.-]?\d{2,3}[\s.-]?\d{2,3}[\s.-]?\d{2,3}/);
+        if(phoneMatch) extractedPhone = phoneMatch[0].trim();
+
+        // Extraction Localisation
+        let extractedLoc = "";
+        const locMatch = text.match(/(?:à\s+|situé\s+à\s*:\s*|Chantier\s*:\s*)([A-Za-zÀ-ÿ\s,]+?)(?=\n|\r)/i);
+        if(locMatch) extractedLoc = locMatch[1].replace(/\s+/g, ' ').trim();
+
+        // Injection si détection valide
+        if(extractedName) document.getElementById('cli-name').value = extractedName;
+        if(extractedPhone) document.getElementById('cli-phone').value = extractedPhone;
+        if(extractedLoc) document.getElementById('cli-location').value = extractedLoc;
+
+        // Analyse et isolation des lignes financières
+        const lines = text.split('\n');
+        let currentBuffer = "";
+
+        lines.forEach(line => {
+            let cleanLine = line.trim();
+            if(!cleanLine || cleanLine.startsWith('===') || cleanLine.startsWith('---')) return;
+
+            // Détection de présence de prix
+            const priceMatch = cleanLine.match(/(\d+[\d\s]*)\s*(?:F|FCFA|francs|l'unité|l’unité)/i);
+            
+            if(priceMatch) {
+                currentBuffer += " " + cleanLine.substring(0, priceMatch.index).trim();
+                let price = parseFloat(priceMatch[1].replace(/\s/g, ''));
+                let qty = 1;
+                let unit = "forfait";
+
+                // Identification intelligente des unités et des quantités BTP
+                const qtyMatch = currentBuffer.match(/(\d+)\s+(?:climatiseurs|split|wc|sacs|camions|mètres|m²|m³|kg)/i);
+                if(qtyMatch) {
+                    qty = parseInt(qtyMatch[1], 10);
+                    unit = "U";
+                    if(currentBuffer.toLowerCase().includes("sacs")) unit = "sacs";
+                    if(currentBuffer.toLowerCase().includes("camions")) unit = "camions";
+                    if(currentBuffer.toLowerCase().includes("mètres")) unit = "m";
+                }
+
+                // Nettoyage complet
+                let finalDesc = currentBuffer
+                    .replace(/^[-*\s•\d.]+/g, '')
+                    .replace(/(?:Fais-moi un devis pour|Il faut installer|Il faut aussi poser|Ajoute une main d'œuvre pour|Enfin|Achat de|Fourniture de)/gi, '')
+                    .replace(/\b(à|au|pour une villa à|l'unité|l’unité)\b/gi, '')
+                    .replace(/\s+/g, ' ')
+                    .trim();
+
+                finalDesc = finalDesc.charAt(0).toUpperCase() + finalDesc.slice(1);
+
+                if(finalDesc.length > 4) {
+                    lineItems.push({ desc: finalDesc, qty, unit, pu: price });
+                }
+                currentBuffer = "";
+            } else {
+                if(!cleanLine.match(/(?:Téléphone|Chantier|Pour\s*:|Destinataire|TRAVAUX|DÉTAILS)/i)) {
+                    currentBuffer += " " + cleanLine;
+                }
+            }
+        });
+
+        refreshCalculations();
+        alert("💥 Vision IA Opérationnelle ! Données lues et injectées avec succès dans l'éditeur.");
+        openPanel('panel-doc');
+    }
+
+    // Rendu du modèle comptable épuré et professionnel pour impression
+    function generatePdfRendu() {
+        const bizN = document.getElementById('biz-name').value || "ENTREPRISE PRO";
+        const bizP = document.getElementById('biz-phone').value || "";
+        const bizA = document.getElementById('biz-address').value || "";
+
+        const docType = document.getElementById('doc-type').value;
+        const docId = document.getElementById('doc-id').value || "DEV-000";
+        const docDate = document.getElementById('doc-date').value || "";
+
         const cliN = document.getElementById('cli-name').value || "Non spécifié";
         const cliP = document.getElementById('cli-phone').value || "Non spécifié";
-        const cliL = document.getElementById('cli-location').value || "Lomé";
+        const cliL = document.getElementById('cli-location').value || "Non spécifié";
 
-        let rows = devisLines.map((l, i) => `
+        const notes = document.getElementById('input-notes').value.replace(/\n/g, '<br>');
+
+        // Calculs financiers pour le tableau d'impression
+        let subtotal = lineItems.reduce((sum, item) => sum + (item.qty * item.pu), 0);
+        let pctRemise = parseFloat(document.getElementById('input-remise').value) || 0;
+        let valRemise = subtotal * (pctRemise / 100);
+        let netHT = subtotal - valRemise;
+        let pctTVA = parseFloat(document.getElementById('input-tva').value) || 0;
+        let valTVA = netHT * (pctTVA / 100);
+        let totalTTC = netHT + valTVA;
+        let pctAcompte = parseFloat(document.getElementById('input-acompte').value) || 0;
+        let valAcompte = totalTTC * (pctAcompte / 100);
+        let soldeReste = totalTTC - valAcompte;
+
+        let rowsHTML = lineItems.map((item, i) => `
             <tr>
-                <td style="font-weight:600;">${String(i+1).padStart(2,'0')}. ${l.desc}</td>
-                <td class="text-right">${l.qty}</td>
-                <td style="text-transform:lowercase;">${l.unit}</td>
-                <td class="text-right">${l.pu.toLocaleString()} F</td>
-                <td class="text-right" style="font-weight:700;">${(l.qty*l.pu).toLocaleString()} F</td>
+                <td style="font-weight:600;">${String(i+1).padStart(2,'0')}. ${item.desc}</td>
+                <td class="align-right">${item.qty}</td>
+                <td style="text-transform:lowercase; color:#475569;">${item.unit}</td>
+                <td class="align-right">${item.pu.toLocaleString('fr-FR')} F</td>
+                <td class="align-right" style="font-weight:700;">${(item.qty * item.pu).toLocaleString('fr-FR')} F</td>
             </tr>
         `).join('');
 
-        document.getElementById('pdf-render-zone').innerHTML = `
-            <table class="pdf-header-table">
+        if(lineItems.length === 0) {
+            rowsHTML = `<tr><td colspan="5" style="text-align:center; color:#94a3b8;">Aucun poste enregistré dans ce document.</td></tr>`;
+        }
+
+        document.getElementById('pdf-view-target').innerHTML = `
+            <table class="pdf-header">
                 <tr>
                     <td style="width:55%; vertical-align:top;">
-                        <h1 style="margin:0; font-size:22px; font-weight:900; color:#0f172a; border-left:4px solid var(--orange-pro); padding-left:12px;">${entN}</h1>
-                        <p style="margin:6px 0; font-size:12px; color:#475569;">📍 Lomé, Togo | 📞 +228 90 00 00 00</p>
+                        <h1 style="margin:0; font-size:24px; font-weight:900; color:#0f172a; border-left:4px solid var(--orange-pro); padding-left:12px; text-transform:uppercase;">${bizN}</h1>
+                        <p style="margin:6px 0; font-size:12px; color:#475569; font-weight:500;">📍 ${bizA} | 📞 Tél: ${bizP}</p>
                     </td>
-                    <td class="text-right" style="width:45%; vertical-align:top;">
-                        <h2 style="margin:0; font-size:15px; color:var(--orange-pro); font-weight:800;">DEVIS QUANTITATIF & ESTIMATIF</h2>
-                        <p style="margin:4px 0; font-size:12px; color:#334155;"><b>Date :</b> 20 Juin 2026</p>
-                        <div style="margin-top:10px; background:#f8fafc; border:1px solid #e2e8f0; padding:12px; border-radius:6px; display:inline-block; text-align:left; width:250px;">
-                            <b style="font-size:11px; color:var(--orange-pro);">PROFIL DU CLIENT</b><br>
-                            <span style="font-size:13px; font-weight:700; color:#0f172a;">${cliN}</span><br>
+                    <td class="align-right" style="width:45%; vertical-align:top;">
+                        <h2 style="margin:0; font-size:16px; color:var(--orange-pro); font-weight:800; letter-spacing:0.5px;">${docType}</h2>
+                        <p style="margin:4px 0; font-size:12px; color:#334155;"><b>Référence :</b> ${docId}</p>
+                        <p style="margin:2px 0; font-size:12px; color:#334155;"><b>Date :</b> ${docDate}</p>
+                        
+                        <div style="margin-top:15px; background:#f8fafc; border:1px solid #e2e8f0; padding:12px; border-radius:6px; display:inline-block; text-align:left; width:260px;">
+                            <b style="font-size:10px; color:var(--orange-pro); letter-spacing:0.5px; text-transform:uppercase;">Destinataire / Client</b><br>
+                            <span style="font-size:14px; font-weight:700; color:#0f172a;">${cliN}</span><br>
                             <span style="font-size:12px; color:#475569;">📞 Tél : ${cliP}</span><br>
-                            <span style="font-size:12px; color:#475569;">📍 Site : ${cliL}</span>
+                            <span style="font-size:12px; color:#475569;">📍 Chantier : ${cliL}</span>
                         </div>
                     </td>
                 </tr>
             </table>
 
-            <table class="pdf-table">
+            <table class="pdf-clean-table">
                 <thead>
                     <tr>
-                        <th>DESIGNATION DES PRESTATIONS</th>
-                        <th class="text-right" style="width:45px;">QTÉ</th>
-                        <th style="width:65px;">UNITÉ</th>
-                        <th class="text-right" style="width:110px;">P.U. HT</th>
-                        <th class="text-right" style="width:120px;">MONTANT HT</th>
+                        <th>Désignation des Prestations / Matériaux</th>
+                        <th class="align-right" style="width:50px;">Qté</th>
+                        <th style="width:70px;">Unité</th>
+                        <th class="align-right" style="width:115px;">P.U. HT</th>
+                        <th class="align-right" style="width:130px;">Montant HT</th>
                     </tr>
                 </thead>
-                <tbody>${rows}</tbody>
+                <tbody>
+                    ${rowsHTML}
+                </tbody>
             </table>
 
-            <div style="display:flex; justify-content:space-between; margin-top:35px; gap:20px;">
-                <div style="width:50%; font-size:11px; color:#475569; background:#f8fafc; padding:12px; border-radius:6px; border:1px solid #e2e8f0; line-height:1.6;">
-                    <b>CONDITIONS REGLÉMENTAIRES :</b><br>
-                    • Devis valable pour une durée de 30 jours.<br>
-                    • Modalités : 40% à la validation, solde selon avancement des travaux.
+            <div style="display:flex; justify-content:space-between; margin-top:40px; gap:25px; page-break-inside:avoid;">
+                <div style="width:50%; font-size:11px; color:#475569; background:#f8fafc; padding:15px; border-radius:6px; border:1px solid #e2e8f0; line-height:1.6;">
+                    <b style="color:#0f172a; text-transform:uppercase; font-size:10px; letter-spacing:0.5px;">Conditions Générales :</b><br>
+                    ${notes}
                 </div>
                 <div style="width:45%;">
                     <table style="width:100%; font-size:13px; border-collapse:collapse;">
-                        <tr><td style="padding:5px 0; color:#475569;">SOUS-TOTAL HT :</td><td class="text-right" style="font-weight:600;">${totals.subtotal.toLocaleString()} F</td></tr>
-                        <tr><td style="padding:5px 0; color:var(--danger)">REMISE (5%) :</td><td class="text-right" style="color:var(--danger); font-weight:600;">-${totals.valRemise.toLocaleString()} F</td></tr>
-                        <tr style="border-bottom:1px solid #cbd5e1;"><td style="padding:5px 0; font-weight:700; color:#0f172a;">NET HORS TAXES :</td><td class="text-right" style="font-weight:700; color:#0f172a;">${totals.netHT.toLocaleString()} F</td></tr>
-                        <tr style="border-bottom:1px solid #cbd5e1;"><td style="padding:5px 0; color:#475569;">TVA (18%) :</td><td class="text-right">${totals.valTVA.toLocaleString()} F</td></tr>
-                        <tr style="font-size:15px; font-weight:900; color:#0f172a;"><td style="padding:8px 0;">NET À PAYER TTC :</td><td class="text-right" style="color:var(--orange-pro);">${totals.totalTTC.toLocaleString()} F</td></tr>
-                        <tr style="color:#16a34a; font-weight:700; border-top:1px dashed #cbd5e1;"><td style="padding:5px 0;">ACOMPTE EXIGÉ (40%) :</td><td class="text-right">${totals.valAcompte.toLocaleString()} F</td></tr>
-                        <tr style="font-weight:800; border-top:1px solid #0f172a;"><td style="padding:6px 0;">RESTE À VERSER :</td><td class="text-right">${totals.resteAPayer.toLocaleString()} F</td></tr>
+                        <tr><td style="padding:6px 0; color:#475569;">Sous-Total HT :</td><td class="align-right" style="font-weight:600;">${subtotal.toLocaleString('fr-FR')} F</td></tr>
+                        ${pctRemise > 0 ? `<tr><td style="padding:6px 0; color:var(--danger)">Remise Commerciale (${pctRemise}%) :</td><td class="align-right" style="color:var(--danger); font-weight:600;">-${valRemise.toLocaleString('fr-FR')} F</td></tr>` : ''}
+                        <tr style="border-bottom:1px solid #cbd5e1;"><td style="padding:6px 0; font-weight:700; color:#0f172a;">Net Hors Taxes :</td><td class="align-right" style="font-weight:700; color:#0f172a;">${netHT.toLocaleString('fr-FR')} F</td></tr>
+                        <tr style="border-bottom:1px solid #cbd5e1;"><td style="padding:6px 0; color:#475569;">TVA (${pctTVA}%) :</td><td class="align-right">${valTVA.toLocaleString('fr-FR')} F</td></tr>
+                        <tr style="font-size:16px; font-weight:900; color:#0f172a;"><td style="padding:10px 0;">NET À PAYER TTC :</td><td class="align-right" style="color:var(--orange-pro); font-size:18px;">${totalTTC.toLocaleString('fr-FR')} F</td></tr>
+                        ${pctAcompte > 0 ? `
+                        <tr style="color:#16a34a; font-weight:700; border-top:1px dashed #cbd5e1;"><td style="padding:6px 0;">Acompte Exigé (${pctAcompte}%) :</td><td class="align-right">${valAcompte.toLocaleString('fr-FR')} F</td></tr>
+                        <tr style="font-weight:800; border-top:1px solid #0f172a; font-size:14px;"><td style="padding:8px 0;">RESTE À VERSER :</td><td class="align-right">${soldeReste.toLocaleString('fr-FR')} F</td></tr>
+                        ` : ''}
                     </table>
                 </div>
             </div>
         `;
     }
-
-    window.onload = function() { calculateFinancials(); };
 </script>
 </body>
 </html>
