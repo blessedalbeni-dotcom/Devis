@@ -3,24 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BTP Devis Pro - Version Multinationale Élite</title>
+    <title>AFRIQUE BTP Pro - Premium Élite</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
-            --bg-main: #0f141c; --bg-card: #171f2b; --orange-pro: #d97706; /* Doré/Ambre pour la confiance royale */
+            --bg-main: #0f141c; --bg-card: #171f2b; --orange-pro: #d97706; 
             --orange-hover: #b45309; --border: #243145; --text: #f8fafc;
             --text-muted: #94a3b8; --success: #16a34a; --danger: #dc2626;
         }
         body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg-main); color: var(--text); margin: 0; padding: 0; }
         
-        /* PROTECTION SÉCURISÉE PAR APPAREIL */
+        /* PROTECTION SÉCURISÉE AVEC EFFET DE SCANNER ET ANALYSE */
         #activation-guard {
             position: fixed; top:0; left:0; width:100%; height:100%; 
             background: #0b0f16; z-index: 99999; display: flex; 
             justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;
         }
         .guard-card { background: var(--bg-card); border: 1px solid var(--border); padding: 30px; border-radius: 12px; max-width: 450px; width: 100%; text-align: center; }
-        .hardware-box { background: #0b0f16; border: 1px dashed var(--orange-pro); padding: 12px; border-radius: 6px; font-family: monospace; font-size: 16px; color: var(--orange-pro); font-weight: bold; margin: 15px 0; user-select: all; cursor: pointer; }
+        
+        .hardware-box { 
+            background: #0b0f16; border: 1px dashed var(--orange-pro); padding: 12px; 
+            border-radius: 6px; font-family: monospace; font-size: 16px; color: var(--orange-pro); 
+            font-weight: bold; margin: 15px 0; user-select: all; cursor: pointer;
+            letter-spacing: 1px; transition: all 0.3s ease;
+        }
 
         .no-print { display: block; }
         .top-bar { background-color: #0b0f16; border-bottom: 1px solid var(--border); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
@@ -64,13 +70,11 @@
         .summary-line.grand-total { font-weight: 900; font-size: 20px; color: var(--orange-pro); border-bottom: 2px solid var(--orange-pro); }
         .inline-input { width: 90px; padding: 8px; text-align: center; background: var(--bg-card); }
         
-        /* FORMAT CARNET D'ADRESSES */
         .address-book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-top: 15px; }
         .contact-card { background: #0b0f16; border: 1px solid var(--border); padding: 15px; border-radius: 8px; position: relative; }
         .contact-card h4 { margin: 0 0 5px 0; color: var(--text); font-size: 16px; }
         .contact-card p { margin: 3px 0; font-size: 12px; color: var(--text-muted); }
 
-        /* ZONE DE RENDU HAUT DE GAMME */
         .pdf-container { background: white; color: #0f172a; padding: 45px 35px; border-radius: 8px; }
         .pdf-header { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
         .pdf-clean-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
@@ -88,7 +92,9 @@
         <div class="guard-card">
             <h2 style="color:var(--orange-pro); margin-top:0;">🔒 Accès Premium Protégé</h2>
             <p style="font-size:13px; color:var(--text-muted);">Veuillez copier votre <b>Code Appareil</b> et l'envoyer à votre prestataire pour recevoir votre clé d'activation unique.</p>
-            <div class="hardware-box" id="display-hw-code" onclick="navigator.clipboard.writeText(this.innerText); alert('Code copié !');">CHARGEMENT...</div>
+            
+            <div class="hardware-box" id="display-hw-code" onclick="copyHardwareCode()">ANALYSE EN COURS...</div>
+            
             <div class="field-group" style="text-align:left; margin-top:20px;">
                 <label>Clé d'activation unique</label>
                 <input type="text" id="license-key-field" placeholder="Entrez votre clé (Ex: KC-XXXXXX)">
@@ -128,7 +134,7 @@
                                 <option value="Sénégal">🇸🇳 Sénégal (Dakar) - FCFA (XOF)</option>
                                 <option value="Côte d'Ivoire">🇨🇮 Côte d'Ivoire (Abidjan) - FCFA (XOF)</option>
                                 <option value="Mali">🇲🇱 Mali (Bamako) - FCFA (XOF)</option>
-                                <option value="Burkina Faso">BF Burkina Faso (Ouagadougou) - FCFA (XOF)</option>
+                                <option value="Burkina Faso">🇧🇫 Burkina Faso (Ouagadougou) - FCFA (XOF)</option>
                                 <option value="Bénin">🇧🇯 Bénin (Cotonou) - FCFA (XOF)</option>
                                 <option value="Gabon">🇬🇦 Gabon (Libreville) - FCFA (XAF)</option>
                             </select>
@@ -204,9 +210,9 @@
         </div>
 
         <div id="panel-contacts" class="app-panel no-print">
-            <div class="panel-title">👑 Carnet d'Adresses Clients de Confiance</div>
+            <div class="panel-title">👑 Carnet d'Adresses Clients</div>
             <div class="card">
-                <p style="font-size:13px; color:var(--text-muted); margin-top:0;">Enregistrez vos clients ici pour conserver leurs coordonnées de façon sécurisée et les charger instantanément lors d'un devis.</p>
+                <p style="font-size:13px; color:var(--text-muted); margin-top:0;">Enregistrez vos clients ici pour les charger instantanément lors d'un devis.</p>
                 <div class="grid-3">
                     <div class="field-group"><label>Nom complet</label><input type="text" id="contact-name" placeholder="Ex: M. Koffi SOUKOU"></div>
                     <div class="field-group"><label>Téléphone</label><input type="text" id="contact-phone" placeholder="Ex: +228 99 88 77 66"></div>
@@ -232,7 +238,7 @@
         </div>
 
         <div id="panel-ai" class="app-panel no-print">
-            <div class="panel-title">🤖 Assistant IA : Tarification & Structures par Pays</div>
+            <div class="panel-title">🤖 Assistant IA : Générateur de Devis par Pays</div>
             <div class="card">
                 <p style="font-size:13px; color:var(--text-muted); margin-top:0;">L'IA adapte automatiquement les prix moyens des matériaux et de la main-d'œuvre selon le pays sélectionné dans votre éditeur.</p>
                 <div class="field-group">
@@ -263,8 +269,8 @@
 <script>
     let lineItems = [];
     let contacts = [];
+    let generatedHardwareCode = "";
 
-    // BASE DE DONNÉES DES TARIFS LOCAUX SÉCURISÉE PAR PAYS (VALEURS ESTIMATIVES INDEXÉES)
     const regionalTarifs = {
         "Togo": { currency: "FCFA (XOF)", ciment: 82000, main_oeuvre: 4500, point_elec: 11000 },
         "Sénégal": { currency: "FCFA (XOF)", ciment: 89000, main_oeuvre: 6000, point_elec: 14000 },
@@ -275,7 +281,7 @@
         "Gabon": { currency: "FCFA (XAF)", ciment: 115000, main_oeuvre: 8000, point_elec: 18000 }
     };
 
-    // PROTECTION APPAREIL CORRIGÉE
+    // ALGORITHME DE SÉCURITÉ DE L'APPAREIL
     function generateHardwareFingerprint() {
         let info = window.navigator.userAgent + window.screen.height + window.screen.width + window.navigator.language;
         let hash = 7;
@@ -287,29 +293,37 @@
         return "KC-" + ((parseInt(hwCode.replace("BTP-", "")) * 3) + 777);
     }
 
-    // GESTIONNAIRE DE CHARGEMENT PRINCIPAL (SÉCURISÉ)
+    // CHARGEMENT PRINCIPAL DE L'APPLICATION
     document.addEventListener("DOMContentLoaded", function() {
-        // Initialiser immédiatement l'empreinte de l'appareil
-        let myHardwareCode = generateHardwareFingerprint();
-        const displayBox = document.getElementById('display-hw-code');
+        generatedHardwareCode = generateHardwareFingerprint();
         
-        if (displayBox) {
-            displayBox.innerText = myHardwareCode;
-        }
+        // Phase 1 : Simulation de l'analyse (Image 1)
+        setTimeout(() => {
+            const displayBox = document.getElementById('display-hw-code');
+            if (displayBox) {
+                displayBox.innerText = "GÉNÉRATION EN COURS...";
+            }
+            
+            // Phase 2 : Affichage du code final stabilisé (Image 2)
+            setTimeout(() => {
+                if (displayBox) {
+                    displayBox.innerText = generatedHardwareCode;
+                    displayBox.style.borderStyle = "solid";
+                }
+            }, 1200);
 
-        // Vérifier si déjà activé auparavant
-        if (localStorage.getItem('app_btp_multi_v7') === calculateKeyFromHardware(myHardwareCode)) {
+        }, 1500);
+
+        // Vérification de licence existante
+        if (localStorage.getItem('app_btp_multi_v7') === calculateKeyFromHardware(generatedHardwareCode)) {
             const guard = document.getElementById('activation-guard');
             if (guard) guard.style.display = 'none';
         }
 
-        // Configurer la date par défaut
+        // Configuration initiale
         const dateInput = document.getElementById('doc-date');
-        if (dateInput) {
-            dateInput.value = new Date().toISOString().split('T')[0];
-        }
+        if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
         
-        // Charger les contacts sauvegardés
         if (localStorage.getItem('btp_contacts')) {
             contacts = JSON.parse(localStorage.getItem('btp_contacts'));
         }
@@ -318,13 +332,20 @@
         renderContactsList();
     });
 
+    function copyHardwareCode() {
+        const displayBox = document.getElementById('display-hw-code');
+        if (displayBox && displayBox.innerText !== "ANALYSE EN COURS..." && displayBox.innerText !== "GÉNÉRATION EN COURS...") {
+            navigator.clipboard.writeText(displayBox.innerText);
+            alert('Code appareil copié avec succès !');
+        }
+    }
+
     function validateHardwareLicence() {
-        let myHardwareCode = generateHardwareFingerprint();
         let inputField = document.getElementById('license-key-field');
         let errorMsg = document.getElementById('license-error');
         
-        if (inputField && inputField.value.trim().toUpperCase() === calculateKeyFromHardware(myHardwareCode)) {
-            localStorage.setItem('app_btp_multi_v7', calculateKeyFromHardware(myHardwareCode));
+        if (inputField && inputField.value.trim().toUpperCase() === calculateKeyFromHardware(generatedHardwareCode)) {
+            localStorage.setItem('app_btp_multi_v7', calculateKeyFromHardware(generatedHardwareCode));
             const guard = document.getElementById('activation-guard');
             if (guard) guard.style.display = 'none';
         } else {
@@ -342,7 +363,7 @@
         refreshCalculations();
     }
 
-    // CARNET D'ADRESSES
+    // CARNET DE CONTACTS
     function saveNewContact() {
         let name = document.getElementById('contact-name').value.trim();
         let phone = document.getElementById('contact-phone').value.trim();
@@ -370,7 +391,7 @@
         document.getElementById('cli-name').value = c.name;
         document.getElementById('cli-phone').value = c.phone;
         document.getElementById('cli-location').value = c.addr + " (" + c.country + ")";
-        alert(`👑 Client ${c.name} installé avec succès sur le devis actuel.`);
+        alert(`👑 Client ${c.name} chargé sur le devis.`);
         openPanel('panel-doc');
     }
 
@@ -378,7 +399,7 @@
         const zone = document.getElementById('contacts-display-zone');
         if(!zone) return;
         if(contacts.length === 0) {
-            zone.innerHTML = `<p style="grid-column: 1/-1; color: var(--text-muted); font-size:13px;">Aucun client enregistré pour le moment.</p>`;
+            zone.innerHTML = `<p style="grid-column: 1/-1; color: var(--text-muted); font-size:13px;">Aucun client enregistré.</p>`;
             return;
         }
         zone.innerHTML = contacts.map((c, i) => `
@@ -395,7 +416,7 @@
         `).join('');
     }
 
-    // GENERATEUR IA PAR TARIFS LOCAUX
+    // MOTEUR D'INJECTION DE TARIFS PAR IA
     function executeRegionalAiGeneration() {
         let country = document.getElementById('app-country-selector').value;
         let lot = document.getElementById('ai-template-selector').value;
@@ -404,25 +425,25 @@
         let tempItems = [];
         if(lot === "gros_oeuvre") {
             tempItems = [
-                { desc: `Fourniture de Ciment de qualité supérieure (Prix indexé ${country})`, qty: 5, unit: "Sacs", pu: Math.round(local.ciment / 20) },
-                { desc: "Sable de rivière propre de carrière", qty: 2, unit: "m³", pu: 18000 },
-                { desc: "Main-d'œuvre qualifiée spécialisée Gros Œuvre", qty: 4, unit: "m", pu: local.main_oeuvre }
+                { desc: `Fourniture de Ciment CPJ 45 (Tarif indexé ${country})`, qty: 50, unit: "Sacs", pu: Math.round(local.ciment / 20) },
+                { desc: "Sable de rivière pour bétonnage et maçonnerie", qty: 4, unit: "m³", pu: 18000 },
+                { desc: "Main-d'œuvre Gros Œuvre de fondation", qty: 10, unit: "m", pu: local.main_oeuvre }
             ];
         } else if(lot === "electricite") {
             tempItems = [
-                { desc: `Réalisation de points lumineux encastrés complets`, qty: 12, unit: "U", pu: local.point_elec },
-                { desc: "Tableau de répartition divisionnaire modulaire", qty: 1, unit: "U", pu: 45000 }
+                { desc: `Câblage et réalisation de points lumineux encastrés`, qty: 15, unit: "U", pu: local.point_elec },
+                { desc: "Tableau de répartition électrique modulaire avec disjoncteurs", qty: 1, unit: "U", pu: 45000 }
             ];
         } else if(lot === "plomberie") {
             tempItems = [
-                { desc: "Installation de WC à poser avec mécanisme complet", qty: 1, unit: "U", pu: 68000 },
-                { desc: "Réseau de distribution multicouche eau froide", qty: 1, unit: "Forfait", pu: 75000 }
+                { desc: "Installation de WC suspendu avec mécanisme complet", qty: 2, unit: "U", pu: 68000 },
+                { desc: "Distribution tuyauterie multicouche eau chaude/froide", qty: 1, unit: "Forfait", pu: 75000 }
             ];
         }
         
         lineItems = [...lineItems, ...tempItems];
         refreshCalculations();
-        alert(`✨ Les lignes ont été injectées avec les tarifs calculés pour le ${country}.`);
+        alert(`✨ Devis IA mis à jour avec les structures de coûts de l'espace ${country}.`);
         openPanel('panel-doc');
     }
 
@@ -488,7 +509,7 @@
     function downloadDirectPdf() {
         const element = document.getElementById('capture-pdf-target');
         const numDoc = document.getElementById('doc-id').value || "devis";
-        html2pdf().set({ margin: 10, filename: `Document_${numDoc}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { format: 'a4', orientation: 'portrait' } }).from(element).save();
+        html2pdf().set({ margin: 10, filename: `Devis_${numDoc}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { format: 'a4', orientation: 'portrait' } }).from(element).save();
     }
 
     function generatePdfRendu() {
@@ -513,7 +534,7 @@
                 </tr>
             </table>
             <div style="background:#f8fafc; padding:15px; border-radius:6px; margin-bottom:25px; border-left:3px solid #b45309;">
-                <span style="font-size:10px; text-transform:uppercase; color:#64748b; font-weight:bold;">Destinataire Privilégié</span><br>
+                <span style="font-size:10px; text-transform:uppercase; color:#64748b; font-weight:bold;">Destinataire</span><br>
                 <b style="font-size:15px; color:#0f172a;">${document.getElementById('cli-name').value}</b><br>
                 <span style="font-size:13px; color:#334155;">📞 Contacts : ${document.getElementById('cli-phone').value} | 📍 Chantier : ${document.getElementById('cli-location').value}</span>
             </div>
@@ -539,7 +560,7 @@
                 </div>
                 <div class="pdf-signature-grid">
                     <div class="signature-box">Bon pour Accord (Le Client)</div>
-                    <div class="signature-box">Pour l'Entreprise (Maintien de Confiance)</div>
+                    <div class="signature-box">Pour l'Entreprise</div>
                 </div>
             </div>
         `;
