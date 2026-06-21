@@ -88,7 +88,7 @@
         <div class="guard-card">
             <h2 style="color:var(--orange-pro); margin-top:0;">🔒 Accès Premium Protégé</h2>
             <p style="font-size:13px; color:var(--text-muted);">Veuillez copier votre <b>Code Appareil</b> et l'envoyer à votre prestataire pour recevoir votre clé d'activation unique.</p>
-            <div class="hardware-box" id="display-hw-code" onclick="navigator.clipboard.writeText(this.innerText); alert('Code copié !');">GÉNÉRATION EN COURS...</div>
+            <div class="hardware-box" id="display-hw-code" onclick="navigator.clipboard.writeText(this.innerText); alert('Code copié !');">CHARGEMENT...</div>
             <div class="field-group" style="text-align:left; margin-top:20px;">
                 <label>Clé d'activation unique</label>
                 <input type="text" id="license-key-field" placeholder="Entrez votre clé (Ex: KC-XXXXXX)">
@@ -113,7 +113,6 @@
     <div class="container">
         
         <div id="panel-doc" class="app-panel active no-print">
-            <!-- Informations invisibles requises pour éviter les crashs de l'impression PDF -->
             <input type="hidden" id="biz-name" value="AFRIQUE BTP PRO">
             <input type="hidden" id="biz-address" value="Zone Régionale Ouest & Centre">
             <input type="hidden" id="biz-phone" value="Support Premium">
@@ -276,44 +275,67 @@
         "Gabon": { currency: "FCFA (XAF)", ciment: 115000, main_oeuvre: 8000, point_elec: 18000 }
     };
 
-    // PROTECTION APPAREIL AVEC RECOURS PAR SÉCURITÉ
+    // PROTECTION APPAREIL CORRIGÉE
     function generateHardwareFingerprint() {
         let info = window.navigator.userAgent + window.screen.height + window.screen.width + window.navigator.language;
         let hash = 7;
         for (let i = 0; i < info.length; i++) { hash = (hash * 31) + info.charCodeAt(i); }
         return "BTP-" + (Math.abs(hash % 90000) + 10000);
     }
+    
     function calculateKeyFromHardware(hwCode) {
         return "KC-" + ((parseInt(hwCode.replace("BTP-", "")) * 3) + 777);
     }
 
-    window.onload = function() {
+    // GESTIONNAIRE DE CHARGEMENT PRINCIPAL (SÉCURISÉ)
+    document.addEventListener("DOMContentLoaded", function() {
+        // Initialiser immédiatement l'empreinte de l'appareil
         let myHardwareCode = generateHardwareFingerprint();
-        document.getElementById('display-hw-code').innerText = myHardwareCode;
-        if (localStorage.getItem('app_btp_multi_v7') === calculateKeyFromHardware(myHardwareCode)) {
-            document.getElementById('activation-guard').style.display = 'none';
-        }
-        document.getElementById('doc-date').value = new Date().toISOString().split('T')[0];
+        const displayBox = document.getElementById('display-hw-code');
         
-        if(localStorage.getItem('btp_contacts')) {
+        if (displayBox) {
+            displayBox.innerText = myHardwareCode;
+        }
+
+        // Vérifier si déjà activé auparavant
+        if (localStorage.getItem('app_btp_multi_v7') === calculateKeyFromHardware(myHardwareCode)) {
+            const guard = document.getElementById('activation-guard');
+            if (guard) guard.style.display = 'none';
+        }
+
+        // Configurer la date par défaut
+        const dateInput = document.getElementById('doc-date');
+        if (dateInput) {
+            dateInput.value = new Date().toISOString().split('T')[0];
+        }
+        
+        // Charger les contacts sauvegardés
+        if (localStorage.getItem('btp_contacts')) {
             contacts = JSON.parse(localStorage.getItem('btp_contacts'));
         }
+        
         updateCountryCurrency();
         renderContactsList();
-    };
+    });
 
     function validateHardwareLicence() {
         let myHardwareCode = generateHardwareFingerprint();
-        if (document.getElementById('license-key-field').value.trim().toUpperCase() === calculateKeyFromHardware(myHardwareCode)) {
+        let inputField = document.getElementById('license-key-field');
+        let errorMsg = document.getElementById('license-error');
+        
+        if (inputField && inputField.value.trim().toUpperCase() === calculateKeyFromHardware(myHardwareCode)) {
             localStorage.setItem('app_btp_multi_v7', calculateKeyFromHardware(myHardwareCode));
-            document.getElementById('activation-guard').style.display = 'none';
+            const guard = document.getElementById('activation-guard');
+            if (guard) guard.style.display = 'none';
         } else {
-            document.getElementById('license-error').style.display = 'block';
+            if (errorMsg) errorMsg.style.display = 'block';
         }
     }
 
     function updateCountryCurrency() {
-        let country = document.getElementById('app-country-selector').value;
+        let selector = document.getElementById('app-country-selector');
+        if (!selector) return;
+        let country = selector.value;
         let labels = document.querySelectorAll('.currency-label');
         let cur = regionalTarifs[country].currency.split(' ')[0];
         labels.forEach(l => l.innerText = cur);
@@ -407,11 +429,17 @@
     function openPanel(panelId) {
         document.querySelectorAll('.app-panel').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(panelId).classList.add('active');
+        
+        const targetPanel = document.getElementById(panelId);
+        if (targetPanel) targetPanel.classList.add('active');
+        
         if(panelId === 'panel-doc') document.getElementById('btn-tab-doc').classList.add('active');
         if(panelId === 'panel-contacts') document.getElementById('btn-tab-contacts').classList.add('active');
         if(panelId === 'panel-ai') document.getElementById('btn-tab-ai').classList.add('active');
-        if(panelId === 'panel-preview') { document.getElementById('btn-tab-preview').classList.add('active'); generatePdfRendu(); }
+        if(panelId === 'panel-preview') { 
+            document.getElementById('btn-tab-preview').classList.add('active'); 
+            generatePdfRendu(); 
+        }
     }
 
     function addNewLineItem() {
@@ -436,13 +464,15 @@
         let aco = parseFloat(document.getElementById('input-acompte').value) || 0;
         let vAco = ttc * (aco / 100); let solde = ttc - vAco;
         
-        let country = document.getElementById('app-country-selector').value;
+        let selector = document.getElementById('app-country-selector');
+        if (!selector) return;
+        let country = selector.value;
         let cur = regionalTarifs[country].currency.split(' ')[0];
 
         if(document.getElementById('calc-subtotal')) document.getElementById('calc-subtotal').innerText = subtotal.toLocaleString('fr-FR') + " " + cur;
         if(document.getElementById('calc-netht')) document.getElementById('calc-netht').innerText = net.toLocaleString('fr-FR') + " " + cur;
         if(document.getElementById('calc-ttc')) document.getElementById('calc-ttc').innerText = ttc.toLocaleString('fr-FR') + " " + cur;
-        if(document.getElementById('calc-acompte-val')) document.getElementById('calc-acompte-val').innerText = vAco.toLocaleString('fr-FR) + " " + cur;
+        if(document.getElementById('calc-acompte-val')) document.getElementById('calc-acompte-val').innerText = vAco.toLocaleString('fr-FR') + " " + cur;
         if(document.getElementById('calc-solde')) document.getElementById('calc-solde').innerText = solde.toLocaleString('fr-FR') + " " + cur;
 
         const container = document.getElementById('items-dynamic-container');
