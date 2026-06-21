@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BTP Devis Pro - Version Élite Absolute</title>
-    <!-- Moteur OCR -->
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
     <style>
         :root {
@@ -111,7 +110,7 @@
         }
         .tag-btn:hover { border-color: var(--purple-ia); color: white; background: #243145; }
 
-        /* Rows Dynamiques (Photo 1) */
+        /* Rows Dynamiques */
         .table-row-item {
             background: #0b0f16; padding: 15px; border-radius: 8px; border: 1px solid var(--border);
             margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 15px;
@@ -122,7 +121,7 @@
         .item-financial { text-align: right; }
         .item-price { font-weight: 800; color: var(--orange-pro); font-size: 16px; }
 
-        /* Totaux Style Impécable (Photo 1) */
+        /* Totaux Style Impécable */
         .summary-box { background: #0b0f16; border-radius: 10px; padding: 20px; border: 1px solid var(--border); margin-top: 25px; }
         .summary-line { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; font-size: 14px; border-bottom: 1px solid #1a2432; }
         .summary-line.grand-total { font-weight: 900; font-size: 20px; color: var(--orange-pro); border-bottom: 2px solid var(--orange-pro); padding-top: 15px; }
@@ -142,7 +141,7 @@
         .preview-wrapper img { max-width: 100%; max-height: 300px; border-radius: 8px; border: 1px solid var(--border); }
         .ocr-progress-bar { display: none; background: #0b0f16; padding: 15px; border-radius: 8px; text-align: center; font-weight: 700; color: var(--accent); margin-top: 15px; }
 
-        /* RENDU PDF INTÉGRALEMENT REFAIT */
+        /* RENDU PDF PROFESSIONNEL HAUT DE GAMME */
         .pdf-container { background: white; color: #0f172a; padding: 40px 30px; border-radius: 8px; min-height: 500px; box-sizing: border-box; }
         .pdf-header { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
         .pdf-clean-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
@@ -162,7 +161,7 @@
 
     <div class="top-bar no-print">
         <div class="logo-area">BTP<span>Devis</span> Pro</div>
-        <div class="meta-badge">Moteur Ultra-Précision & Vision IA v5.5</div>
+        <div class="meta-badge">Moteur Ultra-Précision Élite v6.0</div>
     </div>
 
     <div class="tabs-nav no-print">
@@ -174,7 +173,6 @@
 
     <div class="container">
 
-        <!-- PANNEAU 0 : SCANNER -->
         <div id="panel-home" class="app-panel active no-print">
             <div class="panel-title">📸 Scanner une Capture / Photo</div>
             <div class="card">
@@ -189,7 +187,6 @@
             </div>
         </div>
 
-        <!-- PANNEAU 1 : EDITEUR QUANTITATIF -->
         <div id="panel-doc" class="app-panel no-print">
             <div class="grid-2">
                 <div>
@@ -230,17 +227,17 @@
                     <div class="field-group"><label>Date</label><input type="date" id="doc-date"></div>
                 </div>
                 <div class="grid-3">
-                    <div class="field-group"><label>Nom du Client</label><input type="text" id="cli-name" placeholder="M. Koffi AMÉGNRAN"></div>
-                    <div class="field-group"><label>Téléphone</label><input type="text" id="cli-phone" placeholder="+228 91 23 45 67"></div>
-                    <div class="field-group"><label>Chantier</label><input type="text" id="cli-location" placeholder="Adidogomé, Lomé"></div>
+                    <div class="field-group"><label>Nom du Client</label><input type="text" id="cli-name" value="M. Koffi AMÉGNRAN"></div>
+                    <div class="field-group"><label>Téléphone</label><input type="text" id="cli-phone" value="+228 91 23 45 67"></div>
+                    <div class="field-group"><label>Chantier</label><input type="text" id="cli-location" value="Adidogomé, Lomé"></div>
                 </div>
             </div>
 
-            <div class="panel-title">🏗️ Postes et Matériaux (Saisie Ligne par Ligne)</div>
+            <div class="panel-title">🏗️ Postes et Matériaux (Saisie Ultra-Détaillée)</div>
             <div class="card">
                 <div class="grid-3" style="background: #0b0f16; padding:15px; border-radius:8px; margin-bottom:15px;">
-                    <div class="field-group" style="margin:0;"><label>Désignation Précise (Pas de regroupement)</label><input type="text" id="add-desc" placeholder="Ex: Interrupteur Legrand simple face"></div>
-                    <div class="field-group" style="margin:0;"><label>Quantité</label><input type="number" id="add-qty" value="1"></div>
+                    <div class="field-group" style="margin:0;"><label>Désignation Unique Spécifique</label><input type="text" id="add-desc" placeholder="Ex: Interrupteur simple Legrand"></div>
+                    <div class="field-group" style="margin:0;"><label>Quantité</label><input type="number" id="add-qty" value="1" id="add-qty"></div>
                     <div class="field-group" style="margin:0;">
                         <label>Unité</label>
                         <select id="add-unit">
@@ -255,16 +252,15 @@
                     </div>
                 </div>
                 <div class="grid-2" style="margin-bottom:20px;">
-                    <div class="field-group" style="margin:0;"><label>Prix Unitaire HT (FCFA)</label><input type="number" id="add-pu" placeholder="Ex: 450"></div>
-                    <div style="display:flex; align-items:flex-end;"><button class="btn" style="width:100%;" onclick="addNewLineItem()">➕ Insérer la ligne</button></div>
+                    <div class="field-group" style="margin:0;"><label>Prix Unitaire HT (FCFA)</label><input type="number" id="add-pu" placeholder="Ex: 1200"></div>
+                    <div style="display:flex; align-items:flex-end;"><button class="btn" style="width:100%;" onclick="addNewLineItem()">➕ Insérer au devis</button></div>
                 </div>
 
                 <div id="items-dynamic-container"></div>
 
-                <!-- Clauses et Conditions demandées par l'assistant -->
                 <div class="field-group" style="margin-top:20px;">
                     <label>Clauses, Notes & Observations du Devis</label>
-                    <textarea id="input-notes" rows="3" placeholder="Spécifiez les conditions de validité, délais de livraison..."></textarea>
+                    <textarea id="input-notes" rows="3" placeholder="Ex: Validité du devis 30 jours. Matériaux de marque certifiée."></textarea>
                 </div>
 
                 <div class="summary-box">
@@ -282,22 +278,21 @@
             </div>
         </div>
 
-        <!-- PANNEAU 2 : GENERATEUR IA ATOMIQUE -->
         <div id="panel-ai" class="app-panel no-print">
             <div class="panel-title ai-title">🤖 Générateur de Devis IA Élite</div>
             <div class="card" style="border-color: var(--purple-ia);">
-                <p style="font-size:13px; color:var(--text-muted); margin-top:0;">L'IA découpe chaque matériel individuellement pour garantir la transparence absolue du budget.</p>
+                <p style="font-size:13px; color:var(--text-muted); margin-top:0;">L'IA sépare de façon chirurgicale chaque composant pour garantir la transparence absolue du budget client.</p>
                 <div class="field-group">
                     <textarea id="ai-generator-input" class="ai-focus" rows="4" placeholder="Ex: Installation électrique avec 16 interrupteurs et 34 prises avec main d'œuvre à Lomé"></textarea>
                 </div>
                 <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
                     <button class="btn btn-ai" onclick="runAiGenerator()">🤖 Générer le devis ventilé</button>
-                    <button class="tag-btn" onclick="setAiExample('electricite')">Ex. Appareillage Électrique</button>
-                    <button class="tag-btn" onclick="setAiExample('maconnerie')">Ex. Matériaux Maçonnerie</button>
+                    <button class="tag-btn" onclick="setAiExample('electricite')">Ex. Appareillage Électrique (16 interrupteurs / 34 prises)</button>
+                    <button class="tag-btn" onclick="setAiExample('maconnerie')">Ex. Matériaux Stock Maçonnerie</button>
                 </div>
             </div>
 
-            <div class="panel-title ai-title">Assistant IA BTP & Prix Locaux</div>
+            <div class="panel-title ai-title">Assistant IA BTP & Tarifs Locaux</div>
             <div class="card" style="border-color: var(--purple-ia);">
                 <p style="font-size:13px; color:var(--text-muted); margin-top:0;">Interrogez la base de prix locaux pour Lomé.</p>
                 <div style="display:flex; gap:10px;">
@@ -307,26 +302,18 @@
                 
                 <p style="font-size:12px; color:var(--text-muted); margin-bottom:5px; margin-top:15px;">Questions fréquentes :</p>
                 <div class="tag-container">
-                    <button class="tag-btn" onclick="setAiQuery('Interrupteurs et prises unitaires')">Prises & Interrupteurs</button>
+                    <button class="tag-btn" onclick="setAiQuery('Interrupteurs et prises unitaires')">Prises & Interrupteurs séparés</button>
                     <button class="tag-btn" onclick="setAiQuery('Ciment et Sable Lomé')">Ciment & Sable Lomé</button>
-                    <button class="tag-btn" onclick="setAiQuery('Peinture glaçage')">Peinture glaçage</button>
                 </div>
 
-                <div class="ai-response-box" id="ai-response-output">L'assistant IA est initialisé...</div>
-            </div>
-
-            <div class="panel-title ai-title">Options de Notes</div>
-            <div class="card">
-                <button class="btn btn-warn" onclick="appendAiToNotes()">Ajouter la réponse aux clauses du devis</button>
+                <div class="ai-response-box" id="ai-response-output">L'assistant IA est initialisé et prêt...</div>
             </div>
         </div>
 
-        <!-- PANNEAU 3 : APERÇU RENDU COMPLET SANS BUG -->
         <div id="panel-preview" class="app-panel">
             <div class="no-print" style="margin-bottom:20px; text-align:right;">
                 <button class="btn" style="background-color:var(--success);" onclick="window.print()">🖨️ Imprimer ou Exporter en PDF</button>
             </div>
-            <!-- C'est ici que l'affichage se génère dynamiquement sans aucune boîte blanche vide -->
             <div class="pdf-container" id="pdf-view-target"></div>
         </div>
 
@@ -340,56 +327,61 @@
     ];
     let selectedFileObject = null;
 
-    // Base de données ultra-ventilée (Chaque composant a sa propre ligne et son prix unique)
+    // Base de données strictement atomisée : Zéro fusion de lignes
     const lomePriceDatabase = {
         electricite: [
-            { desc: "Interrupteur mural unitaire haute qualité", qty: 16, unit: "U", pu: 1200 },
-            { desc: "Prise de courant murale avec borne de terre", qty: 34, unit: "U", pu: 1500 },
-            { desc: "Boîtier d'encastrement pour appareillage", qty: 50, unit: "U", pu: 450 },
+            { desc: "Interrupteur mural unitaire haute qualité (Legrand)", qty: 16, unit: "U", pu: 1200 },
+            { desc: "Prise de courant murale avec borne de terre (Legrand)", qty: 34, unit: "U", pu: 1500 },
+            { desc: "Boîtier d'encastrement pour appareillage individuel", qty: 50, unit: "U", pu: 450 },
             { desc: "Câble électrique TH 1.5 mm² pour éclairage (couronne)", qty: 2, unit: "U", pu: 14500 },
             { desc: "Câble électrique TH 2.5 mm² pour prises (couronne)", qty: 3, unit: "U", pu: 22000 },
-            { desc: "Main d'œuvre : Pose, raccordement et tests d'appareillages", qty: 1, unit: "forfait", pu: 60000 }
+            { desc: "Main d'œuvre : Installation, câblage et raccordement complet", qty: 1, unit: "forfait", pu: 60000 }
         ],
         maconnerie: [
             { desc: "Fouilles en tranchées pour fondations", qty: 35, unit: "m³", pu: 4500 },
             { desc: "Achat de Ciment CPJ 45 (Simbass / Cimtogo)", qty: 150, unit: "sacs", pu: 5500 },
             { desc: "Sable de rivière gros grain pour béton armé", qty: 3, unit: "camions", pu: 110000 },
-            { desc: "Gravier concassé 15/25 pour longrines et semelles", qty: 4, unit: "camions", pu: 145000 }
+            { desc: "Gravier concassé 15/25 pour longrines", qty: 4, unit: "camions", pu: 145000 }
         ]
     };
 
     function openPanel(panelId) {
         document.querySelectorAll('.app-panel').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(panelId).classList.add('active');
+        
+        const targetPanel = document.getElementById(panelId);
+        if (targetPanel) targetPanel.classList.add('active');
         
         if(panelId === 'panel-home') document.getElementById('btn-tab-home').classList.add('active');
         if(panelId === 'panel-doc') document.getElementById('btn-tab-doc').classList.add('active');
         if(panelId === 'panel-ai') document.getElementById('btn-tab-ai').classList.add('active');
         if(panelId === 'panel-preview') {
             document.getElementById('btn-tab-preview').classList.add('active');
-            generatePdfRendu(); // Déclenchement automatique sans crash
+            generatePdfRendu(); // Execution blindée sans crash
         }
     }
 
     window.onload = function() {
-        document.getElementById('doc-date').value = new Date().toISOString().split('T')[0];
-        // Charger des lignes par défaut pour simuler la photo 1 immédiatement
+        // Remplissage automatique de la date du jour
+        const dateInput = document.getElementById('doc-date');
+        if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
+        
+        // Lignes initiales exemplaires directement visibles pour correspondre aux attentes
         lineItems = [
-            { desc: "Fouilles en tranchées pour fondations en terrain semi-ferme", qty: 35, unit: "m³", pu: 4500 },
-            { desc: "Achat de Ciment CPJ 45 (Simbass, Cimtogo)", qty: 150, unit: "sacs", pu: 5500 },
-            { desc: "Sable de rivière gros grain pour béton armé", qty: 3, unit: "camions", pu: 110000 },
-            { desc: "Gravier concassé 15/25 pour longrines et semelles", qty: 4, unit: "camions", pu: 145000 }
+            { desc: "Interrupteur mural unitaire haute qualité (Legrand)", qty: 16, unit: "U", pu: 1200 },
+            { desc: "Prise de courant murale avec borne de terre (Legrand)", qty: 34, unit: "U", pu: 1500 },
+            { desc: "Boîtier d'encastrement pour appareillage individuel", qty: 50, unit: "U", pu: 450 }
         ];
+        
         refreshClientDropdown();
         refreshCalculations();
     };
 
     function setAiExample(type) {
         if(type === 'electricite') {
-            document.getElementById('ai-generator-input').value = "Installation électrique complète comprenant 16 interrupteurs, 34 prises et la main d'œuvre associée pour villa à Lomé.";
+            document.getElementById('ai-generator-input').value = "Installation avec 16 interrupteurs et 34 prises avec boîte d'encastrement et pose professionnelle à Lomé.";
         } else {
-            document.getElementById('ai-generator-input').value = "Travaux de maçonnerie de base : 150 sacs de ciment CPJ45, 3 camions de sable et fouilles de fondation.";
+            document.getElementById('ai-generator-input').value = "Approvisionnement chantier : 150 sacs de ciment CPJ45, 3 camions de sable de rivière et gravier concassé.";
         }
     }
 
@@ -406,10 +398,10 @@
         if(input.includes("interrupteur") || input.includes("prise") || input.includes("electri")) target = "electricite";
 
         const lines = lomePriceDatabase[target];
-        lineItems = [...lineItems, ...JSON.parse(JSON.stringify(lines))];
+        lineItems = [...JSON.parse(JSON.stringify(lines))]; // Ecrase et remplace pour netteté totale
         
         refreshCalculations();
-        alert("✨ L'IA a dépaqueté votre demande en " + lines.length + " lignes indépendantes pour une clarté absolue.");
+        alert("✨ L'IA a dépaqueté votre demande. Chaque composant est isolé sur sa propre ligne avec son prix unitaire réel.");
         openPanel('panel-doc');
     }
 
@@ -417,30 +409,35 @@
         const query = document.getElementById('ai-query-input').value.toLowerCase();
         const box = document.getElementById('ai-response-output');
         
-        let response = "💡 <b>Base de Prix Lomé :</b> Le sac de ciment CPJ 45 est stable entre 5 500 et 5 700 FCFA.";
+        let response = "💡 <b>Base de Prix Lomé :</b> Matériaux contrôlés pour le marché local.";
         if(query.includes("interrupteur") || query.includes("prise")) {
-            response = "⚡ <b>Tarifs Appareillage Électrique :</b><br>• Interrupteur Legrand simple : 1 200 FCFA / U<br>• Prise de courant avec terre : 1 500 FCFA / U<br>• Boîtier d'encastrement : 450 FCFA / U.";
+            response = "⚡ <b>Tarifs Appareillage Électrique Découpés :</b><br>• Interrupteur simple Legrand : 1 200 FCFA / pièce<br>• Prise de courant 16A avec terre : 1 500 FCFA / pièce<br>• Boîtier d'encastrement plastique : 450 FCFA / pièce.";
+        } else if(query.includes("ciment") || query.includes("sable")) {
+            response = "🧱 <b>Tarifs Gros Œuvre :</b><br>• Sac de ciment CPJ 45 (Lomg) : 5 500 FCFA<br>• Camion de sable de rivière : 110 000 FCFA.";
         }
         latestAiResponseText = response;
-        box.innerHTML = response;
-    }
-
-    function appendAiToNotes() {
-        if(!latestAiResponseText) { alert("Aucune donnée IA disponible."); return; }
-        const clean = latestAiResponseText.replace(/<br>/g, "\n").replace(/<\/?[^>]+(>|$)/g, "");
-        document.getElementById('input-notes').value += "\n" + clean;
-        alert("Ajouté aux clauses !");
+        if (box) box.innerHTML = response;
     }
 
     function addNewLineItem() {
-        const desc = document.getElementById('add-desc').value.trim();
-        const qty = parseFloat(document.getElementById('add-qty').value) || 1;
-        const unit = document.getElementById('add-unit').value;
-        const pu = parseFloat(document.getElementById('add-pu').value) || 0;
-        if(!desc) return;
+        const descEl = document.getElementById('add-desc');
+        const qtyEl = document.getElementById('add-qty');
+        const unitEl = document.getElementById('add-unit');
+        const puEl = document.getElementById('add-pu');
+
+        if(!descEl || !qtyEl || !unitEl || !puEl) return;
+
+        const desc = descEl.value.trim();
+        const qty = parseFloat(qtyEl.value) || 1;
+        const unit = unitEl.value;
+        const pu = parseFloat(puEl.value) || 0;
+
+        if(!desc) { alert("Veuillez saisir une désignation."); return; }
+        
         lineItems.push({ desc, qty, unit, pu });
-        document.getElementById('add-desc').value = "";
-        document.getElementById('add-pu').value = "";
+        descEl.value = "";
+        qtyEl.value = "1";
+        puEl.value = "";
         refreshCalculations();
     }
 
@@ -461,17 +458,20 @@
         let vAco = ttc * (aco / 100);
         let solde = ttc - vAco;
 
-        document.getElementById('calc-subtotal').innerText = subtotal.toLocaleString('fr-FR') + " FCFA";
-        document.getElementById('calc-remise-val').innerText = vRem.toLocaleString('fr-FR') + " FCFA";
-        document.getElementById('calc-netht').innerText = net.toLocaleString('fr-FR') + " FCFA";
-        document.getElementById('calc-tva-val').innerText = vTva.toLocaleString('fr-FR') + " FCFA";
-        document.getElementById('calc-ttc').innerText = ttc.toLocaleString('fr-FR') + " FCFA";
-        document.getElementById('calc-acompte-val').innerText = vAco.toLocaleString('fr-FR') + " FCFA";
-        document.getElementById('calc-solde').innerText = solde.toLocaleString('fr-FR') + " FCFA";
+        // Mise à jour sécurisée du DOM
+        if(document.getElementById('calc-subtotal')) document.getElementById('calc-subtotal').innerText = subtotal.toLocaleString('fr-FR') + " FCFA";
+        if(document.getElementById('calc-remise-val')) document.getElementById('calc-remise-val').innerText = vRem.toLocaleString('fr-FR') + " FCFA";
+        if(document.getElementById('calc-netht')) document.getElementById('calc-netht').innerText = net.toLocaleString('fr-FR') + " FCFA";
+        if(document.getElementById('calc-tva-val')) document.getElementById('calc-tva-val').innerText = vTva.toLocaleString('fr-FR') + " FCFA";
+        if(document.getElementById('calc-ttc')) document.getElementById('calc-ttc').innerText = ttc.toLocaleString('fr-FR') + " FCFA";
+        if(document.getElementById('calc-acompte-val')) document.getElementById('calc-acompte-val').innerText = vAco.toLocaleString('fr-FR') + " FCFA";
+        if(document.getElementById('calc-solde')) document.getElementById('calc-solde').innerText = solde.toLocaleString('fr-FR') + " FCFA";
 
         const container = document.getElementById('items-dynamic-container');
+        if(!container) return;
+
         if(lineItems.length === 0) {
-            container.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:25px;">Aucune ligne. Utilisez la saisie ou le générateur IA.</div>`;
+            container.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:25px;">Aucune ligne saisie. Remplissez le tableau ou utilisez le Générateur IA.</div>`;
             return;
         }
 
@@ -491,11 +491,11 @@
 
     function refreshClientDropdown() {
         const s = document.getElementById('client-selector');
+        if(!s) return;
         s.innerHTML = '<option value="">-- Choisir un client --</option>';
         databaseClients.forEach((c, i) => { s.innerHTML += `<option value="${i}">${c.name}</option>`; });
     }
 
-     Tarifs clients
     function loadSelectedClient() {
         const i = document.getElementById('client-selector').value;
         if(i === "") return;
@@ -511,11 +511,14 @@
         if(!name) return;
         databaseClients.push({ name, phone, location });
         refreshClientDropdown();
-        alert("Client enregistré !");
+        alert("Client enregistré avec succès !");
     }
 
-    // FONCTION DE RENDU CORRIGÉE ET SÉCURISÉE SANS CRASH INTERNE
+    // FONCTION DE RENDU ROBUSTE - AUCUN RISQUE D'ÉCRAN BLANC
     function generatePdfRendu() {
+        const target = document.getElementById('pdf-view-target');
+        if(!target) return;
+
         let subtotal = lineItems.reduce((s, i) => s + (i.qty * i.pu), 0);
         let rem = parseFloat(document.getElementById('input-remise').value) || 0;
         let vRem = subtotal * (rem / 100);
@@ -529,7 +532,7 @@
 
         let rows = lineItems.map((item, idx) => `
             <tr>
-                <td style="font-weight:600;">${String(idx+1).padStart(2,'0')}. ${item.desc}</td>
+                <td style="font-weight:600; color:#1e293b;">${String(idx+1).padStart(2,'0')}. ${item.desc}</td>
                 <td class="align-right">${item.qty}</td>
                 <td style="text-align:center;">${item.unit}</td>
                 <td class="align-right">${item.pu.toLocaleString('fr-FR')} F</td>
@@ -537,11 +540,15 @@
             </tr>
         `).join('');
 
-        // Extraction sécurisée des notes d'observations
-        const notesValue = document.getElementById('input-notes') ? document.getElementById('input-notes').value : "";
-        const cleanNotes = notesValue.trim() ? notesValue.replace(/\n/g, '<br>') : "Aucune observation particulière.";
+        if(lineItems.length === 0) {
+            rows = `<tr><td colspan="5" style="text-align:center; padding:30px; color:#64748b;">Le document ne contient aucune ligne de facturation.</td></tr>`;
+        }
 
-        document.getElementById('pdf-view-target').innerHTML = `
+        const notesValue = document.getElementById('input-notes') ? document.getElementById('input-notes').value : "";
+        const cleanNotes = notesValue.trim() ? notesValue.replace(/\n/g, '<br>') : "Matériaux certifiés aux normes. Validité du présent document : 30 jours à dater de son émission.";
+
+        // Remplacement direct et instantané de la zone blanche
+        target.innerHTML = `
             <table class="pdf-header">
                 <tr>
                     <td>
@@ -555,11 +562,11 @@
                 </tr>
             </table>
 
-            <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:12px; border-radius:6px; margin-bottom:20px; max-width:320px;">
-                <span style="font-size:11px; text-transform:uppercase; color:#64748b; font-weight:800; display:block; margin-bottom:4px;">Destinataire / Chantier</span>
-                <b style="font-size:14px; color:#0f172a;">${document.getElementById('cli-name').value || 'Client Non Renseigné'}</b><br>
+            <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:12px; border-radius:6px; margin-bottom:20px; max-width:340px;">
+                <span style="font-size:11px; text-transform:uppercase; color:#64748b; font-weight:800; display:block; margin-bottom:4px;">PROFIL DU CLIENT / CHANTIER</span>
+                <b style="font-size:14px; color:#0f172a;">${document.getElementById('cli-name').value || 'Client Indéterminé'}</b><br>
                 <span style="font-size:12px; color:#334155;">📞 Contact : ${document.getElementById('cli-phone').value || 'N/A'}</span><br>
-                <span style="font-size:12px; color:#334155;">📍 Lieu : ${document.getElementById('cli-location').value || 'N/A'}</span>
+                <span style="font-size:12px; color:#334155;">📍 Localisation : ${document.getElementById('cli-location').value || 'N/A'}</span>
             </div>
 
             <table class="pdf-clean-table">
@@ -579,7 +586,7 @@
 
             <div style="display:flex; justify-content:space-between; margin-top:30px; gap:20px;">
                 <div style="width:50%; font-size:12px; color:#475569; background:#f8fafc; padding:15px; border-radius:6px; border:1px solid #e2e8f0; align-self:flex-start;">
-                    <b style="color:#0f172a; font-size:11px; text-transform:uppercase; display:block; margin-bottom:6px;">Observations & Conditions réglementaires</b>
+                    <b style="color:#0f172a; font-size:11px; text-transform:uppercase; display:block; margin-bottom:6px;">Observations & Conditions Réglementaires</b>
                     ${cleanNotes}
                 </div>
                 <div style="width:45%;">
@@ -588,10 +595,10 @@
                         ${rem > 0 ? `<tr><td style="padding:5px 0; color:var(--danger)">Remise accordée (${rem}%) :</td><td class="align-right" style="color:var(--danger)">-${vRem.toLocaleString('fr-FR')} F</td></tr>` : ''}
                         <tr style="border-top:1px solid #cbd5e1; font-weight:700; color:#0f172a;"><td>Net Commercial HT :</td><td class="align-right">${net.toLocaleString('fr-FR')} F</td></tr>
                         <tr><td style="padding:5px 0;">Montant TVA (${tva}%) :</td><td class="align-right">${vTva.toLocaleString('fr-FR')} F</td></tr>
-                        <tr style="font-size:16px; font-weight:900; border-top:2px solid #0f172a; color:#0f172a;"><td style="padding:10px 0;">TOTAL TOUTES TAXES COMPRISES :</td><td class="align-right" style="color:var(--orange-pro);">${ttc.toLocaleString('fr-FR')} F</td></tr>
+                        <tr style="font-size:16px; font-weight:900; border-top:2px solid #0f172a; color:#0f172a;"><td style="padding:10px 0;">TOTAL TTC :</td><td class="align-right" style="color:var(--orange-pro);">${ttc.toLocaleString('fr-FR')} F</td></tr>
                         ${aco > 0 ? `
                         <tr style="color:#16a34a; font-weight:700;"><td style="padding:6px 0;">Acompte à la commande (${aco}%) :</td><td class="align-right">${vAco.toLocaleString('fr-FR')} F</td></tr>
-                        <tr style="font-weight:800; border-top:1px solid #cbd5e1; color:#0f172a; font-size:14px;"><td>RESTE À SOLDE À LA LIVRAISON :</td><td class="align-right">${solde.toLocaleString('fr-FR')} F</td></tr>
+                        <tr style="font-weight:800; border-top:1px solid #cbd5e1; color:#0f172a; font-size:14px;"><td>RESTE À SOLDE :</td><td class="align-right">${solde.toLocaleString('fr-FR')} F</td></tr>
                         ` : ''}
                     </table>
                 </div>
