@@ -88,7 +88,7 @@
         <div class="guard-card">
             <h2 style="color:var(--orange-pro); margin-top:0;">🔒 Accès Premium Protégé</h2>
             <p style="font-size:13px; color:var(--text-muted);">Veuillez copier votre <b>Code Appareil</b> et l'envoyer à votre prestataire pour recevoir votre clé d'activation unique.</p>
-            <div class="hardware-box" id="display-hw-code" onclick="navigator.clipboard.writeText(this.innerText); alert('Code copié !');">ANALYSE EN COURS...</div>
+            <div class="hardware-box" id="display-hw-code" onclick="navigator.clipboard.writeText(this.innerText); alert('Code copié !');">GÉNÉRATION EN COURS...</div>
             <div class="field-group" style="text-align:left; margin-top:20px;">
                 <label>Clé d'activation unique</label>
                 <input type="text" id="license-key-field" placeholder="Entrez votre clé (Ex: KC-XXXXXX)">
@@ -113,6 +113,11 @@
     <div class="container">
         
         <div id="panel-doc" class="app-panel active no-print">
+            <!-- Informations invisibles requises pour éviter les crashs de l'impression PDF -->
+            <input type="hidden" id="biz-name" value="AFRIQUE BTP PRO">
+            <input type="hidden" id="biz-address" value="Zone Régionale Ouest & Centre">
+            <input type="hidden" id="biz-phone" value="Support Premium">
+
             <div class="grid-2">
                 <div>
                     <div class="panel-title">🌍 Configuration Régionale</div>
@@ -271,7 +276,7 @@
         "Gabon": { currency: "FCFA (XAF)", ciment: 115000, main_oeuvre: 8000, point_elec: 18000 }
     };
 
-    // PROTECTION APPAREIL
+    // PROTECTION APPAREIL AVEC RECOURS PAR SÉCURITÉ
     function generateHardwareFingerprint() {
         let info = window.navigator.userAgent + window.screen.height + window.screen.width + window.navigator.language;
         let hash = 7;
@@ -437,7 +442,7 @@
         if(document.getElementById('calc-subtotal')) document.getElementById('calc-subtotal').innerText = subtotal.toLocaleString('fr-FR') + " " + cur;
         if(document.getElementById('calc-netht')) document.getElementById('calc-netht').innerText = net.toLocaleString('fr-FR') + " " + cur;
         if(document.getElementById('calc-ttc')) document.getElementById('calc-ttc').innerText = ttc.toLocaleString('fr-FR') + " " + cur;
-        if(document.getElementById('calc-acompte-val')) document.getElementById('calc-acompte-val').innerText = vAco.toLocaleString('fr-FR') + " " + cur;
+        if(document.getElementById('calc-acompte-val')) document.getElementById('calc-acompte-val').innerText = vAco.toLocaleString('fr-FR) + " " + cur;
         if(document.getElementById('calc-solde')) document.getElementById('calc-solde').innerText = solde.toLocaleString('fr-FR') + " " + cur;
 
         const container = document.getElementById('items-dynamic-container');
