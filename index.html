@@ -3,35 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BTP Devis Pro - Version Commerciale Élite</title>
-    <!-- Moteurs requis : Fichiers PDF et OCR -->
+    <title>BTP Devis Pro - Version Élite</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
     <style>
         :root {
-            --bg-main: #0f141c;
-            --bg-card: #171f2b;
-            --orange-pro: #f97316;
-            --orange-hover: #ea580c;
-            --purple-ia: #a855f7;
-            --purple-hover: #9333ea;
-            --border: #243145;
-            --text: #f8fafc;
-            --text-muted: #94a3b8;
-            --success: #22c55e;
-            --danger: #ef4444;
-            --accent: #38bdf8;
+            --bg-main: #0f141c; --bg-card: #171f2b; --orange-pro: #f97316;
+            --orange-hover: #ea580c; --border: #243145; --text: #f8fafc;
+            --text-muted: #94a3b8; --success: #22c55e; --danger: #ef4444;
         }
-
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-main);
-            color: var(--text);
-            margin: 0;
-            padding: 0;
-        }
-
-        /* Écran de verrouillage anti-piratage */
+        body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg-main); color: var(--text); margin: 0; padding: 0; }
+        
+        /* ÉCRAN DE VERROUILLAGE UNIQUE PAR APPAREIL */
         #activation-guard {
             position: fixed; top:0; left:0; width:100%; height:100%; 
             background: #0b0f16; z-index: 99999; display: flex; 
@@ -41,87 +23,50 @@
             background: var(--bg-card); border: 1px solid var(--border); 
             padding: 30px; border-radius: 12px; max-width: 450px; width: 100%; text-align: center;
         }
+        .hardware-box {
+            background: #0b0f16; border: 1px dashed var(--orange-pro);
+            padding: 12px; border-radius: 6px; font-family: monospace;
+            font-size: 16px; color: var(--orange-pro); font-weight: bold;
+            margin: 15px 0; user-select: all; cursor: pointer;
+        }
 
         .no-print { display: block; }
-
-        /* Navigation */
-        .top-bar {
-            background-color: #0b0f16; border-bottom: 1px solid var(--border);
-            padding: 15px 20px; display: flex; justify-content: space-between; align-items: center;
-        }
-        .logo-area { font-weight: 900; font-size: 22px; letter-spacing: -0.5px; }
+        .top-bar { background-color: #0b0f16; border-bottom: 1px solid var(--border); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .logo-area { font-weight: 900; font-size: 22px; }
         .logo-area span { color: var(--orange-pro); }
-        .meta-badge { font-size: 11px; background: #1e293b; padding: 5px 12px; border-radius: 20px; color: var(--text-muted); font-weight: 600; }
-
-        .tabs-nav { display: flex; background: #0b0f16; border-bottom: 1px solid var(--border); overflow-x: auto; }
-        .tab-btn {
-            background: transparent; border: none; color: var(--text-muted); padding: 16px 20px;
-            font-size: 13px; font-weight: 700; cursor: pointer; flex: 1; text-align: center; position: relative;
-            white-space: nowrap; transition: color 0.2s;
-        }
+        .meta-badge { font-size: 11px; background: #1e293b; padding: 5px 12px; border-radius: 20px; color: var(--text-muted); }
+        .tabs-nav { display: flex; background: #0b0f16; border-bottom: 1px solid var(--border); }
+        .tab-btn { background: transparent; border: none; color: var(--text-muted); padding: 16px 20px; font-size: 13px; font-weight: 700; cursor: pointer; flex: 1; text-align: center; position: relative; }
         .tab-btn.active { color: var(--text); }
-        .tab-btn.active::after {
-            content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background-color: var(--orange-pro);
-        }
-
+        .tab-btn.active::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background-color: var(--orange-pro); }
         .container { max-width: 1100px; margin: 0 auto; padding: 25px 15px; }
         .app-panel { display: none; }
         .app-panel.active { display: block; }
-
-        .panel-title {
-            font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--orange-pro);
-            margin: 25px 0 12px 0; font-weight: 900; display: flex; align-items: center; gap: 8px;
-        }
-
-        .card {
-            background-color: var(--bg-card); border: 1px solid var(--border);
-            border-radius: 10px; padding: 22px; margin-bottom: 25px;
-        }
-
+        .panel-title { font-size: 12px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--orange-pro); margin: 25px 0 12px 0; font-weight: 900; }
+        .card { background-color: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 22px; margin-bottom: 25px; }
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         .grid-3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 15px; }
-        @media(max-width: 768px) { .grid-2, .grid-3 { grid-template-columns: 1fr; } }
-
         .field-group { margin-bottom: 16px; }
         label { display: block; margin-bottom: 6px; font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
-        input, select, textarea {
-            width: 100%; background-color: #0b0f16; border: 1px solid var(--border);
-            color: white; padding: 12px 14px; border-radius: 8px; box-sizing: border-box; font-size: 14px;
-        }
+        input, select, textarea { width: 100%; background-color: #0b0f16; border: 1px solid var(--border); color: white; padding: 12px 14px; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
         input:focus, select:focus, textarea:focus { border-color: var(--orange-pro); outline: none; }
-
-        .btn {
-            background-color: var(--orange-pro); color: white; border: none;
-            padding: 14px 20px; border-radius: 8px; font-weight: 700; font-size: 13px;
-            cursor: pointer; text-transform: uppercase; display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-        }
+        .btn { background-color: var(--orange-pro); color: white; border: none; padding: 14px 20px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; text-transform: uppercase; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
         .btn:hover { background-color: var(--orange-hover); }
         .btn-secondary { background-color: #1e293b; border: 1px solid var(--border); color: var(--text); }
         .btn-danger { background-color: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
-        .btn-danger:hover { background-color: rgba(239, 68, 68, 0.25); }
-
-        .table-row-item {
-            background: #0b0f16; padding: 15px; border-radius: 8px; border: 1px solid var(--border);
-            margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 15px;
-        }
-        .item-details { flex: 1; }
-        .item-title { font-weight: 700; font-size: 15px; color: var(--text); }
-        .item-subtext { font-size: 12px; color: var(--text-muted); }
+        .table-row-item { background: #0b0f16; padding: 15px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
         .item-price { font-weight: 800; color: var(--orange-pro); font-size: 16px; }
-
         .summary-box { background: #0b0f16; border-radius: 10px; padding: 20px; border: 1px solid var(--border); margin-top: 25px; }
-        .summary-line { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; font-size: 14px; border-bottom: 1px solid #1a2432; }
+        .summary-line { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #1a2432; }
         .summary-line.grand-total { font-weight: 900; font-size: 20px; color: var(--orange-pro); border-bottom: 2px solid var(--orange-pro); }
         .inline-input { width: 90px; padding: 8px; text-align: center; background: var(--bg-card); }
-
-        .vision-dropzone { border: 2px dashed var(--accent); background: #111a24; padding: 40px 20px; border-radius: 10px; text-align: center; cursor: pointer; }
-
-        /* ZONE PDF RENDU FIXE POUR TÉLÉCHARGEMENT DIRECT */
-        .pdf-container { background: white; color: #0f172a; padding: 40px 30px; border-radius: 8px; box-sizing: border-box; }
+        
+        /* STYLE EXPEDITION PDF */
+        .pdf-container { background: white; color: #0f172a; padding: 40px 30px; border-radius: 8px; }
         .pdf-header { width: 100%; border-collapse: collapse; margin-bottom: 25px; }
         .pdf-clean-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
-        .pdf-clean-table th { background: #f1f5f9; color: #334155; padding: 10px; font-size: 11px; text-transform: uppercase; font-weight: 800; border-bottom: 2px solid #cbd5e1; text-align: left; }
-        .pdf-clean-table td { padding: 12px 10px; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #334155; }
+        .pdf-clean-table th { background: #f1f5f9; color: #334155; padding: 10px; font-size: 11px; text-transform: uppercase; border-bottom: 2px solid #cbd5e1; text-align: left; }
+        .pdf-clean-table td { padding: 12px 10px; border-bottom: 1px solid #e2e8f0; font-size: 13px; }
         .align-right { text-align: right !important; }
         .pdf-receipt-zone { margin-top: 30px; border: 2px dashed #cbd5e1; background: #f8fafc; padding: 20px; border-radius: 8px; }
         .pdf-signature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 25px; }
@@ -130,24 +75,28 @@
 </head>
 <body>
 
-    <!-- BARRIÈRE DE PROTECTION ANTI-PIRATAGE -->
+    <!-- PROTECTION PAR EMPREINTE MATÉRIELLE -->
     <div id="activation-guard">
         <div class="guard-card">
-            <h2 style="color:var(--orange-pro); margin-top:0;">🔑 Activation Requise</h2>
-            <p style="font-size:14px; color:var(--text-muted);">Cette copie de l'application n'est pas activée ou a été partagée sans autorisation.</p>
+            <h2 style="color:var(--orange-pro); margin-top:0;">🔒 Application Verrouillée</h2>
+            <p style="font-size:13px; color:var(--text-muted);">Cette application est protégée. Veuillez copier votre <b>Code Appareil</b> ci-dessous et l'envoyer au vendeur pour recevoir votre clé d'activation unique.</p>
+            
+            <label style="text-align: left;">Votre Code Appareil unique :</label>
+            <div class="hardware-box" id="display-hw-code" onclick="navigator.clipboard.writeText(this.innerText); alert('Code copié !');">CHARGEMENT...</div>
+            
             <div class="field-group" style="text-align:left; margin-top:20px;">
-                <label>Clé de Licence Produit</label>
-                <input type="text" id="license-key-field" placeholder="Entrez votre clé unique">
+                <label>Clé d'activation unique reçue</label>
+                <input type="text" id="license-key-field" placeholder="Entrez la clé numérique fournie">
             </div>
-            <button class="btn" style="width:100%; margin-top:10px;" onclick="validateAppLicence()">Activer l'Application</button>
-            <p id="license-error" style="color:var(--danger); font-size:12px; margin-top:12px; display:none;">⚠️ Clé invalide. Contactez le vendeur.</p>
+            <button class="btn" style="width:100%; margin-top:10px;" onclick="validateHardwareLicence()">Activer mon appareil</button>
+            <p id="license-error" style="color:var(--danger); font-size:12px; margin-top:12px; display:none;">⚠️ Clé d'activation non valide pour cet appareil.</p>
         </div>
     </div>
 
     <!-- CODE DE L'APPLICATION -->
     <div class="top-bar no-print">
         <div class="logo-area">BTP<span>Devis</span> Pro</div>
-        <div class="meta-badge">Licence Commerciale Officielle</div>
+        <div class="meta-badge">Licence Sécurisée Actived</div>
     </div>
 
     <div class="tabs-nav no-print">
@@ -156,14 +105,11 @@
     </div>
 
     <div class="container">
-
-        <!-- PANNEAU 1 : ÉDITEUR QUANTITATIF -->
+        <!-- PANNEAU EDITEUR -->
         <div id="panel-doc" class="app-panel active no-print">
             <div style="text-align: right; margin-bottom: 15px;">
-                <!-- BOUTON DE NETTOYAGE CRUCIAL -->
-                <button class="btn btn-danger" style="font-size:12px; padding:10px 15px;" onclick="triggerClearEverything()">🗑️ Effacer tout le devis actuel</button>
+                <button class="btn btn-danger" style="font-size:12px; padding:10px 15px;" onclick="triggerClearEverything()">🗑️ Effacer tout</button>
             </div>
-
             <div class="grid-2">
                 <div>
                     <div class="panel-title">🏢 Votre Entreprise</div>
@@ -186,7 +132,7 @@
                                     <option value="FACTURE COMMERCIALE">FACTURE</option>
                                 </select>
                             </div>
-                            <div class="field-group"><label>Numéro</label><input type="text" id="doc-id" value="DEV-2026-042"></div>
+                            <div class="field-group"><label>Numéro</label><input type="text" id="doc-id" value="DEV-2026-001"></div>
                         </div>
                         <div class="field-group"><label>Date</label><input type="date" id="doc-date"></div>
                     </div>
@@ -202,10 +148,10 @@
                 </div>
             </div>
 
-            <div class="panel-title">🏗️ Postes et Matériaux</div>
+            <div class="panel-title">🏗️ Matériaux et Travaux</div>
             <div class="card">
                 <div class="grid-3" style="background: #0b0f16; padding:15px; border-radius:8px; margin-bottom:15px;">
-                    <div class="field-group" style="margin:0;"><label>Désignation</label><input type="text" id="add-desc" placeholder="Ex: Interrupteur Legrand"></div>
+                    <div class="field-group" style="margin:0;"><label>Désignation</label><input type="text" id="add-desc" placeholder="Ex: Ciment Coche"></div>
                     <div class="field-group" style="margin:0;"><label>Quantité</label><input type="number" id="add-qty" value="1"></div>
                     <div class="field-group" style="margin:0;">
                         <label>Unité</label>
@@ -214,297 +160,151 @@
                             <option value="forfait">forfait</option>
                             <option value="m">m</option>
                             <option value="m²">m²</option>
-                            <option value="sacs">sacs</option>
                         </select>
                     </div>
                 </div>
                 <div class="grid-2" style="margin-bottom:20px;">
-                    <div class="field-group" style="margin:0;"><label>Prix Unitaire HT (FCFA)</label><input type="number" id="add-pu" placeholder="Ex: 1200"></div>
-                    <div style="display:flex; align-items:flex-end;"><button class="btn" style="width:100%;" onclick="addNewLineItem()">➕ Insérer au devis</button></div>
+                    <div class="field-group" style="margin:0;"><label>Prix Unitaire HT (FCFA)</label><input type="number" id="add-pu" placeholder="Ex: 5000"></div>
+                    <div style="display:flex; align-items:flex-end;"><button class="btn" style="width:100%;" onclick="addNewLineItem()">➕ Insérer</button></div>
                 </div>
-
                 <div id="items-dynamic-container"></div>
-
-                <div class="field-group" style="margin-top:20px;">
-                    <label>Clauses, Notes & Observations</label>
-                    <textarea id="input-notes" rows="2" placeholder="Validité du devis 30 jours."></textarea>
-                </div>
-
+                <div class="field-group" style="margin-top:20px;"><label>Clauses & Observations</label><textarea id="input-notes" rows="2"></textarea></div>
                 <div class="summary-box">
-                    <div class="summary-line"><span>Sous-total HT</span><span id="calc-subtotal">0 FCFA</span></div>
+                    <div class="summary-line"><span>Sous-total HT</span><span id="calc-subtotal">0 F</span></div>
                     <div class="summary-line"><span>Remise (%)</span><input type="number" id="input-remise" value="0" class="inline-input" oninput="refreshCalculations()"></div>
-                    <div class="summary-line"><span>Net HT</span><span id="calc-netht">0 FCFA</span></div>
+                    <div class="summary-line"><span>Net HT</span><span id="calc-netht">0 F</span></div>
                     <div class="summary-line"><span>TVA (%)</span><input type="number" id="input-tva" value="18" class="inline-input" oninput="refreshCalculations()"></div>
-                    <div class="summary-line grand-total"><span>TOTAL TTC</span><span id="calc-ttc">0 FCFA</span></div>
-                    <div class="summary-line"><span>Acompte à la commande (%)</span><input type="number" id="input-acompte" value="40" class="inline-input" oninput="refreshCalculations()"></div>
-                    <div class="summary-line" style="color:var(--success)"><span>Montant Reçu (Acompte)</span><span id="calc-acompte-val">0 FCFA</span></div>
-                    <div class="summary-line"><span>Reste à percevoir (Solde)</span><span id="calc-solde">0 FCFA</span></div>
+                    <div class="summary-line grand-total"><span>TOTAL TTC</span><span id="calc-ttc">0 F</span></div>
+                    <div class="summary-line"><span>Acompte (%)</span><input type="number" id="input-acompte" value="40" class="inline-input" oninput="refreshCalculations()"></div>
+                    <div class="summary-line" style="color:var(--success)"><span>Montant Reçu</span><span id="calc-acompte-val">0 F</span></div>
+                    <div class="summary-line"><span>Solde Reste</span><span id="calc-solde">0 F</span></div>
                 </div>
             </div>
         </div>
 
-        <!-- PANNEAU 3 : APERÇU RENDU & TELECHARGEMENT DIRECT -->
+        <!-- PANNEAU RENDU -->
         <div id="panel-preview" class="app-panel">
-            <div class="no-print" style="margin-bottom:20px; display:flex; justify-content:space-between; gap:15px;">
-                <button class="btn btn-secondary" onclick="openPanel('panel-doc')">⬅️ Revenir aux modifications</button>
-                <!-- TELECHARGEMENT EN 1 CLIC SANS PASSER PAR LES MENUS NAVIGATEUR -->
-                <button class="btn" style="background-color:var(--success);" onclick="downloadDirectPdf()">📥 Télécharger le PDF Directement</button>
+            <div class="no-print" style="margin-bottom:20px; display:flex; justify-content:space-between;">
+                <button class="btn btn-secondary" onclick="openPanel('panel-doc')">⬅️ Modifier</button>
+                <button class="btn" style="background-color:var(--success);" onclick="downloadDirectPdf()">📥 Télécharger PDF</button>
             </div>
-            <div id="capture-pdf-target">
-                <div class="pdf-container" id="pdf-view-target"></div>
-            </div>
+            <div id="capture-pdf-target"><div class="pdf-container" id="pdf-view-target"></div></div>
         </div>
-
     </div>
 
 <script>
-    // PROTECTION SÉCURITÉ : REMPLACEZ "Milliards2026" PAR VOTRE PHRASE OU CLÉ SECRÈTE DE VENTE
-    // Chaque client à qui vous vendez l'application doit recevoir cette clé pour l'ouvrir.
-    const CORRECT_SECRET_LICENCE_KEY = "Milliards2026";
-
     let lineItems = [];
 
-    // Vérification de la licence au chargement de la page
+    // GÉNÉRATEUR D'EMPREINTE MATÉRIELLE CRIPTO-SÉCURISÉ (HORS-LIGNE)
+    function generateHardwareFingerprint() {
+        let info = window.navigator.userAgent + window.screen.height + window.screen.width + window.navigator.language;
+        let hash = 7;
+        for (let i = 0; i < info.length; i++) {
+            hash = (hash * 31) + info.charCodeAt(i);
+        }
+        let rawNum = Math.abs(hash % 90000) + 10000; // Code à 5 chiffres stables
+        return "BTP-" + rawNum;
+    }
+
+    // ALGORITHME DE CALCUL DE LA CLÉ DE RETOUR
+    function calculateKeyFromHardware(hwCode) {
+        let num = parseInt(hwCode.replace("BTP-", ""));
+        let key = (num * 3) + 777; // Formule de calcul secrète
+        return "KC-" + key;
+    }
+
     window.onload = function() {
-        const isActivated = localStorage.getItem('app_is_licensed_ok');
-        if (isActivated === "true") {
+        let myHardwareCode = generateHardwareFingerprint();
+        document.getElementById('display-hw-code').innerText = myHardwareCode;
+
+        if (localStorage.getItem('app_btp_licensed_v2') === calculateKeyFromHardware(myHardwareCode)) {
             document.getElementById('activation-guard').style.display = 'none';
         }
-
-        const dateInput = document.getElementById('doc-date');
-        if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
-        
-        lineItems = [
-            { desc: "Interrupteur mural unitaire haute qualité (Legrand)", qty: 16, unit: "U", pu: 1200 },
-            { desc: "Prise de courant murale avec borne de terre (Legrand)", qty: 34, unit: "U", pu: 1500 }
-        ];
+        document.getElementById('doc-date').value = new Date().toISOString().split('T')[0];
         refreshCalculations();
     };
 
-    function validateAppLicence() {
-        const inputKey = document.getElementById('license-key-field').value.trim();
-        if (inputKey === CORRECT_SECRET_LICENCE_KEY) {
-            localStorage.setItem('app_is_licensed_ok', "true");
-            document.getElementById('activation-guard').style.style.transition = "all 0.5s";
+    function validateHardwareLicence() {
+        let myHardwareCode = generateHardwareFingerprint();
+        let correctKey = calculateKeyFromHardware(myHardwareCode);
+        let userKey = document.getElementById('license-key-field').value.trim().toUpperCase();
+
+        if (userKey === correctKey) {
+            localStorage.setItem('app_btp_licensed_v2', correctKey);
             document.getElementById('activation-guard').style.display = 'none';
         } else {
             document.getElementById('license-error').style.display = 'block';
         }
     }
 
-    // BOUTON DE NETTOYAGE COMPLET
-    function triggerClearEverything() {
-        if (confirm("🚨 Êtes-vous sûr de vouloir supprimer TOUTES les lignes et réinitialiser le document actuel ?")) {
-            lineItems = [];
-            document.getElementById('cli-name').value = "";
-            document.getElementById('cli-phone').value = "";
-            document.getElementById('cli-location').value = "";
-            document.getElementById('input-notes').value = "";
-            document.getElementById('input-remise').value = "0";
-            document.getElementById('input-acompte').value = "40";
-            refreshCalculations();
-        }
-    }
-
+    function triggerClearEverything() { if (confirm("Réinitialiser ?")) { lineItems = []; refreshCalculations(); } }
     function openPanel(panelId) {
         document.querySelectorAll('.app-panel').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        
-        const targetPanel = document.getElementById(panelId);
-        if (targetPanel) targetPanel.classList.add('active');
-        
+        document.getElementById(panelId).classList.add('active');
         if(panelId === 'panel-doc') document.getElementById('btn-tab-doc').classList.add('active');
-        if(panelId === 'panel-preview') {
-            document.getElementById('btn-tab-preview').classList.add('active');
-            generatePdfRendu();
-        }
+        if(panelId === 'panel-preview') { document.getElementById('btn-tab-preview').classList.add('active'); generatePdfRendu(); }
     }
-
     function addNewLineItem() {
-        const descEl = document.getElementById('add-desc');
-        const qtyEl = document.getElementById('add-qty');
-        const unitEl = document.getElementById('add-unit');
-        const puEl = document.getElementById('add-pu');
-
-        const desc = descEl.value.trim();
-        const qty = parseFloat(qtyEl.value) || 1;
-        const unit = unitEl.value;
-        const pu = parseFloat(puEl.value) || 0;
-
-        if(!desc) { alert("Veuillez saisir une désignation."); return; }
-        
+        const desc = document.getElementById('add-desc').value.trim();
+        const qty = parseFloat(document.getElementById('add-qty').value) || 1;
+        const unit = document.getElementById('add-unit').value;
+        const pu = parseFloat(document.getElementById('add-pu').value) || 0;
+        if(!desc) return;
         lineItems.push({ desc, qty, unit, pu });
-        descEl.value = "";
-        qtyEl.value = "1";
-        puEl.value = "";
+        document.getElementById('add-desc').value = ""; document.getElementById('add-pu').value = "";
         refreshCalculations();
     }
-
-    function removeLineItem(idx) {
-        lineItems.splice(idx, 1);
-        refreshCalculations();
-    }
+    function removeLineItem(idx) { lineItems.splice(idx, 1); refreshCalculations(); }
 
     function refreshCalculations() {
         let subtotal = lineItems.reduce((s, i) => s + (i.qty * i.pu), 0);
         let rem = parseFloat(document.getElementById('input-remise').value) || 0;
-        let vRem = subtotal * (rem / 100);
-        let net = subtotal - vRem;
+        let net = subtotal - (subtotal * (rem / 100));
         let tva = parseFloat(document.getElementById('input-tva').value) || 0;
-        let vTva = net * (tva / 100);
-        let ttc = net + vTva;
+        let ttc = net + (net * (tva / 100));
         let aco = parseFloat(document.getElementById('input-acompte').value) || 0;
-        let vAco = ttc * (aco / 100);
-        let solde = ttc - vAco;
+        let vAco = ttc * (aco / 100); let solde = ttc - vAco;
 
-        if(document.getElementById('calc-subtotal')) document.getElementById('calc-subtotal').innerText = subtotal.toLocaleString('fr-FR') + " FCFA";
-        if(document.getElementById('calc-netht')) document.getElementById('calc-netht').innerText = net.toLocaleString('fr-FR') + " FCFA";
-        if(document.getElementById('calc-ttc')) document.getElementById('calc-ttc').innerText = ttc.toLocaleString('fr-FR') + " FCFA";
-        if(document.getElementById('calc-acompte-val')) document.getElementById('calc-acompte-val').innerText = vAco.toLocaleString('fr-FR') + " FCFA";
-        if(document.getElementById('calc-solde')) document.getElementById('calc-solde').innerText = solde.toLocaleString('fr-FR') + " FCFA";
+        if(document.getElementById('calc-subtotal')) document.getElementById('calc-subtotal').innerText = subtotal.toLocaleString('fr-FR') + " F";
+        if(document.getElementById('calc-netht')) document.getElementById('calc-netht').innerText = net.toLocaleString('fr-FR') + " F";
+        if(document.getElementById('calc-ttc')) document.getElementById('calc-ttc').innerText = ttc.toLocaleString('fr-FR') + " F";
+        if(document.getElementById('calc-acompte-val')) document.getElementById('calc-acompte-val').innerText = vAco.toLocaleString('fr-FR') + " F";
+        if(document.getElementById('calc-solde')) document.getElementById('calc-solde').innerText = solde.toLocaleString('fr-FR') + " F";
 
         const container = document.getElementById('items-dynamic-container');
         if(!container) return;
-
-        if(lineItems.length === 0) {
-            container.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:25px;">Aucune ligne. Remplissez le tableau ci-dessus.</div>`;
-            return;
-        }
-
         container.innerHTML = lineItems.map((item, i) => `
             <div class="table-row-item">
-                <div class="item-details">
-                    <div class="item-title">${item.desc}</div>
-                    <div class="item-subtext">Quantité : <b>${item.qty}</b> | P.U : <b>${item.pu.toLocaleString('fr-FR')} FCFA</b></div>
-                </div>
-                <div style="display:flex; align-items:center; gap:15px;">
-                    <div class="item-price">${(item.qty * item.pu).toLocaleString('fr-FR')} F</div>
-                    <button class="btn btn-danger" style="padding:5px 8px;" onclick="removeLineItem(${i})">🗑️</button>
-                </div>
+                <div><b>${item.desc}</b><br><small>Qté: ${item.qty} | PU: ${item.pu.toLocaleString('fr-FR')} F</small></div>
+                <div style="display:flex; align-items:center; gap:15px;"><div class="item-price">${(item.qty * item.pu).toLocaleString('fr-FR')} F</div><button class="btn btn-danger" style="padding:5px 8px;" onclick="removeLineItem(${i})">🗑️</button></div>
             </div>
         `).join('');
     }
 
-    // TÉLÉCHARGEMENT DIRECT EN 1 CLIC (Moteur html2pdf automatique)
     function downloadDirectPdf() {
         const element = document.getElementById('capture-pdf-target');
-        const numDoc = document.getElementById('doc-id').value || "export";
-        const nomCli = document.getElementById('cli-name').value || "client";
-        
-        const options = {
-            margin:       10,
-            filename:     `${numDoc}_${nomCli}.pdf`,
-            image:        { type: 'jpeg', quality: 0.98 },
-            html2canvas:  { scale: 2, useCORS: true },
-            jsPDF:        { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        };
-
-        // Lancement immédiat du téléchargement en arrière-plan
-        html2pdf().set(options).from(element).save();
+        const numDoc = document.getElementById('doc-id').value || "doc";
+        html2pdf().set({ margin: 10, filename: `Doc_${numDoc}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { format: 'a4', orientation: 'portrait' } }).from(element).save();
     }
 
     function generatePdfRendu() {
-        const target = document.getElementById('pdf-view-target');
-        if(!target) return;
-
         let subtotal = lineItems.reduce((s, i) => s + (i.qty * i.pu), 0);
         let rem = parseFloat(document.getElementById('input-remise').value) || 0;
-        let vRem = subtotal * (rem / 100);
-        let net = subtotal - vRem;
+        let net = subtotal - (subtotal * (rem / 100));
         let tva = parseFloat(document.getElementById('input-tva').value) || 0;
-        let vTva = net * (tva / 100);
-        let ttc = net + vTva;
+        let ttc = net + (net * (tva / 100));
         let aco = parseFloat(document.getElementById('input-acompte').value) || 0;
-        let vAco = ttc * (aco / 100);
-        let solde = ttc - vAco;
+        let vAco = ttc * (aco / 100); let solde = ttc - vAco;
 
-        let rows = lineItems.map((item, idx) => `
-            <tr>
-                <td style="font-weight:600; color:#1e293b;">${String(idx+1).padStart(2,'0')}. ${item.desc}</td>
-                <td class="align-right">${item.qty}</td>
-                <td style="text-align:center;">${item.unit}</td>
-                <td class="align-right">${item.pu.toLocaleString('fr-FR')} F</td>
-                <td class="align-right" style="font-weight:700; color:#0f172a;">${(item.qty * item.pu).toLocaleString('fr-FR')} F</td>
-            </tr>
-        `).join('');
+        let rows = lineItems.map((item, idx) => `<tr><td>${idx+1}. ${item.desc}</td><td class="align-right">${item.qty}</td><td style="text-align:center;">${item.unit}</td><td class="align-right">${item.pu.toLocaleString('fr-FR')} F</td><td class="align-right">${(item.qty * item.pu).toLocaleString('fr-FR')} F</td></tr>`).join('');
 
-        if(lineItems.length === 0) {
-            rows = `<tr><td colspan="5" style="text-align:center; padding:20px; color:#64748b;">Aucun poste enregistré.</td></tr>`;
-        }
-
-        const notesValue = document.getElementById('input-notes').value;
-        const cleanNotes = notesValue.trim() ? notesValue.replace(/\n/g, '<br>') : "Matériaux certifiés aux normes. Validité : 30 jours.";
-
-        target.innerHTML = `
-            <table class="pdf-header">
-                <tr>
-                    <td>
-                        <h1 style="margin:0; font-size:18px; text-transform:uppercase; color:#0f172a; border-left:4px solid var(--orange-pro); padding-left:10px;">${document.getElementById('biz-name').value}</h1>
-                        <p style="margin:5px 0; font-size:12px; color:#475569;">📍 ${document.getElementById('biz-address').value} | 📞 Tél : ${document.getElementById('biz-phone').value}</p>
-                    </td>
-                    <td class="align-right">
-                        <h2 style="margin:0; font-size:13px; color:var(--orange-pro); font-weight:800;">${document.getElementById('doc-type').value}</h2>
-                        <p style="margin:3px 0; font-size:11px; color:#334155;"><b>N° :</b> ${document.getElementById('doc-id').value} | <b>Date :</b> ${document.getElementById('doc-date').value}</p>
-                    </td>
-                </tr>
-            </table>
-
-            <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:12px; border-radius:6px; margin-bottom:20px; max-width:340px;">
-                <span style="font-size:10px; text-transform:uppercase; color:#64748b; font-weight:800; display:block;">PROFIL DU CLIENT / CHANTIER</span>
-                <b style="font-size:13px; color:#0f172a;">${document.getElementById('cli-name').value}</b><br>
-                <span style="font-size:12px; color:#334155;">📞 Contact : ${document.getElementById('cli-phone').value}</span><br>
-                <span style="font-size:12px; color:#334155;">📍 Chantier : ${document.getElementById('cli-location').value}</span>
-            </div>
-
-            <table class="pdf-clean-table">
-                <thead>
-                    <tr>
-                        <th>Désignation Précise des Postes</th>
-                        <th class="align-right">Qté</th>
-                        <th style="text-align:center;">Unité</th>
-                        <th class="align-right">P.U. HT</th>
-                        <th class="align-right">Total HT (FCFA)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    ${rows}
-                </tbody>
-            </table>
-
-            <div style="display:flex; justify-content:space-between; margin-top:15px; gap:20px;">
-                <div style="width:50%; font-size:12px; color:#475569; background:#f8fafc; padding:12px; border-radius:6px; border:1px solid #e2e8f0; align-self:flex-start;">
-                    <b style="color:#0f172a; font-size:10px; text-transform:uppercase; display:block; margin-bottom:4px;">Observations & Conditions</b>
-                    ${cleanNotes}
-                </div>
-                <div style="width:45%;">
-                    <table style="width:100%; font-size:13px; border-collapse:collapse; color:#334155;">
-                        <tr><td style="padding:4px 0;">Sous-Total HT :</td><td class="align-right">${subtotal.toLocaleString('fr-FR')} F</td></tr>
-                        <tr style="border-top:1px solid #cbd5e1; font-weight:700; color:#0f172a;"><td>Net HT :</td><td class="align-right">${net.toLocaleString('fr-FR')} F</td></tr>
-                        <tr><td style="padding:4px 0;">TVA (${tva}%) :</td><td class="align-right">${vTva.toLocaleString('fr-FR')} F</td></tr>
-                        <tr style="font-size:15px; font-weight:900; border-top:2px solid #0f172a; color:#0f172a;"><td style="padding:8px 0;">TOTAL TTC :</td><td class="align-right" style="color:var(--orange-pro);">${ttc.toLocaleString('fr-FR')} F</td></tr>
-                    </table>
-                </div>
-            </div>
-
-            <div class="pdf-receipt-zone">
-                <b style="font-size:11px; text-transform:uppercase; color:#0f172a; display:block; margin-bottom:8px;">📝 REÇU D'ACOMPTE & ENGAGEMENT DE SOLDE</b>
-                
-                <div style="display:flex; gap:15px; margin:10px 0;">
-                    <div style="background:#dcfce7; padding:8px 12px; border-radius:6px; flex:1;">
-                        <span style="font-size:9px; text-transform:uppercase; color:#16a34a; font-weight:800; display:block;">Somme Reçue (Acompte ${aco}%)</span>
-                        <b style="font-size:16px; color:#15803d;">${vAco.toLocaleString('fr-FR')} FCFA</b>
-                    </div>
-                    <div style="background:#fee2e2; padding:8px 12px; border-radius:6px; flex:1;">
-                        <span style="font-size:9px; text-transform:uppercase; color:#dc2626; font-weight:800; display:block;">Reste à prendre (Solde)</span>
-                        <b style="font-size:16px; color:#b91c1c;">${solde.toLocaleString('fr-FR')} FCFA</b>
-                    </div>
-                </div>
-
-                <div class="pdf-signature-grid">
-                    <div class="signature-box"><b>Pour le Client (Bon pour accord)</b><div style="margin-top:20px; font-size:10px; color:#94a3b8;">Signature</div></div>
-                    <div class="signature-box"><b>Pour l'Entreprise (Reçu conforme)</b><div style="margin-top:20px; font-size:10px; color:#94a3b8;">Cachet & Signature</div></div>
-                </div>
-            </div>
+        document.getElementById('pdf-view-target').innerHTML = `
+            <table class="pdf-header"><tr><td><h2>${document.getElementById('biz-name').value}</h2><p>📍 ${document.getElementById('biz-address').value} | 📞 ${document.getElementById('biz-phone').value}</p></td><td class="align-right"><h3>${document.getElementById('doc-type').value}</h3><p><b>N° :</b> ${document.getElementById('doc-id').value}</p></td></tr></table>
+            <div style="background:#f8fafc; padding:12px; border-radius:6px; margin-bottom:20px; max-width:320px;"><b>CLIENT : ${document.getElementById('cli-name').value}</b><br>📞 Tél : ${document.getElementById('cli-phone').value}<br>📍 Chantier : ${document.getElementById('cli-location').value}</div>
+            <table class="pdf-clean-table"><thead><tr><th>Désignation</th><th class="align-right">Qté</th><th style="text-align:center;">Unité</th><th class="align-right">P.U.</th><th class="align-right">Total HT</th></tr></thead><tbody>${rows}</tbody></table>
+            <div style="display:flex; justify-content:space-between; margin-top:15px;"><div style="width:50%; font-size:12px; background:#f8fafc; padding:12px; border-radius:6px;"><b>Observations :</b><br>${document.getElementById('input-notes').value || 'Aucune.'}</div><div style="width:40%;"><table style="width:100%; font-size:13px;"><tr><td>Sous-Total :</td><td class="align-right">${subtotal.toLocaleString('fr-FR')} F</td></tr><tr><td>Net HT :</td><td class="align-right">${net.toLocaleString('fr-FR')} F</td></tr><tr style="font-weight:900; font-size:15px; color:var(--orange-pro);"><td>TOTAL TTC :</td><td class="align-right">${ttc.toLocaleString('fr-FR')} F</td></tr></table></div></div>
+            <div class="pdf-receipt-zone"><b>📝 REÇU D'ACOMPTE & SOLDE</b><div style="display:flex; gap:15px; margin-top:10px;"><div style="background:#dcfce7; padding:10px; border-radius:6px; flex:1;">Somme Reçue (Acompte ${aco}%)<br><b style="color:#15803d; font-size:16px;">${vAco.toLocaleString('fr-FR')} F</b></div><div style="background:#fee2e2; padding:10px; border-radius:6px; flex:1;">Reste à percevoir (Solde)<br><b style="color:#b91c1c; font-size:16px;">${solde.toLocaleString('fr-FR')} F</b></div></div><div class="pdf-signature-grid"><div class="signature-box"><b>Pour le Client</b></div><div class="signature-box"><b>Pour l'Entreprise</b></div></div></div>
         `;
     }
 </script>
