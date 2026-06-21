@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BTP Devis Pro - Version Élite Absolute</title>
+    <title>BTP Devis Pro - Version Professionnelle Élite</title>
     <script src="https://cdn.jsdelivr.net/npm/tesseract.js@4/dist/tesseract.min.js"></script>
     <style>
         :root {
@@ -30,7 +30,6 @@
         }
 
         .no-print { display: block; }
-        .print-only { display: none; }
 
         /* Navigation */
         .top-bar {
@@ -100,17 +99,8 @@
         .btn-secondary:hover { background-color: #2d3748; }
         .btn-danger { background-color: rgba(239, 68, 68, 0.15); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.3); }
         .btn-danger:hover { background-color: rgba(239, 68, 68, 0.25); }
-        .btn-warn { background-color: #eab308; color: #0f141c; }
-        .btn-warn:hover { background-color: #ca8a04; }
 
-        .tag-container { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
-        .tag-btn {
-            background: #1e293b; border: 1px solid var(--border); color: var(--text-muted);
-            padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; transition: all 0.2s;
-        }
-        .tag-btn:hover { border-color: var(--purple-ia); color: white; background: #243145; }
-
-        /* Rows Dynamiques */
+        /* Lignes dynamiques */
         .table-row-item {
             background: #0b0f16; padding: 15px; border-radius: 8px; border: 1px solid var(--border);
             margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; gap: 15px;
@@ -121,7 +111,7 @@
         .item-financial { text-align: right; }
         .item-price { font-weight: 800; color: var(--orange-pro); font-size: 16px; }
 
-        /* Totaux Style Impécable */
+        /* Totaux */
         .summary-box { background: #0b0f16; border-radius: 10px; padding: 20px; border: 1px solid var(--border); margin-top: 25px; }
         .summary-line { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; font-size: 14px; border-bottom: 1px solid #1a2432; }
         .summary-line.grand-total { font-weight: 900; font-size: 20px; color: var(--orange-pro); border-bottom: 2px solid var(--orange-pro); padding-top: 15px; }
@@ -141,7 +131,7 @@
         .preview-wrapper img { max-width: 100%; max-height: 300px; border-radius: 8px; border: 1px solid var(--border); }
         .ocr-progress-bar { display: none; background: #0b0f16; padding: 15px; border-radius: 8px; text-align: center; font-weight: 700; color: var(--accent); margin-top: 15px; }
 
-        /* RENDU PDF PROFESSIONNEL HAUT DE GAMME */
+        /* APERÇU PDF PROFESSIONNEL */
         .pdf-container { background: white; color: #0f172a; padding: 40px 30px; border-radius: 8px; min-height: 500px; box-sizing: border-box; }
         .pdf-header { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
         .pdf-clean-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
@@ -149,9 +139,20 @@
         .pdf-clean-table td { padding: 12px 10px; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #334155; vertical-align: top; }
         .align-right { text-align: right !important; }
 
+        /* Section Reçu & Preuve */
+        .pdf-receipt-zone {
+            margin-top: 35px; border: 2px dashed #cbd5e1; background: #f8fafc;
+            padding: 20px; border-radius: 8px; color: #1e293b;
+        }
+        .pdf-signature-grid {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 30px;
+        }
+        .signature-box {
+            border-top: 1px solid #94a3b8; padding-top: 8px; font-size: 12px; color: #475569; text-align: center;
+        }
+
         @media print {
             .no-print { display: none !important; }
-            .print-only { display: block !important; }
             body { background: white; color: black; }
             .pdf-container { padding: 0; border: none; box-shadow: none; background: white; }
         }
@@ -161,7 +162,7 @@
 
     <div class="top-bar no-print">
         <div class="logo-area">BTP<span>Devis</span> Pro</div>
-        <div class="meta-badge">Moteur Ultra-Précision Élite v6.0</div>
+        <div class="meta-badge">Architecture Premium v6.4</div>
     </div>
 
     <div class="tabs-nav no-print">
@@ -237,7 +238,7 @@
             <div class="card">
                 <div class="grid-3" style="background: #0b0f16; padding:15px; border-radius:8px; margin-bottom:15px;">
                     <div class="field-group" style="margin:0;"><label>Désignation Unique Spécifique</label><input type="text" id="add-desc" placeholder="Ex: Interrupteur simple Legrand"></div>
-                    <div class="field-group" style="margin:0;"><label>Quantité</label><input type="number" id="add-qty" value="1" id="add-qty"></div>
+                    <div class="field-group" style="margin:0;"><label>Quantité</label><input type="number" id="add-qty" value="1"></div>
                     <div class="field-group" style="margin:0;">
                         <label>Unité</label>
                         <select id="add-unit">
@@ -271,15 +272,15 @@
                     <div class="summary-line"><span>TVA (%)</span><input type="number" id="input-tva" value="18" class="inline-input" oninput="refreshCalculations()"></div>
                     <div class="summary-line"><span>Montant TVA</span><span id="calc-tva-val">0 FCFA</span></div>
                     <div class="summary-line grand-total"><span>TOTAL TTC</span><span id="calc-ttc">0 FCFA</span></div>
-                    <div class="summary-line"><span>Acompte (%)</span><input type="number" id="input-acompte" value="40" class="inline-input" oninput="refreshCalculations()"></div>
-                    <div class="summary-line" style="color:var(--success)"><span>Montant Acompte</span><span id="calc-acompte-val">0 FCFA</span></div>
-                    <div class="summary-line"><span>Reste à payer (Solde)</span><span id="calc-solde">0 FCFA</span></div>
+                    <div class="summary-line"><span>Acompte à la signature (%)</span><input type="number" id="input-acompte" value="40" class="inline-input" oninput="refreshCalculations()"></div>
+                    <div class="summary-line" style="color:var(--success)"><span>Montant Reçu (Acompte)</span><span id="calc-acompte-val">0 FCFA</span></div>
+                    <div class="summary-line" style="font-weight:700;"><span>Reste à percevoir (Solde)</span><span id="calc-solde">0 FCFA</span></div>
                 </div>
             </div>
         </div>
 
         <div id="panel-ai" class="app-panel no-print">
-            <div class="panel-title ai-title">🤖 Générateur de Devis IA Élite</div>
+            <div class="panel-title ai-title">🤖 Générateur de Devis IA</div>
             <div class="card" style="border-color: var(--purple-ia);">
                 <p style="font-size:13px; color:var(--text-muted); margin-top:0;">L'IA sépare de façon chirurgicale chaque composant pour garantir la transparence absolue du budget client.</p>
                 <div class="field-group">
@@ -287,26 +288,7 @@
                 </div>
                 <div style="display:flex; gap:10px; flex-wrap:wrap; align-items:center;">
                     <button class="btn btn-ai" onclick="runAiGenerator()">🤖 Générer le devis ventilé</button>
-                    <button class="tag-btn" onclick="setAiExample('electricite')">Ex. Appareillage Électrique (16 interrupteurs / 34 prises)</button>
-                    <button class="tag-btn" onclick="setAiExample('maconnerie')">Ex. Matériaux Stock Maçonnerie</button>
                 </div>
-            </div>
-
-            <div class="panel-title ai-title">Assistant IA BTP & Tarifs Locaux</div>
-            <div class="card" style="border-color: var(--purple-ia);">
-                <p style="font-size:13px; color:var(--text-muted); margin-top:0;">Interrogez la base de prix locaux pour Lomé.</p>
-                <div style="display:flex; gap:10px;">
-                    <input type="text" id="ai-query-input" class="ai-focus" placeholder="Ex: Prix unitaire interrupteur Legrand à Lomé ?">
-                    <button class="btn" style="background: var(--orange-pro); text-transform:none;" onclick="runAiPriceQuery()">Demander</button>
-                </div>
-                
-                <p style="font-size:12px; color:var(--text-muted); margin-bottom:5px; margin-top:15px;">Questions fréquentes :</p>
-                <div class="tag-container">
-                    <button class="tag-btn" onclick="setAiQuery('Interrupteurs et prises unitaires')">Prises & Interrupteurs séparés</button>
-                    <button class="tag-btn" onclick="setAiQuery('Ciment et Sable Lomé')">Ciment & Sable Lomé</button>
-                </div>
-
-                <div class="ai-response-box" id="ai-response-output">L'assistant IA est initialisé et prêt...</div>
             </div>
         </div>
 
@@ -321,29 +303,10 @@
 
 <script>
     let lineItems = [];
-    let latestAiResponseText = "";
     let databaseClients = [
         { name: "M. Koffi AMÉGNRAN", phone: "+228 91 23 45 67", location: "Adidogomé, Lomé" }
     ];
     let selectedFileObject = null;
-
-    // Base de données strictement atomisée : Zéro fusion de lignes
-    const lomePriceDatabase = {
-        electricite: [
-            { desc: "Interrupteur mural unitaire haute qualité (Legrand)", qty: 16, unit: "U", pu: 1200 },
-            { desc: "Prise de courant murale avec borne de terre (Legrand)", qty: 34, unit: "U", pu: 1500 },
-            { desc: "Boîtier d'encastrement pour appareillage individuel", qty: 50, unit: "U", pu: 450 },
-            { desc: "Câble électrique TH 1.5 mm² pour éclairage (couronne)", qty: 2, unit: "U", pu: 14500 },
-            { desc: "Câble électrique TH 2.5 mm² pour prises (couronne)", qty: 3, unit: "U", pu: 22000 },
-            { desc: "Main d'œuvre : Installation, câblage et raccordement complet", qty: 1, unit: "forfait", pu: 60000 }
-        ],
-        maconnerie: [
-            { desc: "Fouilles en tranchées pour fondations", qty: 35, unit: "m³", pu: 4500 },
-            { desc: "Achat de Ciment CPJ 45 (Simbass / Cimtogo)", qty: 150, unit: "sacs", pu: 5500 },
-            { desc: "Sable de rivière gros grain pour béton armé", qty: 3, unit: "camions", pu: 110000 },
-            { desc: "Gravier concassé 15/25 pour longrines", qty: 4, unit: "camions", pu: 145000 }
-        ]
-    };
 
     function openPanel(panelId) {
         document.querySelectorAll('.app-panel').forEach(p => p.classList.remove('active'));
@@ -357,67 +320,22 @@
         if(panelId === 'panel-ai') document.getElementById('btn-tab-ai').classList.add('active');
         if(panelId === 'panel-preview') {
             document.getElementById('btn-tab-preview').classList.add('active');
-            generatePdfRendu(); // Execution blindée sans crash
+            generatePdfRendu();
         }
     }
 
     window.onload = function() {
-        // Remplissage automatique de la date du jour
         const dateInput = document.getElementById('doc-date');
         if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
         
-        // Lignes initiales exemplaires directement visibles pour correspondre aux attentes
         lineItems = [
             { desc: "Interrupteur mural unitaire haute qualité (Legrand)", qty: 16, unit: "U", pu: 1200 },
-            { desc: "Prise de courant murale avec borne de terre (Legrand)", qty: 34, unit: "U", pu: 1500 },
-            { desc: "Boîtier d'encastrement pour appareillage individuel", qty: 50, unit: "U", pu: 450 }
+            { desc: "Prise de courant murale avec borne de terre (Legrand)", qty: 34, unit: "U", pu: 1500 }
         ];
         
         refreshClientDropdown();
         refreshCalculations();
     };
-
-    function setAiExample(type) {
-        if(type === 'electricite') {
-            document.getElementById('ai-generator-input').value = "Installation avec 16 interrupteurs et 34 prises avec boîte d'encastrement et pose professionnelle à Lomé.";
-        } else {
-            document.getElementById('ai-generator-input').value = "Approvisionnement chantier : 150 sacs de ciment CPJ45, 3 camions de sable de rivière et gravier concassé.";
-        }
-    }
-
-    function setAiQuery(q) {
-        document.getElementById('ai-query-input').value = q;
-        runAiPriceQuery();
-    }
-
-    function runAiGenerator() {
-        const input = document.getElementById('ai-generator-input').value.toLowerCase();
-        if(!input.trim()) { alert("Veuillez d'abord écrire votre texte."); return; }
-
-        let target = "maconnerie";
-        if(input.includes("interrupteur") || input.includes("prise") || input.includes("electri")) target = "electricite";
-
-        const lines = lomePriceDatabase[target];
-        lineItems = [...JSON.parse(JSON.stringify(lines))]; // Ecrase et remplace pour netteté totale
-        
-        refreshCalculations();
-        alert("✨ L'IA a dépaqueté votre demande. Chaque composant est isolé sur sa propre ligne avec son prix unitaire réel.");
-        openPanel('panel-doc');
-    }
-
-    function runAiPriceQuery() {
-        const query = document.getElementById('ai-query-input').value.toLowerCase();
-        const box = document.getElementById('ai-response-output');
-        
-        let response = "💡 <b>Base de Prix Lomé :</b> Matériaux contrôlés pour le marché local.";
-        if(query.includes("interrupteur") || query.includes("prise")) {
-            response = "⚡ <b>Tarifs Appareillage Électrique Découpés :</b><br>• Interrupteur simple Legrand : 1 200 FCFA / pièce<br>• Prise de courant 16A avec terre : 1 500 FCFA / pièce<br>• Boîtier d'encastrement plastique : 450 FCFA / pièce.";
-        } else if(query.includes("ciment") || query.includes("sable")) {
-            response = "🧱 <b>Tarifs Gros Œuvre :</b><br>• Sac de ciment CPJ 45 (Lomg) : 5 500 FCFA<br>• Camion de sable de rivière : 110 000 FCFA.";
-        }
-        latestAiResponseText = response;
-        if (box) box.innerHTML = response;
-    }
 
     function addNewLineItem() {
         const descEl = document.getElementById('add-desc');
@@ -458,7 +376,6 @@
         let vAco = ttc * (aco / 100);
         let solde = ttc - vAco;
 
-        // Mise à jour sécurisée du DOM
         if(document.getElementById('calc-subtotal')) document.getElementById('calc-subtotal').innerText = subtotal.toLocaleString('fr-FR') + " FCFA";
         if(document.getElementById('calc-remise-val')) document.getElementById('calc-remise-val').innerText = vRem.toLocaleString('fr-FR') + " FCFA";
         if(document.getElementById('calc-netht')) document.getElementById('calc-netht').innerText = net.toLocaleString('fr-FR') + " FCFA";
@@ -469,11 +386,6 @@
 
         const container = document.getElementById('items-dynamic-container');
         if(!container) return;
-
-        if(lineItems.length === 0) {
-            container.innerHTML = `<div style="text-align:center; color:var(--text-muted); padding:25px;">Aucune ligne saisie. Remplissez le tableau ou utilisez le Générateur IA.</div>`;
-            return;
-        }
 
         container.innerHTML = lineItems.map((item, i) => `
             <div class="table-row-item">
@@ -489,32 +401,6 @@
         `).join('');
     }
 
-    function refreshClientDropdown() {
-        const s = document.getElementById('client-selector');
-        if(!s) return;
-        s.innerHTML = '<option value="">-- Choisir un client --</option>';
-        databaseClients.forEach((c, i) => { s.innerHTML += `<option value="${i}">${c.name}</option>`; });
-    }
-
-    function loadSelectedClient() {
-        const i = document.getElementById('client-selector').value;
-        if(i === "") return;
-        document.getElementById('cli-name').value = databaseClients[i].name;
-        document.getElementById('cli-phone').value = databaseClients[i].phone;
-        document.getElementById('cli-location').value = databaseClients[i].location;
-    }
-
-    function saveCurrentClientIntoBase() {
-        const name = document.getElementById('cli-name').value.trim();
-        const phone = document.getElementById('cli-phone').value.trim();
-        const location = document.getElementById('cli-location').value.trim();
-        if(!name) return;
-        databaseClients.push({ name, phone, location });
-        refreshClientDropdown();
-        alert("Client enregistré avec succès !");
-    }
-
-    // FONCTION DE RENDU ROBUSTE - AUCUN RISQUE D'ÉCRAN BLANC
     function generatePdfRendu() {
         const target = document.getElementById('pdf-view-target');
         if(!target) return;
@@ -540,33 +426,38 @@
             </tr>
         `).join('');
 
-        if(lineItems.length === 0) {
-            rows = `<tr><td colspan="5" style="text-align:center; padding:30px; color:#64748b;">Le document ne contient aucune ligne de facturation.</td></tr>`;
-        }
-
         const notesValue = document.getElementById('input-notes') ? document.getElementById('input-notes').value : "";
-        const cleanNotes = notesValue.trim() ? notesValue.replace(/\n/g, '<br>') : "Matériaux certifiés aux normes. Validité du présent document : 30 jours à dater de son émission.";
+        const cleanNotes = notesValue.trim() ? notesValue.replace(/\n/g, '<br>') : "Matériaux certifiés aux normes. Validité : 30 jours.";
 
-        // Remplacement direct et instantané de la zone blanche
+        const bizName = document.getElementById('biz-name').value;
+        const bizAddress = document.getElementById('biz-address').value;
+        const bizPhone = document.getElementById('biz-phone').value;
+        const docType = document.getElementById('doc-type').value;
+        const docId = document.getElementById('doc-id').value;
+        const docDate = document.getElementById('doc-date').value;
+        const cliName = document.getElementById('cli-name').value;
+        const cliPhone = document.getElementById('cli-phone').value;
+        const cliLoc = document.getElementById('cli-location').value;
+
         target.innerHTML = `
             <table class="pdf-header">
                 <tr>
                     <td>
-                        <h1 style="margin:0; font-size:20px; text-transform:uppercase; color:#0f172a; border-left:4px solid var(--orange-pro); padding-left:10px;">${document.getElementById('biz-name').value}</h1>
-                        <p style="margin:5px 0; font-size:12px; color:#475569;">📍 ${document.getElementById('biz-address').value} | 📞 Tél : ${document.getElementById('biz-phone').value}</p>
+                        <h1 style="margin:0; font-size:20px; text-transform:uppercase; color:#0f172a; border-left:4px solid var(--orange-pro); padding-left:10px;">${bizName}</h1>
+                        <p style="margin:5px 0; font-size:12px; color:#475569;">📍 ${bizAddress} | 📞 Tél : ${bizPhone}</p>
                     </td>
                     <td class="align-right">
-                        <h2 style="margin:0; font-size:14px; color:var(--orange-pro); font-weight:800;">${document.getElementById('doc-type').value}</h2>
-                        <p style="margin:3px 0; font-size:12px; color:#334155;"><b>N° :</b> ${document.getElementById('doc-id').value} | <b>Date :</b> ${document.getElementById('doc-date').value}</p>
+                        <h2 style="margin:0; font-size:14px; color:var(--orange-pro); font-weight:800;">${docType}</h2>
+                        <p style="margin:3px 0; font-size:12px; color:#334155;"><b>N° :</b> ${docId} | <b>Date :</b> ${docDate}</p>
                     </td>
                 </tr>
             </table>
 
             <div style="background:#f8fafc; border:1px solid #e2e8f0; padding:12px; border-radius:6px; margin-bottom:20px; max-width:340px;">
                 <span style="font-size:11px; text-transform:uppercase; color:#64748b; font-weight:800; display:block; margin-bottom:4px;">PROFIL DU CLIENT / CHANTIER</span>
-                <b style="font-size:14px; color:#0f172a;">${document.getElementById('cli-name').value || 'Client Indéterminé'}</b><br>
-                <span style="font-size:12px; color:#334155;">📞 Contact : ${document.getElementById('cli-phone').value || 'N/A'}</span><br>
-                <span style="font-size:12px; color:#334155;">📍 Localisation : ${document.getElementById('cli-location').value || 'N/A'}</span>
+                <b style="font-size:14px; color:#0f172a;">${cliName}</b><br>
+                <span style="font-size:12px; color:#334155;">📞 Contact : ${cliPhone}</span><br>
+                <span style="font-size:12px; color:#334155;">📍 Localisation : ${cliLoc}</span>
             </div>
 
             <table class="pdf-clean-table">
@@ -584,26 +475,83 @@
                 </tbody>
             </table>
 
-            <div style="display:flex; justify-content:space-between; margin-top:30px; gap:20px;">
+            <div style="display:flex; justify-content:space-between; margin-top:20px; gap:20px;">
                 <div style="width:50%; font-size:12px; color:#475569; background:#f8fafc; padding:15px; border-radius:6px; border:1px solid #e2e8f0; align-self:flex-start;">
-                    <b style="color:#0f172a; font-size:11px; text-transform:uppercase; display:block; margin-bottom:6px;">Observations & Conditions Réglementaires</b>
+                    <b style="color:#0f172a; font-size:11px; text-transform:uppercase; display:block; margin-bottom:6px;">Observations & Conditions</b>
                     ${cleanNotes}
                 </div>
                 <div style="width:45%;">
                     <table style="width:100%; font-size:13px; border-collapse:collapse; color:#334155;">
-                        <tr><td style="padding:5px 0;">Sous-Total Hors Taxes (HT) :</td><td class="align-right">${subtotal.toLocaleString('fr-FR')} F</td></tr>
-                        ${rem > 0 ? `<tr><td style="padding:5px 0; color:var(--danger)">Remise accordée (${rem}%) :</td><td class="align-right" style="color:var(--danger)">-${vRem.toLocaleString('fr-FR')} F</td></tr>` : ''}
+                        <tr><td style="padding:5px 0;">Sous-Total HT :</td><td class="align-right">${subtotal.toLocaleString('fr-FR')} F</td></tr>
                         <tr style="border-top:1px solid #cbd5e1; font-weight:700; color:#0f172a;"><td>Net Commercial HT :</td><td class="align-right">${net.toLocaleString('fr-FR')} F</td></tr>
                         <tr><td style="padding:5px 0;">Montant TVA (${tva}%) :</td><td class="align-right">${vTva.toLocaleString('fr-FR')} F</td></tr>
                         <tr style="font-size:16px; font-weight:900; border-top:2px solid #0f172a; color:#0f172a;"><td style="padding:10px 0;">TOTAL TTC :</td><td class="align-right" style="color:var(--orange-pro);">${ttc.toLocaleString('fr-FR')} F</td></tr>
-                        ${aco > 0 ? `
-                        <tr style="color:#16a34a; font-weight:700;"><td style="padding:6px 0;">Acompte à la commande (${aco}%) :</td><td class="align-right">${vAco.toLocaleString('fr-FR')} F</td></tr>
-                        <tr style="font-weight:800; border-top:1px solid #cbd5e1; color:#0f172a; font-size:14px;"><td>RESTE À SOLDE :</td><td class="align-right">${solde.toLocaleString('fr-FR')} F</td></tr>
-                        ` : ''}
                     </table>
                 </div>
             </div>
+
+            <div class="pdf-receipt-zone">
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:1px solid #cbd5e1; padding-bottom:8px; margin-bottom:12px;">
+                    <b style="font-size:12px; text-transform:uppercase; letter-spacing:0.5px; color:#0f172a;">📝 REÇU D'ACOMPTE & ENGAGEMENT DE SOLDE</b>
+                    <span style="font-size:11px; background:#e2e8f0; padding:3px 8px; border-radius:4px; font-weight:700;">Preuve Juridique</span>
+                </div>
+                <p style="margin:0; font-size:13px; line-height:1.6; color:#334155;">
+                    Je soussigné, représentant légal de l'entreprise, certifie avoir reçu ce jour de la part du client 
+                    <b>${cliName}</b>, la somme totale et libératoire de :
+                </p>
+                
+                <div style="display:flex; gap:15px; margin:15px 0;">
+                    <div style="background:#dcfce7; border:1px solid #bbf7d0; padding:10px 15px; border-radius:6px; flex:1;">
+                        <span style="font-size:10px; text-transform:uppercase; color:#16a34a; font-weight:800; display:block;">Somme Reçue (Acompte ${aco}%)</span>
+                        <b style="font-size:18px; color:#15803d;">${vAco.toLocaleString('fr-FR')} FCFA</b>
+                    </div>
+                    <div style="background:#fee2e2; border:1px solid #fecaca; padding:10px 15px; border-radius:6px; flex:1;">
+                        <span style="font-size:10px; text-transform:uppercase; color:#dc2626; font-weight:800; display:block;">Reste à prendre (Solde)</span>
+                        <b style="font-size:18px; color:#b91c1c;">${solde.toLocaleString('fr-FR')} FCFA</b>
+                    </div>
+                </div>
+
+                <p style="margin:0; font-size:12px; color:#64748b; font-style:italic;">
+                    Le versement de cet acompte valide définitivement le présent devis et déclenche l'approvisionnement du matériel ainsi que le démarrage des travaux. Le solde restant sera perçu conformément aux modalités convenues.
+                </p>
+
+                <div class="pdf-signature-grid">
+                    <div class="signature-box">
+                        <b>Pour le Client (Bon pour accord)</b><br>
+                        <span style="font-size:10px; color:#94a3b8; display:block; margin-top:25px;">Nom, Date et Signature</span>
+                    </div>
+                    <div class="signature-box">
+                        <b>Pour l'Entreprise (Reçu conforme)</b><br>
+                        <span style="font-size:10px; color:#94a3b8; display:block; margin-top:25px;">Cachet et Signature</span>
+                    </div>
+                </div>
+            </div>
         `;
+    }
+
+    function refreshClientDropdown() {
+        const s = document.getElementById('client-selector');
+        if(!s) return;
+        s.innerHTML = '<option value="">-- Choisir un client --</option>';
+        databaseClients.forEach((c, i) => { s.innerHTML += `<option value="${i}">${c.name}</option>`; });
+    }
+
+    function loadSelectedClient() {
+        const i = document.getElementById('client-selector').value;
+        if(i === "") return;
+        document.getElementById('cli-name').value = databaseClients[i].name;
+        document.getElementById('cli-phone').value = databaseClients[i].phone;
+        document.getElementById('cli-location').value = databaseClients[i].location;
+    }
+
+    function saveCurrentClientIntoBase() {
+        const name = document.getElementById('cli-name').value.trim();
+        const phone = document.getElementById('cli-phone').value.trim();
+        const location = document.getElementById('cli-location').value.trim();
+        if(!name) return;
+        databaseClients.push({ name, phone, location });
+        refreshClientDropdown();
+        alert("Client enregistré avec succès !");
     }
 
     function loadOcrImage(e) {
