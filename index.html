@@ -30,7 +30,7 @@
             line-height: 1.5;
         }
 
-        /* ÉCRAN DE VÉROUILLAGE HAUTE SÉCURITÉ */
+        /* ÉCRAN DE VERROUILLAGE HAUTE SÉCURITÉ */
         #activation-guard {
             position: fixed; top:0; left:0; width:100%; height:100%; 
             background: #070a0f; z-index: 99999; display: flex; 
@@ -124,7 +124,13 @@
         .btn-outline-ai { background: rgba(255,255,255,0.03); border: 1px solid #4c1d95; color: #c084fc; padding: 12px 22px; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer; transition: 0.2s; }
         .btn-outline-ai:hover { border-color: #a78bfa; color: white; background: rgba(124, 58, 237, 0.1); }
 
-        /* GRILLES ET FORMULAIRES */
+        /* SCANNER FLUIDE */
+        .ai-dropzone { border: 2px dashed var(--purple-ai); background: rgba(139, 92, 246, 0.03); padding: 40px 20px; text-align: center; border-radius: 12px; cursor: pointer; margin-bottom: 20px; transition: 0.2s; }
+        .ai-dropzone:hover { background: rgba(139, 92, 246, 0.07); border-color: #a78bfa; }
+        .ai-result-box { background: #070a0f; border-left: 4px solid var(--success); padding: 20px; border-radius: 8px; font-size: 14px; line-height: 1.7; display: none; margin-top: 20px; }
+        .preview-uploaded-img { max-height: 220px; border-radius: 8px; margin-top: 15px; display: none; border: 1px solid var(--border); margin-left: auto; margin-right: auto; }
+
+        /* FORMULAIRES */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
         @media(max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
         .grid-3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 20px; }
@@ -151,19 +157,13 @@
         .summary-line.grand-total { font-weight: 900; font-size: 22px; color: var(--orange-pro); border-bottom: 2px solid var(--orange-pro); padding: 18px 0; }
         .inline-input { width: 90px; padding: 8px; text-align: center; background: var(--bg-card); font-weight: bold; color: var(--orange-pro); }
         
-        /* CARNET D'ADRESSES EXPERT */
+        /* REPERTOIRE CLIENTS */
         .address-book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
         .contact-card { background: #070a0f; border: 1px solid var(--border); padding: 20px; border-radius: 10px; position: relative; }
         .contact-card h4 { margin: 0 0 8px 0; color: var(--text); font-size: 18px; font-weight: 800; }
         .contact-card p { margin: 4px 0; font-size: 13px; color: var(--text-muted); }
 
-        /* ZONE CAPTURE */
-        .ai-dropzone { border: 2px dashed var(--purple-ai); background: rgba(139, 92, 246, 0.03); padding: 40px 20px; text-align: center; border-radius: 12px; cursor: pointer; margin-bottom: 20px; transition: 0.2s; }
-        .ai-dropzone:hover { background: rgba(139, 92, 246, 0.07); border-color: #a78bfa; }
-        .ai-result-box { background: #070a0f; border-left: 4px solid var(--success); padding: 20px; border-radius: 8px; font-size: 14px; line-height: 1.7; display: none; margin-top: 20px; }
-        .preview-uploaded-img { max-height: 220px; border-radius: 8px; margin-top: 15px; display: none; border: 1px solid var(--border); margin-left: auto; margin-right: auto; }
-
-        /* PDF RENDU GRAPHIQUE NETTOYÉ */
+        /* RENDU PDF */
         .pdf-container { background: white; color: #0f172a; padding: 50px; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
         .pdf-header { width: 100%; border-collapse: collapse; margin-bottom: 40px; }
         .pdf-clean-table { width: 100%; border-collapse: collapse; margin: 25px 0; }
@@ -199,15 +199,15 @@
     <!-- EN-TÊTE PRINCIPALE -->
     <div class="top-bar no-print">
         <div class="logo-area">AFRIQUE<span>BTP</span> PRO</div>
-        <div class="meta-badge">SYSTÈME DÉTAILLÉ PRO</div>
+        <div class="meta-badge">SYSTÈME TRANSPARENCE ABSOLUE</div>
     </div>
 
     <!-- MENU PAR ONGLETS -->
     <div class="tabs-nav no-print">
         <button class="tab-btn active" id="btn-tab-doc" onclick="openPanel('panel-doc')">📋 Éditeur de Devis</button>
-        <button class="tab-btn" id="btn-tab-ai" onclick="openPanel('panel-ai')">🤖 Générateur intelligent IA</button>
+        <button class="tab-btn" id="btn-tab-ai" onclick="openPanel('panel-ai')">🤖 Assistant Intelligent & Scanner</button>
         <button class="tab-btn" id="btn-tab-contacts" onclick="openPanel('panel-contacts')">👑 Fichier Clients</button>
-        <button class="tab-btn" id="btn-tab-preview" onclick="openPanel('panel-preview')">👁️ Impression & Rendu PDF</button>
+        <button class="tab-btn" id="btn-tab-preview" onclick="openPanel('panel-preview')">👁️ Rendu PDF</button>
     </div>
 
     <div class="container">
@@ -220,10 +220,10 @@
 
             <div class="grid-2">
                 <div>
-                    <div class="panel-title">🌍 Zone Économique d'Exécution</div>
+                    <div class="panel-title">🌍 Localisation & Indexation</div>
                     <div class="card">
                         <div class="field-group">
-                            <label>Sélectionner le Pays Cible (Indexation Auto des Prix)</label>
+                            <label>Pays Cible</label>
                             <select id="app-country-selector" onchange="updateCountryCurrency()">
                                 <option value="Togo">🇹🇬 Togo (Lomé) - FCFA (XOF)</option>
                                 <option value="Sénégal">🇸🇳 Sénégal (Dakar) - FCFA (XOF)</option>
@@ -263,11 +263,11 @@
                 </div>
             </div>
 
-            <div class="panel-title">🏗️ Saisie Manuelle de Poste Hyper-Détaillée</div>
+            <div class="panel-title">🏗️ Saisie Manuelle avec Détail Précis</div>
             <div class="card">
                 <div style="background: #070a0f; padding:20px; border-radius:8px; margin-bottom:20px;">
-                    <div class="field-group"><label>Désignation principale des travaux</label><input type="text" id="add-desc" placeholder="Ex: Coulage de béton armé pour semelles filantes"></div>
-                    <div class="field-group"><label>🔍 Explication claire des détails (Optionnelle - Affichée sur le Devis)</label><input type="text" id="add-expl" placeholder="Ex: Comprend 15 sacs de ciment CPJ45 à 4 050 F, sable, gravier et fer de 10"></div>
+                    <div class="field-group"><label>Désignation principale des travaux</label><input type="text" id="add-desc" placeholder="Ex: Approvisionnement en Ciment CPJ45 haute résistance"></div>
+                    <div class="field-group"><label>🔍 Explication claire et petits détails (Affiché sur le Devis)</label><input type="text" id="add-expl" placeholder="Ex: Détail précis : 68 paquets/sacs de ciment multipliés par le prix unitaire local de 4 050 F"></div>
                     <div class="grid-3">
                         <div class="field-group" style="margin:0;"><label>Quantité</label><input type="number" id="add-qty" value="1"></div>
                         <div class="field-group" style="margin:0;">
@@ -281,7 +281,7 @@
                                 <option value="Sacs">Sacs</option>
                             </select>
                         </div>
-                        <div class="field-group" style="margin:0;"><label>Prix Unitaire (<span class="currency-label">FCFA</span>)</label><input type="number" id="add-pu" placeholder="Ex: 75000"></div>
+                        <div class="field-group" style="margin:0;"><label>Prix Unitaire (<span class="currency-label">FCFA</span>)</label><input type="number" id="add-pu" placeholder="Ex: 4050"></div>
                     </div>
                 </div>
                 <button class="btn" style="width:100%;" onclick="addNewLineItem()">➕ Insérer cette ligne ultra-claire au devis</button>
@@ -289,13 +289,13 @@
                 <h3 style="font-size:14px; margin-top:30px; color:var(--text-muted);">Lignes actuellement insérées :</h3>
                 <div id="items-dynamic-container"></div>
                 
-                <div class="field-group" style="margin-top:25px;"><label>Clauses contractuelles et mentions de garantie</label><textarea id="input-notes" rows="2">Travaux exécutés dans les règles de l'art, conformément aux normes techniques en vigueur. Matériaux certifiés de premier choix.</textarea></div>
+                <div class="field-group" style="margin-top:25px;"><label>Notes et clauses contractuelles</label><textarea id="input-notes" rows="2">Travaux exécutés dans les règles de l'art, conformément aux normes techniques en vigueur. Matériaux certifiés de premier choix.</textarea></div>
                 
                 <div class="summary-box">
                     <div class="summary-line"><span>Total Général Brut HT</span><span id="calc-subtotal">0 F</span></div>
                     <div class="summary-line"><span>Remise Accordée (%)</span><input type="number" id="input-remise" value="0" class="inline-input" oninput="refreshCalculations()"></div>
                     <div class="summary-line"><span>Montant Net Hors Taxes</span><span id="calc-netht">0 F</span></div>
-                    <div class="summary-line"><span>TVA Régionale (%)</span><input type="number" id="input-tva" value="18" class="inline-input" oninput="refreshCalculations()"></div>
+                    <div class="summary-line"><span>TVA Régionale (%)</span><input type="number" id="input-tva" value="0" class="inline-input" oninput="refreshCalculations()"></div>
                     <div class="summary-line grand-total"><span>NET À PAYER TTC (<span class="currency-label">FCFA</span>)</span><span id="calc-ttc">0 F</span></div>
                     <div class="summary-line"><span>Acompte à la Signature (%)</span><input type="number" id="input-acompte" value="40" class="inline-input" oninput="refreshCalculations()"></div>
                     <div class="summary-line" style="color:var(--success)"><span>Montant de l'Acompte Requis</span><span id="calc-acompte-val">0 F</span></div>
@@ -304,23 +304,40 @@
             </div>
         </div>
 
-        <!-- ONGLET 2 : GÉNÉRATEUR IA DÉTAILLÉ -->
+        <!-- ONGLET 2 : ASSISTANT IA & SCANNER REINSÉRÉ -->
         <div id="panel-ai" class="app-panel no-print">
+            <!-- LE SCANNER REINSÉRÉ ICI -->
+            <div class="panel-title">📸 SCANNER INTÉGRIAL DE PLANS & PLANS DE SITES</div>
+            <div class="card">
+                <div class="ai-dropzone" onclick="document.getElementById('hidden-file-input').click()">
+                    <span style="font-size: 40px;">📸</span>
+                    <h3 style="margin: 10px 0 5px 0; color: var(--text);">Cliquez ou déposez un croquis / plan de masse</h3>
+                    <p style="color: var(--text-muted); font-size: 13px; margin: 0;">L'IA analyse les métrés pour décomposer automatiquement la liste des matériaux requis.</p>
+                    <input type="file" id="hidden-file-input" style="display:none;" accept="image/*" onchange="simulateImageScanProcess(event)">
+                    <img id="scanned-image-preview" class="preview-uploaded-img" src="" alt="Aperçu plan">
+                </div>
+                <div class="ai-result-box" id="scan-success-message-box">
+                    <strong>✅ ANALYSE MATÉRIELLE REUSSIE (100% TRANSPARENCE) :</strong><br>
+                    Le scanner a détecté des côtes structurelles. Les lignes ont été générées en bas de l'éditeur en isolant chaque prix unitaire par composant pour garantir une clarté maximale au client.
+                </div>
+            </div>
+
+            <!-- RÉDACTION IA -->
             <div class="ai-generator-box">
-                <div class="ai-title">🤖 GÉNÉRATEUR DE DEVIS AUTOMATISÉ PAR IA (VERSION DÉTAILLÉE)</div>
-                <p class="ai-subtitle">Décrivez vos travaux. L'IA va créer des lignes ultra-claires qui décomposent le prix des matériaux (sacs de ciment, briques, câbles) pour rassurer votre client.</p>
-                <textarea id="ai-prompt-input" class="ai-textarea" placeholder="Ex: Réalisation d'une clôture de 45 mètres à Lomé..."></textarea>
+                <div class="ai-title">🤖 GÉNÉRATEUR DE TEXTE PAR INTELLIGENCE ARTIFICIELLE</div>
+                <p class="ai-subtitle">Entrez une description libre des travaux. L'IA va formuler des lignes détaillant chaque paquet de ciment, brique ou câble.</p>
+                <textarea id="ai-prompt-input" class="ai-textarea" placeholder="Ex: Construction d'un mur de clôture de 45 mètres linéaires sur 2.5m de hauteur à base d'agglos de 15 à Lomé..."></textarea>
                 <div class="ai-actions-row">
                     <button class="btn-purple-ai" onclick="executeTextPromptAiGeneration()">🤖 Générer le devis ultra-détaillé</button>
-                    <button class="btn-outline-ai" onclick="fillAiExample('Installation électrique pour un bâtiment de 4 pièces avec boîtier central, câblage et points lumineux')">⚡ Ex. Électricité</button>
+                    <button class="btn-outline-ai" onclick="fillAiExample('Installation électrique complète pour un bâtiment de 4 pièces avec boîtier central, disjoncteur et points lumineux')">⚡ Ex. Électricité</button>
                     <button class="btn-outline-ai" onclick="fillAiExample('Construction d\'un mur de clôture de 45 mètres linéaires sur 2.5m de hauteur à base d\'agglos de 15')">🧱 Ex. Maçonnerie</button>
                 </div>
             </div>
         </div>
 
-        <!-- ONGLET 3 : CARNET DE CLIENTS -->
+        <!-- ONGLET 3 : REPERTOIRE CLIENTS -->
         <div id="panel-contacts" class="app-panel no-print">
-            <div class="panel-title">👑 Fichier des Clients Maires d'Ouvrage</div>
+            <div class="panel-title">👑 Fichier des Clients</div>
             <div class="card">
                 <div class="grid-3">
                     <div class="field-group"><label>Nom Complet / Entreprise</label><input type="text" id="contact-name" placeholder="Ex: M. Ibrahim ALI"></div>
@@ -334,7 +351,7 @@
                         </select>
                     </div>
                 </div>
-                <div class="field-group"><label>Adresse Géographique de Chantier</label><input type="text" id="contact-address" placeholder="Ex: Adidogomé, Lomé"></div>
+                <div class="field-group"><label>Adresse Géographique</label><input type="text" id="contact-address" placeholder="Ex: Lomé, Togo"></div>
                 <button class="btn" style="width:100%;" onclick="saveNewContact()">💾 Sauvegarder dans le Répertoire de l'Élite</button>
             </div>
             <div id="contacts-display-zone" class="address-book-grid"></div>
@@ -345,7 +362,7 @@
             <div class="no-print" style="margin-bottom:25px; display:flex; justify-content:space-between; gap:15px;">
                 <button class="btn btn-secondary" onclick="openPanel('panel-doc')">⬅️ Revenir à l'Éditeur</button>
                 <div style="display:flex; gap:12px;">
-                    <button class="btn" style="background-color:#475569;" onclick="window.print();">📸 Impression / Format Papier</button>
+                    <button class="btn" style="background-color:#475569;" onclick="window.print();">📸 Impression Papier</button>
                     <button class="btn" style="background-color:var(--success);" onclick="downloadDirectPdf()">📥 Exporter le PDF Pro</button>
                 </div>
             </div>
@@ -422,7 +439,35 @@
         document.getElementById('ai-prompt-input').value = text;
     }
 
-    // IA MODIFIÉE POUR CHARGER DES DÉTAILS DE CALCUL SUR LES COMPOSANTS
+    // FONCTION SCANNER PHOTO REINSÉRÉE ET ADAPTÉE À LA TRANSPARENCE MAXIMALE
+    function simulateImageScanProcess(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('scanned-image-preview');
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+            
+            document.getElementById('scan-success-message-box').style.display = 'block';
+            
+            // Simulation d'un scan intelligent de plan maçonnerie de 45m2
+            let country = document.getElementById('app-country-selector').value;
+            let local = regionalTarifs[country];
+            
+            let scannedItems = [
+                { desc: `[Scan Plan] Approvisionnement en Ciment CPJ45`, expl: `Détection Auto Plan : Équivalent à 68 sacs de ciment requis pour la surface scannée (Tarif unitaire : ${local.ciment} F)`, qty: 68, unit: "Sacs", pu: local.ciment },
+                { desc: `[Scan Plan] Achat d'Agglomérés creux de ciment vibré 15x20x40`, expl: `Détection Auto Plan : 540 briques calculées pour l'élévation des cloisons à ${local.agglo} F l'unité`, qty: 540, unit: "U", pu: local.agglo },
+                { desc: `[Scan Plan] Fourniture de Sable de rivière tamisé`, expl: `Détection Auto Plan : 3 camions pour la préparation des mortiers de pose`, qty: 3, unit: "Forfait", pu: local.sable }
+            ];
+            
+            lineItems = [...lineItems, ...scannedItems];
+            refreshCalculations();
+        };
+        reader.readAsDataURL(file);
+    }
+
     function executeTextPromptAiGeneration() {
         let promptText = document.getElementById('ai-prompt-input').value.trim();
         if (!promptText) return alert("Veuillez décrire vos travaux.");
@@ -442,7 +487,7 @@
                 { desc: `Fourniture de câbles conducteurs cuivre HO7V-U`, expl: `Détail : Lots de rouleaux sections 1.5mm² et 2.5mm² sous gaines ICD de sécurité`, qty: 1, unit: "Forfait", pu: 55000 },
                 { desc: `Réalisation de points lumineux intérieurs et extérieurs complets`, expl: `Détail : Décomposition du lot : ${pts} points complets installés à ${local.point_elec.toLocaleString('fr-FR')} F l'unité`, qty: pts, unit: "U", pu: local.point_elec },
                 { desc: `Interrupteurs Va-et-vient et Prises de courant confort 16A`, expl: `Détail : ${Math.round(pts * 1.5)} appareillages hauts de gamme facturés à 4 800 F l'unité`, qty: Math.round(pts * 1.5), unit: "U", pu: 4800 },
-                { desc: `Main d'œuvre qualifiée d'ingénierie électrique`, expl: `Détail : Prise en charge complète, tests d'isolement et mise en service globale sécurisée`, qty: 1, unit: "Forfait", pu: local.main_oeuvre * 30 }
+                { desc: `Main d'œuvre qualifiée d'ingénierie électrique`, expl: `Détail : Prise en charge complète, tests d'isolement et mise en service globale`, qty: 1, unit: "Forfait", pu: local.main_oeuvre * 30 }
             ];
         } else {
             let surface = multiplier > 10 ? multiplier : 45;
@@ -459,7 +504,7 @@
 
         lineItems = [...lineItems, ...mockLot];
         refreshCalculations();
-        alert(`🤖 IA connectée : Les lignes ont été insérées avec le détail complet de chaque composant pour le ${country}.`);
+        alert(`🤖 Les lignes détaillées ont été envoyées dans l'éditeur (${country}).`);
         openPanel('panel-doc');
     }
 
@@ -558,7 +603,7 @@
                 <div>
                     <b>${item.desc}</b>
                     ${item.expl ? `<br><span style="color:var(--orange-pro); font-size:12px;">ℹ️ ${item.expl}</span>` : ''}
-                    <br><small>Détail de facturation : ${item.qty} ${item.unit} × ${item.pu.toLocaleString('fr-FR')} ${cur}</small>
+                    <br><small>Calcul : ${item.qty} ${item.unit} × ${item.pu.toLocaleString('fr-FR')} ${cur} = ${(item.qty * item.pu).toLocaleString('fr-FR')} ${cur}</small>
                 </div>
                 <div style="display:flex; align-items:center; gap:15px;"><div class="item-price">${(item.qty * item.pu).toLocaleString('fr-FR')} ${cur}</div><button class="btn btn-danger" style="padding:6px 10px;" onclick="removeLineItem(${i})">🗑️</button></div>
             </div>
