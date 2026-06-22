@@ -3,37 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BTP Devis Pro - Lomé</title>
+    <title>BTP Devis Pro - Version Multinationale Élite</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             --bg-main: #0f141c; --bg-card: #171f2b; --orange-pro: #d97706; 
             --orange-hover: #b45309; --border: #243145; --text: #f8fafc;
             --text-muted: #94a3b8; --success: #16a34a; --danger: #dc2626;
-            --purple-ai: #a78bfa; --purple-ai-hover: #8b5cf6;
         }
         body { font-family: 'Segoe UI', system-ui, sans-serif; background-color: var(--bg-main); color: var(--text); margin: 0; padding: 0; }
         
-        /* PROTECTION SÉCURISÉE */
+        /* PROTECTION SÉCURISÉE PAR APPAREIL */
         #activation-guard {
             position: fixed; top:0; left:0; width:100%; height:100%; 
             background: #0b0f16; z-index: 99999; display: flex; 
             justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;
         }
         .guard-card { background: var(--bg-card); border: 1px solid var(--border); padding: 30px; border-radius: 12px; max-width: 450px; width: 100%; text-align: center; }
-        .hardware-box { background: #0b0f16; border: 1px dashed var(--orange-pro); padding: 12px; border-radius: 6px; font-family: monospace; font-size: 16px; color: var(--orange-pro); font-weight: bold; margin: 15px 0; user-select: all; cursor: pointer;}
+        .hardware-box { background: #0b0f16; border: 1px dashed var(--orange-pro); padding: 12px; border-radius: 6px; font-family: monospace; font-size: 16px; color: var(--orange-pro); font-weight: bold; margin: 15px 0; user-select: all; cursor: pointer; }
 
         .no-print { display: block; }
         .top-bar { background-color: #0b0f16; border-bottom: 1px solid var(--border); padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
-        .logo-area { font-weight: 900; font-size: 22px; letter-spacing: -0.5px; color: #white;}
+        .logo-area { font-weight: 900; font-size: 22px; letter-spacing: -0.5px; }
         .logo-area span { color: var(--orange-pro); }
-        .logo-area b { color: white; font-weight: 500; }
-        .meta-badge { font-size: 12px; color: var(--text-muted); }
+        .meta-badge { font-size: 11px; background: #1e293b; padding: 5px 12px; border-radius: 20px; color: var(--text-muted); font-weight: 600; }
         
-        .tabs-nav { display: flex; background: #111823; border-bottom: 1px solid var(--border); overflow-x: auto; }
-        .tab-btn { background: transparent; border: none; color: var(--text-muted); padding: 16px 20px; font-size: 13px; font-weight: 600; cursor: pointer; flex: 1; text-align: center; position: relative; white-space: nowrap; }
+        .tabs-nav { display: flex; background: #0b0f16; border-bottom: 1px solid var(--border); overflow-x: auto; }
+        .tab-btn { background: transparent; border: none; color: var(--text-muted); padding: 16px 20px; font-size: 13px; font-weight: 700; cursor: pointer; flex: 1; text-align: center; position: relative; white-space: nowrap; }
         .tab-btn.active { color: var(--text); }
-        .tab-btn.active::after { content: ''; position: absolute; bottom: 0; left: 25%; right: 25%; height: 2px; background-color: var(--orange-pro); }
+        .tab-btn.active::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px; background-color: var(--orange-pro); }
         
         .container { max-width: 1100px; margin: 0 auto; padding: 25px 15px; }
         .app-panel { display: none; }
@@ -42,158 +40,101 @@
         .panel-title { font-size: 11px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--orange-pro); margin: 25px 0 12px 0; font-weight: 900; }
         .card { background-color: var(--bg-card); border: 1px solid var(--border); border-radius: 10px; padding: 22px; margin-bottom: 25px; }
         
-        /* IMAGE 1: STYLES SCANNER & GRILLE MÉTIERS */
-        .scan-zone { border: 2px dashed #0284c7; background: #0c1926; border-radius: 10px; padding: 30px 20px; text-align: center; margin-bottom: 20px; cursor: pointer; }
-        .scan-icon { font-size: 40px; margin-bottom: 10px; display: block; color: var(--orange-pro); }
-        .btn-scan-launch { width: 100%; background-color: #38bdf8; color: #0b0f16; font-weight: bold; border: none; padding: 14px; border-radius: 8px; font-size: 14px; cursor: pointer; text-transform: uppercase; }
-        .btn-scan-launch:hover { background-color: #0ea5e9; }
-        
-        .metiers-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 25px; }
-        @media(max-width: 768px) { .metiers-grid { grid-template-columns: repeat(2, 1fr); } }
-        .btn-metier { background: #1e293b; border: 1px solid var(--border); border-radius: 8px; padding: 20px 10px; text-align: center; color: white; cursor: pointer; font-size: 13px; font-weight: 600; transition: all 0.2s; }
-        .btn-metier:hover { border-color: var(--orange-pro); background: #243145; }
-        .btn-metier span { display: block; font-size: 24px; margin-bottom: 8px; }
-        .steps-footer { font-size: 13px; color: #94a3b8; background: #0b0f16; padding: 15px; border-radius: 8px; border: 1px solid #1e293b; text-align: center; }
-        .steps-footer span { color: var(--orange-pro); font-weight: bold; margin-right: 5px; }
-
-        /* IMAGE 2: STYLES REPRÉDUISANT L'ASSISTANT IA */
-        .ai-header-title { font-size: 12px; text-transform: uppercase; letter-spacing: 1px; color: #a78bfa; font-weight: bold; margin-bottom: 15px; display: flex; align-items: center; gap: 6px; }
-        .btn-ai-generate { background-color: var(--purple-ai); color: white; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; font-size: 13px; }
-        .btn-ai-generate:hover { background-color: var(--purple-ai-hover); }
-        .tag-row { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-        .tag-btn { background: #1e293b; border: 1px solid var(--border); color: #94a3b8; padding: 6px 12px; border-radius: 6px; font-size: 12px; cursor: pointer; }
-        .tag-btn:hover { border-color: var(--text-muted); color: white; }
-        .btn-ask-orange { background-color: #ea580c; color: white; border: none; padding: 12px 22px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .btn-ask-orange:hover { background-color: #c2410c; }
-        .btn-yellow-notes { background-color: #f59e0b; color: #0b0f16; border: none; padding: 12px 20px; border-radius: 8px; font-weight: bold; cursor: pointer; }
-        .btn-yellow-notes:hover { background-color: #d97706; }
-
-        /* AUTRES CODES DE STRUCTURE */
         .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
         @media(max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
         .grid-3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 15px; }
         @media(max-width: 768px) { .grid-3 { grid-template-columns: 1fr; } }
+        
         .field-group { margin-bottom: 16px; }
         label { display: block; margin-bottom: 6px; font-size: 11px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; }
         input, select, textarea { width: 100%; background-color: #0b0f16; border: 1px solid var(--border); color: white; padding: 12px 14px; border-radius: 8px; box-sizing: border-box; font-size: 14px; }
         input:focus, select:focus, textarea:focus { border-color: var(--orange-pro); outline: none; }
+        
         .btn { background-color: var(--orange-pro); color: white; border: none; padding: 14px 20px; border-radius: 8px; font-weight: 700; font-size: 13px; cursor: pointer; text-transform: uppercase; display: inline-flex; align-items: center; justify-content: center; gap: 8px; }
+        .btn:hover { background-color: var(--orange-hover); }
+        .btn-secondary { background-color: #1e293b; border: 1px solid var(--border); color: var(--text); }
+        .btn-ai { background: linear-gradient(135deg, #b45309, #d97706); color: white; }
+        .btn-danger { background-color: rgba(220, 38, 38, 0.15); color: var(--danger); border: 1px solid rgba(220, 38, 38, 0.3); }
+        
         .table-row-item { background: #0b0f16; padding: 15px; border-radius: 8px; border: 1px solid var(--border); margin-bottom: 12px; display: flex; justify-content: space-between; align-items: center; }
         .item-price { font-weight: 800; color: var(--orange-pro); font-size: 16px; }
+        
         .summary-box { background: #0b0f16; border-radius: 10px; padding: 20px; border: 1px solid var(--border); margin-top: 25px; }
         .summary-line { display: flex; justify-content: space-between; align-items: center; padding: 12px 0; border-bottom: 1px solid #1a2432; }
         .summary-line.grand-total { font-weight: 900; font-size: 20px; color: var(--orange-pro); border-bottom: 2px solid var(--orange-pro); }
         .inline-input { width: 90px; padding: 8px; text-align: center; background: var(--bg-card); }
+        
+        /* FORMAT CARNET D'ADRESSES */
+        .address-book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 15px; margin-top: 15px; }
+        .contact-card { background: #0b0f16; border: 1px solid var(--border); padding: 15px; border-radius: 8px; position: relative; }
+        .contact-card h4 { margin: 0 0 5px 0; color: var(--text); font-size: 16px; }
+        .contact-card p { margin: 3px 0; font-size: 12px; color: var(--text-muted); }
+
+        /* ZONE DE RENDU HAUT DE GAMME */
         .pdf-container { background: white; color: #0f172a; padding: 45px 35px; border-radius: 8px; }
+        .pdf-header { width: 100%; border-collapse: collapse; margin-bottom: 30px; }
+        .pdf-clean-table { width: 100%; border-collapse: collapse; margin: 20px 0; }
+        .pdf-clean-table th { background: #f8fafc; color: #475569; padding: 12px 10px; font-size: 11px; text-transform: uppercase; border-bottom: 3px solid #cbd5e1; text-align: left; letter-spacing: 0.5px; }
+        .pdf-clean-table td { padding: 12px 10px; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #334155; }
+        .align-right { text-align: right !important; }
+        .pdf-receipt-zone { margin-top: 35px; border: 1px solid #cbd5e1; background: #fdfdfd; padding: 20px; border-radius: 8px; }
+        .pdf-signature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 40px; margin-top: 35px; }
+        .signature-box { border-top: 1px dashed #cbd5e1; padding-top: 10px; font-size: 11px; color: #64748b; text-align: center; text-transform: uppercase; font-weight: bold; }
     </style>
 </head>
 <body>
 
-    <!-- PROTECTION AVEC SIMULATION D'ANALYSE EN DIRECT -->
     <div id="activation-guard">
         <div class="guard-card">
             <h2 style="color:var(--orange-pro); margin-top:0;">🔒 Accès Premium Protégé</h2>
             <p style="font-size:13px; color:var(--text-muted);">Veuillez copier votre <b>Code Appareil</b> et l'envoyer à votre prestataire pour recevoir votre clé d'activation unique.</p>
-            <div class="hardware-box" id="display-hw-code" onclick="copyHardwareCode()">ANALYSE EN COURS...</div>
+            <div class="hardware-box" id="display-hw-code" onclick="navigator.clipboard.writeText(this.innerText); alert('Code copié !');">CHARGEMENT...</div>
             <div class="field-group" style="text-align:left; margin-top:20px;">
                 <label>Clé d'activation unique</label>
                 <input type="text" id="license-key-field" placeholder="Entrez votre clé (Ex: KC-XXXXXX)">
             </div>
             <button class="btn" style="width:100%; margin-top:10px;" onclick="validateHardwareLicence()">Activer l'Espace Professionnel</button>
-            <p id="license-error" style="color:var(--danger); font-size:12px; margin-top:12px; display:none;">⚠️ Clé d'activation incorrecte.</p>
+            <p id="license-error" style="color:var(--danger); font-size:12px; margin-top:12px; display:none;">⚠️ Clé d'activation incorrecte pour cet appareil.</p>
         </div>
     </div>
 
-    <!-- HAUT DE PAGE FIÈREMENT ASSIGNÉ À LOMÉ -->
     <div class="top-bar no-print">
-        <div class="logo-area"><span>BTP</span><b>Devis</b> <span>Pro</span></div>
-        <div class="meta-badge">Lomé · FCFA · IA</div>
+        <div class="logo-area">AFRIQUE<span>BTP</span> Pro</div>
+        <div class="meta-badge">Réseau Ouest & Centre</div>
     </div>
 
-    <!-- REPRÉDUICTION CONFORME DES ONGLETS DE TES IMAGES -->
     <div class="tabs-nav no-print">
-        <button class="tab-btn active" id="btn-tab-home" onclick="openPanel('panel-home')">🏠 Accueil</button>
-        <button class="tab-btn" id="btn-tab-doc" onclick="openPanel('panel-doc')">📋 Nouveau Devis</button>
-        <button class="tab-btn" id="btn-tab-ai" onclick="openPanel('panel-ai')">🤖 Assistant IA</button>
-        <button class="tab-btn" id="btn-tab-preview" onclick="openPanel('panel-preview')">👁️ Aperçu PDF</button>
+        <button class="tab-btn active" id="btn-tab-doc" onclick="openPanel('panel-doc')">📋 Éditeur de Devis</button>
+        <button class="tab-btn" id="btn-tab-contacts" onclick="openPanel('panel-contacts')">👑 Carnet Clients</button>
+        <button class="tab-btn" id="btn-tab-ai" onclick="openPanel('panel-ai')">🤖 Tarifs & Modèles IA</button>
+        <button class="tab-btn" id="btn-tab-preview" onclick="openPanel('panel-preview')">👁️ Rendu & Impression</button>
     </div>
 
     <div class="container">
         
-        <!-- ONGLET ACCUEIL (IMAGE 1 : SCANNER ET MÉTIERS) -->
-        <div id="panel-home" class="app-panel active no-print">
-            <h2 style="text-align:center; margin-top:10px; font-size:24px; font-weight:800;">BTP Devis Pro</h2>
-            <p style="text-align:center; color:var(--text-muted); font-size:14px; margin-bottom:30px;">Devis professionnels - Lomé, Togo</p>
-            
-            <div class="panel-title">📸 Scanner un devis existant</div>
-            <div class="card">
-                <p style="font-size:13px; color:var(--text-muted); margin-top:0; margin-bottom:15px;">Prenez en photo un devis papier ou une capture d'écran pour extraire automatiquement les lignes.</p>
-                <div class="scan-zone" onclick="alert('Module Caméra/Galerie activé pour Lomé')">
-                    <span class="scan-icon">📥</span>
-                    <b style="color:#38bdf8; font-size:14px;">Appuyez pour choisir une photo</b>
-                </div>
-                <button class="btn-scan-launch" onclick="triggerMockScan()">Lancer l'extraction</button>
-            </div>
+        <div id="panel-doc" class="app-panel active no-print">
+            <input type="hidden" id="biz-name" value="AFRIQUE BTP PRO">
+            <input type="hidden" id="biz-address" value="Zone Régionale Ouest & Centre">
+            <input type="hidden" id="biz-phone" value="Support Premium">
 
-            <div class="metiers-grid">
-                <div class="btn-metier" onclick="setQuickMetier('Electricité')"><span>⚡</span>Electricite</div>
-                <div class="btn-metier" onclick="setQuickMetier('Plomberie')"><span>🔧</span>Plomberie</div>
-                <div class="btn-metier" onclick="setQuickMetier('Menuiserie')"><span>🔨</span>Menuiserie</div>
-                <div class="btn-metier" onclick="setQuickMetier('Maçonnerie')"><span>🧱</span>Maconnerie</div>
-                <div class="btn-metier" onclick="setQuickMetier('Soudure')"><span>🔥</span>Soudure</div>
-                <div class="btn-metier" onclick="setQuickMetier('Ferraillage')"><span>⚙️</span>Ferraillage</div>
-                <div class="btn-metier" onclick="setQuickMetier('Peinture')"><span>🎨</span>Peinture</div>
-                <div class="btn-metier" onclick="setQuickMetier('Construction')"><span>🏠</span>Construction</div>
-            </div>
-
-            <div class="steps-footer">
-                <span>1.</span> Choisissez votre métier &nbsp;&nbsp; <span>2.</span> Remplissez les infos &nbsp;&nbsp; <span>3.</span> Générez avec l'IA &nbsp;&nbsp; <span>4.</span> Téléchargez le PDF
-            </div>
-        </div>
-        
-        <!-- ONGLET ASSISTANT IA (IMAGE 2 : STRUCTURE COMPLÈTE) -->
-        <div id="panel-ai" class="app-panel no-print">
-            <div class="card">
-                <div class="ai-header-title">🤖 Generateur de devis IA</div>
-                <p style="font-size:13px; color:var(--text-muted); margin-top:0;">Décrivez les travaux. L'IA crée automatiquement toutes les lignes.</p>
-                <textarea id="ai-main-desc" rows="4" placeholder="Ex: Installation électrique villa 4 pièces à Lomé : tableau, prises, éclairage, main d'œuvre"></textarea>
-                <div style="display:flex; justify-content:space-between; align-items:center; margin-top:15px;">
-                    <button class="btn-ai-generate" onclick="executeAiGenerationTextual()">🤖 Générer le devis</button>
-                </div>
-                <div class="tag-row">
-                    <button class="tag-btn" onclick="applyTextareaPreset('Ex. Electricité')">Ex. Electricite</button>
-                    <button class="tag-btn" onclick="applyTextareaPreset('Ex. Maçonnerie')">Ex. Maconnerie</button>
-                    <button class="tag-btn" onclick="applyTextareaPreset('Ex. Construction')">Ex. Construction</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div style="font-size:13px; font-weight:bold; color:var(--orange-pro); text-transform:uppercase; margin-bottom:5px;">Assistant IA BTP</div>
-                <p style="font-size:13px; color:var(--text-muted); margin-top:0; margin-bottom:15px;">Posez une question sur les prix pour Lomé.</p>
-                <div style="display:flex; gap:10px;">
-                    <input type="text" id="ai-chat-query" placeholder="Ex: Prix peinture 50m2 à Lomé ?">
-                    <button class="btn-ask-orange" onclick="askAiChatQuestion()">Demander</button>
-                </div>
-                <div class="tag-row">
-                    <button class="tag-btn" onclick="applyChatPreset('Electricite villa')">Electricite villa</button>
-                    <button class="tag-btn" onclick="applyChatPreset('Plomberie')">Plomberie</button>
-                    <button class="tag-btn" onclick="applyChatPreset('Peinture 80m2')">Peinture 80m2</button>
-                    <button class="tag-btn" onclick="applyChatPreset('Dalle beton')">Dalle beton</button>
-                    <button class="tag-btn" onclick="applyChatPreset('Grilles')">Grilles</button>
-                    <button class="tag-btn" onclick="applyChatPreset('Ferraillage')">Ferraillage</button>
-                </div>
-            </div>
-
-            <div class="card">
-                <div style="font-size:12px; font-weight:bold; color:var(--orange-pro); text-transform:uppercase; margin-bottom:5px;">Ajouter au devis</div>
-                <p style="font-size:13px; color:var(--text-muted); margin-top:0; margin-bottom:15px;">Ajoute la dernière réponse dans les notes.</p>
-                <button class="btn-yellow-notes" onclick="transferLastResponseToNotes()">Ajouter aux notes</button>
-            </div>
-        </div>
-
-        <!-- ONGLET NOUVEAU DEVIS (EDITEUR DE BASE) -->
-        <div id="panel-doc" class="app-panel no-print">
             <div class="grid-2">
+                <div>
+                    <div class="panel-title">🌍 Configuration Régionale</div>
+                    <div class="card">
+                        <div class="field-group">
+                            <label>Sélectionner le pays d'exécution</label>
+                            <select id="app-country-selector" onchange="updateCountryCurrency()">
+                                <option value="Togo">🇹🇬 Togo (Lomé) - FCFA (XOF)</option>
+                                <option value="Sénégal">🇸🇳 Sénégal (Dakar) - FCFA (XOF)</option>
+                                <option value="Côte d'Ivoire">🇨🇮 Côte d'Ivoire (Abidjan) - FCFA (XOF)</option>
+                                <option value="Mali">🇲🇱 Mali (Bamako) - FCFA (XOF)</option>
+                                <option value="Burkina Faso">BF Burkina Faso (Ouagadougou) - FCFA (XOF)</option>
+                                <option value="Bénin">🇧🇯 Bénin (Cotonou) - FCFA (XOF)</option>
+                                <option value="Gabon">🇬🇦 Gabon (Libreville) - FCFA (XAF)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
                 <div>
                     <div class="panel-title">📄 Infos Document</div>
                     <div class="card">
@@ -210,44 +151,109 @@
                         <div class="field-group"><label>Date</label><input type="date" id="doc-date"></div>
                     </div>
                 </div>
-                <div>
-                    <div class="panel-title">👥 Informations Client</div>
-                    <div class="card">
-                        <div class="field-group"><label>Nom ou Raison Sociale</label><input type="text" id="cli-name" value="Client Provisoire"></div>
-                        <div class="field-group"><label>Lieu des Travaux / Chantier</label><input type="text" id="cli-location" value="Lomé, Togo"></div>
-                    </div>
+            </div>
+
+            <div class="panel-title">👥 Informations Client Privilégié</div>
+            <div class="card">
+                <div style="margin-bottom: 15px; font-size:12px; color:var(--orange-pro);">
+                    💡 <i>Vous pouvez charger un client existant depuis votre <b>Carnet Clients</b> pour aller plus vite.</i>
+                </div>
+                <div class="grid-3">
+                    <div class="field-group"><label>Nom ou Raison Sociale</label><input type="text" id="cli-name" value="M. Amadou DIALLO"></div>
+                    <div class="field-group"><label>Téléphone Mobile</label><input type="text" id="cli-phone" value="+228 90 00 00 00"></div>
+                    <div class="field-group"><label>Lieu des Travaux</label><input type="text" id="cli-location" value="Quartier Résidentiel"></div>
                 </div>
             </div>
 
-            <div class="panel-title">🏗️ Lignes du Devis</div>
+            <div class="panel-title">🏗️ Liste des Postes & Prestations</div>
             <div class="card">
                 <div class="grid-3" style="background: #0b0f16; padding:15px; border-radius:8px; margin-bottom:15px;">
-                    <div class="field-group" style="margin:0;"><label>Désignation</label><input type="text" id="add-desc" placeholder="Ex: Pose de dalles"></div>
+                    <div class="field-group" style="margin:0;"><label>Désignation</label><input type="text" id="add-desc" placeholder="Ex: Maçonnerie de soubassement"></div>
                     <div class="field-group" style="margin:0;"><label>Quantité</label><input type="number" id="add-qty" value="1"></div>
-                    <div class="field-group" style="margin:0;"><label>Unité</label><input type="text" id="add-unit" value="U"></div>
+                    <div class="field-group" style="margin:0;">
+                        <label>Unité</label>
+                        <select id="add-unit">
+                            <option value="U">U (Pièce)</option>
+                            <option value="Forfait">Forfait</option>
+                            <option value="m">m</option>
+                            <option value="m²">m²</option>
+                            <option value="m³">m³</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="grid-2" style="margin-bottom:20px;">
-                    <div class="field-group" style="margin:0;"><label>Prix Unitaire (FCFA)</label><input type="number" id="add-pu" placeholder="Ex: 5000"></div>
+                    <div class="field-group" style="margin:0;"><label>Prix Unitaire (<span class="currency-label">FCFA</span>)</label><input type="number" id="add-pu" placeholder="Ex: 4500"></div>
                     <div style="display:flex; align-items:flex-end;"><button class="btn" style="width:100%;" onclick="addNewLineItem()">➕ Insérer la Ligne</button></div>
                 </div>
                 
                 <div id="items-dynamic-container"></div>
                 
-                <div class="field-group" style="margin-top:20px;"><label>Clauses & Notes spéciales</label><textarea id="input-notes" rows="2">Travaux exécutés conformément aux règles de l'art.</textarea></div>
+                <div class="field-group" style="margin-top:20px;"><label>Clauses d'Excellence & Mentions Légales</label><textarea id="input-notes" rows="2">Chaque projet est traité avec rigueur et dévouement. Nos travaux sont garantis conformes aux normes de construction en vigueur.</textarea></div>
                 
                 <div class="summary-box">
-                    <div class="summary-line"><span>Sous-total HT</span><span id="calc-subtotal">0 FCFA</span></div>
-                    <div class="summary-line"><span>Remise (%)</span><input type="number" id="input-remise" value="0" class="inline-input" oninput="refreshCalculations()"></div>
-                    <div class="summary-line grand-total"><span>NET À PAYER TTC</span><span id="calc-ttc">0 FCFA</span></div>
+                    <div class="summary-line"><span>Sous-total Hors Taxes</span><span id="calc-subtotal">0 F</span></div>
+                    <div class="summary-line"><span>Remise de Courtoisie (%)</span><input type="number" id="input-remise" value="0" class="inline-input" oninput="refreshCalculations()"></div>
+                    <div class="summary-line"><span>Montant Net HT</span><span id="calc-netht">0 F</span></div>
+                    <div class="summary-line"><span>TVA Locale (%)</span><input type="number" id="input-tva" value="18" class="inline-input" oninput="refreshCalculations()"></div>
+                    <div class="summary-line grand-total"><span>NET À PAYER TTC (<span class="currency-label">FCFA</span>)</span><span id="calc-ttc">0 F</span></div>
+                    <div class="summary-line"><span>Acompte Requis (%)</span><input type="number" id="input-acompte" value="40" class="inline-input" oninput="refreshCalculations()"></div>
+                    <div class="summary-line" style="color:var(--success)"><span>Montant Versé à la Commande</span><span id="calc-acompte-val">0 F</span></div>
+                    <div class="summary-line"><span>Solde Restant à Liquider</span><span id="calc-solde">0 F</span></div>
                 </div>
             </div>
         </div>
 
-        <!-- ONGLET RENDU & IMPRESSION -->
+        <div id="panel-contacts" class="app-panel no-print">
+            <div class="panel-title">👑 Carnet d'Adresses Clients de Confiance</div>
+            <div class="card">
+                <p style="font-size:13px; color:var(--text-muted); margin-top:0;">Enregistrez vos clients ici pour conserver leurs coordonnées de façon sécurisée et les charger instantanément lors d'un devis.</p>
+                <div class="grid-3">
+                    <div class="field-group"><label>Nom complet</label><input type="text" id="contact-name" placeholder="Ex: M. Koffi SOUKOU"></div>
+                    <div class="field-group"><label>Téléphone</label><input type="text" id="contact-phone" placeholder="Ex: +228 99 88 77 66"></div>
+                    <div class="field-group">
+                        <label>Pays</label>
+                        <select id="contact-country">
+                            <option value="Togo">Togo</option>
+                            <option value="Sénégal">Sénégal</option>
+                            <option value="Côte d'Ivoire">Côte d'Ivoire</option>
+                            <option value="Mali">Mali</option>
+                            <option value="Burkina Faso">Burkina Faso</option>
+                            <option value="Bénin">Bénin</option>
+                            <option value="Gabon">Gabon</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field-group"><label>Adresse Urbaine / Ville</label><input type="text" id="contact-address" placeholder="Ex: Quartier Agoè, Lomé"></div>
+                <button class="btn" style="width:100%;" onclick="saveNewContact()">💾 Enregistrer le Client</button>
+            </div>
+            
+            <div class="panel-title">📋 Répertoire des Clients Enregistrés</div>
+            <div id="contacts-display-zone" class="address-book-grid"></div>
+        </div>
+
+        <div id="panel-ai" class="app-panel no-print">
+            <div class="panel-title">🤖 Assistant IA : Tarification & Structures par Pays</div>
+            <div class="card">
+                <p style="font-size:13px; color:var(--text-muted); margin-top:0;">L'IA adapte automatiquement les prix moyens des matériaux et de la main-d'œuvre selon le pays sélectionné dans votre éditeur.</p>
+                <div class="field-group">
+                    <label>Sélectionner le lot de travaux à générer</label>
+                    <select id="ai-template-selector">
+                        <option value="gros_oeuvre">🧱 Gros Œuvre, Fondations & Structures</option>
+                        <option value="electricite">⚡ Électricité Générale Renforcée</option>
+                        <option value="plomberie">🚰 Réseau Plomberie & Sanitaires Premium</option>
+                    </select>
+                </div>
+                <button class="btn btn-ai" style="width:100%;" onclick="executeRegionalAiGeneration()">⚡ Injecter les Tarifs Locaux Spécifiques du Pays</button>
+            </div>
+        </div>
+
         <div id="panel-preview" class="app-panel">
-            <div class="no-print" style="margin-bottom:20px; display:flex; justify-content:space-between;">
-                <button class="btn" style="background-color:#475569;" onclick="openPanel('panel-doc')">⬅️ Revenir à l'éditeur</button>
-                <button class="btn" style="background-color:var(--success);" onclick="downloadDirectPdf()">📥 Exporter le PDF</button>
+            <div class="no-print" style="margin-bottom:20px; display:flex; gap:10px; justify-content:space-between;">
+                <button class="btn btn-secondary" onclick="openPanel('panel-doc')">⬅️ Corriger</button>
+                <div style="display:flex; gap:10px;">
+                    <button class="btn" style="background-color:#475569;" onclick="window.print();">📸 Capture / Imprimer</button>
+                    <button class="btn" style="background-color:var(--success);" onclick="downloadDirectPdf()">📥 Exporter le PDF</button>
+                </div>
             </div>
             <div id="capture-pdf-target"><div class="pdf-container" id="pdf-view-target"></div></div>
         </div>
@@ -256,101 +262,182 @@
 
 <script>
     let lineItems = [];
-    let generatedHardwareCode = "BTP-78432"; 
-    let lastAiResponseString = "Estimation standard basée sur les taux du marché de Lomé.";
+    let contacts = [];
 
+    // BASE DE DONNÉES DES TARIFS LOCAUX SÉCURISÉE PAR PAYS (VALEURS ESTIMATIVES INDEXÉES)
+    const regionalTarifs = {
+        "Togo": { currency: "FCFA (XOF)", ciment: 82000, main_oeuvre: 4500, point_elec: 11000 },
+        "Sénégal": { currency: "FCFA (XOF)", ciment: 89000, main_oeuvre: 6000, point_elec: 14000 },
+        "Côte d'Ivoire": { currency: "FCFA (XOF)", ciment: 92000, main_oeuvre: 5500, point_elec: 13500 },
+        "Mali": { currency: "FCFA (XOF)", ciment: 98000, main_oeuvre: 5000, point_elec: 12000 },
+        "Burkina Faso": { currency: "FCFA (XOF)", ciment: 96000, main_oeuvre: 5000, point_elec: 12500 },
+        "Bénin": { currency: "FCFA (XOF)", ciment: 85000, main_oeuvre: 4500, point_elec: 11500 },
+        "Gabon": { currency: "FCFA (XAF)", ciment: 115000, main_oeuvre: 8000, point_elec: 18000 }
+    };
+
+    // GENERATION DE L'EMPREINTE UNIQUE DE L'APPAREIL
+    function generateHardwareFingerprint() {
+        let info = window.navigator.userAgent + window.screen.height + window.screen.width + window.navigator.language;
+        let hash = 7;
+        for (let i = 0; i < info.length; i++) { hash = (hash * 31) + info.charCodeAt(i); }
+        return "BTP-" + (Math.abs(hash % 90000) + 10000);
+    }
+    
+    // FORMULE EXACTE ASSOCIEE AU CODE APPAREIL
+    function calculateKeyFromHardware(hwCode) {
+        let numericPart = parseInt(hwCode.replace("BTP-", ""));
+        return "KC-" + ((numericPart * 3) + 777);
+    }
+
+    // GESTIONNAIRE DE CHARGEMENT PRINCIPAL
     document.addEventListener("DOMContentLoaded", function() {
-        // Simulation dynamique calquée sur l'Image 1 & 2
-        setTimeout(() => {
-            const displayBox = document.getElementById('display-hw-code');
-            if (displayBox) displayBox.innerText = "GÉNÉRATION EN COURS...";
-            setTimeout(() => {
-                if (displayBox) displayBox.innerText = generatedHardwareCode;
-            }, 1000);
-        }, 1200);
+        let myHardwareCode = generateHardwareFingerprint();
+        const displayBox = document.getElementById('display-hw-code');
+        
+        if (displayBox) {
+            displayBox.innerText = myHardwareCode;
+        }
 
-        if (localStorage.getItem('app_btp_multi_v7') === "KC-243073") {
+        // Vérifier si déjà validé
+        if (localStorage.getItem('app_btp_multi_v7') === calculateKeyFromHardware(myHardwareCode)) {
             const guard = document.getElementById('activation-guard');
             if (guard) guard.style.display = 'none';
         }
 
+        // Configurer la date par défaut
         const dateInput = document.getElementById('doc-date');
-        if (dateInput) dateInput.value = new Date().toISOString().split('T')[0];
-        refreshCalculations();
+        if (dateInput) {
+            dateInput.value = new Date().toISOString().split('T')[0];
+        }
+        
+        // Charger les contacts
+        if (localStorage.getItem('btp_contacts')) {
+            contacts = JSON.parse(localStorage.getItem('btp_contacts'));
+        }
+        
+        updateCountryCurrency();
+        renderContactsList();
     });
 
+    // VALIDATION CORRIGEE ET TESTEE
     function validateHardwareLicence() {
-        let inputField = document.getElementById('license-key-field').value.trim();
-        if (inputField === "KC-243073") {
-            localStorage.setItem('app_btp_multi_v7', "KC-243073");
-            document.getElementById('activation-guard').style.display = 'none';
+        let myHardwareCode = generateHardwareFingerprint();
+        let inputField = document.getElementById('license-key-field');
+        let errorMsg = document.getElementById('license-error');
+        
+        if (inputField && inputField.value.trim().toUpperCase() === calculateKeyFromHardware(myHardwareCode)) {
+            localStorage.setItem('app_btp_multi_v7', calculateKeyFromHardware(myHardwareCode));
+            const guard = document.getElementById('activation-guard');
+            if (guard) guard.style.display = 'none';
+            if (errorMsg) errorMsg.style.display = 'none';
         } else {
-            document.getElementById('license-error').style.display = 'block';
+            if (errorMsg) errorMsg.style.display = 'block';
         }
     }
 
-    function copyHardwareCode() {
-        navigator.clipboard.writeText(generatedHardwareCode);
-        alert('Code appareil copié : ' + generatedHardwareCode);
-    }
-
-    // ACTIONS IMAGE 1 (ACCUEIL)
-    function triggerMockScan() {
-        alert("Extraction IA réussie ! 4 lignes de prestations ont été ajoutées à votre espace d'édition.");
-        lineItems = [
-            { desc: "Travaux préliminaires et nettoyage de chantier", qty: 1, unit: "Forfait", pu: 75000 },
-            { desc: "Fouilles en tranchées pour fondations", qty: 12, unit: "m³", pu: 4500 },
-            { desc: "Béton de propreté dosé à 150kg/m³", qty: 3, unit: "m³", pu: 65000 },
-            { desc: "Maçonnerie de soubassement en agglos pleins", qty: 25, unit: "m²", pu: 9500 }
-        ];
+    function updateCountryCurrency() {
+        let selector = document.getElementById('app-country-selector');
+        if (!selector) return;
+        let country = selector.value;
+        let labels = document.querySelectorAll('.currency-label');
+        let cur = regionalTarifs[country].currency.split(' ')[0];
+        labels.forEach(l => l.innerText = cur);
         refreshCalculations();
+    }
+
+    // CARNET D'ADRESSES
+    function saveNewContact() {
+        let name = document.getElementById('contact-name').value.trim();
+        let phone = document.getElementById('contact-phone').value.trim();
+        let country = document.getElementById('contact-country').value;
+        let addr = document.getElementById('contact-address').value.trim();
+        if(!name || !phone) return alert("Veuillez renseigner le nom et le numéro.");
+        
+        contacts.push({ name, phone, country, addr });
+        localStorage.setItem('btp_contacts', JSON.stringify(contacts));
+        renderContactsList();
+        
+        document.getElementById('contact-name').value = "";
+        document.getElementById('contact-phone').value = "";
+        document.getElementById('contact-address').value = "";
+    }
+
+    function deleteContact(idx) {
+        contacts.splice(idx, 1);
+        localStorage.setItem('btp_contacts', JSON.stringify(contacts));
+        renderContactsList();
+    }
+
+    function loadContactToInvoice(idx) {
+        let c = contacts[idx];
+        document.getElementById('cli-name').value = c.name;
+        document.getElementById('cli-phone').value = c.phone;
+        document.getElementById('cli-location').value = c.addr + " (" + c.country + ")";
+        alert(`👑 Client ${c.name} installé avec succès sur le devis actuel.`);
         openPanel('panel-doc');
     }
 
-    function setQuickMetier(metier) {
-        document.getElementById('add-desc').value = `Prestation Générique ${metier}`;
-        openPanel('panel-doc');
+    function renderContactsList() {
+        const zone = document.getElementById('contacts-display-zone');
+        if(!zone) return;
+        if(contacts.length === 0) {
+            zone.innerHTML = `<p style="grid-column: 1/-1; color: var(--text-muted); font-size:13px;">Aucun client enregistré pour le moment.</p>`;
+            return;
+        }
+        zone.innerHTML = contacts.map((c, i) => `
+            <div class="contact-card">
+                <h4>${c.name}</h4>
+                <p>📞 Tél: ${c.phone}</p>
+                <p>🌍 Pays: ${c.country}</p>
+                <p>📍 Ville: ${c.addr}</p>
+                <div style="margin-top:12px; display:flex; gap:8px;">
+                    <button class="btn" style="padding:6px 10px; font-size:11px;" onclick="loadContactToInvoice(${i})">⚡ Choisir</button>
+                    <button class="btn btn-danger" style="padding:6px 10px; font-size:11px;" onclick="deleteContact(${i})">🗑️</button>
+                </div>
+            </div>
+        `).join('');
     }
 
-    // ACTIONS IMAGE 2 (ASSISTANT IA)
-    function applyTextareaPreset(text) {
-        document.getElementById('ai-main-desc').value = `Planification complète pour un projet de type : ${text} à Lomé.`;
-    }
-
-    function applyChatPreset(text) {
-        document.getElementById('ai-chat-query').value = `Quel est le prix moyen actuel pour : ${text} à Lomé ?`;
-    }
-
-    function executeAiGenerationTextual() {
-        let desc = document.getElementById('ai-main-desc').value;
-        if(!desc) return alert("Veuillez décrire les travaux.");
-        alert("L'intelligence artificielle a généré la structure des coûts correspondante.");
-        lineItems.push({ desc: "Ajustement structurel IA : " + desc, qty: 1, unit: "U", pu: 185000 });
+    // GENERATEUR IA PAR TARIFS LOCAUX
+    function executeRegionalAiGeneration() {
+        let country = document.getElementById('app-country-selector').value;
+        let lot = document.getElementById('ai-template-selector').value;
+        let local = regionalTarifs[country];
+        
+        let tempItems = [];
+        if(lot === "gros_oeuvre") {
+            tempItems = [
+                { desc: `Fourniture de Ciment de qualité supérieure (Prix indexé ${country})`, qty: 5, unit: "Sacs", pu: Math.round(local.ciment / 20) },
+                { desc: "Sable de rivière propre de carrière", qty: 2, unit: "m³", pu: 18000 },
+                { desc: "Main-d'œuvre qualifiée spécialisée Gros Œuvre", qty: 4, unit: "m", pu: local.main_oeuvre }
+            ];
+        } else if(lot === "electricite") {
+            tempItems = [
+                { desc: `Réalisation de points lumineux encastrés complets`, qty: 12, unit: "U", pu: local.point_elec },
+                { desc: "Tableau de répartition divisionnaire modulaire", qty: 1, unit: "U", pu: 45000 }
+            ];
+        } else if(lot === "plomberie") {
+            tempItems = [
+                { desc: "Installation de WC à poser avec mécanisme complet", qty: 1, unit: "U", pu: 68000 },
+                { desc: "Réseau de distribution multicouche eau froide", qty: 1, unit: "Forfait", pu: 75000 }
+            ];
+        }
+        
+        lineItems = [...lineItems, ...tempItems];
         refreshCalculations();
+        alert(`✨ Les lignes ont été injectées avec les tarifs calculés pour le ${country}.`);
         openPanel('panel-doc');
     }
 
-    function askAiChatQuestion() {
-        let q = document.getElementById('ai-chat-query').value;
-        if(!q) return;
-        lastAiResponseString = `[Analyse IA Lomé] Pour '${q}' : Le coût moyen constaté est estimé à 4,500 FCFA / m² pour la main d'œuvre et 85,000 FCFA la tonne de ciment de qualité supérieure.`;
-        alert(lastAiResponseString);
-    }
-
-    function transferLastResponseToNotes() {
-        document.getElementById('input-notes').value = lastAiResponseString;
-        alert("La réponse a été injectée avec succès dans les notes du devis !");
-        openPanel('panel-doc');
-    }
-
-    // FONCTIONNALITÉS COMPLEMENTAIRES
     function openPanel(panelId) {
         document.querySelectorAll('.app-panel').forEach(p => p.classList.remove('active'));
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        document.getElementById(panelId).classList.add('active');
         
-        if(panelId === 'panel-home') document.getElementById('btn-tab-home').classList.add('active');
+        const targetPanel = document.getElementById(panelId);
+        if (targetPanel) targetPanel.classList.add('active');
+        
         if(panelId === 'panel-doc') document.getElementById('btn-tab-doc').classList.add('active');
+        if(panelId === 'panel-contacts') document.getElementById('btn-tab-contacts').classList.add('active');
         if(panelId === 'panel-ai') document.getElementById('btn-tab-ai').classList.add('active');
         if(panelId === 'panel-preview') { 
             document.getElementById('btn-tab-preview').classList.add('active'); 
@@ -374,44 +461,90 @@
     function refreshCalculations() {
         let subtotal = lineItems.reduce((s, i) => s + (i.qty * i.pu), 0);
         let rem = parseFloat(document.getElementById('input-remise').value) || 0;
-        let ttc = subtotal - (subtotal * (rem / 100));
+        let net = subtotal - (subtotal * (rem / 100));
+        let tva = parseFloat(document.getElementById('input-tva').value) || 0;
+        let ttc = net + (net * (tva / 100));
+        let aco = parseFloat(document.getElementById('input-acompte').value) || 0;
+        let vAco = ttc * (aco / 100); let solde = ttc - vAco;
+        
+        let selector = document.getElementById('app-country-selector');
+        if (!selector) return;
+        let country = selector.value;
+        let cur = regionalTarifs[country].currency.split(' ')[0];
 
-        if(document.getElementById('calc-subtotal')) document.getElementById('calc-subtotal').innerText = subtotal.toLocaleString('fr-FR') + " FCFA";
-        if(document.getElementById('calc-ttc')) document.getElementById('calc-ttc').innerText = ttc.toLocaleString('fr-FR') + " FCFA";
+        if(document.getElementById('calc-subtotal')) document.getElementById('calc-subtotal').innerText = subtotal.toLocaleString('fr-FR') + " " + cur;
+        if(document.getElementById('calc-netht')) document.getElementById('calc-netht').innerText = net.toLocaleString('fr-FR') + " " + cur;
+        if(document.getElementById('calc-ttc')) document.getElementById('calc-ttc').innerText = ttc.toLocaleString('fr-FR') + " " + cur;
+        if(document.getElementById('calc-acompte-val')) document.getElementById('calc-acompte-val').innerText = vAco.toLocaleString('fr-FR') + " " + cur;
+        if(document.getElementById('calc-solde')) document.getElementById('calc-solde').innerText = solde.toLocaleString('fr-FR') + " " + cur;
 
         const container = document.getElementById('items-dynamic-container');
         if(!container) return;
         container.innerHTML = lineItems.map((item, i) => `
             <div class="table-row-item">
-                <div><b>${item.desc}</b><br><small>${item.qty} ${item.unit} x ${item.pu.toLocaleString('fr-FR')} FCFA</small></div>
-                <div style="display:flex; align-items:center; gap:15px;"><div class="item-price">${(item.qty * item.pu).toLocaleString('fr-FR')} F</div><button class="btn" style="padding:5px 8px; background-color:var(--danger);" onclick="removeLineItem(${i})">🗑️</button></div>
+                <div><b>${item.desc}</b><br><small>Quantité: ${item.qty} ${item.unit} | PU: ${item.pu.toLocaleString('fr-FR')} ${cur}</small></div>
+                <div style="display:flex; align-items:center; gap:15px;"><div class="item-price">${(item.qty * item.pu).toLocaleString('fr-FR')} ${cur}</div><button class="btn btn-danger" style="padding:5px 8px;" onclick="removeLineItem(${i})">🗑️</button></div>
             </div>
         `).join('');
     }
 
     function downloadDirectPdf() {
         const element = document.getElementById('capture-pdf-target');
-        html2pdf().set({ margin: 10, filename: `Devis_Lome.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { format: 'a4', orientation: 'portrait' } }).from(element).save();
+        const numDoc = document.getElementById('doc-id').value || "devis";
+        html2pdf().set({ margin: 10, filename: `Document_${numDoc}.pdf`, image: { type: 'jpeg', quality: 0.98 }, html2canvas: { scale: 2 }, jsPDF: { format: 'a4', orientation: 'portrait' } }).from(element).save();
     }
 
     function generatePdfRendu() {
         let subtotal = lineItems.reduce((s, i) => s + (i.qty * i.pu), 0);
         let rem = parseFloat(document.getElementById('input-remise').value) || 0;
-        let ttc = subtotal - (subtotal * (rem / 100));
+        let net = subtotal - (subtotal * (rem / 100));
+        let tva = parseFloat(document.getElementById('input-tva').value) || 0;
+        let ttc = net + (net * (tva / 100));
+        let aco = parseFloat(document.getElementById('input-acompte').value) || 0;
+        let vAco = ttc * (aco / 100); let solde = ttc - vAco;
+        
+        let country = document.getElementById('app-country-selector').value;
+        let cur = regionalTarifs[country].currency.split(' ')[0];
 
-        let rows = lineItems.map((item, idx) => `<tr><td>${idx+1}. ${item.desc}</td><td>${item.qty}</td><td>${item.unit}</td><td>${item.pu.toLocaleString('fr-FR')}</td><td>${(item.qty * item.pu).toLocaleString('fr-FR')}</td></tr>`).join('');
+        let rows = lineItems.map((item, idx) => `<tr><td>${idx+1}. ${item.desc}</td><td class="align-right">${item.qty}</td><td style="text-align:center;">${item.unit}</td><td class="align-right">${item.pu.toLocaleString('fr-FR')} ${cur}</td><td class="align-right">${(item.qty * item.pu).toLocaleString('fr-FR')} ${cur}</td></tr>`).join('');
 
         document.getElementById('pdf-view-target').innerHTML = `
-            <h2 style="color:#b45309; margin:0;">BTP Devis Pro Lomé</h2>
-            <p style="font-size:12px; color:#475569; margin:5px 0;">Document édité via Assistant Élite</p>
-            <hr style="border:0; border-top:1px solid #cbd5e1; margin:20px 0;">
-            <p><b>Client :</b> ${document.getElementById('cli-name').value}<br><b>Lieu :</b> ${document.getElementById('cli-location').value}</p>
-            <table style="width:100%; border-collapse:collapse; margin:20px 0;" border="1" cellpadding="8" borderColor="#e2e8f0">
-                <tr style="background:#f8fafc;"><th>Désignation</th><th>Qté</th><th>Unité</th><th>P.U.</th><th>Total (FCFA)</th></tr>
-                ${rows.length > 0 ? rows : '<tr><td colspan="5">Aucun élément disponible.</td></tr>'}
+            <table class="pdf-header">
+                <tr>
+                    <td><h2 style="margin:0; color:#b45309; letter-spacing:-0.5px;">${document.getElementById('biz-name').value}</h2><p style="font-size:12px; margin:5px 0; color:#475569;">📍 ${document.getElementById('biz-address').value} | 📞 ${document.getElementById('biz-phone').value}</p></td>
+                    <td class="align-right" style="vertical-align:top;"><h3 style="margin:0; color:#1e293b; font-size:14px; letter-spacing:0.5px;">${document.getElementById('doc-type').value}</h3><p style="font-size:12px; margin:5px 0; color:#64748b;"><b>N° :</b> ${document.getElementById('doc-id').value}<br><b>Date :</b> ${document.getElementById('doc-date').value}</p></td>
+                </tr>
             </table>
-            <p style="text-align:right; font-size:16px; font-weight:bold; color:#b45309;">Total Général : ${ttc.toLocaleString('fr-FR')} FCFA</p>
-            <p style="font-size:11px; color:#64748b; margin-top:30px;"><b>Notes :</b> ${document.getElementById('input-notes').value}</p>
+            <div style="background:#f8fafc; padding:15px; border-radius:6px; margin-bottom:25px; border-left:3px solid #b45309;">
+                <span style="font-size:10px; text-transform:uppercase; color:#64748b; font-weight:bold;">Destinataire Privilégié</span><br>
+                <b style="font-size:15px; color:#0f172a;">${document.getElementById('cli-name').value}</b><br>
+                <span style="font-size:13px; color:#334155;">📞 Contacts : ${document.getElementById('cli-phone').value} | 📍 Chantier : ${document.getElementById('cli-location').value}</span>
+            </div>
+            <table class="pdf-clean-table">
+                <thead><tr><th>Désignation des Prestations</th><th class="align-right">Qté</th><th style="text-align:center;">Unité</th><th class="align-right">P.U.</th><th class="align-right">Total</th></tr></thead>
+                <tbody>${rows.length > 0 ? rows : '<tr><td colspan="5" style="text-align:center; color:#64748b;">Aucune ligne dans le document.</td></tr>'}</tbody>
+            </table>
+            <div style="display:flex; justify-content:space-between; margin-top:25px; gap:20px;">
+                <div style="width:50%; font-size:12px; background:#f8fafc; padding:15px; border-radius:6px; color:#334155;"><b>Engagement de Confiance & Durée :</b><br>${document.getElementById('input-notes').value}</div>
+                <div style="width:40%;">
+                    <table style="width:100%; font-size:13px; border-collapse:collapse;">
+                        <tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:6px 0;">Sous-Total :</td><td class="align-right">${subtotal.toLocaleString('fr-FR')} ${cur}</td></tr>
+                        <tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:6px 0;">Net Après Remise :</td><td class="align-right">${net.toLocaleString('fr-FR')} ${cur}</td></tr>
+                        <tr style="font-weight:bold; font-size:16px; color:#b45309;"><td style="padding:8px 0;">NET À PAYER :</td><td class="align-right">${ttc.toLocaleString('fr-FR')} ${cur}</td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="pdf-receipt-zone">
+                <span style="font-size:11px; font-weight:bold; color:#475569; letter-spacing:0.5px;">💼 PLANIFICATION FINANCIÈRE</span>
+                <div style="display:flex; gap:15px; margin-top:10px;">
+                    <div style="background:#e8f5e9; padding:12px; border-radius:6px; flex:1;"><span style="font-size:11px; color:#2e7d32;">Acompte d'engagement (${aco}%)</span><br><b style="color:#1b5e20; font-size:15px;">${vAco.toLocaleString('fr-FR')} ${cur}</b></div>
+                    <div style="background:#ffebee; padding:12px; border-radius:6px; flex:1;"><span style="font-size:11px; color:#c62828;">Solde à la livraison</span><br><b style="color:#b71c1c; font-size:15px;">${solde.toLocaleString('fr-FR')} ${cur}</b></div>
+                </div>
+                <div class="pdf-signature-grid">
+                    <div class="signature-box">Bon pour Accord (Le Client)</div>
+                    <div class="signature-box">Pour l'Entreprise (Maintien de Confiance)</div>
+                </div>
+            </div>
         `;
     }
 </script>
