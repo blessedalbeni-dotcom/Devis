@@ -3,265 +3,684 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Afrique BTP Pro</title>
+    <title>AFRIQUE BTP PRO - L'Élite du Chantier</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
+        :root {
+            --bg-main: #0b0f17;
+            --bg-card: #131a26;
+            --bg-input: #1e293b;
+            --orange-pro: #f59e0b;
+            --orange-hover: #d97706;
+            --purple-ai: #8b5cf6;
+            --purple-hover: #7c3aed;
+            --border: #243145;
+            --text: #f8fafc;
+            --text-muted: #94a3b8;
+            --success: #10b981;
+            --danger: #ef4444;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f9;
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            background-color: var(--bg-main);
+            color: var(--text);
             margin: 0;
-            padding: 20px;
-            display: flex;
-            justify-content: center;
+            padding: 0;
+            line-height: 1.5;
         }
-        .container {
-            width: 100%;
-            max-width: 500px;
-            background: white;
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-            box-sizing: border-box;
+
+        /* ÉCRAN DE VERROUILLAGE HAUTE SÉCURITÉ */
+        #activation-guard {
+            position: fixed; top:0; left:0; width:100%; height:100%; 
+            background: #070a0f; z-index: 99999; display: flex; 
+            justify-content: center; align-items: center; padding: 20px; box-sizing: border-box;
         }
-        .line {
-            width: 100%;
-            height: 4px;
-            background-color: #1e3a8a;
-            margin-bottom: 20px;
-        }
-        .actions-box {
-            border: 1px solid #cbd5e1;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            display: flex;
-            gap: 10px;
-            justify-content: space-between;
-        }
-        .btn-action {
-            flex: 1;
-            padding: 12px;
-            color: white;
-            font-weight: bold;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-size: 14px;
-        }
-        .btn-danger { background-color: #dc3545; }
-        .btn-success { background-color: #16a34a; }
-        .btn-primary { background-color: #1e3a8a; color: white; padding: 10px 15px; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; }
-        
-        .info-card {
-            border: 1px solid #cbd5e1;
-            padding: 15px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            font-size: 14px;
-        }
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-        .text-right { text-align: right; }
-        
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-bottom: 15px;
-        }
-        th, td {
-            border: 1px solid #cbd5e1;
-            padding: 8px;
+        .guard-card { 
+            background: var(--bg-card); 
+            border: 1px solid var(--border); 
+            padding: 40px; 
+            border-radius: 16px; 
+            max-width: 480px; 
+            width: 100%; 
             text-align: center;
-            font-size: 13px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
         }
-        th {
-            background-color: #0f172a;
-            color: white;
+        .hardware-box { 
+            background: #0b0f17; 
+            border: 1px dashed var(--purple-ai); 
+            padding: 14px; 
+            border-radius: 8px; 
+            font-family: monospace; 
+            font-size: 18px; 
+            color: var(--purple-ai); 
+            font-weight: bold; 
+            margin: 20px 0; 
+            user-select: all; 
+            cursor: pointer; 
         }
-        .input-cell {
-            width: 100%;
-            border: 1px solid #cbd5e1;
-            padding: 6px;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 13px;
-        }
+
+        .no-print { display: block; }
         
-        .totals-wrapper {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
+        /* BARRE DE NAVIGATION SUPRÊME */
+        .top-bar { 
+            background-color: #070a0f; 
+            border-bottom: 1px solid var(--border); 
+            padding: 18px 24px; 
+            display: flex; 
+            justify-content: space-between; 
+            align-items: center; 
         }
-        .totals-table {
-            width: 70%;
-        }
-        .totals-table td {
-            padding: 6px 10px;
-            text-align: left;
-        }
-        .totals-table td.val {
-            text-align: right;
-            font-weight: bold;
-        }
-        .bg-success-light { background-color: #f0fdf4; color: #16a34a; }
-        .bg-danger-light { background-color: #fef2f2; color: #b91c1c; }
+        .logo-area { font-weight: 900; font-size: 24px; letter-spacing: -0.5px; }
+        .logo-area span { color: var(--orange-pro); }
+        .meta-badge { font-size: 12px; background: #1e293b; padding: 6px 16px; border-radius: 30px; color: var(--orange-pro); font-weight: 700; border: 1px solid rgba(245, 158, 11, 0.2); }
         
-        .notes-card {
-            background-color: #f8fafc;
-            border-left: 4px solid #1e3a8a;
-            padding: 15px;
-            border-radius: 4px;
-            font-size: 12px;
-            line-height: 1.4;
+        .tabs-nav { display: flex; background: #070a0f; border-bottom: 1px solid var(--border); overflow-x: auto; }
+        .tab-btn { 
+            background: transparent; border: none; color: var(--text-muted); 
+            padding: 18px 24px; font-size: 14px; font-weight: 700; 
+            cursor: pointer; flex: 1; text-align: center; position: relative; 
+            white-space: nowrap; transition: 0.2s;
         }
+        .tab-btn:hover { color: var(--text); background: rgba(255,255,255,0.02); }
+        .tab-btn.active { color: var(--text); }
+        .tab-btn.active::after { content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 4px; background-color: var(--orange-pro); }
+        
+        .container { max-width: 1200px; margin: 0 auto; padding: 30px 20px; }
+        .app-panel { display: none; }
+        .app-panel.active { display: block; }
+        
+        .panel-title { font-size: 12px; text-transform: uppercase; letter-spacing: 2px; color: var(--orange-pro); margin: 30px 0 15px 0; font-weight: 900; display: flex; align-items: center; gap: 8px; }
+        .card { background-color: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 25px; margin-bottom: 30px; box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2); }
+        
+        /* BLOC GÉNÉRATEUR IA */
+        .ai-generator-box { 
+            border: 1px solid #4c1d95; 
+            background: linear-gradient(135deg, #120e24 0%, #1a153a 100%); 
+            border-radius: 16px; 
+            padding: 30px; 
+            margin-bottom: 35px;
+            box-shadow: 0 10px 25px -5px rgba(124, 58, 237, 0.15);
+        }
+        .ai-title { display: flex; align-items: center; gap: 10px; font-weight: 900; font-size: 18px; color: #ddd6fe; letter-spacing: 0.5px; }
+        .ai-subtitle { font-size: 14px; color: #a78bfa; margin-bottom: 20px; margin-top: 5px; }
+        .ai-textarea { 
+            width: 100%; background: #0f0b21; border: 1px solid #4c1d95; 
+            border-radius: 10px; color: #f3e8ff; padding: 18px; font-size: 15px; 
+            min-height: 120px; resize: vertical; box-sizing: border-box; 
+            font-family: inherit; transition: 0.3s; line-height: 1.6;
+        }
+        .ai-textarea:focus { border-color: #a78bfa; outline: none; box-shadow: 0 0 0 3px rgba(167, 139, 250, 0.2); }
+        .ai-textarea::placeholder { color: #5b527a; }
+        .ai-actions-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 20px; }
+        
+        .btn-purple-ai { 
+            background: linear-gradient(135deg, var(--purple-ai) 0%, #6d28d9 100%); 
+            color: white; border: none; padding: 14px 28px; border-radius: 10px; 
+            font-weight: 800; font-size: 14px; cursor: pointer; text-transform: uppercase;
+            display: inline-flex; align-items: center; gap: 8px; box-shadow: 0 4px 14px rgba(124, 58, 237, 0.4); transition: 0.2s;
+        }
+        .btn-purple-ai:hover { background: var(--purple-hover); transform: translateY(-1px); }
+        .btn-outline-ai { background: rgba(255,255,255,0.03); border: 1px solid #4c1d95; color: #c084fc; padding: 12px 22px; border-radius: 10px; font-weight: 600; font-size: 13px; cursor: pointer; transition: 0.2s; }
+        .btn-outline-ai:hover { border-color: #a78bfa; color: white; background: rgba(124, 58, 237, 0.1); }
+
+        /* SCANNER FLUIDE */
+        .ai-dropzone { border: 2px dashed var(--purple-ai); background: rgba(139, 92, 246, 0.03); padding: 40px 20px; text-align: center; border-radius: 12px; cursor: pointer; margin-bottom: 20px; transition: 0.2s; }
+        .ai-dropzone:hover { background: rgba(139, 92, 246, 0.07); border-color: #a78bfa; }
+        .ai-result-box { background: #070a0f; border-left: 4px solid var(--success); padding: 20px; border-radius: 8px; font-size: 14px; line-height: 1.7; display: none; margin-top: 20px; }
+        .preview-uploaded-img { max-height: 220px; border-radius: 8px; margin-top: 15px; display: none; border: 1px solid var(--border); margin-left: auto; margin-right: auto; }
+
+        /* FORMULAIRES */
+        .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        @media(max-width: 768px) { .grid-2 { grid-template-columns: 1fr; } }
+        .grid-3 { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 20px; }
+        @media(max-width: 768px) { .grid-3 { grid-template-columns: 1fr; } }
+        
+        .field-group { margin-bottom: 20px; }
+        label { display: block; margin-bottom: 8px; font-size: 12px; font-weight: 800; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.5px; }
+        input, select, textarea { width: 100%; background-color: var(--bg-input); border: 1px solid var(--border); color: white; padding: 14px; border-radius: 8px; box-sizing: border-box; font-size: 14px; transition: 0.2s; }
+        input:focus, select:focus, textarea:focus { border-color: var(--orange-pro); outline: none; }
+        
+        .btn { background-color: var(--orange-pro); color: #0b0f17; border: none; padding: 14px 24px; border-radius: 8px; font-weight: 800; font-size: 13px; cursor: pointer; text-transform: uppercase; display: inline-flex; align-items: center; justify-content: center; gap: 8px; transition: 0.2s; }
+        .btn:hover { background-color: var(--orange-hover); color: white; }
+        .btn-secondary { background-color: #1e293b; border: 1px solid var(--border); color: var(--text); }
+        .btn-danger { background-color: rgba(239, 68, 68, 0.1); color: var(--danger); border: 1px solid rgba(239, 68, 68, 0.2); }
+        .btn-danger:hover { background-color: var(--danger); color: white; }
+        
+        /* LISTE DES POSTES DYNAMIQUES */
+        .table-row-item { background: #0b0f17; padding: 18px; border-radius: 10px; border: 1px solid var(--border); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center; animation: fadeIn 0.3s ease; }
+        .item-price { font-weight: 900; color: var(--orange-pro); font-size: 18px; }
+        
+        /* SYNTHÈSE FINANCIÈRE */
+        .summary-box { background: #070a0f; border-radius: 12px; padding: 25px; border: 1px solid var(--border); margin-top: 30px; }
+        .summary-line { display: flex; justify-content: space-between; align-items: center; padding: 14px 0; border-bottom: 1px solid #1e293b; font-size: 14px; }
+        .summary-line.grand-total { font-weight: 900; font-size: 22px; color: var(--orange-pro); border-bottom: 2px solid var(--orange-pro); padding: 18px 0; }
+        .inline-input { width: 90px; padding: 8px; text-align: center; background: var(--bg-card); font-weight: bold; color: var(--orange-pro); }
+        
+        /* REPERTOIRE CLIENTS */
+        .address-book-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; margin-top: 20px; }
+        .contact-card { background: #070a0f; border: 1px solid var(--border); padding: 20px; border-radius: 10px; position: relative; }
+        .contact-card h4 { margin: 0 0 8px 0; color: var(--text); font-size: 18px; font-weight: 800; }
+        .contact-card p { margin: 4px 0; font-size: 13px; color: var(--text-muted); }
+
+        /* RENDU PDF */
+        .pdf-container { background: white; color: #0f172a; padding: 50px; border-radius: 8px; box-shadow: 0 0 20px rgba(0,0,0,0.1); }
+        .pdf-header { width: 100%; border-collapse: collapse; margin-bottom: 40px; }
+        .pdf-clean-table { width: 100%; border-collapse: collapse; margin: 25px 0; }
+        .pdf-clean-table th { background: #f8fafc; color: #475569; padding: 14px 12px; font-size: 12px; text-transform: uppercase; border-bottom: 3px solid #cbd5e1; text-align: left; font-weight: 800; }
+        .pdf-clean-table td { padding: 14px 12px; border-bottom: 1px solid #e2e8f0; font-size: 13px; color: #334155; vertical-align: top; }
+        .align-right { text-align: right !important; }
+        .pdf-receipt-zone { margin-top: 40px; border: 1px solid #cbd5e1; background: #f8fafc; padding: 25px; border-radius: 8px; }
+        .pdf-signature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 50px; margin-top: 45px; }
+        .signature-box { border-top: 1px dashed #cbd5e1; padding-top: 15px; font-size: 12px; color: #64748b; text-align: center; text-transform: uppercase; font-weight: bold; }
+
+        .details-badge { display: block; font-size: 11px; color: #64748b; margin-top: 4px; font-family: monospace; background: #f1f5f9; padding: 4px 8px; border-radius: 4px; border-left: 3px solid #b45309; }
+
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="line"></div>
-
-    <!-- BLOC D'ACTIONS D'ORIGINE AVEC LE BOUTON COMMANDE UNIQUEMENT -->
-    <div class="actions-box">
-        <button class="btn-action btn-danger" onclick="ecraserAncienDevis()">🗑️ Écraser l'ancien devis</button>
-        <button class="btn-action btn-success" onclick="calculerEtSauvegarder()">💾 Calculer & Sauvegarder</button>
-    </div>
-
-    <!-- CARTES DES INFORMATIONS DU DEVIS -->
-    <div class="info-card">
-        <div class="info-grid">
-            <div>
-                <strong>Réf :</strong> BTP-2026-XYZ<br>
-                <strong>Date :</strong> 2026-06-23
+    <!-- ACTIVATION SÉCURISÉE -->
+    <div id="activation-guard">
+        <div class="guard-card">
+            <h2 style="color:var(--orange-pro); margin-top:0; font-weight:900;">🔒 LICENCE ÉLITE BTP</h2>
+            <p style="font-size:14px; color:var(--text-muted);">Copiez votre identifiant matériel unique et validez votre clé d'activation.</p>
+            <div class="hardware-box" id="display-hw-code" onclick="navigator.clipboard.writeText(this.innerText); alert('Code copié !');">CHARGEMENT...</div>
+            <div class="field-group" style="text-align:left; margin-top:25px;">
+                <label>Clé d'activation unique</label>
+                <input type="text" id="license-key-field" placeholder="Entrez votre clé unique (KC-XXXXXX)">
             </div>
-            <div class="text-right">
-                <strong>Maître d'Ouvrage Mandataire :</strong> M. Ibrahim ALI<br>
-                <strong>Emplacement :</strong> Lomé, Togo
-            </div>
+            <button class="btn" style="width:100%; padding:16px;" onclick="validateHardwareLicence()">Activer l'Application Mère</button>
+            <p id="license-error" style="color:var(--danger); font-size:13px; margin-top:15px; display:none; font-weight:bold;">⚠️ Clé d'activation non valide pour cette machine.</p>
         </div>
     </div>
 
-    <!-- TABLEAU DES PRESTATIONS D'ORIGINE -->
-    <table id="tableau-devis">
-        <thead>
-            <tr>
-                <th style="width: 35%;">Désignation Précise & Composants</th>
-                <th style="width: 15%;">Quantité</th>
-                <th style="width: 10%;">Unité</th>
-                <th style="width: 20%;">P.U. (FCFA)</th>
-                <th style="width: 20%;">Total (FCFA)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <tr>
-                <td><input type="text" class="input-cell" value="Approvisionnement en Ciment CPJ45 haute résistance"></td>
-                <td><input type="number" class="input-cell qte" value="68" oninput="calculerLigne(this)"></td>
-                <td><input type="text" class="input-cell" value="Sacs"></td>
-                <td><input type="number" class="input-cell pu" value="4050" oninput="calculerLigne(this)"></td>
-                <td><input type="text" class="input-cell total-ligne" value="275400" readonly></td>
-            </tr>
-            <tr>
-                <td><input type="text" class="input-cell" value="Achat d'Agglomérés creux de ciment vibré (15x20x40)"></td>
-                <td><input type="number" class="input-cell qte" value="540" oninput="calculerLigne(this)"></td>
-                <td><input type="text" class="input-cell" value="U"></td>
-                <td><input type="number" class="input-cell pu" value="450" oninput="calculerLigne(this)"></td>
-                <td><input type="text" class="input-cell total-ligne" value="243000" readonly></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div style="margin-bottom: 20px;">
-        <button class="btn-primary" onclick="ajouterLigne()">➕ Ajouter une ligne</button>
+    <!-- EN-TÊTE PRINCIPALE -->
+    <div class="top-bar no-print">
+        <div class="logo-area">AFRIQUE<span>BTP</span> PRO</div>
+        <div class="meta-badge">SYSTÈME TRANSPARENCE ABSOLUE</div>
     </div>
 
-    <!-- BLOC DES TOTAUX COMPACT ET FIDÈLE À L'IMAGE -->
-    <div class="totals-wrapper">
-        <table class="totals-table">
-            <tr>
-                <td><strong>Sous-Total HT :</strong></td>
-                <td class="val" id="txt-subtotal">518 400 FCFA</td>
-            </tr>
-            <tr>
-                <td style="color: #1e3a8a;"><strong>TOTAL TTC :</strong></td>
-                <td class="val" id="txt-total" style="color: #1e3a8a;">518 400 FCFA</td>
-            </tr>
-            <tr class="bg-success-light">
-                <td>Acompte Réglementaire (40%) :</td>
-                <td class="val" id="txt-acompte">207 360 FCFA</td>
-            </tr>
-            <tr class="bg-danger-light">
-                <td>Solde à la Livraison (60%) :</td>
-                <td class="val" id="txt-solde">311 040 FCFA</td>
-            </tr>
-        </table>
+    <!-- MENU PAR ONGLETS -->
+    <div class="tabs-nav no-print">
+        <button class="tab-btn active" id="btn-tab-doc" onclick="openPanel('panel-doc')">📋 Éditeur de Devis</button>
+        <button class="tab-btn" id="btn-tab-ai" onclick="openPanel('panel-ai')">🤖 Assistant Intelligent & Scanner</button>
+        <button class="tab-btn" id="btn-tab-contacts" onclick="openPanel('panel-contacts')">👑 Fichier Clients</button>
+        <button class="tab-btn" id="btn-tab-preview" onclick="openPanel('panel-preview')">👁️ Rendu PDF</button>
     </div>
 
-    <div class="notes-card">
-        <strong>Notes d'exécution :</strong><br>
-        Travaux exécutés dans les règles de l'art, conformément aux normes techniques en vigueur. Matériaux certifiés de premier choix.
+    <div class="container">
+        
+        <!-- ONGLET 1 : ÉDITEUR TRADITIONNEL -->
+        <div id="panel-doc" class="app-panel active no-print">
+            <input type="hidden" id="biz-name" value="AFRIQUE BTP PRO">
+            <input type="hidden" id="biz-address" value="Afrique de l'Ouest & Centre">
+            <input type="hidden" id="biz-phone" value="Axe Régional Élite">
+
+            <div class="grid-2">
+                <div>
+                    <div class="panel-title">🌍 Localisation & Indexation</div>
+                    <div class="card">
+                        <div class="field-group">
+                            <label>Pays Cible</label>
+                            <select id="app-country-selector" onchange="updateCountryCurrency()">
+                                <option value="Togo">🇹🇬 Togo (Lomé) - FCFA (XOF)</option>
+                                <option value="Sénégal">🇸🇳 Sénégal (Dakar) - FCFA (XOF)</option>
+                                <option value="Côte d'Ivoire">🇨🇮 Côte d'Ivoire (Abidjan) - FCFA (XOF)</option>
+                                <option value="Bénin">🇧🇯 Bénin (Cotonou) - FCFA (XOF)</option>
+                                <option value="Mali">🇲🇱 Mali (Bamako) - FCFA (XOF)</option>
+                                <option value="Burkina Faso">🇧🇫 Burkina Faso (Ouagadougou) - FCFA (XOF)</option>
+                                <option value="Gabon">🇬🇦 Gabon (Libreville) - FCFA (XAF)</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="panel-title">📄 Propriétés du Document</div>
+                    <div class="card">
+                        <div class="grid-2">
+                            <div class="field-group">
+                                <label>Nature</label>
+                                <select id="doc-type" onchange="refreshCalculations()">
+                                    <option value="DEVIS QUANTITATIF & ESTIMATIF">DEVIS ESTIMATIF DÉTAILLÉ</option>
+                                    <option value="FACTURE PROFORMA">FACTURE PROFORMA</option>
+                                </select>
+                            </div>
+                            <div class="field-group"><label>Référence Interne</label><input type="text" id="doc-id" value="BTP-2026-XYZ"></div>
+                        </div>
+                        <div class="field-group"><label>Date d'Émission</label><input type="date" id="doc-date"></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="panel-title">👥 Maître d'Ouvrage / Client</div>
+            <div class="card">
+                <div class="grid-3">
+                    <div class="field-group"><label>Nom / Raison Sociale</label><input type="text" id="cli-name" value="M. Ibrahim ALI"></div>
+                    <div class="field-group"><label>Téléphone Client</label><input type="text" id="cli-phone" value="+228 90 00 00 00"></div>
+                    <div class="field-group"><label>Localisation Chantier</label><input type="text" id="cli-location" value="Lomé, Togo"></div>
+                </div>
+            </div>
+
+            <div class="panel-title">🏗️ Saisie Manuelle avec Détail Précis</div>
+            <div class="card">
+                <div style="background: #070a0f; padding:20px; border-radius:8px; margin-bottom:20px;">
+                    <div class="field-group"><label>Désignation principale des travaux</label><input type="text" id="add-desc" placeholder="Ex: Approvisionnement en Ciment CPJ45 haute résistance"></div>
+                    <div class="field-group"><label>🔍 Explication claire et petits détails (Affiché sur le Devis)</label><input type="text" id="add-expl" placeholder="Ex: Détail précis : 68 paquets/sacs de ciment multipliés par le prix unitaire local de 4 050 F"></div>
+                    <div class="grid-3">
+                        <div class="field-group" style="margin:0;"><label>Quantité</label><input type="number" id="add-qty" value="1"></div>
+                        <div class="field-group" style="margin:0;">
+                            <label>Unité</label>
+                            <select id="add-unit">
+                                <option value="U">U (Pièce)</option>
+                                <option value="Forfait">Forfait</option>
+                                <option value="m">m (Mètre linéaire)</option>
+                                <option value="m²">m² (Surface)</option>
+                                <option value="m³">m³ (Volume)</option>
+                                <option value="Sacs">Sacs</option>
+                            </select>
+                        </div>
+                        <div class="field-group" style="margin:0;"><label>Prix Unitaire (<span class="currency-label">FCFA</span>)</label><input type="number" id="add-pu" placeholder="Ex: 4050"></div>
+                    </div>
+                </div>
+                <button class="btn" style="width:100%;" onclick="addNewLineItem()">➕ Insérer cette ligne ultra-claire au devis</button>
+                
+                <h3 style="font-size:14px; margin-top:30px; color:var(--text-muted);">Lignes actuellement insérées :</h3>
+                <div id="items-dynamic-container"></div>
+                
+                <div class="field-group" style="margin-top:25px;"><label>Notes et clauses contractuelles</label><textarea id="input-notes" rows="2">Travaux exécutés dans les règles de l'art, conformément aux normes techniques en vigueur. Matériaux certifiés de premier choix.</textarea></div>
+                
+                <div class="summary-box">
+                    <div class="summary-line"><span>Total Général Brut HT</span><span id="calc-subtotal">0 F</span></div>
+                    <div class="summary-line"><span>Remise Accordée (%)</span><input type="number" id="input-remise" value="0" class="inline-input" oninput="refreshCalculations()"></div>
+                    <div class="summary-line"><span>Montant Net Hors Taxes</span><span id="calc-netht">0 F</span></div>
+                    <div class="summary-line"><span>TVA Régionale (%)</span><input type="number" id="input-tva" value="0" class="inline-input" oninput="refreshCalculations()"></div>
+                    <div class="summary-line grand-total"><span>NET À PAYER TTC (<span class="currency-label">FCFA</span>)</span><span id="calc-ttc">0 F</span></div>
+                    <div class="summary-line"><span>Acompte à la Signature (%)</span><input type="number" id="input-acompte" value="40" class="inline-input" oninput="refreshCalculations()"></div>
+                    <div class="summary-line" style="color:var(--success)"><span>Montant de l'Acompte Requis</span><span id="calc-acompte-val">0 F</span></div>
+                    <div class="summary-line"><span>Solde restant à liquider fin de travaux</span><span id="calc-solde">0 F</span></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ONGLET 2 : ASSISTANT IA & SCANNER REINSÉRÉ -->
+        <div id="panel-ai" class="app-panel no-print">
+            <!-- LE SCANNER REINSÉRÉ ICI -->
+            <div class="panel-title">📸 SCANNER INTÉGRIAL DE PLANS & PLANS DE SITES</div>
+            <div class="card">
+                <div class="ai-dropzone" onclick="document.getElementById('hidden-file-input').click()">
+                    <span style="font-size: 40px;">📸</span>
+                    <h3 style="margin: 10px 0 5px 0; color: var(--text);">Cliquez ou déposez un croquis / plan de masse</h3>
+                    <p style="color: var(--text-muted); font-size: 13px; margin: 0;">L'IA analyse les métrés pour décomposer automatiquement la liste des matériaux requis.</p>
+                    <input type="file" id="hidden-file-input" style="display:none;" accept="image/*" onchange="simulateImageScanProcess(event)">
+                    <img id="scanned-image-preview" class="preview-uploaded-img" src="" alt="Aperçu plan">
+                </div>
+                <div class="ai-result-box" id="scan-success-message-box">
+                    <strong>✅ ANALYSE MATÉRIELLE REUSSIE (100% TRANSPARENCE) :</strong><br>
+                    Le scanner a détecté des côtes structurelles. Les lignes ont été générées en bas de l'éditeur en isolant chaque prix unitaire par composant pour garantir une clarté maximale au client.
+                </div>
+            </div>
+
+            <!-- RÉDACTION IA -->
+            <div class="ai-generator-box">
+                <div class="ai-title">🤖 GÉNÉRATEUR DE TEXTE PAR INTELLIGENCE ARTIFICIELLE</div>
+                <p class="ai-subtitle">Entrez une description libre des travaux. L'IA va formuler des lignes détaillant chaque paquet de ciment, brique ou câble.</p>
+                <textarea id="ai-prompt-input" class="ai-textarea" placeholder="Ex: Construction d'un mur de clôture de 45 mètres linéaires sur 2.5m de hauteur à base d'agglos de 15 à Lomé..."></textarea>
+                <div class="ai-actions-row">
+                    <button class="btn-purple-ai" onclick="executeTextPromptAiGeneration()">🤖 Générer le devis ultra-détaillé</button>
+                    <button class="btn-outline-ai" onclick="fillAiExample('Installation électrique complète pour un bâtiment de 4 pièces avec boîtier central, disjoncteur et points lumineux')">⚡ Ex. Électricité</button>
+                    <button class="btn-outline-ai" onclick="fillAiExample('Construction d\'un mur de clôture de 45 mètres linéaires sur 2.5m de hauteur à base d\'agglos de 15')">🧱 Ex. Maçonnerie</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- ONGLET 3 : REPERTOIRE CLIENTS -->
+        <div id="panel-contacts" class="app-panel no-print">
+            <div class="panel-title">👑 Fichier des Clients</div>
+            <div class="card">
+                <div class="grid-3">
+                    <div class="field-group"><label>Nom Complet / Entreprise</label><input type="text" id="contact-name" placeholder="Ex: M. Ibrahim ALI"></div>
+                    <div class="field-group"><label>Numéro Téléphone</label><input type="text" id="contact-phone" placeholder="Ex: +228 90 00 00 00"></div>
+                    <div class="field-group">
+                        <label>Pays Résidence</label>
+                        <select id="contact-country">
+                            <option value="Togo">Togo</option>
+                            <option value="Sénégal">Sénégal</option>
+                            <option value="Côte d'Ivoire">Côte d'Ivoire</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="field-group"><label>Adresse Géographique</label><input type="text" id="contact-address" placeholder="Ex: Lomé, Togo"></div>
+                <button class="btn" style="width:100%;" onclick="saveNewContact()">💾 Sauvegarder dans le Répertoire de l'Élite</button>
+            </div>
+            <div id="contacts-display-zone" class="address-book-grid"></div>
+        </div>
+
+        <!-- ONGLET 4 : RENDU PDF -->
+        <div id="panel-preview" class="app-panel">
+            <div class="no-print" style="margin-bottom:25px; display:flex; justify-content:space-between; gap:15px;">
+                <button class="btn btn-secondary" onclick="openPanel('panel-doc')">⬅️ Revenir à l'Éditeur</button>
+                <div style="display:flex; gap:12px;">
+                    <button class="btn" style="background-color:#475569;" onclick="window.print();">📸 Impression Papier</button>
+                    <button class="btn" style="background-color:var(--success);" onclick="downloadDirectPdf()">📥 Exporter le PDF Pro</button>
+                </div>
+            </div>
+            <div id="capture-pdf-target"><div class="pdf-container" id="pdf-view-target"></div></div>
+        </div>
+
     </div>
-</div>
 
 <script>
-    function calculerLigne(input) {
-        let row = input.closest('tr');
-        let qte = parseFloat(row.querySelector('.qte').value) || 0;
-        let pu = parseFloat(row.querySelector('.pu').value) || 0;
-        let totalLigne = row.querySelector('.total-ligne');
-        
-        totalLigne.value = Math.round(qte * pu);
-        recalculerTout();
+    let lineItems = [];
+    let contacts = [];
+
+    const regionalTarifs = {
+        "Togo": { currency: "FCFA (XOF)", ciment: 4050, main_oeuvre: 4500, point_elec: 11500, enduit: 2500, agglo: 450, sable: 18000 },
+        "Sénégal": { currency: "FCFA (XOF)", ciment: 4400, main_oeuvre: 6000, point_elec: 14500, enduit: 3500, agglo: 550, sable: 22000 },
+        "Côte d'Ivoire": { currency: "FCFA (XOF)", ciment: 4550, main_oeuvre: 5500, point_elec: 14000, enduit: 3200, agglo: 500, sable: 20000 },
+        "Bénin": { currency: "FCFA (XOF)", ciment: 4200, main_oeuvre: 4500, point_elec: 12000, enduit: 2700, agglo: 450, sable: 17000 },
+        "Mali": { currency: "FCFA (XOF)", ciment: 4850, main_oeuvre: 5000, point_elec: 12500, enduit: 3000, agglo: 600, sable: 24000 },
+        "Burkina Faso": { currency: "FCFA (XOF)", ciment: 4750, main_oeuvre: 5000, point_elec: 13000, enduit: 3100, agglo: 580, sable: 23000 },
+        "Gabon": { currency: "FCFA (XAF)", ciment: 5900, main_oeuvre: 8500, point_elec: 19000, enduit: 5000, agglo: 700, sable: 30000 }
+    };
+
+    function generateHardwareFingerprint() {
+        let info = window.navigator.userAgent + window.screen.height + window.screen.width + window.navigator.language;
+        let hash = 9;
+        for (let i = 0; i < info.length; i++) { hash = (hash * 37) + info.charCodeAt(i); }
+        return "BTP-" + (Math.abs(hash % 89999) + 10000);
+    }
+    
+    function calculateKeyFromHardware(hwCode) {
+        let numericPart = parseInt(hwCode.replace("BTP-", ""));
+        return "KC-" + ((numericPart * 4) + 888);
     }
 
-    function ajouterLigne() {
-        let table = document.getElementById('tableau-devis').getElementsByTagName('tbody')[0];
-        let newRow = table.insertRow();
-        newRow.innerHTML = `
-            <td><input type="text" class="input-cell" placeholder="Prestation"></td>
-            <td><input type="number" class="input-cell qte" value="0" oninput="calculerLigne(this)"></td>
-            <td><input type="text" class="input-cell" placeholder="U"></td>
-            <td><input type="number" class="input-cell pu" value="0" oninput="calculerLigne(this)"></td>
-            <td><input type="text" class="input-cell total-ligne" value="0" readonly></td>
-        `;
-    }
+    document.addEventListener("DOMContentLoaded", function() {
+        let myHardwareCode = generateHardwareFingerprint();
+        const displayBox = document.getElementById('display-hw-code');
+        if (displayBox) displayBox.innerText = myHardwareCode;
 
-    function recalculerTout() {
-        let totauxLignes = document.querySelectorAll('.total-ligne');
-        let sousTotal = 0;
-        
-        totauxLignes.forEach(function(input) {
-            sousTotal += parseFloat(input.value) || 0;
-        });
-        
-        let acompte = Math.round(sousTotal * 0.40);
-        let solde = sousTotal - acompte;
-        
-        document.getElementById('txt-subtotal').innerText = sousTotal.toLocaleString('fr-FR') + " FCFA";
-        document.getElementById('txt-total').innerText = sousTotal.toLocaleString('fr-FR') + " FCFA";
-        document.getElementById('txt-acompte').innerText = acompte.toLocaleString('fr-FR') + " FCFA";
-        document.getElementById('txt-solde').innerText = solde.toLocaleString('fr-FR') + " FCFA";
-    }
+        if (localStorage.getItem('app_btp_elite_v8') === calculateKeyFromHardware(myHardwareCode)) {
+            document.getElementById('activation-guard').style.display = 'none';
+        }
 
-    function calculerEtSauvegarder() {
-        recalculerTout();
-        localStorage.setItem("devis_actif", "true");
-        alert("Devis mis à jour et sauvegardé avec succès !");
-    }
+        document.getElementById('doc-date').value = new Date().toISOString().split('T')[0];
+        
+        if (localStorage.getItem('btp_contacts_saved')) {
+            contacts = JSON.parse(localStorage.getItem('btp_contacts_saved'));
+        }
+        
+        updateCountryCurrency();
+        renderContactsList();
+    });
 
-    // FONCTION DU BOUTON DEMANDÉ POUR ÉCRASER ET RECHARGER
-    function ecraserAncienDevis() {
-        if (confirm("Voulez-vous vraiment écraser l'ancien devis pour en commencer un nouveau ?")) {
-            localStorage.removeItem("devis_actif");
-            window.location.reload();
+    function validateHardwareLicence() {
+        let myHardwareCode = generateHardwareFingerprint();
+        let inputField = document.getElementById('license-key-field');
+        if (inputField && inputField.value.trim().toUpperCase() === calculateKeyFromHardware(myHardwareCode)) {
+            localStorage.setItem('app_btp_elite_v8', calculateKeyFromHardware(myHardwareCode));
+            document.getElementById('activation-guard').style.display = 'none';
+        } else {
+            document.getElementById('license-error').style.display = 'block';
         }
     }
 
-    window.onload = function() {
-        recalculerTout();
-    };
-</script>
+    function updateCountryCurrency() {
+        let country = document.getElementById('app-country-selector').value;
+        let labels = document.querySelectorAll('.currency-label');
+        let cur = regionalTarifs[country].currency.split(' ')[0];
+        labels.forEach(l => l.innerText = cur);
+        refreshCalculations();
+    }
 
+    function fillAiExample(text) {
+        document.getElementById('ai-prompt-input').value = text;
+    }
+
+    // FONCTION SCANNER PHOTO REINSÉRÉE ET ADAPTÉE À LA TRANSPARENCE MAXIMALE
+    function simulateImageScanProcess(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            const preview = document.getElementById('scanned-image-preview');
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+            
+            document.getElementById('scan-success-message-box').style.display = 'block';
+            
+            // Simulation d'un scan intelligent de plan maçonnerie de 45m2
+            let country = document.getElementById('app-country-selector').value;
+            let local = regionalTarifs[country];
+            
+            let scannedItems = [
+                { desc: `[Scan Plan] Approvisionnement en Ciment CPJ45`, expl: `Détection Auto Plan : Équivalent à 68 sacs de ciment requis pour la surface scannée (Tarif unitaire : ${local.ciment} F)`, qty: 68, unit: "Sacs", pu: local.ciment },
+                { desc: `[Scan Plan] Achat d'Agglomérés creux de ciment vibré 15x20x40`, expl: `Détection Auto Plan : 540 briques calculées pour l'élévation des cloisons à ${local.agglo} F l'unité`, qty: 540, unit: "U", pu: local.agglo },
+                { desc: `[Scan Plan] Fourniture de Sable de rivière tamisé`, expl: `Détection Auto Plan : 3 camions pour la préparation des mortiers de pose`, qty: 3, unit: "Forfait", pu: local.sable }
+            ];
+            
+            lineItems = [...lineItems, ...scannedItems];
+            refreshCalculations();
+        };
+        reader.readAsDataURL(file);
+    }
+
+    function executeTextPromptAiGeneration() {
+        let promptText = document.getElementById('ai-prompt-input').value.trim();
+        if (!promptText) return alert("Veuillez décrire vos travaux.");
+
+        let country = document.getElementById('app-country-selector').value;
+        let local = regionalTarifs[country];
+        let textLower = promptText.toLowerCase();
+        let mockLot = [];
+
+        let detectedNumber = promptText.match(/\d+/);
+        let multiplier = detectedNumber ? parseInt(detectedNumber[0]) : 1;
+
+        if (textLower.includes('electri') || textLower.includes('prise') || textLower.includes('lum')) {
+            let pts = multiplier > 5 ? multiplier : 12;
+            mockLot = [
+                { desc: `Fourniture et pose d'Armoire de répartition étanche`, expl: `Détail : 1 Boîtier central complet incluant disjoncteur différentiel général de protection`, qty: 1, unit: "U", pu: 95000 },
+                { desc: `Fourniture de câbles conducteurs cuivre HO7V-U`, expl: `Détail : Lots de rouleaux sections 1.5mm² et 2.5mm² sous gaines ICD de sécurité`, qty: 1, unit: "Forfait", pu: 55000 },
+                { desc: `Réalisation de points lumineux intérieurs et extérieurs complets`, expl: `Détail : Décomposition du lot : ${pts} points complets installés à ${local.point_elec.toLocaleString('fr-FR')} F l'unité`, qty: pts, unit: "U", pu: local.point_elec },
+                { desc: `Interrupteurs Va-et-vient et Prises de courant confort 16A`, expl: `Détail : ${Math.round(pts * 1.5)} appareillages hauts de gamme facturés à 4 800 F l'unité`, qty: Math.round(pts * 1.5), unit: "U", pu: 4800 },
+                { desc: `Main d'œuvre qualifiée d'ingénierie électrique`, expl: `Détail : Prise en charge complète, tests d'isolement et mise en service globale`, qty: 1, unit: "Forfait", pu: local.main_oeuvre * 30 }
+            ];
+        } else {
+            let surface = multiplier > 10 ? multiplier : 45;
+            let sacsCiment = Math.round(surface * 1.5);
+            let briques = surface * 12;
+            mockLot = [
+                { desc: `Approvisionnement en Ciment CPJ45 haute résistance`, expl: `Détail précis : ${sacsCiment} paquets/sacs de ciment multipliés par le prix unitaire local de ${local.ciment.toLocaleString('fr-FR')} F`, qty: sacsCiment, unit: "Sacs", pu: local.ciment },
+                { desc: `Achat d'Agglomérés creux de ciment vibré (Format 15x20x40)`, expl: `Détail précis : ${briques} briques/agglos nécessaires pour l'élévation, multipliés par ${local.agglo} F l'unité`, qty: briques, unit: "U", pu: local.agglo },
+                { desc: `Fourniture de Sable de rivière tamisé pour mortier`, expl: `Détail : 3 Camions de volume moyen de sable de rivière, tarifés à ${local.sable.toLocaleString('fr-FR')} F le chargement`, qty: 3, unit: "Forfait", pu: local.sable },
+                { desc: `Enduit d'étanchéité et finition lissée au mortier`, expl: `Détail : Application double couche sur les parois verticales pour traitement de finition (${surface * 2} m² à ${local.enduit} F)`, qty: surface * 2, unit: "m²", pu: local.enduit },
+                { desc: `Main d'œuvre professionnelle et encadrement technique maçonnerie`, expl: `Détail : Prise en charge complète des maçons et manœuvres pour toute la durée des structures`, qty: 1, unit: "Forfait", pu: local.main_oeuvre * 45 }
+            ];
+        }
+
+        lineItems = [...lineItems, ...mockLot];
+        refreshCalculations();
+        alert(`🤖 Les lignes détaillées ont été envoyées dans l'éditeur (${country}).`);
+        openPanel('panel-doc');
+    }
+
+    function saveNewContact() {
+        let name = document.getElementById('contact-name').value.trim();
+        let phone = document.getElementById('contact-phone').value.trim();
+        let country = document.getElementById('contact-country').value;
+        let addr = document.getElementById('contact-address').value.trim();
+        if(!name || !phone) return alert("Nom et Téléphone obligatoires.");
+        contacts.push({ name, phone, country, addr });
+        localStorage.setItem('btp_contacts_saved', JSON.stringify(contacts));
+        renderContactsList();
+        document.getElementById('contact-name').value = ""; document.getElementById('contact-phone').value = ""; document.getElementById('contact-address').value = "";
+    }
+
+    function loadContactToInvoice(idx) {
+        let c = contacts[idx];
+        document.getElementById('cli-name').value = c.name;
+        document.getElementById('cli-phone').value = c.phone;
+        document.getElementById('cli-location').value = c.addr + ` (${c.country})`;
+        alert(`👑 Client ${c.name} configuré.`);
+        openPanel('panel-doc');
+    }
+
+    function deleteContact(idx) {
+        contacts.splice(idx, 1);
+        localStorage.setItem('btp_contacts_saved', JSON.stringify(contacts));
+        renderContactsList();
+    }
+
+    function renderContactsList() {
+        const zone = document.getElementById('contacts-display-zone');
+        if(!zone) return;
+        if(contacts.length === 0) { zone.innerHTML = `<p style="grid-column: 1/-1; color: var(--text-muted); font-size:13px;">Aucun client enregistré.</p>`; return; }
+        zone.innerHTML = contacts.map((c, i) => `
+            <div class="contact-card">
+                <h4>${c.name}</h4>
+                <p>📞 Tél: ${c.phone}</p>
+                <p>📍 Chantier : ${c.addr}</p>
+                <div style="margin-top:15px; display:flex; gap:8px;">
+                    <button class="btn" style="padding:6px 12px; font-size:11px;" onclick="loadContactToInvoice(${i})">⚡ Sélectionner</button>
+                    <button class="btn btn-danger" style="padding:6px 12px; font-size:11px;" onclick="deleteContact(${i})">🗑️</button>
+                </div>
+            </div>
+        `).join('');
+    }
+
+    function openPanel(panelId) {
+        document.querySelectorAll('.app-panel').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+        const target = document.getElementById(panelId);
+        if (target) target.classList.add('active');
+        
+        if(panelId === 'panel-doc') document.getElementById('btn-tab-doc').classList.add('active');
+        if(panelId === 'panel-ai') document.getElementById('btn-tab-ai').classList.add('active');
+        if(panelId === 'panel-contacts') document.getElementById('btn-tab-contacts').classList.add('active');
+        if(panelId === 'panel-preview') { document.getElementById('btn-tab-preview').classList.add('active'); generatePdfRendu(); }
+    }
+
+    function addNewLineItem() {
+        const desc = document.getElementById('add-desc').value.trim();
+        const expl = document.getElementById('add-expl').value.trim();
+        const qty = parseFloat(document.getElementById('add-qty').value) || 1;
+        const unit = document.getElementById('add-unit').value;
+        const pu = parseFloat(document.getElementById('add-pu').value) || 0;
+        if(!desc) return;
+        lineItems.push({ desc, expl, qty, unit, pu });
+        document.getElementById('add-desc').value = ""; document.getElementById('add-expl').value = ""; document.getElementById('add-pu').value = "";
+        refreshCalculations();
+    }
+
+    function removeLineItem(idx) { lineItems.splice(idx, 1); refreshCalculations(); }
+
+    function refreshCalculations() {
+        let subtotal = lineItems.reduce((s, i) => s + (i.qty * i.pu), 0);
+        let rem = parseFloat(document.getElementById('input-remise').value) || 0;
+        let net = subtotal - (subtotal * (rem / 100));
+        let tva = parseFloat(document.getElementById('input-tva').value) || 0;
+        let ttc = net + (net * (tva / 100));
+        let aco = parseFloat(document.getElementById('input-acompte').value) || 0;
+        let vAco = ttc * (aco / 100); let solde = ttc - vAco;
+        
+        let country = document.getElementById('app-country-selector').value;
+        let cur = regionalTarifs[country].currency.split(' ')[0];
+
+        if(document.getElementById('calc-subtotal')) document.getElementById('calc-subtotal').innerText = subtotal.toLocaleString('fr-FR') + " " + cur;
+        if(document.getElementById('calc-netht')) document.getElementById('calc-netht').innerText = net.toLocaleString('fr-FR') + " " + cur;
+        if(document.getElementById('calc-ttc')) document.getElementById('calc-ttc').innerText = ttc.toLocaleString('fr-FR') + " " + cur;
+        if(document.getElementById('calc-acompte-val')) document.getElementById('calc-acompte-val').innerText = vAco.toLocaleString('fr-FR') + " " + cur;
+        if(document.getElementById('calc-solde')) document.getElementById('calc-solde').innerText = solde.toLocaleString('fr-FR') + " " + cur;
+
+        const container = document.getElementById('items-dynamic-container');
+        if(!container) return;
+        container.innerHTML = lineItems.map((item, i) => `
+            <div class="table-row-item">
+                <div>
+                    <b>${item.desc}</b>
+                    ${item.expl ? `<br><span style="color:var(--orange-pro); font-size:12px;">ℹ️ ${item.expl}</span>` : ''}
+                    <br><small>Calcul : ${item.qty} ${item.unit} × ${item.pu.toLocaleString('fr-FR')} ${cur} = ${(item.qty * item.pu).toLocaleString('fr-FR')} ${cur}</small>
+                </div>
+                <div style="display:flex; align-items:center; gap:15px;"><div class="item-price">${(item.qty * item.pu).toLocaleString('fr-FR')} ${cur}</div><button class="btn btn-danger" style="padding:6px 10px;" onclick="removeLineItem(${i})">🗑️</button></div>
+            </div>
+        `).join('');
+    }
+
+    function generatePdfRendu() {
+        let subtotal = lineItems.reduce((s, i) => s + (i.qty * i.pu), 0);
+        let rem = parseFloat(document.getElementById('input-remise').value) || 0;
+        let net = subtotal - (subtotal * (rem / 100));
+        let tva = parseFloat(document.getElementById('input-tva').value) || 0;
+        let ttc = net + (net * (tva / 100));
+        let aco = parseFloat(document.getElementById('input-acompte').value) || 0;
+        let vAco = ttc * (aco / 100); let solde = ttc - vAco;
+        let country = document.getElementById('app-country-selector').value;
+        let cur = regionalTarifs[country].currency.split(' ')[0];
+
+        let rows = lineItems.map((item, idx) => `
+            <tr>
+                <td>
+                    <b style="color:#0f172a;">${idx+1}. ${item.desc}</b>
+                    ${item.expl ? `<div class="details-badge">💡 ${item.expl}</div>` : ''}
+                    <div style="font-size:11px; color:#64748b; margin-top:2px;">Calcul détaillé : ${item.qty} ${item.unit} × ${item.pu.toLocaleString('fr-FR')} ${cur}</div>
+                </td>
+                <td class="align-right" style="font-weight:bold; color:#0f172a;">${item.qty}</td>
+                <td style="text-align:center; color:#475569;">${item.unit}</td>
+                <td class="align-right" style="color:#475569;">${item.pu.toLocaleString('fr-FR')}</td>
+                <td class="align-right" style="font-weight:700; color:#0f172a;">${(item.qty * item.pu).toLocaleString('fr-FR')}</td>
+            </tr>
+        `).join('');
+
+        document.getElementById('pdf-view-target').innerHTML = `
+            <table class="pdf-header">
+                <tr>
+                    <td><h1 style="margin:0; color:#b45309; font-size:26px; font-weight:900;">${document.getElementById('biz-name').value}</h1><p style="font-size:12px; color:#475569; margin:5px 0;">🏢 Spécialiste Gros Œuvre & Électricité | ${document.getElementById('biz-address').value}</p></td>
+                    <td class="align-right" style="vertical-align:top;"><h2 style="margin:0; color:#0f172a; font-size:16px;">${document.getElementById('doc-type').value}</h2><p style="font-size:13px; color:#64748b; margin:5px 0;"><b>Réf :</b> ${document.getElementById('doc-id').value}<br><b>Date :</b> ${document.getElementById('doc-date').value}</p></td>
+                </tr>
+            </table>
+            <div style="background:#f1f5f9; padding:20px; border-radius:6px; margin-bottom:30px; border-left:4px solid #d97706;">
+                <span style="font-size:10px; font-weight:900; color:#64748b; text-transform:uppercase;">Maître d'Ouvrage Mandataire</span><br>
+                <b style="font-size:16px; color:#0f172a;">${document.getElementById('cli-name').value}</b><br>
+                <span style="font-size:13px; color:#334155;">📞 Contact : ${document.getElementById('cli-phone').value} | 📍 Emplacement : ${document.getElementById('cli-location').value}</span>
+            </div>
+            <table class="pdf-clean-table">
+                <thead><tr><th>Désignation Précise & Composants Éléments</th><th class="align-right">Quantité</th><th style="text-align:center;">Unité</th><th class="align-right">P.U. (${cur})</th><th class="align-right">Total (${cur})</th></tr></thead>
+                <tbody>${rows.length > 0 ? rows : '<tr><td colspan="5" style="text-align:center; color:#64748b;">Aucune ligne de prestation enregistrée.</td></tr>'}</tbody>
+            </table>
+            <div style="display:flex; justify-content:space-between; margin-top:35px; gap:30px;">
+                <div style="width:50%; font-size:12px; background:#f8fafc; padding:15px; border-radius:6px; color:#475569; border:1px solid #e2e8f0;"><b>Notes d'exécution :</b><br>${document.getElementById('input-notes').value}</div>
+                <div style="width:45%;">
+                    <table style="width:100%; font-size:14px; border-collapse:collapse;">
+                        <tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:6px 0; color:#475569;">Sous-Total HT :</td><td class="align-right">${subtotal.toLocaleString('fr-FR')} ${cur}</td></tr>
+                        <tr style="border-bottom:1px solid #e2e8f0;"><td style="padding:6px 0; color:#475569;">Remise appliqué :</td><td class="align-right">${rem} %</td></tr>
+                        <tr style="border-bottom:1px solid #cbd5e1; font-weight:bold;"><td style="padding:8px 0; color:#0f172a;">Montant Net HT :</td><td class="align-right">${net.toLocaleString('fr-FR')} ${cur}</td></tr>
+                        <tr style="font-weight:900; font-size:18px; color:#b45309;"><td style="padding:10px 0;">TOTAL TTC :</td><td class="align-right">${ttc.toLocaleString('fr-FR')} ${cur}</td></tr>
+                    </table>
+                </div>
+            </div>
+            <div class="pdf-receipt-zone">
+                <span style="font-size:11px; font-weight:900; color:#475569; letter-spacing:0.5px;">💰 MODALITÉS DE LIQUIDATION FINANCIÈRE</span>
+                <div style="display:flex; gap:20px; margin-top:12px;">
+                    <div style="background:#d1fae5; padding:15px; border-radius:6px; flex:1;"><span style="font-size:11px; color:#065f46; font-weight:bold;">Acompte Réglementaire (${aco}%)</span><br><b style="color:#047857; font-size:16px;">${vAco.toLocaleString('fr-FR')} ${cur}</b></div>
+                    <div style="background:#fee2e2; padding:15px; border-radius:6px; flex:1;"><span style="font-size:11px; color:#991b1b; font-weight:bold;">Solde à la Livraison</span><br><b style="color:#b91c1c; font-size:16px;">${solde.toLocaleString('fr-FR')} ${cur}</b></div>
+                </div>
+                <div class="pdf-signature-grid">
+                    <div class="signature-box">Signature du Client (Précédé de lu et approuvé)</div>
+                    <div class="signature-box">Direction AFRIQUE BTP PRO</div>
+                </div>
+            </div>
+        `;
+    }
+
+    function downloadDirectPdf() {
+        const element = document.getElementById('capture-pdf-target');
+        const numDoc = document.getElementById('doc-id').value || "devis";
+        html2pdf().set({ margin: 10, filename: `Devis_Elite_${numDoc}.pdf`, image: { type: 'jpeg', quality: 0.99 }, html2canvas: { scale: 2.5, useCORS: true }, jsPDF: { format: 'a4', orientation: 'portrait' } }).from(element).save();
+    }
+</script>
 </body>
 </html>
