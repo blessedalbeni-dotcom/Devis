@@ -3,140 +3,117 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Afrique BTP Pro - Application Devis</title>
+    <title>Afrique BTP Pro</title>
     <style>
-        :root {
-            --primary: #1e3a8a;
-            --secondary: #0f172a;
-            --success: #16a34a;
-            --danger: #dc3545;
-            --light: #f8fafc;
-            --border: #cbd5e1;
-        }
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: #f1f5f9;
-            color: #334155;
+            font-family: Arial, sans-serif;
+            background-color: #f4f6f9;
             margin: 0;
-            padding: 10px;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
         }
         .container {
-            max-width: 1000px;
-            margin: 0 auto;
+            width: 100%;
+            max-width: 500px;
             background: white;
-            padding: 15px;
-            border-radius: 8px;
-            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
             box-sizing: border-box;
         }
-        .header {
-            text-align: center;
-            border-bottom: 3px solid var(--primary);
-            padding-bottom: 15px;
+        .line {
+            width: 100%;
+            height: 4px;
+            background-color: #1e3a8a;
             margin-bottom: 20px;
         }
-        .header h1 {
-            color: var(--primary);
-            margin: 0;
-            font-size: 24px;
-        }
-        .header p {
-            margin: 5px 0 0 0;
-            color: #64748b;
-            font-size: 14px;
-            font-style: italic;
-        }
-        .actions-bar {
+        .actions-box {
+            border: 1px solid #cbd5e1;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
             display: flex;
             gap: 10px;
-            justify-content: center;
-            background: var(--light);
-            padding: 15px;
-            border-radius: 6px;
-            margin-bottom: 20px;
-            border: 1px solid var(--border);
-            flex-wrap: wrap;
+            justify-content: space-between;
         }
-        .btn {
+        .btn-action {
             flex: 1;
-            min-width: 140px;
-            padding: 12px 10px;
+            padding: 12px;
+            color: white;
             font-weight: bold;
-            font-size: 14px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            text-align: center;
-            box-sizing: border-box;
+            font-size: 14px;
         }
-        .btn-success { background-color: var(--success); color: white; }
-        .btn-danger { background-color: var(--danger); color: white; }
-        .btn-primary { background-color: var(--primary); color: white; }
+        .btn-danger { background-color: #dc3545; }
+        .btn-success { background-color: #16a34a; }
+        .btn-primary { background-color: #1e3a8a; color: white; padding: 10px 15px; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; }
         
-        .info-block {
-            background: #f8fafc;
+        .info-card {
+            border: 1px solid #cbd5e1;
             padding: 15px;
-            border-radius: 6px;
-            border: 1px solid var(--border);
+            border-radius: 8px;
             margin-bottom: 20px;
             font-size: 14px;
-            line-height: 1.5;
         }
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+        .text-right { text-align: right; }
         
-        /* Conteneur pour empêcher le tableau de déborder sur mobile */
-        .table-responsive {
-            width: 100%;
-            overflow-x: auto;
-            margin-bottom: 20px;
-            border: 1px solid var(--border);
-            border-radius: 4px;
-        }
         table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 600px; /* Force un défilement propre sans écraser les cellules */
+            margin-bottom: 15px;
         }
         th, td {
-            border: 1px solid var(--border);
-            padding: 10px;
-            text-align: left;
+            border: 1px solid #cbd5e1;
+            padding: 8px;
+            text-align: center;
+            font-size: 13px;
         }
         th {
-            background-color: var(--secondary);
+            background-color: #0f172a;
             color: white;
-            font-size: 14px;
         }
-        .form-control {
+        .input-cell {
             width: 100%;
-            padding: 8px;
-            border: 1px solid var(--border);
+            border: 1px solid #cbd5e1;
+            padding: 6px;
             border-radius: 4px;
             box-sizing: border-box;
+            font-size: 13px;
         }
         
-        /* Ajustement de la section des totaux pour mobile */
-        .totals-container {
+        .totals-wrapper {
             display: flex;
             justify-content: flex-end;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
         }
         .totals-table {
-            width: 100%;
-            max-width: 360px;
+            width: 70%;
         }
         .totals-table td {
-            padding: 8px 12px;
-            border: 1px solid var(--border);
+            padding: 6px 10px;
+            text-align: left;
         }
-        .text-right { text-align: right; }
-        .font-bold { font-weight: bold; }
+        .totals-table td.val {
+            text-align: right;
+            font-weight: bold;
+        }
+        .bg-success-light { background-color: #f0fdf4; color: #16a34a; }
+        .bg-danger-light { background-color: #fef2f2; color: #b91c1c; }
         
-        .footer-notes {
-            background: var(--light);
+        .notes-card {
+            background-color: #f8fafc;
+            border-left: 4px solid #1e3a8a;
             padding: 15px;
-            border-left: 4px solid var(--primary);
             border-radius: 4px;
-            font-size: 13px;
+            font-size: 12px;
             line-height: 1.4;
         }
     </style>
@@ -144,86 +121,84 @@
 <body>
 
 <div class="container">
-    <div class="header">
-        <h1>AFRIQUE BTP PRO</h1>
-        <p>Spécialiste Gros Œuvre & Électricité | Afrique de l'Ouest & Centre</p>
+    <div class="line"></div>
+
+    <!-- BLOC D'ACTIONS D'ORIGINE AVEC LE BOUTON COMMANDE UNIQUEMENT -->
+    <div class="actions-box">
+        <button class="btn-action btn-danger" onclick="ecraserAncienDevis()">🗑️ Écraser l'ancien devis</button>
+        <button class="btn-action btn-success" onclick="calculerEtSauvegarder()">💾 Calculer & Sauvegarder</button>
     </div>
 
-    <!-- BARRE D'ACTIONS CONTENANT UNIQUEMENT LE BOUTON DEMANDÉ ET LA SAUVEGARDE -->
-    <div class="actions-bar">
-        <button id="btn-ecraser-devis" class="btn btn-danger" onclick="ecraserAncienDevis()">
-            🗑️ Écraser l'ancien devis
-        </button>
-        <button class="btn btn-success" onclick="calculerEtSauvegarder()">
-            💾 Calculer & Sauvegarder
-        </button>
+    <!-- CARTES DES INFORMATIONS DU DEVIS -->
+    <div class="info-card">
+        <div class="info-grid">
+            <div>
+                <strong>Réf :</strong> BTP-2026-XYZ<br>
+                <strong>Date :</strong> 2026-06-23
+            </div>
+            <div class="text-right">
+                <strong>Maître d'Ouvrage Mandataire :</strong> M. Ibrahim ALI<br>
+                <strong>Emplacement :</strong> Lomé, Togo
+            </div>
+        </div>
     </div>
 
-    <!-- INFOS DU DEVIS ACTUEL -->
-    <div class="info-block">
-        <strong>Réf :</strong> BTP-2026-XYZ &nbsp;|&nbsp; <strong>Date :</strong> 2026-06-23<br>
-        <strong>Maître d'Ouvrage Mandataire :</strong> M. Ibrahim ALI<br>
-        <strong>Emplacement :</strong> Lomé, Togo
+    <!-- TABLEAU DES PRESTATIONS D'ORIGINE -->
+    <table id="tableau-devis">
+        <thead>
+            <tr>
+                <th style="width: 35%;">Désignation Précise & Composants</th>
+                <th style="width: 15%;">Quantité</th>
+                <th style="width: 10%;">Unité</th>
+                <th style="width: 20%;">P.U. (FCFA)</th>
+                <th style="width: 20%;">Total (FCFA)</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td><input type="text" class="input-cell" value="Approvisionnement en Ciment CPJ45 haute résistance"></td>
+                <td><input type="number" class="input-cell qte" value="68" oninput="calculerLigne(this)"></td>
+                <td><input type="text" class="input-cell" value="Sacs"></td>
+                <td><input type="number" class="input-cell pu" value="4050" oninput="calculerLigne(this)"></td>
+                <td><input type="text" class="input-cell total-ligne" value="275400" readonly></td>
+            </tr>
+            <tr>
+                <td><input type="text" class="input-cell" value="Achat d'Agglomérés creux de ciment vibré (15x20x40)"></td>
+                <td><input type="number" class="input-cell qte" value="540" oninput="calculerLigne(this)"></td>
+                <td><input type="text" class="input-cell" value="U"></td>
+                <td><input type="number" class="input-cell pu" value="450" oninput="calculerLigne(this)"></td>
+                <td><input type="text" class="input-cell total-ligne" value="243000" readonly></td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div style="margin-bottom: 20px;">
+        <button class="btn-primary" onclick="ajouterLigne()">➕ Ajouter une ligne</button>
     </div>
 
-    <!-- TABLEAU RESPONSIVE SANS DÉBORDEMENT -->
-    <div class="table-responsive">
-        <table id="tableau-devis">
-            <thead>
-                <tr>
-                    <th style="width: 40%;">Désignation Précise & Composants</th>
-                    <th style="width: 12%;">Quantité</th>
-                    <th style="width: 12%;">Unité</th>
-                    <th style="width: 16%;">P.U. (FCFA)</th>
-                    <th style="width: 20%;">Total (FCFA)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><input type="text" class="form-control" value="Approvisionnement en Ciment CPJ45 haute résistance"></td>
-                    <td><input type="number" class="form-control qte" value="68" oninput="calculerLigne(this)"></td>
-                    <td><input type="text" class="form-control" value="Sacs"></td>
-                    <td><input type="number" class="form-control pu" value="4050" oninput="calculerLigne(this)"></td>
-                    <td><input type="text" class="form-control total-ligne" value="275400" readonly></td>
-                </tr>
-                <tr>
-                    <td><input type="text" class="form-control" value="Achat d'Agglomérés creux de ciment vibré (15x20x40)"></td>
-                    <td><input type="number" class="form-control qte" value="540" oninput="calculerLigne(this)"></td>
-                    <td><input type="text" class="form-control" value="U"></td>
-                    <td><input type="number" class="form-control pu" value="450" oninput="calculerLigne(this)"></td>
-                    <td><input type="text" class="form-control total-ligne" value="243000" readonly></td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
-
-    <div style="margin-bottom: 25px;">
-        <button class="btn btn-primary" style="flex: none; width: auto;" onclick="ajouterLigne()">➕ Ajouter une ligne</button>
-    </div>
-
-    <!-- FINANCES ET ACCOMPTES ACC ALIGNÉS -->
-    <div class="totals-container">
+    <!-- BLOC DES TOTAUX COMPACT ET FIDÈLE À L'IMAGE -->
+    <div class="totals-wrapper">
         <table class="totals-table">
             <tr>
-                <td class="font-bold">Sous-Total HT :</td>
-                <td class="text-right font-bold" id="txt-subtotal">518 400 FCFA</td>
+                <td><strong>Sous-Total HT :</strong></td>
+                <td class="val" id="txt-subtotal">518 400 FCFA</td>
             </tr>
             <tr>
-                <td class="font-bold" style="color: var(--primary);">TOTAL TTC :</td>
-                <td class="text-right font-bold" id="txt-total" style="color: var(--primary); font-size: 16px;">518 400 FCFA</td>
+                <td style="color: #1e3a8a;"><strong>TOTAL TTC :</strong></td>
+                <td class="val" id="txt-total" style="color: #1e3a8a;">518 400 FCFA</td>
             </tr>
-            <tr style="background: #f0fdf4;">
-                <td style="color: var(--success); font-size: 13px;">Acompte Réglementaire (40%) :</td>
-                <td class="text-right font-bold" id="txt-acompte" style="color: var(--success); font-size: 13px;">207 360 FCFA</td>
+            <tr class="bg-success-light">
+                <td>Acompte Réglementaire (40%) :</td>
+                <td class="val" id="txt-acompte">207 360 FCFA</td>
             </tr>
-            <tr style="background: #fef2f2;">
-                <td style="color: #b91c1c; font-size: 13px;">Solde à la Livraison (60%) :</td>
-                <td class="text-right font-bold" id="txt-solde" style="color: #b91c1c; font-size: 13px;">311 040 FCFA</td>
+            <tr class="bg-danger-light">
+                <td>Solde à la Livraison (60%) :</td>
+                <td class="val" id="txt-solde">311 040 FCFA</td>
             </tr>
         </table>
     </div>
 
-    <div class="footer-notes">
+    <div class="notes-card">
         <strong>Notes d'exécution :</strong><br>
         Travaux exécutés dans les règles de l'art, conformément aux normes techniques en vigueur. Matériaux certifiés de premier choix.
     </div>
@@ -244,11 +219,11 @@
         let table = document.getElementById('tableau-devis').getElementsByTagName('tbody')[0];
         let newRow = table.insertRow();
         newRow.innerHTML = `
-            <td><input type="text" class="form-control" placeholder="Nouvelle prestation"></td>
-            <td><input type="number" class="form-control qte" value="0" oninput="calculerLigne(this)"></td>
-            <td><input type="text" class="form-control" placeholder="Unité"></td>
-            <td><input type="number" class="form-control pu" value="0" oninput="calculerLigne(this)"></td>
-            <td><input type="text" class="form-control total-ligne" value="0" readonly></td>
+            <td><input type="text" class="input-cell" placeholder="Prestation"></td>
+            <td><input type="number" class="input-cell qte" value="0" oninput="calculerLigne(this)"></td>
+            <td><input type="text" class="input-cell" placeholder="U"></td>
+            <td><input type="number" class="input-cell pu" value="0" oninput="calculerLigne(this)"></td>
+            <td><input type="text" class="input-cell total-ligne" value="0" readonly></td>
         `;
     }
 
@@ -275,7 +250,7 @@
         alert("Devis mis à jour et sauvegardé avec succès !");
     }
 
-    // LE BOUTON D'ÉCRASEMENT DEMANDÉ
+    // FONCTION DU BOUTON DEMANDÉ POUR ÉCRASER ET RECHARGER
     function ecraserAncienDevis() {
         if (confirm("Voulez-vous vraiment écraser l'ancien devis pour en commencer un nouveau ?")) {
             localStorage.removeItem("devis_actif");
