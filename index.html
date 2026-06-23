@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Afrique BTP Pro - Devis Élite</title>
+    <title>Afrique BTP Pro - Application Devis</title>
     <style>
         :root {
             --primary: #1e3a8a;
@@ -18,73 +18,93 @@
             background-color: #f1f5f9;
             color: #334155;
             margin: 0;
-            padding: 20px;
+            padding: 10px;
         }
         .container {
             max-width: 1000px;
             margin: 0 auto;
             background: white;
-            padding: 30px;
+            padding: 15px;
             border-radius: 8px;
             box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1);
+            box-sizing: border-box;
         }
         .header {
             text-align: center;
             border-bottom: 3px solid var(--primary);
-            padding-bottom: 20px;
-            margin-bottom: 30px;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
         }
         .header h1 {
             color: var(--primary);
             margin: 0;
-            font-size: 28px;
+            font-size: 24px;
         }
         .header p {
             margin: 5px 0 0 0;
             color: #64748b;
+            font-size: 14px;
             font-style: italic;
         }
         .actions-bar {
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            gap: 10px;
+            justify-content: center;
             background: var(--light);
             padding: 15px;
             border-radius: 6px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
             border: 1px solid var(--border);
+            flex-wrap: wrap;
         }
         .btn {
-            padding: 10px 20px;
+            flex: 1;
+            min-width: 140px;
+            padding: 12px 10px;
             font-weight: bold;
+            font-size: 14px;
             border: none;
             border-radius: 5px;
             cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 8px;
-            transition: opacity 0.2s;
+            text-align: center;
+            box-sizing: border-box;
         }
-        .btn:hover {
-            opacity: 0.9;
-        }
-        .btn-primary { background-color: var(--primary); color: white; }
         .btn-success { background-color: var(--success); color: white; }
         .btn-danger { background-color: var(--danger); color: white; }
+        .btn-primary { background-color: var(--primary); color: white; }
         
+        .info-block {
+            background: #f8fafc;
+            padding: 15px;
+            border-radius: 6px;
+            border: 1px solid var(--border);
+            margin-bottom: 20px;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+        
+        /* Conteneur pour empêcher le tableau de déborder sur mobile */
+        .table-responsive {
+            width: 100%;
+            overflow-x: auto;
+            margin-bottom: 20px;
+            border: 1px solid var(--border);
+            border-radius: 4px;
+        }
         table {
             width: 100%;
             border-collapse: collapse;
-            margin-bottom: 25px;
+            min-width: 600px; /* Force un défilement propre sans écraser les cellules */
         }
         th, td {
             border: 1px solid var(--border);
-            padding: 12px;
+            padding: 10px;
             text-align: left;
         }
         th {
             background-color: var(--secondary);
             color: white;
+            font-size: 14px;
         }
         .form-control {
             width: 100%;
@@ -93,13 +113,20 @@
             border-radius: 4px;
             box-sizing: border-box;
         }
-        .totals-section {
-            width: 40%;
-            margin-left: auto;
-            margin-bottom: 30px;
+        
+        /* Ajustement de la section des totaux pour mobile */
+        .totals-container {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 25px;
+        }
+        .totals-table {
+            width: 100%;
+            max-width: 360px;
         }
         .totals-table td {
             padding: 8px 12px;
+            border: 1px solid var(--border);
         }
         .text-right { text-align: right; }
         .font-bold { font-weight: bold; }
@@ -109,7 +136,8 @@
             padding: 15px;
             border-left: 4px solid var(--primary);
             border-radius: 4px;
-            font-size: 14px;
+            font-size: 13px;
+            line-height: 1.4;
         }
     </style>
 </head>
@@ -121,69 +149,60 @@
         <p>Spécialiste Gros Œuvre & Électricité | Afrique de l'Ouest & Centre</p>
     </div>
 
-    <!-- BARRE D'ACTIONS CONTENANT UNIQUEMENT TON NOUVEAU BOUTON ET LES OPTIONS DE SAUVEGARDE -->
+    <!-- BARRE D'ACTIONS CONTENANT UNIQUEMENT LE BOUTON DEMANDÉ ET LA SAUVEGARDE -->
     <div class="actions-bar">
-        <div>
-            <button id="btn-ecraser-devis" class="btn btn-danger" onclick="ecraserAncienDevis()">
-                🗑️ Écraser l'ancien devis
-            </button>
-        </div>
-        <div>
-            <button class="btn btn-success" onclick="calculerEtSauvegarder()">
-                💾 Calculer & Sauvegarder
-            </button>
-        </div>
+        <button id="btn-ecraser-devis" class="btn btn-danger" onclick="ecraserAncienDevis()">
+            🗑️ Écraser l'ancien devis
+        </button>
+        <button class="btn btn-success" onclick="calculerEtSauvegarder()">
+            💾 Calculer & Sauvegarder
+        </button>
     </div>
 
-    <!-- INFOS CLIENT -->
-    <div style="display: flex; justify-content: space-between; margin-bottom: 25px; background: #f8fafc; padding: 15px; border-radius: 6px; border: 1px solid var(--border);">
-        <div>
-            <strong>Réf :</strong> BTP-2026-XYZ<br>
-            <strong>Date :</strong> 2026-06-23
-        </div>
-        <div style="text-align: right;">
-            <strong>Maître d'Ouvrage Mandataire :</strong> M. Ibrahim ALI<br>
-            <strong>Emplacement :</strong> Lomé, Togo
-        </div>
+    <!-- INFOS DU DEVIS ACTUEL -->
+    <div class="info-block">
+        <strong>Réf :</strong> BTP-2026-XYZ &nbsp;|&nbsp; <strong>Date :</strong> 2026-06-23<br>
+        <strong>Maître d'Ouvrage Mandataire :</strong> M. Ibrahim ALI<br>
+        <strong>Emplacement :</strong> Lomé, Togo
     </div>
 
-    <!-- TABLEAU DES PRESTATIONS -->
-    <table id="tableau-devis">
-        <thead>
-            <tr>
-                <th style="width: 45%;">Désignation Précise & Composants</th>
-                <th style="width: 10%;">Quantité</th>
-                <th style="width: 10%;">Unité</th>
-                <th style="width: 15%;">P.U. (FCFA)</th>
-                <th style="width: 20%;">Total (FCFA)</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Ligne 1 par défaut -->
-            <tr>
-                <td><input type="text" class="form-control" value="Approvisionnement en Ciment CPJ45 haute résistance" placeholder="Désignation"></td>
-                <td><input type="number" class="form-control qte" value="68" oninput="calculerLigne(this)"></td>
-                <td><input type="text" class="form-control" value="Sacs"></td>
-                <td><input type="number" class="form-control pu" value="4050" oninput="calculerLigne(this)"></td>
-                <td><input type="text" class="form-control total-ligne" value="275400" readonly></td>
-            </tr>
-            <!-- Ligne 2 par défaut -->
-            <tr>
-                <td><input type="text" class="form-control" value="Achat d'Agglomérés creux de ciment vibré (15x20x40)" placeholder="Désignation"></td>
-                <td><input type="number" class="form-control qte" value="540" oninput="calculerLigne(this)"></td>
-                <td><input type="text" class="form-control" value="U"></td>
-                <td><input type="number" class="form-control pu" value="450" oninput="calculerLigne(this)"></td>
-                <td><input type="text" class="form-control total-ligne" value="243000" readonly></td>
-            </tr>
-        </tbody>
-    </table>
-
-    <div style="margin-bottom: 20px;">
-        <button class="btn btn-primary" onclick="ajouterLigne()">➕ Ajouter une ligne</button>
+    <!-- TABLEAU RESPONSIVE SANS DÉBORDEMENT -->
+    <div class="table-responsive">
+        <table id="tableau-devis">
+            <thead>
+                <tr>
+                    <th style="width: 40%;">Désignation Précise & Composants</th>
+                    <th style="width: 12%;">Quantité</th>
+                    <th style="width: 12%;">Unité</th>
+                    <th style="width: 16%;">P.U. (FCFA)</th>
+                    <th style="width: 20%;">Total (FCFA)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><input type="text" class="form-control" value="Approvisionnement en Ciment CPJ45 haute résistance"></td>
+                    <td><input type="number" class="form-control qte" value="68" oninput="calculerLigne(this)"></td>
+                    <td><input type="text" class="form-control" value="Sacs"></td>
+                    <td><input type="number" class="form-control pu" value="4050" oninput="calculerLigne(this)"></td>
+                    <td><input type="text" class="form-control total-ligne" value="275400" readonly></td>
+                </tr>
+                <tr>
+                    <td><input type="text" class="form-control" value="Achat d'Agglomérés creux de ciment vibré (15x20x40)"></td>
+                    <td><input type="number" class="form-control qte" value="540" oninput="calculerLigne(this)"></td>
+                    <td><input type="text" class="form-control" value="U"></td>
+                    <td><input type="number" class="form-control pu" value="450" oninput="calculerLigne(this)"></td>
+                    <td><input type="text" class="form-control total-ligne" value="243000" readonly></td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 
-    <!-- BLOC DES TOTAUX ET MODALITÉS -->
-    <div class="totals-section">
+    <div style="margin-bottom: 25px;">
+        <button class="btn btn-primary" style="flex: none; width: auto;" onclick="ajouterLigne()">➕ Ajouter une ligne</button>
+    </div>
+
+    <!-- FINANCES ET ACCOMPTES ACC ALIGNÉS -->
+    <div class="totals-container">
         <table class="totals-table">
             <tr>
                 <td class="font-bold">Sous-Total HT :</td>
@@ -191,7 +210,7 @@
             </tr>
             <tr>
                 <td class="font-bold" style="color: var(--primary);">TOTAL TTC :</td>
-                <td class="text-right font-bold" id="txt-total" style="color: var(--primary); font-size: 18px;">518 400 FCFA</td>
+                <td class="text-right font-bold" id="txt-total" style="color: var(--primary); font-size: 16px;">518 400 FCFA</td>
             </tr>
             <tr style="background: #f0fdf4;">
                 <td style="color: var(--success); font-size: 13px;">Acompte Réglementaire (40%) :</td>
@@ -211,7 +230,6 @@
 </div>
 
 <script>
-    // Étape 1 : Calcul automatique de chaque ligne lors de la saisie
     function calculerLigne(input) {
         let row = input.closest('tr');
         let qte = parseFloat(row.querySelector('.qte').value) || 0;
@@ -222,12 +240,11 @@
         recalculerTout();
     }
 
-    // Étape 2 : Ajout dynamique d'une nouvelle ligne vierge
     function ajouterLigne() {
         let table = document.getElementById('tableau-devis').getElementsByTagName('tbody')[0];
         let newRow = table.insertRow();
         newRow.innerHTML = `
-            <td><input type="text" class="form-control" placeholder="Nouvelle prestation BTP"></td>
+            <td><input type="text" class="form-control" placeholder="Nouvelle prestation"></td>
             <td><input type="number" class="form-control qte" value="0" oninput="calculerLigne(this)"></td>
             <td><input type="text" class="form-control" placeholder="Unité"></td>
             <td><input type="number" class="form-control pu" value="0" oninput="calculerLigne(this)"></td>
@@ -235,7 +252,6 @@
         `;
     }
 
-    // Étape 3 : Recalcul global de l'ensemble du devis
     function recalculerTout() {
         let totauxLignes = document.querySelectorAll('.total-ligne');
         let sousTotal = 0;
@@ -253,25 +269,20 @@
         document.getElementById('txt-solde').innerText = solde.toLocaleString('fr-FR') + " FCFA";
     }
 
-    // Étape 4 : Sauvegarde de l'état actuel
     function calculerEtSauvegarder() {
         recalculerTout();
         localStorage.setItem("devis_actif", "true");
         alert("Devis mis à jour et sauvegardé avec succès !");
     }
 
-    // FONCTION EXCLUSIVE DU BOUTON DEMANDÉ : Réinitialisation et écrasement complet
+    // LE BOUTON D'ÉCRASEMENT DEMANDÉ
     function ecraserAncienDevis() {
         if (confirm("Voulez-vous vraiment écraser l'ancien devis pour en commencer un nouveau ?")) {
-            // Nettoyage de la mémoire du devis
             localStorage.removeItem("devis_actif");
-            
-            // Rechargement immédiat de la page à blanc
             window.location.reload();
         }
     }
 
-    // Initialisation au chargement de la page
     window.onload = function() {
         recalculerTout();
     };
