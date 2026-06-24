@@ -3,27 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BLESSED BRAND - Élite Électricité</title>
+    <title>BLESSED BRAND - Élite Électricité IA</title>
     <style>
         :root {
-            --brand-dark: #111827;
-            --electric-yellow: #f59e0b;
-            --electric-bg-glow: #fffbeb;
-            --accent-gray: #374151;
+            --brand-dark: #0f172a;
+            --electric-yellow: #eab308;
+            --electric-glow: #fef9c3;
             --success: #16a34a;
             --danger: #dc2626;
-            --border-color: #e5e7eb;
+            --border-color: #cbd5e1;
+            --bg-body: #0f172a;
         }
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #111827;
-            background-image: radial-gradient(circle at top, #1f2937 0%, #111827 100%);
+            background-color: var(--bg-body);
+            background-image: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
             margin: 0;
             padding: 10px;
-            color: #1f2937;
+            color: #334155;
             display: flex;
             justify-content: center;
+            transition: all 0.3s ease;
+        }
+
+        /* MODE CAPTURE D'ÉCRAN : Cache tous les éléments de contrôle inutiles pour le client */
+        body.screenshot-mode {
+            background: #ffffff !important;
+            background-image: none !important;
+            padding: 0;
+        }
+        body.screenshot-mode .no-capture {
+            display: none !important;
+        }
+        body.screenshot-mode .master-container {
+            box-shadow: none !important;
+            border: none !important;
+            max-width: 100%;
+            padding: 10px;
         }
 
         .master-container {
@@ -36,7 +53,6 @@
             box-sizing: border-box;
         }
 
-        /* En-tête Énergie Premium */
         .brand-header {
             text-align: center;
             border-bottom: 3px solid var(--electric-yellow);
@@ -48,12 +64,11 @@
             color: var(--brand-dark);
             font-size: 24px;
             font-weight: 800;
-            letter-spacing: 0.5px;
             margin: 0;
         }
 
         .brand-header p {
-            color: var(--electric-yellow);
+            color: #854d0e;
             font-size: 11px;
             text-transform: uppercase;
             font-weight: 700;
@@ -61,9 +76,49 @@
             letter-spacing: 1px;
         }
 
-        /* Panneau de Contrôle */
+        /* BLOC DE RECHERCHE ET GÉNÉRATEUR IA */
+        .ai-generator-box {
+            background: linear-gradient(135deg, #fef9c3 0%, #fef3c7 100%);
+            border: 1px solid #fde047;
+            border-radius: 12px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        .ai-title {
+            font-size: 13px;
+            font-weight: 800;
+            color: #854d0e;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            text-transform: uppercase;
+        }
+        .ai-input-group {
+            display: flex;
+            gap: 8px;
+        }
+        .ai-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid #facc15;
+            border-radius: 8px;
+            font-size: 13px;
+        }
+        .btn-ai-spark {
+            background: var(--brand-dark);
+            color: white;
+            border: none;
+            padding: 10px 14px;
+            font-weight: 700;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+        }
+
+        /* ACTIONS PRINCIPALES */
         .control-deck {
-            background: #f9fafb;
+            background: #f8fafc;
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 12px;
@@ -74,25 +129,25 @@
 
         .btn-core {
             flex: 1;
-            padding: 12px 8px;
+            padding: 12px 6px;
             font-weight: 700;
-            font-size: 13px;
+            font-size: 12px;
             border: none;
             border-radius: 8px;
             cursor: pointer;
-            transition: all 0.2s ease;
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 6px;
+            gap: 4px;
+            transition: all 0.2s ease;
         }
 
         .btn-core-danger { background-color: #fee2e2; color: var(--danger); border: 1px solid #fca5a5; }
         .btn-core-danger:hover { background-color: var(--danger); color: white; }
         .btn-core-success { background-color: #dcfce7; color: var(--success); border: 1px solid #86efac; }
         .btn-core-success:hover { background-color: var(--success); color: white; }
+        .btn-core-capture { background-color: #e2e8f0; color: #475569; border: 1px solid #cbd5e1; }
 
-        /* Fiche Fiscale / Client */
         .meta-card {
             background: #ffffff;
             border: 1px solid var(--border-color);
@@ -101,7 +156,6 @@
             padding: 12px;
             margin-bottom: 20px;
             font-size: 13px;
-            line-height: 1.5;
         }
 
         .meta-row {
@@ -110,14 +164,13 @@
             margin-bottom: 4px;
         }
 
-        /* Liste des Postes Électriques */
+        /* COMPOSANTS DE TRAVAIL */
         .workspace-title {
             font-size: 13px;
             font-weight: 700;
             color: var(--brand-dark);
             margin-bottom: 10px;
             text-transform: uppercase;
-            letter-spacing: 0.5px;
         }
 
         .items-container {
@@ -127,17 +180,12 @@
             margin-bottom: 20px;
         }
 
-        /* Carte de Prestation Mobile unique */
         .item-card {
             background: #ffffff;
             border: 1px solid var(--border-color);
             border-radius: 10px;
             padding: 12px;
             box-shadow: 0 2px 4px rgba(0,0,0,0.01);
-        }
-
-        .item-card:hover {
-            border-color: var(--electric-yellow);
         }
 
         .item-card-row-1 {
@@ -154,7 +202,7 @@
 
         .field-label {
             font-size: 10px;
-            color: #6b7280;
+            color: #64748b;
             text-transform: uppercase;
             margin-bottom: 2px;
             display: block;
@@ -164,25 +212,18 @@
         .input-premium {
             width: 100%;
             padding: 8px;
-            border: 1px solid #d1d5db;
+            border: 1px solid #cbd5e1;
             border-radius: 6px;
             box-sizing: border-box;
             font-size: 13px;
-            color: #111827;
-            background: #fff;
-        }
-
-        .input-premium:focus {
-            border-color: var(--electric-yellow);
-            outline: none;
-            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.15);
         }
 
         .input-readonly {
-            background: #f3f4f6;
+            background: #f1f5f9;
             font-weight: 700;
             color: var(--brand-dark);
             text-align: right;
+            border: 1px solid #cbd5e1;
         }
 
         .btn-add {
@@ -194,19 +235,11 @@
             border: none;
             border-radius: 6px;
             cursor: pointer;
-            display: inline-flex;
-            align-items: center;
-            gap: 6px;
-        }
-        
-        .btn-add:hover {
-            background-color: #1f2937;
         }
 
-        /* Synthèse des Comptes Réseau */
         .financial-summary {
-            background: var(--electric-bg-glow);
-            border: 1px solid #fef3c7;
+            background: var(--electric-glow);
+            border: 1px solid #fef08a;
             border-radius: 12px;
             padding: 15px;
             margin-top: 25px;
@@ -225,7 +258,7 @@
 
         .fin-table tr.total-row td {
             padding-top: 10px;
-            border-top: 2px dashed #f59e0b;
+            border-top: 2px dashed var(--electric-yellow);
             font-size: 16px;
             font-weight: 800;
             color: var(--brand-dark);
@@ -236,7 +269,6 @@
             font-weight: 700;
         }
 
-        /* Bloc Mentions Légales Spécifiques Réseau */
         .legal-block {
             background: #fff;
             border: 1px dashed #cbd5e1;
@@ -247,121 +279,153 @@
             line-height: 1.5;
         }
 
-        .legal-block strong {
-            color: var(--brand-dark);
-            text-transform: uppercase;
+        /* FLOATING BACK BUTTON POUR QUITTER LE MODE CAPTURE */
+        .btn-exit-capture {
+            display: none;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            background: var(--brand-dark);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-weight: 700;
+            border-radius: 30px;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            font-size: 14px;
         }
     </style>
 </head>
 <body>
 
+<button class="btn-exit-capture" id="exit-btn" onclick="quitterModeCapture()">📸 Quitter le Mode Capture</button>
+
 <div class="master-container">
     <div class="brand-header">
-        <h1>BLESSED BRAND - ÉLITE ÉLECTRICITÉ</h1>
-        <p>Ingénierie Réseau, Distribution & Sécurité Électrique</p>
+        <h1>BLESSED BRAND</h1>
+        <p>Génie Électrique, Distribution & Technologie Domotique</p>
     </div>
 
-    <div class="control-deck">
-        <button class="btn-core btn-core-danger" onclick="ecraserAncienDevis()">
+    <div class="ai-generator-box no-capture">
+        <div class="ai-title">✨ Générateur d'Infrastructure IA BTP</div>
+        <div class="ai-input-group">
+            <input type="text" id="ai-prompt" class="ai-input" placeholder="Ex: Salon + 2 Chambres + Cuisine à Lomé">
+            <button id="btn-ai" class="btn-ai-spark" onclick="genererParIA()">Générer ⚡</button>
+        </div>
+    </div>
+
+    <div class="control-deck no-capture">
+        <button class="btn-core btn-core-danger" onclick="ecraserEtReinitialiserTout()">
             🗑️ Écraser l'ancien devis
         </button>
-        <button class="btn-core btn-core-success" onclick="calculerEtSauvegarder()">
-            💾 Calculer & Sauvegarder
+        <button class="btn-core class-save btn-core-success" onclick="calculerEtSauvegarder()">
+            💾 Sauvegarder
+        </button>
+        <button class="btn-core btn-core-capture" onclick="activerModeCapture()">
+            📸 Mode Capture
         </button>
     </div>
 
     <div class="meta-card">
         <div class="meta-row">
-            <div><strong>Réf Commande :</strong> ELEC-2026-XYZ</div>
-            <div><strong>Date d'émission :</strong> 24 Juin 2026</div>
+            <div><strong>Réf Devis :</strong> ELEC-2026-TGO</div>
+            <div><strong>Date :</strong> 24 Juin 2026</div>
         </div>
         <div class="meta-row">
-            <div><strong>Superviseur Technique :</strong> M. Ibrahim ALI</div>
-            <div><strong>Zone :</strong> Lomé, Togo</div>
-        </div>
-        <div style="margin-top: 5px; border-top: 1px solid #f3f4f6; padding-top: 5px; color: #6b7280; font-size: 11px;">
-            <strong>Spécification :</strong> Lot Électricité complète pour Villa Basse
+            <div><strong>Expert en Charge :</strong> M. Ibrahim ALI</div>
+            <div><strong>Superficie cible :</strong> Lomé, Togo</div>
         </div>
     </div>
 
-    <div class="workspace-title">Composants & Appareillages Électriques</div>
+    <div class="workspace-title">Spécifications par Niveaux de Travaux</div>
     
     <div id="items-zone" class="items-container">
         </div>
 
-    <div style="margin-bottom: 25px;">
-        <button class="btn-add" onclick="ajouterNouvellePrestation()">
-            ➕ Ajouter un appareillage / câble
+    <div style="margin-bottom: 25px;" class="no-capture">
+        <button class="btn-add" onclick="ajouterNouvellePrestation('', 0, 'U', 0)">
+            ➕ Insérer une ligne de travaux
         </button>
     </div>
 
     <div class="financial-summary">
         <table class="fin-table">
             <tr>
-                <td>Total Fournitures & Pose HT :</td>
+                <td>Montant Global Travaux HT :</td>
                 <td class="val-bold" id="render-ht">0 FCFA</td>
             </tr>
             <tr>
-                <td>TVA Réglementaire (18%) :</td>
+                <td>TVA Réglementaire Togo (18%) :</td>
                 <td class="val-bold" id="render-tva" style="color: #6b7280;">0 FCFA</td>
             </tr>
             <tr class="total-row">
-                <td>TOTAL ÉLECTRICITÉ TTC :</td>
+                <td>TOTAL ESTIMATIF TTC :</td>
                 <td class="val-bold" id="render-ttc">0 FCFA</td>
             </tr>
-            <tr><td colspan="2" style="padding-top: 15px; font-weight: 700; font-size: 11px; color: #b45309; text-transform: uppercase;">Échéancier contractuel d'exécution :</td></tr>
+            <tr><td colspan="2" style="padding-top: 15px; font-weight: 700; font-size: 11px; color: #854d0e; text-transform: uppercase;">Échelonnement de Liquidation Financière :</td></tr>
             <tr style="color: #15803d;">
-                <td>• Étape 1 : Acompte à la commande (30%)</td>
+                <td>• Étape 1 : Enclenchement du Chantier / Signature (30%)</td>
                 <td class="val-bold" id="step-signature">0 FCFA</td>
             </tr>
             <tr style="color: #b45309;">
-                <td>• Étape 2 : En-cours (Pose des gaines & boîtiers) (40%)</td>
+                <td>• Étape 2 : Pose de la tuyauterie & filage complet (40%)</td>
                 <td class="val-bold" id="step-dalle">0 FCFA</td>
             </tr>
             <tr style="color: #1e3a8a;">
-                <td>• Étape 3 : Solde après tests et raccordement (30%)</td>
+                <td>• Étape 3 : Solde après tests de conformité (30%)</td>
                 <td class="val-bold" id="step-solde">0 FCFA</td>
             </tr>
         </table>
     </div>
 
     <div class="legal-block">
-        <strong>Spécifications Critiques Matériel :</strong><br>
-        • Armoires et appareillages étanches conformes aux indices de protection IP55.<br>
-        • Câbles cuivre H07V-U sous gaines de sécurité ICD.<br>
-        • Exclusions : Frais de raccordement réseau externe CEET.
+        <strong>Spécifications et Normes de Sécurité :</strong><br>
+        • Distribution conforme à la norme NF C 15-100. Matériel Schneider ou Legrand.<br>
+        • Paiements mobiles sécurisés via les terminaux : <strong>T-Money (*145#) | Flooz (*155#)</strong>.
     </div>
 </div>
 
 <script>
-    // Injection immédiate de tes données réelles de Lomé pour une démo percutante
-    const electricalBaseData = [
-        { desc: "Fourniture et pose d'Armoire de répartition étanche (Disjoncteur général incl.)", qte: 1, unit: "U", pu: 95000 },
-        { desc: "Câbles conducteurs cuivre H07V-U (rouleaux sections 1.5mm² et 2.5mm²)", qte: 1, unit: "Fft", pu: 55000 },
-        { desc: "Réalisation de points lumineux intérieurs et extérieurs complets", qte: 12, unit: "U", pu: 11500 },
-        { desc: "Interrupteurs Va-et-vient et Prises de courant confort 16A", qte: 18, unit: "U", pu: 4800 },
-        { desc: "Main d'œuvre qualifiée d'ingénierie et câblage électrique", qte: 1, unit: "Fft", pu: 135000 }
+    // BASE COMPLÈTE DU DEVIS ORGANISÉE PAR NIVEAUX/PHASES DE TRAVAIL ÉLÉCTRONS
+    const defaultInfrastructure = [
+        { desc: "Phase 1: Tuyauterie, encastrement des boîtiers et saignées murales", qte: 1, unit: "Fft", pu: 60000 },
+        { desc: "Phase 2: Distribution par câblage fils de cuivre TH (1.5mm² pour éclairage)", qte: 3, unit: "Rouleaux", pu: 24000 },
+        { desc: "Phase 2: Distribution par câblage fils de cuivre TH (2.5mm² pour prises)", qte: 4, unit: "Rouleaux", pu: 29500 },
+        { desc: "Phase 3: Pose de Tableau de Répartition Modulaire complet IP40", qte: 1, unit: "U", pu: 95000 },
+        { desc: "Phase 3: Installation de Points Lumineux (Douilles, boîtes DCL & lampes)", qte: 12, unit: "U", pu: 11500 },
+        { desc: "Phase 3: Pose d'Appareillages Confort (Prises de terre & Interrupteurs)", qte: 16, unit: "U", pu: 4500 }
     ];
 
     function initialiserApplication() {
         const zone = document.getElementById('items-zone');
         zone.innerHTML = '';
+
+        // Lecture de la mémoire de sauvegarde locale
+        const localSaved = localStorage.getItem("saved_electric_items_v2");
         
-        electricalBaseData.forEach(item => {
-            creerComposantLigne(item.desc, item.qte, item.unit, item.pu);
-        });
+        if (localSaved) {
+            const itemsparsed = JSON.parse(localSaved);
+            itemsparsed.forEach(item => {
+                ajouterNouvellePrestation(item.desc, item.qte, item.unit, item.pu);
+            });
+        } else {
+            defaultInfrastructure.forEach(item => {
+                ajouterNouvellePrestation(item.desc, item.qte, item.unit, item.pu);
+            });
+        }
         recalculerMatriceFinanciere();
     }
 
-    function creerComposantLigne(desc, qte, unit, pu) {
+    function ajouterNouvellePrestation(desc, qte, unit, pu) {
         const zone = document.getElementById('items-zone');
         const card = document.createElement('div');
         card.className = 'item-card';
         
         card.innerHTML = `
             <div class="item-card-row-1">
-                <span class="field-label">Poste de travaux électrique</span>
-                <input type="text" class="input-premium data-desc" value="${desc}" placeholder="Ex: Projecteur LED extérieur 50W">
+                <span class="field-label">Poste de travail et spécification technique</span>
+                <input type="text" class="input-premium data-desc" value="${desc}" placeholder="Ex: Phase 3: Projecteur Extérieur Led 50W">
             </div>
             <div class="item-card-row-2">
                 <div>
@@ -385,11 +449,6 @@
         zone.appendChild(card);
     }
 
-    function ajouterNouvellePrestation() {
-        creerComposantLigne("", 0, "U", 0);
-        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
-    }
-
     function calculerSousTotalLigne(inputField) {
         const card = inputField.closest('.item-card');
         const qte = parseFloat(card.querySelector('.data-qte').value) || 0;
@@ -411,30 +470,95 @@
         let tva = Math.round(totalHT * 0.18);
         let totalTTC = totalHT + tva;
         
-        let acompte30 = Math.round(totalTTC * 0.30);
-        let phase40 = Math.round(totalTTC * 0.40);
-        let solde30 = totalTTC - (acompte30 + phase40);
+        let signature = Math.round(totalTTC * 0.30);
+        let enCours = Math.round(totalTTC * 0.40);
+        let solde = totalTTC - (signature + enCours);
 
         document.getElementById('render-ht').innerText = totalHT.toLocaleString('fr-FR') + " FCFA";
         document.getElementById('render-tva').innerText = tva.toLocaleString('fr-FR') + " FCFA";
         document.getElementById('render-ttc').innerText = totalTTC.toLocaleString('fr-FR') + " FCFA";
         
-        document.getElementById('step-signature').innerText = acompte30.toLocaleString('fr-FR') + " FCFA";
-        document.getElementById('step-dalle').innerText = phase40.toLocaleString('fr-FR') + " FCFA";
-        document.getElementById('step-solde').innerText = solde30.toLocaleString('fr-FR') + " FCFA";
+        document.getElementById('step-signature').innerText = signature.toLocaleString('fr-FR') + " FCFA";
+        document.getElementById('step-dalle').innerText = enCours.toLocaleString('fr-FR') + " FCFA";
+        document.getElementById('step-solde').innerText = solde.toLocaleString('fr-FR') + " FCFA";
     }
 
     function calculerEtSauvegarder() {
-        recalculerMatriceFinanciere();
-        localStorage.setItem("devis_electricite_actif", "true");
-        alert("Matrice électricité sauvegardée avec succès !");
+        const itemsToSave = [];
+        const cards = document.querySelectorAll('.item-card');
+        
+        cards.forEach(card => {
+            itemsToSave.push({
+                desc: card.querySelector('.data-desc').value,
+                qte: parseFloat(card.querySelector('.data-qte').value) || 0,
+                unit: card.querySelector('.data-unit').value,
+                pu: parseFloat(card.querySelector('.data-pu').value) || 0
+            });
+        });
+        
+        localStorage.setItem("saved_electric_items_v2", JSON.stringify(itemsToSave));
+        alert("🔒 Devis sauvegardé avec succès dans le système local !");
     }
 
-    function ecraserAncienDevis() {
-        if (confirm("Voulez-vous écraser définitivement l'ancien devis électrique ?")) {
-            localStorage.removeItem("devis_electricite_actif");
-            initialiserApplication();
+    // LE CORRECTIF MAJEUR : CETTE FONCTION EFFACE LE CACHE ET NETTOIE LA VUE RADICALEMENT
+    function ecraserEtReinitialiserTout() {
+        if (confirm("⚠️ Voulez-vous vider l'écran et supprimer toutes les données de ce devis ?")) {
+            localStorage.removeItem("saved_electric_items_v2");
+            document.getElementById('items-zone').innerHTML = '';
+            recalculerMatriceFinanciere();
+            alert("Application réinitialisée à zéro !");
         }
+    }
+
+    // SYSTÈME DE SIMULATION IA POUR TES VIDÉOS TIKTOK / INSTAGRAM
+    function genererParIA() {
+        const inputPrompt = document.getElementById('ai-prompt').value.toLowerCase();
+        if (!inputPrompt) {
+            alert("Veuillez saisir les pièces de l'ouvrage (ex: Villa 3 chambres)");
+            return;
+        }
+
+        const btn = document.getElementById('btn-ai');
+        btn.innerText = "Calcul IA en cours... ⚡";
+        btn.disabled = true;
+
+        setTimeout(() => {
+            const zone = document.getElementById('items-zone');
+            zone.innerHTML = '';
+            
+            // Simulation de base intelligente selon l'entrée utilisateur
+            const multi = inputPrompt.includes("grand") || inputPrompt.includes("3") ? 1.8 : 1;
+
+            const aiCalculatedData = [
+                { desc: "Phase 1: Encastrement de gaines de sécurité annelées et boîtes étanches", qte: Math.round(1 * multi), unit: "Fft", pu: 55000 },
+                { desc: "Phase 2: Câbles de liaison cuivre TH section 1.5mm² (Lumières)", qte: Math.round(2 * multi), unit: "Rouleaux", pu: 24000 },
+                { desc: "Phase 2: Câbles de liaison cuivre TH section 2.5mm² (Prises)", qte: Math.round(3 * multi), unit: "Rouleaux", pu: 29500 },
+                { desc: "Phase 3: Coffret de distribution principal équipé de disjoncteurs divisionnaires", qte: 1, unit: "U", pu: 85000 },
+                { desc: "Phase 3: Intégration d'interrupteurs design et blocs prises étanches", qte: Math.round(14 * multi), unit: "U", pu: 4500 },
+                { desc: "Phase 3: Points d'éclairage équipés de luminaires LED basse consommation", qte: Math.round(10 * multi), unit: "U", pu: 11500 },
+                { desc: "Main d'œuvre : Réalisation des schémas, raccordements complets et tests de terre", qte: 1, unit: "Fft", pu: 120000 }
+            ];
+
+            aiCalculatedData.forEach(item => {
+                ajouterNouvellePrestation(item.desc, item.qte, item.unit, item.pu);
+            });
+
+            recalculerMatriceFinanciere();
+            btn.innerText = "Générer ⚡";
+            btn.disabled = false;
+            alert("✨ L'IA a modélisé l'architecture électrique complète du bâtiment !");
+        }, 1500);
+    }
+
+    // ACTIONS DU MODE CAPTURE D'ÉCRAN
+    function activerModeCapture() {
+        document.body.classList.add('screenshot-mode');
+        document.getElementById('exit-btn').style.display = 'block';
+    }
+
+    function quitterModeCapture() {
+        document.body.classList.remove('screenshot-mode');
+        document.getElementById('exit-btn').style.display = 'none';
     }
 
     window.onload = function() {
