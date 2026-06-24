@@ -3,25 +3,25 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BLESSED BRAND - Système Élite BTP</title>
+    <title>BLESSED BRAND - Élite Électricité</title>
     <style>
         :root {
-            --brand-blue: #0f172a;
-            --brand-gold: #b45309;
-            --accent-blue: #1e3a8a;
-            --success: #15803d;
-            --danger: #b91c1c;
-            --bg-light: #f8fafc;
-            --border-color: #e2e8f0;
+            --brand-dark: #111827;
+            --electric-yellow: #f59e0b;
+            --electric-bg-glow: #fffbeb;
+            --accent-gray: #374151;
+            --success: #16a34a;
+            --danger: #dc2626;
+            --border-color: #e5e7eb;
         }
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #0f172a; /* Fond sombre premium pour faire ressortir l'application */
-            background-image: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
+            background-color: #111827;
+            background-image: radial-gradient(circle at top, #1f2937 0%, #111827 100%);
             margin: 0;
             padding: 10px;
-            color: #334155;
+            color: #1f2937;
             display: flex;
             justify-content: center;
         }
@@ -31,39 +31,39 @@
             max-width: 600px;
             background: #ffffff;
             border-radius: 16px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
             padding: 20px;
             box-sizing: border-box;
         }
 
-        /* En-tête Institutionnel */
+        /* En-tête Énergie Premium */
         .brand-header {
             text-align: center;
-            border-bottom: 2px solid var(--brand-gold);
+            border-bottom: 3px solid var(--electric-yellow);
             padding-bottom: 15px;
             margin-bottom: 20px;
         }
 
         .brand-header h1 {
-            color: var(--brand-blue);
+            color: var(--brand-dark);
             font-size: 24px;
             font-weight: 800;
-            letter-spacing: 1px;
+            letter-spacing: 0.5px;
             margin: 0;
         }
 
         .brand-header p {
-            color: var(--brand-gold);
-            font-size: 12px;
+            color: var(--electric-yellow);
+            font-size: 11px;
             text-transform: uppercase;
-            font-weight: 600;
+            font-weight: 700;
             margin: 5px 0 0 0;
-            letter-spacing: 0.5px;
+            letter-spacing: 1px;
         }
 
-        /* Panneau de Contrôle Révolutionnaire */
+        /* Panneau de Contrôle */
         .control-deck {
-            background: var(--bg-light);
+            background: #f9fafb;
             border: 1px solid var(--border-color);
             border-radius: 12px;
             padding: 12px;
@@ -92,11 +92,11 @@
         .btn-core-success { background-color: #dcfce7; color: var(--success); border: 1px solid #86efac; }
         .btn-core-success:hover { background-color: var(--success); color: white; }
 
-        /* Fiche d'identification du Projet */
+        /* Fiche Fiscale / Client */
         .meta-card {
             background: #ffffff;
             border: 1px solid var(--border-color);
-            border-left: 4px solid var(--accent-blue);
+            border-left: 4px solid var(--brand-dark);
             border-radius: 8px;
             padding: 12px;
             margin-bottom: 20px;
@@ -110,13 +110,14 @@
             margin-bottom: 4px;
         }
 
-        /* Matrice des Prestations (Responsive Architecture) */
+        /* Liste des Postes Électriques */
         .workspace-title {
-            font-size: 14px;
+            font-size: 13px;
             font-weight: 700;
-            color: var(--brand-blue);
+            color: var(--brand-dark);
             margin-bottom: 10px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .items-container {
@@ -126,13 +127,17 @@
             margin-bottom: 20px;
         }
 
-        /* Ligne de prestation transformée en carte unitaire sur Mobile */
+        /* Carte de Prestation Mobile unique */
         .item-card {
             background: #ffffff;
             border: 1px solid var(--border-color);
             border-radius: 10px;
             padding: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+        }
+
+        .item-card:hover {
+            border-color: var(--electric-yellow);
         }
 
         .item-card-row-1 {
@@ -149,38 +154,39 @@
 
         .field-label {
             font-size: 10px;
-            color: #64748b;
+            color: #6b7280;
             text-transform: uppercase;
             margin-bottom: 2px;
             display: block;
+            font-weight: 600;
         }
 
         .input-premium {
             width: 100%;
             padding: 8px;
-            border: 1px solid #cbd5e1;
+            border: 1px solid #d1d5db;
             border-radius: 6px;
             box-sizing: border-box;
             font-size: 13px;
-            color: #1e293b;
+            color: #111827;
             background: #fff;
         }
 
         .input-premium:focus {
-            border-color: var(--accent-blue);
+            border-color: var(--electric-yellow);
             outline: none;
-            box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.1);
+            box-shadow: 0 0 0 2px rgba(245, 158, 11, 0.15);
         }
 
         .input-readonly {
-            background: #f1f5f9;
+            background: #f3f4f6;
             font-weight: 700;
-            color: var(--brand-blue);
+            color: var(--brand-dark);
             text-align: right;
         }
 
         .btn-add {
-            background: var(--brand-blue);
+            background: var(--brand-dark);
             color: white;
             padding: 10px 16px;
             font-weight: 600;
@@ -192,11 +198,15 @@
             align-items: center;
             gap: 6px;
         }
+        
+        .btn-add:hover {
+            background-color: #1f2937;
+        }
 
-        /* Tableau d'Analyse Financière Pro */
+        /* Synthèse des Comptes Réseau */
         .financial-summary {
-            background: #f8fafc;
-            border: 1px solid var(--border-color);
+            background: var(--electric-bg-glow);
+            border: 1px solid #fef3c7;
             border-radius: 12px;
             padding: 15px;
             margin-top: 25px;
@@ -215,10 +225,10 @@
 
         .fin-table tr.total-row td {
             padding-top: 10px;
-            border-top: 2px dashed #cbd5e1;
+            border-top: 2px dashed #f59e0b;
             font-size: 16px;
             font-weight: 800;
-            color: var(--accent-blue);
+            color: var(--brand-dark);
         }
 
         .val-bold {
@@ -226,19 +236,19 @@
             font-weight: 700;
         }
 
-        /* Clôture Juridique et Spécifications */
+        /* Bloc Mentions Légales Spécifiques Réseau */
         .legal-block {
             background: #fff;
-            border: 1px dashed var(--brand-gold);
+            border: 1px dashed #cbd5e1;
             border-radius: 8px;
             padding: 12px;
             font-size: 11px;
-            color: #475569;
+            color: #4b5563;
             line-height: 1.5;
         }
 
         .legal-block strong {
-            color: var(--brand-gold);
+            color: var(--brand-dark);
             text-transform: uppercase;
         }
     </style>
@@ -247,8 +257,8 @@
 
 <div class="master-container">
     <div class="brand-header">
-        <h1>BLESSED BRAND</h1>
-        <p>Gros Œuvre, Maçonnerie & Électricité Spécialisée</p>
+        <h1>BLESSED BRAND - ÉLITE ÉLECTRICITÉ</h1>
+        <p>Ingénierie Réseau, Distribution & Sécurité Électrique</p>
     </div>
 
     <div class="control-deck">
@@ -262,82 +272,82 @@
 
     <div class="meta-card">
         <div class="meta-row">
-            <div><strong>Réf :</strong> BTP-2026-XYZ</div>
-            <div><strong>Date :</strong> 24 Juin 2026</div>
+            <div><strong>Réf Commande :</strong> ELEC-2026-XYZ</div>
+            <div><strong>Date d'émission :</strong> 24 Juin 2026</div>
         </div>
         <div class="meta-row">
-            <div><strong>Directeur Général :</strong> M. Ibrahim ALI</div>
-            <div><strong>Lieu :</strong> Lomé, Togo</div>
+            <div><strong>Superviseur Technique :</strong> M. Ibrahim ALI</div>
+            <div><strong>Zone :</strong> Lomé, Togo</div>
         </div>
-        <div style="margin-top: 5px; border-top: 1px solid #f1f5f9; padding-top: 5px; color: #64748b; font-size: 11px;">
-            <strong>Projet :</strong> Construction de villa (Chambre-Salon-WC-Cuisine)
+        <div style="margin-top: 5px; border-top: 1px solid #f3f4f6; padding-top: 5px; color: #6b7280; font-size: 11px;">
+            <strong>Spécification :</strong> Lot Électricité complète pour Villa Basse
         </div>
     </div>
 
-    <div class="workspace-title">Désignation Générale des Lots</div>
+    <div class="workspace-title">Composants & Appareillages Électriques</div>
     
     <div id="items-zone" class="items-container">
         </div>
 
     <div style="margin-bottom: 25px;">
         <button class="btn-add" onclick="ajouterNouvellePrestation()">
-            ➕ Ajouter un poste de travaux
+            ➕ Ajouter un appareillage / câble
         </button>
     </div>
 
     <div class="financial-summary">
         <table class="fin-table">
             <tr>
-                <td>Montant Global Brut HT :</td>
+                <td>Total Fournitures & Pose HT :</td>
                 <td class="val-bold" id="render-ht">0 FCFA</td>
             </tr>
             <tr>
                 <td>TVA Réglementaire (18%) :</td>
-                <td class="val-bold" id="render-tva" style="color: #64748b;">0 FCFA</td>
+                <td class="val-bold" id="render-tva" style="color: #6b7280;">0 FCFA</td>
             </tr>
             <tr class="total-row">
-                <td>TOTAL TTC :</td>
+                <td>TOTAL ÉLECTRICITÉ TTC :</td>
                 <td class="val-bold" id="render-ttc">0 FCFA</td>
             </tr>
-            <tr><td colspan="2" style="padding-top: 15px; font-weight: 700; font-size: 11px; color: var(--brand-gold); text-transform: uppercase;">Modalités de liquidation financière :</td></tr>
+            <tr><td colspan="2" style="padding-top: 15px; font-weight: 700; font-size: 11px; color: #b45309; text-transform: uppercase;">Échéancier contractuel d'exécution :</td></tr>
             <tr style="color: #15803d;">
-                <td>• Étape 1 : Acompte à la signature (30%)</td>
+                <td>• Étape 1 : Acompte à la commande (30%)</td>
                 <td class="val-bold" id="step-signature">0 FCFA</td>
             </tr>
             <tr style="color: #b45309;">
-                <td>• Étape 2 : Hors d'eau / Dalle coulée (40%)</td>
+                <td>• Étape 2 : En-cours (Pose des gaines & boîtiers) (40%)</td>
                 <td class="val-bold" id="step-dalle">0 FCFA</td>
             </tr>
             <tr style="color: #1e3a8a;">
-                <td>• Étape 3 : Solde à la réception (30%)</td>
+                <td>• Étape 3 : Solde après tests et raccordement (30%)</td>
                 <td class="val-bold" id="step-solde">0 FCFA</td>
             </tr>
         </table>
     </div>
 
     <div class="legal-block">
-        <strong>Remarques et notes importantes :</strong><br>
-        • Validation des transactions via : <strong>T-Money (*145#) | Flooz (*155#)</strong>.<br>
-        • Exclusions : Clôture périphérique, portail, branchements CEET & TDE.<br>
-        • Matériaux certifiés de premier choix conformes aux normes en vigueur au Togo.
+        <strong>Spécifications Critiques Matériel :</strong><br>
+        • Armoires et appareillages étanches conformes aux indices de protection IP55.<br>
+        • Câbles cuivre H07V-U sous gaines de sécurité ICD.<br>
+        • Exclusions : Frais de raccordement réseau externe CEET.
     </div>
 </div>
 
 <script>
-    // Éléments d'amorçage d'origine tirés directement de ta base Word pour faire pro d'entrée
-    const prefilledData = [
-        { desc: "Implantation et piquetage de l'ouvrage", qte: 1, unit: "Fft", pu: 150000 },
-        { desc: "Fouilles en tranchées pour fondations prof. 0.80m", qte: 18, unit: "m³", pu: 8000 },
-        { desc: "Murs en parpaings creux de 15cm vibré (Hauteur 3m)", qte: 120, unit: "m²", pu: 12000 },
-        { desc: "Dalle pleine en béton armé (Toiture terrasse ep. 12cm)", qte: 60, unit: "m²", pu: 35000 }
+    // Injection immédiate de tes données réelles de Lomé pour une démo percutante
+    const electricalBaseData = [
+        { desc: "Fourniture et pose d'Armoire de répartition étanche (Disjoncteur général incl.)", qte: 1, unit: "U", pu: 95000 },
+        { desc: "Câbles conducteurs cuivre H07V-U (rouleaux sections 1.5mm² et 2.5mm²)", qte: 1, unit: "Fft", pu: 55000 },
+        { desc: "Réalisation de points lumineux intérieurs et extérieurs complets", qte: 12, unit: "U", pu: 11500 },
+        { desc: "Interrupteurs Va-et-vient et Prises de courant confort 16A", qte: 18, unit: "U", pu: 4800 },
+        { desc: "Main d'œuvre qualifiée d'ingénierie et câblage électrique", qte: 1, unit: "Fft", pu: 135000 }
     ];
 
     function initialiserApplication() {
         const zone = document.getElementById('items-zone');
         zone.innerHTML = '';
         
-        // Chargement des données par défaut pour l'excellence de la démo face client
-        prefilledData.forEach(item => {
+        electricalBaseData.forEach(item => {
             creerComposantLigne(item.desc, item.qte, item.unit, item.pu);
         });
         recalculerMatriceFinanciere();
@@ -350,8 +360,8 @@
         
         card.innerHTML = `
             <div class="item-card-row-1">
-                <span class="field-label">Désignation précise de la prestation</span>
-                <input type="text" class="input-premium data-desc" value="${desc}" placeholder="Ex: Béton de propreté dosé à 150kg/m³">
+                <span class="field-label">Poste de travaux électrique</span>
+                <input type="text" class="input-premium data-desc" value="${desc}" placeholder="Ex: Projecteur LED extérieur 50W">
             </div>
             <div class="item-card-row-2">
                 <div>
@@ -360,14 +370,14 @@
                 </div>
                 <div>
                     <span class="field-label">Unité</span>
-                    <input type="text" class="input-premium data-unit" value="${unit}" placeholder="m³">
+                    <input type="text" class="input-premium data-unit" value="${unit}" placeholder="U">
                 </div>
                 <div>
                     <span class="field-label">P.U (F)</span>
                     <input type="number" class="input-premium data-pu" value="${pu}" oninput="calculerSousTotalLigne(this)">
                 </div>
                 <div>
-                    <span class="field-label">Total (FCFA)</span>
+                    <span class="field-label">Total (F)</span>
                     <input type="text" class="input-premium input-readonly data-total" value="${Math.round(qte * pu)}" readonly>
                 </div>
             </div>
@@ -398,34 +408,31 @@
             totalHT += parseFloat(field.value) || 0;
         });
         
-        // Calculs des taxes et de la liquidation financière (Réf : Devis Word Lomé)
         let tva = Math.round(totalHT * 0.18);
         let totalTTC = totalHT + tva;
         
-        let acompteSignature = Math.round(totalTTC * 0.30);
-        let phaseDalle = Math.round(totalTTC * 0.40);
-        let soldeReception = totalTTC - (acompteSignature + phaseDalle);
+        let acompte30 = Math.round(totalTTC * 0.30);
+        let phase40 = Math.round(totalTTC * 0.40);
+        let solde30 = totalTTC - (acompte30 + phase40);
 
-        // Injection textuelle formatée dans la vue
         document.getElementById('render-ht').innerText = totalHT.toLocaleString('fr-FR') + " FCFA";
         document.getElementById('render-tva').innerText = tva.toLocaleString('fr-FR') + " FCFA";
         document.getElementById('render-ttc').innerText = totalTTC.toLocaleString('fr-FR') + " FCFA";
         
-        document.getElementById('step-signature').innerText = acompteSignature.toLocaleString('fr-FR') + " FCFA";
-        document.getElementById('step-dalle').innerText = phaseDalle.toLocaleString('fr-FR') + " FCFA";
-        document.getElementById('step-solde').innerText = soldeReception.toLocaleString('fr-FR') + " FCFA";
+        document.getElementById('step-signature').innerText = acompte30.toLocaleString('fr-FR') + " FCFA";
+        document.getElementById('step-dalle').innerText = phase40.toLocaleString('fr-FR') + " FCFA";
+        document.getElementById('step-solde').innerText = solde30.toLocaleString('fr-FR') + " FCFA";
     }
 
     function calculerEtSauvegarder() {
         recalculerMatriceFinanciere();
-        localStorage.setItem("devis_actif_sauvegarde", "true");
-        alert("Matrice financière sauvegardée avec succès sur le serveur local !");
+        localStorage.setItem("devis_electricite_actif", "true");
+        alert("Matrice électricité sauvegardée avec succès !");
     }
 
-    // COMMANDE UNIQUE : ÉCRASEMENT GLOBAL DE L'ANCIEN PROJET
     function ecraserAncienDevis() {
-        if (confirm("Voulez-vous écraser définitivement l'ancien devis pour réinitialiser le système ?")) {
-            localStorage.removeItem("devis_actif_sauvegarde");
+        if (confirm("Voulez-vous écraser définitivement l'ancien devis électrique ?")) {
+            localStorage.removeItem("devis_electricite_actif");
             initialiserApplication();
         }
     }
