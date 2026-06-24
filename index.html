@@ -3,31 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>BLESSED BRAND - Élite Électricité IA</title>
+    <title>AFRIQUE BTP PRO - L'Élite de l'Électricité IA</title>
     <style>
         :root {
-            --brand-dark: #0f172a;
-            --electric-yellow: #eab308;
-            --electric-glow: #fef9c3;
-            --success: #16a34a;
-            --danger: #dc2626;
-            --border-color: #cbd5e1;
-            --bg-body: #0f172a;
+            --cyber-dark: #0f172a;
+            --cyber-deep: #020617;
+            --electric-blue: #06b6d4;
+            --electric-glow: #ecfeff;
+            --neon-green: #10b981;
+            --neon-red: #ef4444;
+            --text-main: #334155;
+            --border-ui: #cbd5e1;
         }
 
         body {
             font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: var(--bg-body);
-            background-image: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
+            background-color: var(--cyber-deep);
+            background-image: radial-gradient(circle at top, #1e293b 0%, #020617 100%);
             margin: 0;
-            padding: 10px;
-            color: #334155;
+            padding: 12px;
+            color: var(--text-main);
             display: flex;
             justify-content: center;
             transition: all 0.3s ease;
         }
 
-        /* MODE CAPTURE D'ÉCRAN : Cache tous les éléments de contrôle inutiles pour le client */
+        /* CONFIGURATION MODE CAPTURE CHIRURGICALE */
         body.screenshot-mode {
             background: #ffffff !important;
             background-image: none !important;
@@ -40,55 +41,63 @@
             box-shadow: none !important;
             border: none !important;
             max-width: 100%;
-            padding: 10px;
+            padding: 15px;
+        }
+        body.screenshot-mode .phase-title {
+            background: #f1f5f9 !important;
+            color: var(--cyber-dark) !important;
+            border-left: 4px solid var(--cyber-dark) !important;
         }
 
         .master-container {
             width: 100%;
-            max-width: 600px;
+            max-width: 620px;
             background: #ffffff;
-            border-radius: 16px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.6);
-            padding: 20px;
+            border-radius: 20px;
+            box-shadow: 0 30px 60px -15px rgba(0, 0, 0, 0.8);
+            padding: 24px;
             box-sizing: border-box;
         }
 
         .brand-header {
             text-align: center;
-            border-bottom: 3px solid var(--electric-yellow);
-            padding-bottom: 15px;
-            margin-bottom: 20px;
+            border-bottom: 4px solid var(--electric-blue);
+            padding-bottom: 18px;
+            margin-bottom: 22px;
+            position: relative;
         }
 
         .brand-header h1 {
-            color: var(--brand-dark);
-            font-size: 24px;
-            font-weight: 800;
+            color: var(--cyber-dark);
+            font-size: 26px;
+            font-weight: 900;
             margin: 0;
+            letter-spacing: -0.5px;
         }
 
         .brand-header p {
-            color: #854d0e;
+            color: var(--electric-blue);
             font-size: 11px;
             text-transform: uppercase;
-            font-weight: 700;
-            margin: 5px 0 0 0;
-            letter-spacing: 1px;
+            font-weight: 800;
+            margin: 6px 0 0 0;
+            letter-spacing: 1.5px;
         }
 
-        /* BLOC DE RECHERCHE ET GÉNÉRATEUR IA */
+        /* GÉNÉRATEUR IA CYBERNETIQUE - COMPATIBLE TIKTOK VIRAL */
         .ai-generator-box {
-            background: linear-gradient(135deg, #fef9c3 0%, #fef3c7 100%);
-            border: 1px solid #fde047;
-            border-radius: 12px;
-            padding: 15px;
-            margin-bottom: 20px;
+            background: linear-gradient(135deg, #ecfeff 0%, #cffafe 100%);
+            border: 1px solid #a5f3fc;
+            border-radius: 14px;
+            padding: 16px;
+            margin-bottom: 22px;
+            box-shadow: 0 4px 12px rgba(6, 182, 212, 0.1);
         }
         .ai-title {
             font-size: 13px;
             font-weight: 800;
-            color: #854d0e;
-            margin-bottom: 8px;
+            color: #0891b2;
+            margin-bottom: 10px;
             display: flex;
             align-items: center;
             gap: 6px;
@@ -100,36 +109,45 @@
         }
         .ai-input {
             flex: 1;
-            padding: 10px;
-            border: 1px solid #facc15;
-            border-radius: 8px;
+            padding: 12px;
+            border: 1px solid #67e8f9;
+            border-radius: 10px;
             font-size: 13px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        .ai-input:focus {
+            border-color: var(--electric-blue);
         }
         .btn-ai-spark {
-            background: var(--brand-dark);
+            background: var(--cyber-dark);
             color: white;
             border: none;
-            padding: 10px 14px;
-            font-weight: 700;
-            border-radius: 8px;
+            padding: 12px 18px;
+            font-weight: 800;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 13px;
+            transition: background 0.2s;
+        }
+        .btn-ai-spark:hover {
+            background: var(--electric-blue);
         }
 
-        /* ACTIONS PRINCIPALES */
+        /* ACTIONS PANEL CONTROLS */
         .control-deck {
             background: #f8fafc;
-            border: 1px solid var(--border-color);
-            border-radius: 12px;
+            border: 1px solid var(--border-ui);
+            border-radius: 14px;
             padding: 12px;
-            margin-bottom: 20px;
+            margin-bottom: 22px;
             display: flex;
             gap: 10px;
         }
 
         .btn-core {
             flex: 1;
-            padding: 12px 6px;
+            padding: 12px 8px;
             font-weight: 700;
             font-size: 12px;
             border: none;
@@ -138,65 +156,78 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 4px;
+            gap: 6px;
             transition: all 0.2s ease;
         }
 
-        .btn-core-danger { background-color: #fee2e2; color: var(--danger); border: 1px solid #fca5a5; }
-        .btn-core-danger:hover { background-color: var(--danger); color: white; }
-        .btn-core-success { background-color: #dcfce7; color: var(--success); border: 1px solid #86efac; }
-        .btn-core-success:hover { background-color: var(--success); color: white; }
+        .btn-core-danger { background-color: #fee2e2; color: var(--neon-red); border: 1px solid #fca5a5; }
+        .btn-core-danger:hover { background-color: var(--neon-red); color: white; }
+        .btn-core-success { background-color: #dcfce7; color: var(--neon-green); border: 1px solid #86efac; }
+        .btn-core-success:hover { background-color: var(--neon-green); color: white; }
         .btn-core-capture { background-color: #e2e8f0; color: #475569; border: 1px solid #cbd5e1; }
+        .btn-core-capture:hover { background-color: var(--cyber-dark); color: white; }
 
+        /* CARDE FICHE CLIENT */
         .meta-card {
             background: #ffffff;
-            border: 1px solid var(--border-color);
-            border-left: 4px solid var(--brand-dark);
-            border-radius: 8px;
-            padding: 12px;
-            margin-bottom: 20px;
+            border: 1px solid var(--border-ui);
+            border-left: 5px solid var(--cyber-dark);
+            border-radius: 10px;
+            padding: 14px;
+            margin-bottom: 22px;
             font-size: 13px;
         }
-
         .meta-row {
             display: flex;
             justify-content: space-between;
-            margin-bottom: 4px;
+            margin-bottom: 6px;
         }
+        .meta-row:last-child { margin-bottom: 0; }
 
-        /* COMPOSANTS DE TRAVAIL */
-        .workspace-title {
+        /* SECTORISATION PAR PHASES TECHNIQUES */
+        .phase-section {
+            margin-bottom: 25px;
+        }
+        .phase-title {
+            background: linear-gradient(90deg, var(--cyber-dark) 0%, #1e293b 100%);
+            color: white;
+            padding: 10px 14px;
             font-size: 13px;
             font-weight: 700;
-            color: var(--brand-dark);
-            margin-bottom: 10px;
+            border-radius: 8px;
+            margin-bottom: 12px;
             text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
 
         .items-container {
             display: flex;
             flex-direction: column;
             gap: 12px;
-            margin-bottom: 20px;
         }
 
         .item-card {
             background: #ffffff;
-            border: 1px solid var(--border-color);
-            border-radius: 10px;
-            padding: 12px;
-            box-shadow: 0 2px 4px rgba(0,0,0,0.01);
+            border: 1px solid var(--border-ui);
+            border-radius: 12px;
+            padding: 14px;
+            box-shadow: 0 4px 6px -1px rgba(0,0,0,0.02);
+            position: relative;
         }
 
         .item-card-row-1 {
             width: 100%;
-            margin-bottom: 8px;
+            margin-bottom: 10px;
+        }
+        .item-card-row-1 .input-desc {
+            font-weight: 600;
+            color: var(--cyber-dark);
         }
 
         .item-card-row-2 {
             display: grid;
-            grid-template-columns: 2fr 1.5fr 2fr 2.5fr;
-            gap: 8px;
+            grid-template-columns: 1fr 1.2fr 1.5fr 2fr;
+            gap: 10px;
             align-items: center;
         }
 
@@ -204,45 +235,61 @@
             font-size: 10px;
             color: #64748b;
             text-transform: uppercase;
-            margin-bottom: 2px;
+            margin-bottom: 3px;
             display: block;
-            font-weight: 600;
+            font-weight: 700;
         }
 
         .input-premium {
             width: 100%;
-            padding: 8px;
+            padding: 9px;
             border: 1px solid #cbd5e1;
-            border-radius: 6px;
+            border-radius: 8px;
             box-sizing: border-box;
             font-size: 13px;
+            color: #1e293b;
+            outline: none;
+        }
+        .input-premium:focus {
+            border-color: var(--electric-blue);
         }
 
         .input-readonly {
-            background: #f1f5f9;
+            background: #f8fafc;
             font-weight: 700;
-            color: var(--brand-dark);
+            color: var(--cyber-dark);
             text-align: right;
             border: 1px solid #cbd5e1;
         }
 
+        .btn-add-wrapper {
+            margin-top: 10px;
+            margin-bottom: 15px;
+        }
         .btn-add {
-            background: var(--brand-dark);
-            color: white;
+            background: #f1f5f9;
+            color: var(--cyber-dark);
             padding: 10px 16px;
-            font-weight: 600;
-            font-size: 13px;
-            border: none;
-            border-radius: 6px;
+            font-weight: 700;
+            font-size: 12px;
+            border: 1px dashed var(--border-ui);
+            border-radius: 8px;
             cursor: pointer;
+            transition: all 0.2s;
+        }
+        .btn-add:hover {
+            background: var(--electric-glow);
+            border-color: var(--electric-blue);
+            color: #0891b2;
         }
 
+        /* BLOC FINANCIER GLOBAL & ÉCHÉANCIER */
         .financial-summary {
             background: var(--electric-glow);
-            border: 1px solid #fef08a;
-            border-radius: 12px;
-            padding: 15px;
-            margin-top: 25px;
+            border: 1px solid #a5f3fc;
+            border-radius: 16px;
+            padding: 18px;
+            margin-top: 30px;
             margin-bottom: 25px;
         }
 
@@ -252,48 +299,52 @@
         }
 
         .fin-table td {
-            padding: 6px 0;
+            padding: 8px 0;
             font-size: 13px;
+            color: #475569;
         }
 
         .fin-table tr.total-row td {
-            padding-top: 10px;
-            border-top: 2px dashed var(--electric-yellow);
-            font-size: 16px;
-            font-weight: 800;
-            color: var(--brand-dark);
+            padding-top: 12px;
+            border-top: 2px dashed var(--electric-blue);
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--cyber-dark);
         }
 
         .val-bold {
             text-align: right;
             font-weight: 700;
+            color: var(--cyber-dark);
         }
 
         .legal-block {
-            background: #fff;
-            border: 1px dashed #cbd5e1;
-            border-radius: 8px;
-            padding: 12px;
+            background: #ffffff;
+            border: 1px dashed var(--border-ui);
+            border-radius: 10px;
+            padding: 14px;
             font-size: 11px;
             color: #4b5563;
-            line-height: 1.5;
+            line-height: 1.6;
         }
 
-        /* FLOATING BACK BUTTON POUR QUITTER LE MODE CAPTURE */
         .btn-exit-capture {
             display: none;
             position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background: var(--brand-dark);
+            bottom: 25px;
+            right: 25px;
+            background: var(--cyber-dark);
             color: white;
             border: none;
-            padding: 12px 20px;
-            font-weight: 700;
-            border-radius: 30px;
+            padding: 14px 24px;
+            font-weight: 800;
+            border-radius: 50px;
             cursor: pointer;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.4);
             font-size: 14px;
+            z-index: 99999;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
         }
     </style>
 </head>
@@ -303,23 +354,23 @@
 
 <div class="master-container">
     <div class="brand-header">
-        <h1>BLESSED BRAND</h1>
-        <p>Génie Électrique, Distribution & Technologie Domotique</p>
+        <h1>AFRIQUE BTP PRO</h1>
+        <p>Ingénierie Électrique & Courants Forts/Faibles</p>
     </div>
 
     <div class="ai-generator-box no-capture">
-        <div class="ai-title">✨ Générateur d'Infrastructure IA BTP</div>
+        <div class="ai-title">⚡ Intelligence Artificielle Électrique (NFC 15-100)</div>
         <div class="ai-input-group">
-            <input type="text" id="ai-prompt" class="ai-input" placeholder="Ex: Salon + 2 Chambres + Cuisine à Lomé">
-            <button id="btn-ai" class="btn-ai-spark" onclick="genererParIA()">Générer ⚡</button>
+            <input type="text" id="ai-prompt" class="ai-input" placeholder="Ex: Villa 3 chambres + Salon standing à Lomé">
+            <button id="btn-ai" class="btn-ai-spark" onclick="genererParIA()">Calculer IA ⚡</button>
         </div>
     </div>
 
     <div class="control-deck no-capture">
-        <button class="btn-core btn-core-danger" onclick="ecraserEtReinitialiserTout()">
-            🗑️ Écraser l'ancien devis
+        <button class="btn-core btn-core-danger" onclick="reinitialiserBordereau()">
+            🗑️ Réinitialiser
         </button>
-        <button class="btn-core class-save btn-core-success" onclick="calculerEtSauvegarder()">
+        <button class="btn-core btn-core-success" onclick="sauvegarderDonneesLocalement()">
             💾 Sauvegarder
         </button>
         <button class="btn-core btn-core-capture" onclick="activerModeCapture()">
@@ -329,228 +380,273 @@
 
     <div class="meta-card">
         <div class="meta-row">
-            <div><strong>Réf Devis :</strong> ELEC-2026-TGO</div>
-            <div><strong>Date :</strong> 24 Juin 2026</div>
+            <div><strong>Réf Devis :</strong> EL-2026-TGO</div>
+            <div><strong>Date d'Émission :</strong> 24 Juin 2026</div>
         </div>
         <div class="meta-row">
-            <div><strong>Expert en Charge :</strong> M. Ibrahim ALI</div>
-            <div><strong>Superficie cible :</strong> Lomé, Togo</div>
+            <div><strong>Auteur / Directeur :</strong> M. Ibrahim ALI</div>
+            <div><strong>Territoire :</strong> Lomé / Kara (Togo)</div>
         </div>
     </div>
 
-    <div class="workspace-title">Spécifications par Niveaux de Travaux</div>
-    
-    <div id="items-zone" class="items-container">
+    <div class="phase-section">
+        <div class="phase-title">Phase 1 : Encastrement & Infrastructures Gaines</div>
+        <div id="container-phase1" class="items-container"></div>
+        <div class="btn-add-wrapper no-capture">
+            <button class="btn-add" onclick="creerLigneOuvrage('container-phase1', '', 0, 'U', 0)">➕ Ajouter élément Phase 1</button>
         </div>
+    </div>
 
-    <div style="margin-bottom: 25px;" class="no-capture">
-        <button class="btn-add" onclick="ajouterNouvellePrestation('', 0, 'U', 0)">
-            ➕ Insérer une ligne de travaux
-        </button>
+    <div class="phase-section">
+        <div class="phase-title">Phase 2 : Câblage, Filerie & Lignes de Puissance</div>
+        <div id="container-phase2" class="items-container"></div>
+        <div class="btn-add-wrapper no-capture">
+            <button class="btn-add" onclick="creerLigneOuvrage('container-phase2', '', 0, 'U', 0)">➕ Ajouter élément Phase 2</button>
+        </div>
+    </div>
+
+    <div class="phase-section">
+        <div class="phase-title">Phase 3 : Appareillage, Sécurité & Finitions</div>
+        <div id="container-phase3" class="items-container"></div>
+        <div class="btn-add-wrapper no-capture">
+            <button class="btn-add" onclick="creerLigneOuvrage('container-phase3', '', 0, 'U', 0)">➕ Ajouter élément Phase 3</button>
+        </div>
     </div>
 
     <div class="financial-summary">
         <table class="fin-table">
             <tr>
-                <td>Montant Global Travaux HT :</td>
+                <td>Sous-total Général Électricité HT :</td>
                 <td class="val-bold" id="render-ht">0 FCFA</td>
             </tr>
             <tr>
-                <td>TVA Réglementaire Togo (18%) :</td>
-                <td class="val-bold" id="render-tva" style="color: #6b7280;">0 FCFA</td>
+                <td>TVA Réglementaire République Togolaise (18%) :</td>
+                <td class="val-bold" id="render-tva" style="color: #64748b;">0 FCFA</td>
             </tr>
             <tr class="total-row">
-                <td>TOTAL ESTIMATIF TTC :</td>
-                <td class="val-bold" id="render-ttc">0 FCFA</td>
+                <td>TOTAL ESTIMATIF ÉLECTRICITÉ TTC :</td>
+                <td class="val-bold" id="render-ttc" style="color: var(--cyber-dark);">0 FCFA</td>
             </tr>
-            <tr><td colspan="2" style="padding-top: 15px; font-weight: 700; font-size: 11px; color: #854d0e; text-transform: uppercase;">Échelonnement de Liquidation Financière :</td></tr>
-            <tr style="color: #15803d;">
-                <td>• Étape 1 : Enclenchement du Chantier / Signature (30%)</td>
+            <tr><td colspan="2" style="padding-top: 18px; font-weight: 800; font-size: 11px; color: #0891b2; text-transform: uppercase; letter-spacing: 0.5px;">Échelonnement de Liquidation Financière :</td></tr>
+            <tr style="color: #0f766e;">
+                <td>• Étape 1 : Signature & Approvisionnement (30%)</td>
                 <td class="val-bold" id="step-signature">0 FCFA</td>
             </tr>
             <tr style="color: #b45309;">
-                <td>• Étape 2 : Pose de la tuyauterie & filage complet (40%)</td>
-                <td class="val-bold" id="step-dalle">0 FCFA</td>
+                <td>• Étape 2 : Fin Encastrement & Câblage validé (40%)</td>
+                <td class="val-bold" id="step-gaines">0 FCFA</td>
             </tr>
-            <tr style="color: #1e3a8a;">
-                <td>• Étape 3 : Solde après tests de conformité (30%)</td>
-                <td class="val-bold" id="step-solde">0 FCFA</td>
+            <tr style="color: #1d4ed8;">
+                <td>• Étape 3 : Pose Appareillage, Tests & Réception (30%)</td>
+                <td class="val-bold" id="step-reception">0 FCFA</td>
             </tr>
         </table>
     </div>
 
     <div class="legal-block">
-        <strong>Spécifications et Normes de Sécurité :</strong><br>
-        • Distribution conforme à la norme NF C 15-100. Matériel Schneider ou Legrand.<br>
-        • Paiements mobiles sécurisés via les terminaux : <strong>T-Money (*145#) | Flooz (*155#)</strong>.
+        <strong>Directives de Conformité :</strong><br>
+        • Installations conformes aux normes de sécurité NFC 15-100 (Disjoncteurs calibrés, circuits spécialisés, mise à la terre fonctionnelle).<br>
+        • Canaux de paiement agréés : <strong>T-Money (*145#) | Flooz (*155#)</strong> | Virement Bancaire.
     </div>
 </div>
 
 <script>
-    // BASE COMPLÈTE DU DEVIS ORGANISÉE PAR NIVEAUX/PHASES DE TRAVAIL ÉLÉCTRONS
-    const defaultInfrastructure = [
-        { desc: "Phase 1: Tuyauterie, encastrement des boîtiers et saignées murales", qte: 1, unit: "Fft", pu: 60000 },
-        { desc: "Phase 2: Distribution par câblage fils de cuivre TH (1.5mm² pour éclairage)", qte: 3, unit: "Rouleaux", pu: 24000 },
-        { desc: "Phase 2: Distribution par câblage fils de cuivre TH (2.5mm² pour prises)", qte: 4, unit: "Rouleaux", pu: 29500 },
-        { desc: "Phase 3: Pose de Tableau de Répartition Modulaire complet IP40", qte: 1, unit: "U", pu: 95000 },
-        { desc: "Phase 3: Installation de Points Lumineux (Douilles, boîtes DCL & lampes)", qte: 12, unit: "U", pu: 11500 },
-        { desc: "Phase 3: Pose d'Appareillages Confort (Prises de terre & Interrupteurs)", qte: 16, unit: "U", pu: 4500 }
-    ];
+    // BASE DE DONNÉES STRUCTURÉE INITIALE DU DEVIS ÉLECTRICITÉ RÉEL (574 500 FCFA HT)
+    const initialDatabaseElectricity = {
+        phase1: [
+            { desc: "Coffret de répartition modulaire étanche 12 modules", qte: 1, unit: "U", pu: 45000 },
+            { desc: "Gaines annelées isolantes ICTA Ø16 & Ø20 pour encastrement", qte: 6, unit: "Crt", pu: 12000 },
+            { desc: "Boîtiers d'encastrement ronds/carrés pour appareillages", qte: 40, unit: "U", pu: 350 },
+            { desc: "Boîtes de dérivation étanches avec couvercles de fermeture", qte: 10, unit: "U", pu: 1500 }
+        ],
+        phase2: [
+            { desc: "Fil électrique cuivre isolé H07V-U 1.5 mm² (Éclairage)", qte: 4, unit: "Rlx", pu: 18000 },
+            { desc: "Fil électrique cuivre isolé H07V-U 2.5 mm² (Prises)", qte: 5, unit: "Rlx", pu: 24000 },
+            { desc: "Câble d'alimentation générale armé cuivre 2x10 mm²", qte: 15, unit: "ml", pu: 3500 }
+        ],
+        phase3: [
+            { desc: "Disjoncteur différentiel général de protection 30A / 300mA", qte: 1, unit: "U", pu: 35000 },
+            { desc: "Disjoncteurs divisionnaires magnétothermiques (10A / 16A)", qte: 8, unit: "U", pu: 4500 },
+            { desc: "Interrupteurs simples, doubles et va-et-vient (Premium)", qte: 15, unit: "U", pu: 1500 },
+            { desc: "Prises de courant avec éclips de sécurité enfants 2P+T", qte: 20, unit: "U", pu: 1800 },
+            { desc: "Hublots et réglettes LED basse consommation intégrés", qte: 12, unit: "U", pu: 4500 },
+            { desc: "Main d'œuvre professionnelle, câblage complet et tests", qte: 1, unit: "Fft", pu: 120000 }
+        ]
+    };
 
-    function initialiserApplication() {
-        const zone = document.getElementById('items-zone');
-        zone.innerHTML = '';
-
-        // Lecture de la mémoire de sauvegarde locale
-        const localSaved = localStorage.getItem("saved_electric_items_v2");
+    function chargerApplication() {
+        const localSaved = localStorage.getItem("saved_cyber_electricity_v1");
         
         if (localSaved) {
-            const itemsparsed = JSON.parse(localSaved);
-            itemsparsed.forEach(item => {
-                ajouterNouvellePrestation(item.desc, item.qte, item.unit, item.pu);
-            });
+            const parsed = JSON.parse(localSaved);
+            remplirConteneur('container-phase1', parsed.phase1);
+            remplirConteneur('container-phase2', parsed.phase2);
+            remplirConteneur('container-phase3', parsed.phase3);
         } else {
-            defaultInfrastructure.forEach(item => {
-                ajouterNouvellePrestation(item.desc, item.qte, item.unit, item.pu);
-            });
+            remplirConteneur('container-phase1', initialDatabaseElectricity.phase1);
+            remplirConteneur('container-phase2', initialDatabaseElectricity.phase2);
+            remplirConteneur('container-phase3', initialDatabaseElectricity.phase3);
         }
-        recalculerMatriceFinanciere();
+        recalculerMatriceGlobale();
     }
 
-    function ajouterNouvellePrestation(desc, qte, unit, pu) {
-        const zone = document.getElementById('items-zone');
+    function remplirConteneur(idConteneur, items) {
+        const conteneur = document.getElementById(idConteneur);
+        conteneur.innerHTML = '';
+        items.forEach(item => {
+            creerLigneOuvrage(idConteneur, item.desc, item.qte, item.unit, item.pu);
+        });
+    }
+
+    function creerLigneOuvrage(idConteneur, desc, qte, unit, pu) {
+        const conteneur = document.getElementById(idConteneur);
         const card = document.createElement('div');
         card.className = 'item-card';
         
         card.innerHTML = `
             <div class="item-card-row-1">
-                <span class="field-label">Poste de travail et spécification technique</span>
-                <input type="text" class="input-premium data-desc" value="${desc}" placeholder="Ex: Phase 3: Projecteur Extérieur Led 50W">
+                <span class="field-label">Désignation technique du composant électricité</span>
+                <input type="text" class="input-premium input-desc" value="${desc}" placeholder="Ex: Prise RJ45 Catégorie 6">
             </div>
             <div class="item-card-row-2">
                 <div>
-                    <span class="field-label">Qté</span>
-                    <input type="number" class="input-premium data-qte" value="${qte}" oninput="calculerSousTotalLigne(this)">
+                    <span class="field-label">Quantité</span>
+                    <input type="number" class="input-premium input-qte" value="${qte}" oninput="calculerLigne(this)">
                 </div>
                 <div>
                     <span class="field-label">Unité</span>
-                    <input type="text" class="input-premium data-unit" value="${unit}" placeholder="U">
+                    <input type="text" class="input-premium input-unit" value="${unit}" placeholder="U">
                 </div>
                 <div>
-                    <span class="field-label">P.U (F)</span>
-                    <input type="number" class="input-premium data-pu" value="${pu}" oninput="calculerSousTotalLigne(this)">
+                    <span class="field-label">P.U (FCFA)</span>
+                    <input type="number" class="input-premium input-pu" value="${pu}" oninput="calculerLigne(this)">
                 </div>
                 <div>
                     <span class="field-label">Total (F)</span>
-                    <input type="text" class="input-premium input-readonly data-total" value="${Math.round(qte * pu)}" readonly>
+                    <input type="text" class="input-premium input-readonly input-total" value="${Math.round(qte * pu)}" readonly>
                 </div>
             </div>
         `;
-        zone.appendChild(card);
+        conteneur.appendChild(card);
     }
 
-    function calculerSousTotalLigne(inputField) {
-        const card = inputField.closest('.item-card');
-        const qte = parseFloat(card.querySelector('.data-qte').value) || 0;
-        const pu = parseFloat(card.querySelector('.data-pu').value) || 0;
-        const totalField = card.querySelector('.data-total');
+    function calculerLigne(inputElement) {
+        const card = inputElement.closest('.item-card');
+        const qte = parseFloat(card.querySelector('.input-qte').value) || 0;
+        const pu = parseFloat(card.querySelector('.input-pu').value) || 0;
+        const totalElement = card.querySelector('.input-total');
         
-        totalField.value = Math.round(qte * pu);
-        recalculerMatriceFinanciere();
+        totalElement.value = Math.round(qte * pu);
+        recalculerMatriceGlobale();
     }
 
-    function recalculerMatriceFinanciere() {
-        const toutesLesLignes = document.querySelectorAll('.data-total');
+    function recalculerMatriceGlobale() {
+        const tousLesTotaux = document.querySelectorAll('.input-total');
         let totalHT = 0;
         
-        toutesLesLignes.forEach(field => {
-            totalHT += parseFloat(field.value) || 0;
+        tousLesTotaux.forEach(input => {
+            totalHT += parseFloat(input.value) || 0;
         });
         
         let tva = Math.round(totalHT * 0.18);
         let totalTTC = totalHT + tva;
         
         let signature = Math.round(totalTTC * 0.30);
-        let enCours = Math.round(totalTTC * 0.40);
-        let solde = totalTTC - (signature + enCours);
+        let gaines = Math.round(totalTTC * 0.40);
+        let reception = totalTTC - (signature + gaines);
 
         document.getElementById('render-ht').innerText = totalHT.toLocaleString('fr-FR') + " FCFA";
         document.getElementById('render-tva').innerText = tva.toLocaleString('fr-FR') + " FCFA";
         document.getElementById('render-ttc').innerText = totalTTC.toLocaleString('fr-FR') + " FCFA";
         
         document.getElementById('step-signature').innerText = signature.toLocaleString('fr-FR') + " FCFA";
-        document.getElementById('step-dalle').innerText = enCours.toLocaleString('fr-FR') + " FCFA";
-        document.getElementById('step-solde').innerText = solde.toLocaleString('fr-FR') + " FCFA";
+        document.getElementById('step-gaines').innerText = gaines.toLocaleString('fr-FR') + " FCFA";
+        document.getElementById('step-reception').innerText = reception.toLocaleString('fr-FR') + " FCFA";
     }
 
-    function calculerEtSauvegarder() {
-        const itemsToSave = [];
-        const cards = document.querySelectorAll('.item-card');
-        
-        cards.forEach(card => {
-            itemsToSave.push({
-                desc: card.querySelector('.data-desc').value,
-                qte: parseFloat(card.querySelector('.data-qte').value) || 0,
-                unit: card.querySelector('.data-unit').value,
-                pu: parseFloat(card.querySelector('.data-pu').value) || 0
+    function sauvegarderDonneesLocalement() {
+        const extraireDonnees = (idConteneur) => {
+            const cards = document.getElementById(idConteneur).querySelectorAll('.item-card');
+            const arr = [];
+            cards.forEach(card => {
+                arr.push({
+                    desc: card.querySelector('.input-desc').value,
+                    qte: parseFloat(card.querySelector('.input-qte').value) || 0,
+                    unit: card.querySelector('.input-unit').value,
+                    pu: parseFloat(card.querySelector('.input-pu').value) || 0
+                });
             });
-        });
-        
-        localStorage.setItem("saved_electric_items_v2", JSON.stringify(itemsToSave));
-        alert("🔒 Devis sauvegardé avec succès dans le système local !");
+            return arr;
+        };
+
+        const dataState = {
+            phase1: extraireDonnees('container-phase1'),
+            phase2: extraireDonnees('container-phase2'),
+            phase3: extraireDonnees('container-phase3')
+        };
+
+        localStorage.setItem("saved_cyber_electricity_v1", JSON.stringify(dataState));
+        alert("🔒 Base de données électricité sauvegardée et synchronisée avec succès !");
     }
 
-    // LE CORRECTIF MAJEUR : CETTE FONCTION EFFACE LE CACHE ET NETTOIE LA VUE RADICALEMENT
-    function ecraserEtReinitialiserTout() {
-        if (confirm("⚠️ Voulez-vous vider l'écran et supprimer toutes les données de ce devis ?")) {
-            localStorage.removeItem("saved_electric_items_v2");
-            document.getElementById('items-zone').innerHTML = '';
-            recalculerMatriceFinanciere();
-            alert("Application réinitialisée à zéro !");
+    function reinitialiserBordereau() {
+        if (confirm("⚠️ Souhaitez-vous restaurer le bordereau électricité d'origine ?")) {
+            localStorage.removeItem("saved_cyber_electricity_v1");
+            chargerApplication();
+            alert("Bordereau rechargé !");
         }
     }
 
-    // SYSTÈME DE SIMULATION IA POUR TES VIDÉOS TIKTOK / INSTAGRAM
+    // MOTEUR D'ANALYSIS IA CONNECTÉ POUR LES CONTENUS VIRAUX TIKTOK / FACEBOOK
     function genererParIA() {
-        const inputPrompt = document.getElementById('ai-prompt').value.toLowerCase();
-        if (!inputPrompt) {
-            alert("Veuillez saisir les pièces de l'ouvrage (ex: Villa 3 chambres)");
+        const prompt = document.getElementById('ai-prompt').value.toLowerCase();
+        if (!prompt) {
+            alert("Veuillez spécifier un type d'infrastructure (ex: Immeuble, Studio, Villa).");
             return;
         }
 
         const btn = document.getElementById('btn-ai');
-        btn.innerText = "Calcul IA en cours... ⚡";
+        btn.innerText = "Analyse des charges en cours... ⚡";
         btn.disabled = true;
 
         setTimeout(() => {
-            const zone = document.getElementById('items-zone');
-            zone.innerHTML = '';
-            
-            // Simulation de base intelligente selon l'entrée utilisateur
-            const multi = inputPrompt.includes("grand") || inputPrompt.includes("3") ? 1.8 : 1;
+            let mult = 1;
+            if (prompt.includes("grand") || prompt.includes("immeuble") || prompt.includes("étage")) {
+                mult = 2.5;
+            } else if (prompt.includes("studio") || prompt.includes("chambre seule")) {
+                mult = 0.5;
+            }
 
-            const aiCalculatedData = [
-                { desc: "Phase 1: Encastrement de gaines de sécurité annelées et boîtes étanches", qte: Math.round(1 * multi), unit: "Fft", pu: 55000 },
-                { desc: "Phase 2: Câbles de liaison cuivre TH section 1.5mm² (Lumières)", qte: Math.round(2 * multi), unit: "Rouleaux", pu: 24000 },
-                { desc: "Phase 2: Câbles de liaison cuivre TH section 2.5mm² (Prises)", qte: Math.round(3 * multi), unit: "Rouleaux", pu: 29500 },
-                { desc: "Phase 3: Coffret de distribution principal équipé de disjoncteurs divisionnaires", qte: 1, unit: "U", pu: 85000 },
-                { desc: "Phase 3: Intégration d'interrupteurs design et blocs prises étanches", qte: Math.round(14 * multi), unit: "U", pu: 4500 },
-                { desc: "Phase 3: Points d'éclairage équipés de luminaires LED basse consommation", qte: Math.round(10 * multi), unit: "U", pu: 11500 },
-                { desc: "Main d'œuvre : Réalisation des schémas, raccordements complets et tests de terre", qte: 1, unit: "Fft", pu: 120000 }
+            // Génération de lignes calibrées selon le multiplicateur d'échelle
+            const aiPhase1 = [
+                { desc: "Coffret de répartition modulaire divisionnaire renforcé", qte: Math.round(1 * Math.ceil(mult)), unit: "U", pu: 45000 },
+                { desc: "Gaines annelées isolantes haute performance ICTA Ø20", qte: Math.round(6 * mult), unit: "Crt", pu: 12000 },
+                { desc: "Boîtiers d'encastrement étanches ronds pour modules", qte: Math.round(40 * mult), unit: "U", pu: 350 }
             ];
 
-            aiCalculatedData.forEach(item => {
-                ajouterNouvellePrestation(item.desc, item.qte, item.unit, item.pu);
-            });
+            const aiPhase2 = [
+                { desc: "Fil électrique cuivre H07V-U 1.5 mm² pour circuits d'éclairage", qte: Math.round(4 * mult), unit: "Rlx", pu: 18000 },
+                { desc: "Fil électrique cuivre H07V-U 2.5 mm² pour prises de courant", qte: Math.round(5 * mult), unit: "Rlx", pu: 24000 },
+                { desc: "Câbles de puissance 4mm² pour circuits spécialisés (Clim/Cuisine)", qte: Math.round(2 * mult), unit: "Rlx", pu: 32000 }
+            ];
 
-            recalculerMatriceFinanciere();
-            btn.innerText = "Générer ⚡";
+            const aiPhase3 = [
+                { desc: "Disjoncteurs divisionnaires magnétothermiques calibrés", qte: Math.round(8 * mult), unit: "U", pu: 4500 },
+                { desc: "Appareillages complets (Interrupteurs et Prises Premium)", qte: Math.round(35 * mult), unit: "U", pu: 1600 },
+                { desc: "Forfait câblage de puissance, équilibrage des phases & tests", qte: 1, unit: "Fft", pu: Math.round(120000 * mult) }
+            ];
+
+            remplirConteneur('container-phase1', aiPhase1);
+            remplirConteneur('container-phase2', aiPhase2);
+            remplirConteneur('container-phase3', aiPhase3);
+
+            recalculerMatriceGlobale();
+            btn.innerText = "Calculer IA ⚡";
             btn.disabled = false;
-            alert("✨ L'IA a modélisé l'architecture électrique complète du bâtiment !");
-        }, 1500);
+            alert("✨ L'IA a restructuré et dimensionné vos besoins électriques avec succès !");
+        }, 1200);
     }
 
-    // ACTIONS DU MODE CAPTURE D'ÉCRAN
     function activerModeCapture() {
         document.body.classList.add('screenshot-mode');
         document.getElementById('exit-btn').style.display = 'block';
@@ -561,9 +657,7 @@
         document.getElementById('exit-btn').style.display = 'none';
     }
 
-    window.onload = function() {
-        initialiserApplication();
-    };
+    window.onload = chargerApplication;
 </script>
 
 </body>
