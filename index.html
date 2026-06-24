@@ -3,277 +3,435 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Afrique BTP Pro</title>
+    <title>BLESSED BRAND - Système Élite BTP</title>
     <style>
+        :root {
+            --brand-blue: #0f172a;
+            --brand-gold: #b45309;
+            --accent-blue: #1e3a8a;
+            --success: #15803d;
+            --danger: #b91c1c;
+            --bg-light: #f8fafc;
+            --border-color: #e2e8f0;
+        }
+
         body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f6f9;
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background-color: #0f172a; /* Fond sombre premium pour faire ressortir l'application */
+            background-image: radial-gradient(circle at top, #1e293b 0%, #0f172a 100%);
             margin: 0;
             padding: 10px;
+            color: #334155;
             display: flex;
             justify-content: center;
         }
-        .container {
+
+        .master-container {
             width: 100%;
-            max-width: 500px;
-            background: white;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+            max-width: 600px;
+            background: #ffffff;
+            border-radius: 16px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+            padding: 20px;
             box-sizing: border-box;
         }
-        .line {
-            width: 100%;
-            height: 4px;
-            background-color: #1e3a8a;
+
+        /* En-tête Institutionnel */
+        .brand-header {
+            text-align: center;
+            border-bottom: 2px solid var(--brand-gold);
+            padding-bottom: 15px;
             margin-bottom: 20px;
         }
-        .actions-box {
-            border: 1px solid #cbd5e1;
-            padding: 15px;
-            border-radius: 8px;
+
+        .brand-header h1 {
+            color: var(--brand-blue);
+            font-size: 24px;
+            font-weight: 800;
+            letter-spacing: 1px;
+            margin: 0;
+        }
+
+        .brand-header p {
+            color: var(--brand-gold);
+            font-size: 12px;
+            text-transform: uppercase;
+            font-weight: 600;
+            margin: 5px 0 0 0;
+            letter-spacing: 0.5px;
+        }
+
+        /* Panneau de Contrôle Révolutionnaire */
+        .control-deck {
+            background: var(--bg-light);
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 12px;
             margin-bottom: 20px;
             display: flex;
             gap: 10px;
-            justify-content: space-between;
         }
-        .btn-action {
+
+        .btn-core {
             flex: 1;
-            padding: 12px;
-            color: white;
-            font-weight: bold;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
+            padding: 12px 8px;
+            font-weight: 700;
             font-size: 13px;
-        }
-        .btn-danger { background-color: #dc3545; }
-        .btn-success { background-color: #16a34a; }
-        .btn-primary { background-color: #1e3a8a; color: white; padding: 10px 15px; font-weight: bold; border: none; border-radius: 5px; cursor: pointer; }
-        
-        .info-card {
-            border: 1px solid #cbd5e1;
-            padding: 15px;
+            border: none;
             border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+        }
+
+        .btn-core-danger { background-color: #fee2e2; color: var(--danger); border: 1px solid #fca5a5; }
+        .btn-core-danger:hover { background-color: var(--danger); color: white; }
+        .btn-core-success { background-color: #dcfce7; color: var(--success); border: 1px solid #86efac; }
+        .btn-core-success:hover { background-color: var(--success); color: white; }
+
+        /* Fiche d'identification du Projet */
+        .meta-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-left: 4px solid var(--accent-blue);
+            border-radius: 8px;
+            padding: 12px;
             margin-bottom: 20px;
             font-size: 13px;
+            line-height: 1.5;
         }
-        .info-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 10px;
+
+        .meta-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 4px;
         }
-        @media(min-width: 400px) {
-            .info-grid { grid-template-columns: 1fr 1fr; }
+
+        /* Matrice des Prestations (Responsive Architecture) */
+        .workspace-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--brand-blue);
+            margin-bottom: 10px;
+            text-transform: uppercase;
         }
-        .text-right { text-align: left; }
-        @media(min-width: 400px) {
-            .text-right { text-align: right; }
+
+        .items-container {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            margin-bottom: 20px;
         }
-        
-        /* CORRECTION MAJEURE : Permet au tableau de défiler sur mobile sans casser le design */
-        .table-responsive {
+
+        /* Ligne de prestation transformée en carte unitaire sur Mobile */
+        .item-card {
+            background: #ffffff;
+            border: 1px solid var(--border-color);
+            border-radius: 10px;
+            padding: 12px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.02);
+        }
+
+        .item-card-row-1 {
             width: 100%;
-            overflow-x: auto;
-            margin-bottom: 15px;
-            border: 1px solid #cbd5e1;
-            border-radius: 4px;
+            margin-bottom: 8px;
         }
-        table {
+
+        .item-card-row-2 {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 2fr 2.5fr;
+            gap: 8px;
+            align-items: center;
+        }
+
+        .field-label {
+            font-size: 10px;
+            color: #64748b;
+            text-transform: uppercase;
+            margin-bottom: 2px;
+            display: block;
+        }
+
+        .input-premium {
+            width: 100%;
+            padding: 8px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            box-sizing: border-box;
+            font-size: 13px;
+            color: #1e293b;
+            background: #fff;
+        }
+
+        .input-premium:focus {
+            border-color: var(--accent-blue);
+            outline: none;
+            box-shadow: 0 0 0 2px rgba(30, 58, 138, 0.1);
+        }
+
+        .input-readonly {
+            background: #f1f5f9;
+            font-weight: 700;
+            color: var(--brand-blue);
+            text-align: right;
+        }
+
+        .btn-add {
+            background: var(--brand-blue);
+            color: white;
+            padding: 10px 16px;
+            font-weight: 600;
+            font-size: 13px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        /* Tableau d'Analyse Financière Pro */
+        .financial-summary {
+            background: #f8fafc;
+            border: 1px solid var(--border-color);
+            border-radius: 12px;
+            padding: 15px;
+            margin-top: 25px;
+            margin-bottom: 25px;
+        }
+
+        .fin-table {
             width: 100%;
             border-collapse: collapse;
-            min-width: 450px; /* Aligne les colonnes proprement */
         }
-        th, td {
-            border: 1px solid #cbd5e1;
-            padding: 6px;
-            text-align: center;
-            font-size: 12px;
+
+        .fin-table td {
+            padding: 6px 0;
+            font-size: 13px;
         }
-        th {
-            background-color: #0f172a;
-            color: white;
+
+        .fin-table tr.total-row td {
+            padding-top: 10px;
+            border-top: 2px dashed #cbd5e1;
+            font-size: 16px;
+            font-weight: 800;
+            color: var(--accent-blue);
         }
-        .input-cell {
-            width: 100%;
-            border: 1px solid #cbd5e1;
-            padding: 6px;
-            border-radius: 4px;
-            box-sizing: border-box;
-            font-size: 12px;
-        }
-        
-        /* CORRECTION TOTAUX : S'adapte à 100% de la largeur disponible sur mobile */
-        .totals-wrapper {
-            display: flex;
-            justify-content: flex-end;
-            margin-bottom: 20px;
-            width: 100%;
-        }
-        .totals-table {
-            width: 100%;
-        }
-        .totals-table td {
-            padding: 8px 10px;
-            text-align: left;
-        }
-        .totals-table td.val {
+
+        .val-bold {
             text-align: right;
-            font-weight: bold;
+            font-weight: 700;
         }
-        .bg-success-light { background-color: #f0fdf4; color: #16a34a; }
-        .bg-danger-light { background-color: #fef2f2; color: #b91c1c; }
-        
-        .notes-card {
-            background-color: #f8fafc;
-            border-left: 4px solid #1e3a8a;
-            padding: 15px;
-            border-radius: 4px;
-            font-size: 12px;
-            line-height: 1.4;
+
+        /* Clôture Juridique et Spécifications */
+        .legal-block {
+            background: #fff;
+            border: 1px dashed var(--brand-gold);
+            border-radius: 8px;
+            padding: 12px;
+            font-size: 11px;
+            color: #475569;
+            line-height: 1.5;
+        }
+
+        .legal-block strong {
+            color: var(--brand-gold);
+            text-transform: uppercase;
         }
     </style>
 </head>
 <body>
 
-<div class="container">
-    <div class="line"></div>
-
-    <div class="actions-box">
-        <button class="btn-action btn-danger" onclick="ecraserAncienDevis()">🗑️ Écraser l'ancien devis</button>
-        <button class="btn-action btn-success" onclick="calculerEtSauvegarder()">💾 Calculer & Sauvegarder</button>
+<div class="master-container">
+    <div class="brand-header">
+        <h1>BLESSED BRAND</h1>
+        <p>Gros Œuvre, Maçonnerie & Électricité Spécialisée</p>
     </div>
 
-    <div class="info-card">
-        <div class="info-grid">
-            <div>
-                <strong>Réf :</strong> BTP-2026-XYZ<br>
-                <strong>Date :</strong> 2026-06-23
-            </div>
-            <div class="text-right">
-                <strong>Maître d'Ouvrage Mandataire :</strong> M. Ibrahim ALI<br>
-                <strong>Emplacement :</strong> Lomé, Togo
-            </div>
+    <div class="control-deck">
+        <button class="btn-core btn-core-danger" onclick="ecraserAncienDevis()">
+            🗑️ Écraser l'ancien devis
+        </button>
+        <button class="btn-core btn-core-success" onclick="calculerEtSauvegarder()">
+            💾 Calculer & Sauvegarder
+        </button>
+    </div>
+
+    <div class="meta-card">
+        <div class="meta-row">
+            <div><strong>Réf :</strong> BTP-2026-XYZ</div>
+            <div><strong>Date :</strong> 24 Juin 2026</div>
+        </div>
+        <div class="meta-row">
+            <div><strong>Directeur Général :</strong> M. Ibrahim ALI</div>
+            <div><strong>Lieu :</strong> Lomé, Togo</div>
+        </div>
+        <div style="margin-top: 5px; border-top: 1px solid #f1f5f9; padding-top: 5px; color: #64748b; font-size: 11px;">
+            <strong>Projet :</strong> Construction de villa (Chambre-Salon-WC-Cuisine)
         </div>
     </div>
 
-    <!-- AJOUT DU CONTENEUR RESPONSIVE POUR BLOQUER LE BUG VISUEL -->
-    <div class="table-responsive">
-        <table id="tableau-devis">
-            <thead>
-                <tr>
-                    <th style="width: 35%;">Désignation Précise & Composants</th>
-                    <th style="width: 15%;">Quantité</th>
-                    <th style="width: 10%;">Unité</th>
-                    <th style="width: 20%;">P.U. (FCFA)</th>
-                    <th style="width: 20%;">Total (FCFA)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td><input type="text" class="input-cell" value="Approvisionnement en Ciment CPJ45 haute résistance"></td>
-                    <td><input type="number" class="input-cell qte" value="68" oninput="calculerLigne(this)"></td>
-                    <td><input type="text" class="input-cell" value="Sacs"></td>
-                    <td><input type="number" class="input-cell pu" value="4050" oninput="calculerLigne(this)"></td>
-                    <td><input type="text" class="input-cell total-ligne" value="275400" readonly></td>
-                </tr>
-                <tr>
-                    <td><input type="text" class="input-cell" value="Achat d'Agglomérés creux de ciment vibré (15x20x40)"></td>
-                    <td><input type="number" class="input-cell qte" value="540" oninput="calculerLigne(this)"></td>
-                    <td><input type="text" class="input-cell" value="U"></td>
-                    <td><input type="number" class="input-cell pu" value="450" oninput="calculerLigne(this)"></td>
-                    <td><input type="text" class="input-cell total-ligne" value="243000" readonly></td>
-                </tr>
-            </tbody>
-        </table>
+    <div class="workspace-title">Désignation Générale des Lots</div>
+    
+    <div id="items-zone" class="items-container">
+        </div>
+
+    <div style="margin-bottom: 25px;">
+        <button class="btn-add" onclick="ajouterNouvellePrestation()">
+            ➕ Ajouter un poste de travaux
+        </button>
     </div>
 
-    <div style="margin-bottom: 20px;">
-        <button class="btn-primary" onclick="ajouterLigne()">➕ Ajouter une ligne</button>
-    </div>
-
-    <div class="totals-wrapper">
-        <table class="totals-table">
+    <div class="financial-summary">
+        <table class="fin-table">
             <tr>
-                <td><strong>Sous-Total HT :</strong></td>
-                <td class="val" id="txt-subtotal">518 400 FCFA</td>
+                <td>Montant Global Brut HT :</td>
+                <td class="val-bold" id="render-ht">0 FCFA</td>
             </tr>
             <tr>
-                <td style="color: #1e3a8a;"><strong>TOTAL TTC :</strong></td>
-                <td class="val" id="txt-total" style="color: #1e3a8a;">518 400 FCFA</td>
+                <td>TVA Réglementaire (18%) :</td>
+                <td class="val-bold" id="render-tva" style="color: #64748b;">0 FCFA</td>
             </tr>
-            <tr class="bg-success-light">
-                <td>Acompte Réglementaire (40%) :</td>
-                <td class="val" id="txt-acompte">207 360 FCFA</td>
+            <tr class="total-row">
+                <td>TOTAL TTC :</td>
+                <td class="val-bold" id="render-ttc">0 FCFA</td>
             </tr>
-            <tr class="bg-danger-light">
-                <td>Solde à la Livraison (60%) :</td>
-                <td class="val" id="txt-solde">311 040 FCFA</td>
+            <tr><td colspan="2" style="padding-top: 15px; font-weight: 700; font-size: 11px; color: var(--brand-gold); text-transform: uppercase;">Modalités de liquidation financière :</td></tr>
+            <tr style="color: #15803d;">
+                <td>• Étape 1 : Acompte à la signature (30%)</td>
+                <td class="val-bold" id="step-signature">0 FCFA</td>
+            </tr>
+            <tr style="color: #b45309;">
+                <td>• Étape 2 : Hors d'eau / Dalle coulée (40%)</td>
+                <td class="val-bold" id="step-dalle">0 FCFA</td>
+            </tr>
+            <tr style="color: #1e3a8a;">
+                <td>• Étape 3 : Solde à la réception (30%)</td>
+                <td class="val-bold" id="step-solde">0 FCFA</td>
             </tr>
         </table>
     </div>
 
-    <div class="notes-card">
-        <strong>Notes d'exécution :</strong><br>
-        Travaux exécutés dans les règles de l'art, conformément aux normes techniques en vigueur. Matériaux certifiés de premier choix.
+    <div class="legal-block">
+        <strong>Remarques et notes importantes :</strong><br>
+        • Validation des transactions via : <strong>T-Money (*145#) | Flooz (*155#)</strong>.<br>
+        • Exclusions : Clôture périphérique, portail, branchements CEET & TDE.<br>
+        • Matériaux certifiés de premier choix conformes aux normes en vigueur au Togo.
     </div>
 </div>
 
 <script>
-    function calculerLigne(input) {
-        let row = input.closest('tr');
-        let qte = parseFloat(row.querySelector('.qte').value) || 0;
-        let pu = parseFloat(row.querySelector('.pu').value) || 0;
-        let totalLigne = row.querySelector('.total-ligne');
+    // Éléments d'amorçage d'origine tirés directement de ta base Word pour faire pro d'entrée
+    const prefilledData = [
+        { desc: "Implantation et piquetage de l'ouvrage", qte: 1, unit: "Fft", pu: 150000 },
+        { desc: "Fouilles en tranchées pour fondations prof. 0.80m", qte: 18, unit: "m³", pu: 8000 },
+        { desc: "Murs en parpaings creux de 15cm vibré (Hauteur 3m)", qte: 120, unit: "m²", pu: 12000 },
+        { desc: "Dalle pleine en béton armé (Toiture terrasse ep. 12cm)", qte: 60, unit: "m²", pu: 35000 }
+    ];
+
+    function initialiserApplication() {
+        const zone = document.getElementById('items-zone');
+        zone.innerHTML = '';
         
-        totalLigne.value = Math.round(qte * pu);
-        recalculerTout();
+        // Chargement des données par défaut pour l'excellence de la démo face client
+        prefilledData.forEach(item => {
+            creerComposantLigne(item.desc, item.qte, item.unit, item.pu);
+        });
+        recalculerMatriceFinanciere();
     }
 
-    function ajouterLigne() {
-        let table = document.getElementById('tableau-devis').getElementsByTagName('tbody')[0];
-        let newRow = table.insertRow();
-        newRow.innerHTML = `
-            <td><input type="text" class="input-cell" placeholder="Prestation"></td>
-            <td><input type="number" class="input-cell qte" value="0" oninput="calculerLigne(this)"></td>
-            <td><input type="text" class="input-cell" placeholder="U"></td>
-            <td><input type="number" class="input-cell pu" value="0" oninput="calculerLigne(this)"></td>
-            <td><input type="text" class="input-cell total-ligne" value="0" readonly></td>
+    function creerComposantLigne(desc, qte, unit, pu) {
+        const zone = document.getElementById('items-zone');
+        const card = document.createElement('div');
+        card.className = 'item-card';
+        
+        card.innerHTML = `
+            <div class="item-card-row-1">
+                <span class="field-label">Désignation précise de la prestation</span>
+                <input type="text" class="input-premium data-desc" value="${desc}" placeholder="Ex: Béton de propreté dosé à 150kg/m³">
+            </div>
+            <div class="item-card-row-2">
+                <div>
+                    <span class="field-label">Qté</span>
+                    <input type="number" class="input-premium data-qte" value="${qte}" oninput="calculerSousTotalLigne(this)">
+                </div>
+                <div>
+                    <span class="field-label">Unité</span>
+                    <input type="text" class="input-premium data-unit" value="${unit}" placeholder="m³">
+                </div>
+                <div>
+                    <span class="field-label">P.U (F)</span>
+                    <input type="number" class="input-premium data-pu" value="${pu}" oninput="calculerSousTotalLigne(this)">
+                </div>
+                <div>
+                    <span class="field-label">Total (FCFA)</span>
+                    <input type="text" class="input-premium input-readonly data-total" value="${Math.round(qte * pu)}" readonly>
+                </div>
+            </div>
         `;
+        zone.appendChild(card);
     }
 
-    function recalculerTout() {
-        let totauxLignes = document.querySelectorAll('.total-ligne');
-        let sousTotal = 0;
+    function ajouterNouvellePrestation() {
+        creerComposantLigne("", 0, "U", 0);
+        window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
+    }
+
+    function calculerSousTotalLigne(inputField) {
+        const card = inputField.closest('.item-card');
+        const qte = parseFloat(card.querySelector('.data-qte').value) || 0;
+        const pu = parseFloat(card.querySelector('.data-pu').value) || 0;
+        const totalField = card.querySelector('.data-total');
         
-        totauxLignes.forEach(function(input) {
-            sousTotal += parseFloat(input.value) || 0;
+        totalField.value = Math.round(qte * pu);
+        recalculerMatriceFinanciere();
+    }
+
+    function recalculerMatriceFinanciere() {
+        const toutesLesLignes = document.querySelectorAll('.data-total');
+        let totalHT = 0;
+        
+        toutesLesLignes.forEach(field => {
+            totalHT += parseFloat(field.value) || 0;
         });
         
-        let acompte = Math.round(sousTotal * 0.40);
-        let solde = sousTotal - acompte;
+        // Calculs des taxes et de la liquidation financière (Réf : Devis Word Lomé)
+        let tva = Math.round(totalHT * 0.18);
+        let totalTTC = totalHT + tva;
         
-        document.getElementById('txt-subtotal').innerText = sousTotal.toLocaleString('fr-FR') + " FCFA";
-        document.getElementById('txt-total').innerText = sousTotal.toLocaleString('fr-FR') + " FCFA";
-        document.getElementById('txt-acompte').innerText = acompte.toLocaleString('fr-FR') + " FCFA";
-        document.getElementById('txt-solde').innerText = solde.toLocaleString('fr-FR') + " FCFA";
+        let acompteSignature = Math.round(totalTTC * 0.30);
+        let phaseDalle = Math.round(totalTTC * 0.40);
+        let soldeReception = totalTTC - (acompteSignature + phaseDalle);
+
+        // Injection textuelle formatée dans la vue
+        document.getElementById('render-ht').innerText = totalHT.toLocaleString('fr-FR') + " FCFA";
+        document.getElementById('render-tva').innerText = tva.toLocaleString('fr-FR') + " FCFA";
+        document.getElementById('render-ttc').innerText = totalTTC.toLocaleString('fr-FR') + " FCFA";
+        
+        document.getElementById('step-signature').innerText = acompteSignature.toLocaleString('fr-FR') + " FCFA";
+        document.getElementById('step-dalle').innerText = phaseDalle.toLocaleString('fr-FR') + " FCFA";
+        document.getElementById('step-solde').innerText = soldeReception.toLocaleString('fr-FR') + " FCFA";
     }
 
     function calculerEtSauvegarder() {
-        recalculerTout();
-        localStorage.setItem("devis_actif", "true");
-        alert("Devis mis à jour et sauvegardé avec succès !");
+        recalculerMatriceFinanciere();
+        localStorage.setItem("devis_actif_sauvegarde", "true");
+        alert("Matrice financière sauvegardée avec succès sur le serveur local !");
     }
 
+    // COMMANDE UNIQUE : ÉCRASEMENT GLOBAL DE L'ANCIEN PROJET
     function ecraserAncienDevis() {
-        if (confirm("Voulez-vous vraiment écraser l'ancien devis pour en commencer un nouveau ?")) {
-            localStorage.removeItem("devis_actif");
-            window.location.reload();
+        if (confirm("Voulez-vous écraser définitivement l'ancien devis pour réinitialiser le système ?")) {
+            localStorage.removeItem("devis_actif_sauvegarde");
+            initialiserApplication();
         }
     }
 
     window.onload = function() {
-        recalculerTout();
+        initialiserApplication();
     };
 </script>
 
